@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title data-i18n="title">Base de datos náhuatl</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="excel-shell">
+
+    <!-- ── Top bar: session tabs left, panel tabs right ── -->
+    <div class="top-bar">
+      <div class="session-bar" id="sessionBar"></div>
+      <nav class="panel-tabs">
+        <button type="button" class="tab-btn active" data-tab="filtersPanel" data-i18n="tab.filters">Filtros</button>
+        <button type="button" class="tab-btn" data-tab="sourcesPanel" data-i18n="tab.sources">Fuentes</button>
+        <button type="button" class="tab-btn" data-tab="regexPanel" data-i18n="tab.regex">Regex</button>
+        <button type="button" class="tab-btn" data-tab="pairsPanel" data-i18n="tab.pairs">Pares a/i</button>
+        <button type="button" class="btn ghost lang-toggle" id="langToggle" data-i18n="lang.toggle">English</button>
+      </nav>
+    </div>
+
+    <!-- ── Panel: Filtros ── -->
+    <section class="tab-panel active" id="filtersPanel">
+      <div class="filter-card" data-owner="f1">
+        <div class="filter-card-head">
+          <h3 data-i18n="filter.title">Filtro</h3>
+          <div class="card-arrows">
+            <button type="button" class="arrow-btn old-spanish-btn" data-i18n="oldspanish.toggle">Esp. ant.</button>
+          </div>
+        </div>
+        <div class="filter-row fields">
+          <span class="label" data-i18n="label.column">Columna</span>
+          <div class="pill-group field-group">
+            <button type="button" class="pill field-btn active" data-field="Paleografía" data-i18n="field.paleografia">Paleografía</button>
+            <button type="button" class="pill field-btn" data-field="Grafía normalizada" data-i18n="field.grafia">Grafía norm.</button>
+            <button type="button" class="pill field-btn" data-field="Traducción" data-i18n="field.traduccion">Traducción</button>
+            <button type="button" class="pill field-btn" data-field="Comentario" data-i18n="field.comentario">Comentario</button>
+          </div>
+        </div>
+        <div class="filter-row scopes">
+          <span class="label" data-i18n="label.scope">Ámbito</span>
+          <div class="pill-group scope-group">
+            <button type="button" class="pill scope-btn active" data-scope="word" data-i18n="scope.word">Palabra única</button>
+            <button type="button" class="pill scope-btn" data-scope="whole" data-i18n="scope.whole">Casilla completa</button>
+          </div>
+        </div>
+        <div class="filter-grid">
+          <div class="grid-row header">
+            <span></span>
+            <span data-i18n="grid.include">Incluye</span>
+            <span data-i18n="grid.exclude">Excluye</span>
+          </div>
+          <div class="grid-row">
+            <span data-i18n="grid.exact">Exacto</span>
+            <input type="text" class="filter-input" data-mode="exact" data-negate="false" placeholder="p. ej. tlali" data-i18n-placeholder="placeholder.example" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="exact" data-negate="true" placeholder="p. ej. tlali" data-i18n-placeholder="placeholder.example" autocomplete="off" />
+          </div>
+          <div class="grid-row">
+            <span data-i18n="grid.starts">Empieza</span>
+            <input type="text" class="filter-input" data-mode="starts" data-negate="false" placeholder="prefijo" data-i18n-placeholder="placeholder.prefix" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="starts" data-negate="true" placeholder="prefijo" data-i18n-placeholder="placeholder.prefix" autocomplete="off" />
+          </div>
+          <div class="grid-row">
+            <span data-i18n="grid.contains">Contiene</span>
+            <input type="text" class="filter-input" data-mode="any" data-negate="false" placeholder="fragmento" data-i18n-placeholder="placeholder.fragment" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="any" data-negate="true" placeholder="fragmento" data-i18n-placeholder="placeholder.fragment" autocomplete="off" />
+          </div>
+          <div class="grid-row">
+            <span data-i18n="grid.ends">Termina</span>
+            <input type="text" class="filter-input" data-mode="ends" data-negate="false" placeholder="sufijo" data-i18n-placeholder="placeholder.suffix" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="ends" data-negate="true" placeholder="sufijo" data-i18n-placeholder="placeholder.suffix" autocomplete="off" />
+          </div>
+        </div>
+        <div class="filter-actions">
+          <div class="logic-toggle" aria-label="Zona del filtro">
+            <button type="button" class="logic-btn active" data-logic="AND" data-i18n="logic.and">Y</button>
+            <button type="button" class="logic-btn" data-logic="OR" data-i18n="logic.or">O</button>
+          </div>
+          <button type="button" class="btn primary add-btn" data-i18n="action.add">Añadir</button>
+          <button type="button" class="btn ghost clear-btn" data-i18n="action.clear">Limpiar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Panel: Fuentes ── -->
+    <section class="tab-panel" id="sourcesPanel">
+      <div class="sources-card">
+        <div class="sources-head">
+          <h3 data-i18n="sources.title">Fuentes</h3>
+          <div class="sources-actions">
+            <button type="button" class="btn ghost" id="fuenteClear" data-i18n="action.clear">Limpiar</button>
+            <button type="button" class="btn primary" id="fuenteFill" data-i18n="sources.fill">Llenar</button>
+          </div>
+        </div>
+        <div id="fuenteList" class="fuente-list"></div>
+      </div>
+    </section>
+
+    <!-- ── Panel: Regex ── -->
+    <section class="tab-panel" id="regexPanel">
+      <div class="sources-card rx-card">
+        <div class="rx-grid">
+
+          <div class="rx-block">
+            <div class="rx-title" data-i18n="rx.wildcards">Comodines</div>
+            <div class="rx-row"><code>?</code><span data-i18n="rx.q1">1 letra cualquiera</span></div>
+            <div class="rx-row"><code>??</code><span data-i18n="rx.q2">exactamente 2 letras</span></div>
+            <div class="rx-row"><code>*</code><span data-i18n="rx.star1">1 o más letras</span></div>
+            <div class="rx-row"><code>**</code><span data-i18n="rx.star2">2 o más letras</span></div>
+            <div class="rx-row"><code>?{2,4}</code><span data-i18n="rx.range">2 a 4 letras</span></div>
+          </div>
+
+
+          <div class="rx-block">
+            <div class="rx-title" data-i18n="rx.alternatives">Alternativas</div>
+            <div class="rx-row"><code>pat(o|a)</code><span data-i18n-html="rx.alt.group">pato <em>o</em> pata</span></div>
+            <div class="rx-row"><code>pato|pata</code><span data-i18n="rx.alt.pipe">equivalente (nivel superior)</span></div>
+            <div class="rx-row"><code>\|</code><span data-i18n="rx.alt.escape">barra literal</span></div>
+          </div>
+
+          <div class="rx-block">
+            <div class="rx-title" data-i18n="rx.templates">Plantillas C/V</div>
+            <div class="rx-row"><code>{C}</code><span data-i18n="rx.cv.c">consonante</span></div>
+            <div class="rx-row"><code>{V}</code><span data-i18n="rx.cv.v">vocal</span></div>
+            <div class="rx-row"><code>{N}</code><span data-i18n="rx.cv.n">nasal (m, n, ñ)</span></div>
+            <div class="rx-row"><code>{L}</code><span data-i18n="rx.cv.l">líquida (l, ll, r, rr)</span></div>
+            <div class="rx-row"><code>{S}</code><span data-i18n="rx.cv.s">sibilante (s, z, x, tz)</span></div>
+            <div class="rx-row"><code>{G}</code><span data-i18n="rx.cv.g">deslizada (y, hu, uh)</span></div>
+            <div class="rx-row"><code>{P}</code><span data-i18n="rx.cv.p">oclusiva (p, t, c, ch, tz…)</span></div>
+            <div class="rx-row"><code>{A}</code><span data-i18n="rx.cv.a">cualquier letra</span></div>
+            <div class="rx-row"><code>{CVC}</code><span data-i18n="rx.cv.pattern">patrón C‑V‑C</span></div>
+            <div class="rx-row"><code>{C?VC}</code><span data-i18n="rx.cv.optional">C inicial opcional</span></div>
+            <div class="rx-row"><code>{CVC}+</code><span data-i18n="rx.cv.repeat">una o más sílabas</span></div>
+            <div class="rx-row"><code>{CVC}{2}</code><span data-i18n="rx.cv.count">exactamente 2 sílabas</span></div>
+            <div class="rx-row rx-note" data-i18n="rx.cv.note">Solo activo dentro de llaves { }</div>
+          </div>
+
+          <div class="rx-block">
+            <div class="rx-title" data-i18n="rx.containsboth">Ambas en la misma palabra</div>
+            <div class="rx-row"><code>(pech||pepech)</code><span data-i18n-html="rx.both.desc">la palabra contiene <em>ambas</em></span></div>
+            <div class="rx-row rx-note" data-i18n-html="rx.both.note">Doble barra <code>||</code> dentro de paréntesis</div>
+          </div>
+
+          <div class="rx-block">
+            <div class="rx-title" data-i18n="rx.reduplication">Reduplicación</div>
+            <div class="rx-row"><code>+pech</code><span data-i18n-html="rx.redup.desc">→ <em>pe</em>pech… (hasta 1ª vocal)</span></div>
+            <div class="rx-row"><code>+tlal</code><span data-i18n-html="rx.redup.ex2">→ <em>tla</em>tlal…</span></div>
+          </div>
+
+          <div class="rx-block">
+            <div class="rx-title" data-i18n="rx.negclass">Clase negada</div>
+            <div class="rx-row"><code>[^aeiou]</code><span data-i18n="rx.negclass.desc">cualquier no-vocal</span></div>
+            <div class="rx-row"><code>[^aeious]</code><span data-i18n="rx.negclass.ex">excluye vocales y s</span></div>
+          </div>
+
+          <div class="rx-block rx-block--wide">
+            <div class="rx-title" data-i18n="rx.literal">Regex literal</div>
+            <div class="rx-row"><code>/^tla[a-z]+li$/i</code><span data-i18n-html="rx.lit.desc">expresión completa entre <code>/</code></span></div>
+            <div class="rx-row"><code>/qu?e/i</code><span data-i18n="rx.lit.flags">admite flags: i g m…</span></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Panel: Pares ── -->
+    <section class="tab-panel" id="pairsPanel">
+      <div class="sources-card pair-card">
+        <div class="sources-head">
+          <h3 data-i18n="pairs.title">Pares a/i</h3>
+          <div class="sources-actions">
+            <button type="button" class="btn primary" id="pairFindBtn" data-i18n="pairs.run">Buscar pares</button>
+            <button type="button" class="btn ghost" id="pairClearBtn" data-i18n="pairs.clear">Limpiar</button>
+          </div>
+        </div>
+        <div class="pair-controls">
+          <label class="pair-control">
+            <span data-i18n="pairs.column">Columna</span>
+            <select id="pairColumn"></select>
+          </label>
+          <label class="pair-control">
+            <span data-i18n="pairs.suffixes">Sufijos</span>
+            <input type="text" id="pairSuffixFirst" inputmode="text" autocapitalize="off" spellcheck="false" value="i" />
+            <span class="pair-separator">/</span>
+            <input type="text" id="pairSuffixSecond" inputmode="text" autocapitalize="off" spellcheck="false" value="a" />
+            <span class="pair-separator">/</span>
+            <input type="text" id="pairSuffixThird" inputmode="text" autocapitalize="off" spellcheck="false" value="" />
+            <span class="pair-separator">/</span>
+            <input type="text" id="pairSuffixFourth" inputmode="text" autocapitalize="off" spellcheck="false" value="" />
+          </label>
+          <label class="pair-control">
+            <input type="checkbox" id="pairUseFilters" checked />
+            <span data-i18n="pairs.useFilters">Usar filtros actuales</span>
+          </label>
+          <label class="pair-control">
+            <input type="checkbox" id="pairWordOnly" checked />
+            <span data-i18n="pairs.wordOnly">Solo palabras</span>
+          </label>
+        </div>
+        <div id="pairResults" class="pair-results" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- ── Active filter chips ── -->
+    <div id="activeFiltersBar" class="active-filters-bar" style="display:none"></div>
+
+    <!-- ── Data table ── -->
+    <section class="excel-table-card">
+      <div class="table-header">
+        <div id="tableStatus" class="table-status" data-i18n="table.status.loading">Cargando datos…</div>
+        <div class="sort-scope">
+          <label for="sortScopeSelect" data-i18n="table.sort.label">Orden:</label>
+          <select id="sortScopeSelect">
+            <option value="all" data-i18n="table.sort.all">Todos</option>
+            <option value="page" data-i18n="table.sort.page">Página</option>
+          </select>
+        </div>
+        <div class="pager">
+          <button type="button" class="arrow-btn export-btn" id="exportJpeg">JPG</button>
+          <button type="button" class="arrow-btn" id="pageFirst">⏮</button>
+          <button type="button" class="arrow-btn" id="pagePrev">◀</button>
+          <button type="button" class="arrow-btn" id="pageNext">▶</button>
+          <button type="button" class="arrow-btn" id="pageLast">⏭</button>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table id="dataTable">
+          <thead>
+            <tr>
+              <th data-field="Paleografía">
+                <div class="header-bar">
+                  <span data-i18n="table.header.paleografia">Paleografía</span>
+                  <button type="button" class="arrow-btn sort-btn" data-sort-field="Paleografía">⇅</button>
+                </div>
+              </th>
+              <th data-field="Grafía normalizada">
+                <div class="header-bar">
+                  <span data-i18n="table.header.grafia">Grafía normalizada</span>
+                  <button type="button" class="arrow-btn sort-btn" data-sort-field="Grafía normalizada">⇅</button>
+                </div>
+              </th>
+              <th data-field="Traducción">
+                <div class="header-bar">
+                  <span data-i18n="table.header.traduccion">Traducción</span>
+                  <button type="button" class="arrow-btn sort-btn" data-sort-field="Traducción">⇅</button>
+                </div>
+              </th>
+              <th data-field="Fuente">
+                <div class="header-bar">
+                  <span data-i18n="table.header.fuente">Fuente</span>
+                  <div class="header-actions">
+                    <button type="button" class="arrow-btn old-spanish-btn" id="wLangToggle">FR</button>
+                    <button type="button" class="arrow-btn sort-btn" data-sort-field="Fuente">⇅</button>
+                  </div>
+                </div>
+              </th>
+              <th data-field="Comentario">
+                <div class="header-bar">
+                  <span data-i18n="table.header.comentario">Comentario</span>
+                  <div class="header-actions">
+                    <button type="button" class="arrow-btn sort-btn" data-sort-field="Comentario">⇅</button>
+                    <button type="button" class="arrow-btn comentario-toggle-all" id="comentarioExpandAll">+</button>
+                  </div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="table-header table-footer">
+        <div class="table-status"></div>
+        <div class="sort-scope">
+          <label for="sortScopeSelectFooter" data-i18n="table.sort.label">Orden:</label>
+          <select id="sortScopeSelectFooter">
+            <option value="all" data-i18n="table.sort.all">Todos</option>
+            <option value="page" data-i18n="table.sort.page">Página</option>
+          </select>
+        </div>
+        <div class="pager">
+          <button type="button" class="arrow-btn export-btn" id="exportJpegFooter">JPG</button>
+          <button type="button" class="arrow-btn" id="pageFirstFooter">⏮</button>
+          <button type="button" class="arrow-btn" id="pagePrevFooter">◀</button>
+          <button type="button" class="arrow-btn" id="pageNextFooter">▶</button>
+          <button type="button" class="arrow-btn" id="pageLastFooter">⏭</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="data.js"></script>
+<script src="filters.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
