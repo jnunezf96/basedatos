@@ -1,6 +1,6 @@
 const TABLE_FIELDS = [
-  { key: "Paleografía", label: "Paleografía" },
-  { key: "Grafía normalizada", label: "Grafía normalizada" },
+  { key: "Escritura original", label: "Escritura original" },
+  { key: "Escritura estandarizada", label: "Escritura estandarizada" },
   { key: "Traducción", label: "Traducción" },
   { key: "Fuente", label: "Fuente" },
   { key: "Comentario", label: "Comentario" }
@@ -87,8 +87,8 @@ const I18N = {
     "pairs.header.a": "Forma en -a",
     "pairs.header.i": "Forma en -i",
     "pairs.header.total": "Total",
-    "table.header.paleografia": "Paleografía",
-    "table.header.grafia": "Grafía normalizada",
+    "table.header.paleografia": "Escritura original",
+    "table.header.grafia": "Escritura estandarizada",
     "table.header.traduccion": "Traducción",
     "table.header.fuente": "Fuente",
     "table.header.comentario": "Comentario",
@@ -100,8 +100,8 @@ const I18N = {
     "table.status.showing": "Registros mostrados: {{start}}-{{end}} de {{total}}",
     "table.empty": "No hay datos disponibles.",
     "table.export.filename": "tabla.jpg",
-    "field.paleografia": "Paleografía",
-    "field.grafia": "Grafía normalizada",
+    "field.paleografia": "Escritura original",
+    "field.grafia": "Escritura estandarizada",
     "field.traduccion": "Traducción",
     "field.comentario": "Comentario",
     "nav.left": "Mover a la izquierda",
@@ -204,8 +204,8 @@ const I18N = {
     "pairs.header.a": "-a form",
     "pairs.header.i": "-i form",
     "pairs.header.total": "Total",
-    "table.header.paleografia": "Paleography",
-    "table.header.grafia": "Normalized spelling",
+    "table.header.paleografia": "Original writing",
+    "table.header.grafia": "Standardized writing",
     "table.header.traduccion": "Translation",
     "table.header.fuente": "Source",
     "table.header.comentario": "Comment",
@@ -217,8 +217,8 @@ const I18N = {
     "table.status.showing": "Records shown: {{start}}-{{end}} of {{total}}",
     "table.empty": "No data available.",
     "table.export.filename": "table.jpg",
-    "field.paleografia": "Paleography",
-    "field.grafia": "Normalized spelling",
+    "field.paleografia": "Original writing",
+    "field.grafia": "Standardized writing",
     "field.traduccion": "Translation",
     "field.comentario": "Comment",
     "nav.left": "Move left",
@@ -256,8 +256,8 @@ let sessions = [{ id: "s1", filters: [], order: [], groupCounter: 0 }];
 let currentSessionId = "s1";
 
 const FIELD_SHORT = {
-  "Paleografía": "Paleo",
-  "Grafía normalizada": "Grafía",
+  "Escritura original": "Orig.",
+  "Escritura estandarizada": "Estand.",
   "Traducción": "Trad.",
   "Comentario": "Com.",
 };
@@ -2020,9 +2020,9 @@ function applyFuenteFilters() {
 
 function getFieldI18nKey(fieldKey) {
   switch (fieldKey) {
-    case "Paleografía":
+    case "Escritura original":
       return "field.paleografia";
-    case "Grafía normalizada":
+    case "Escritura estandarizada":
       return "field.grafia";
     case "Traducción":
       return "field.traduccion";
@@ -2048,8 +2048,8 @@ function setupPairFinder() {
       option.textContent = labelKey ? t(labelKey) : key;
       select.appendChild(option);
     });
-    if (columns.includes("Grafía normalizada")) {
-      select.value = "Grafía normalizada";
+    if (columns.includes("Escritura estandarizada")) {
+      select.value = "Escritura estandarizada";
     }
   }
 
