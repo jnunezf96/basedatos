@@ -16,7 +16,7 @@ const I18N = {
     "tab.pairs": "Pares a/i",
     "filter.title": "Filtro",
     "label.column": "Columna",
-    "label.scope": "Buscar en",
+    "label.scope": "Casilla",
     "scope.whole": "Texto completo",
     "scope.word": "Por palabra",
     "grid.include": "Incluye",
