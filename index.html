@@ -20,6 +20,9 @@
       </nav>
     </div>
 
+    <!-- ── Site tagline ── -->
+    <p class="site-tagline" data-i18n="site.tagline">Busca y filtra más de 290,000 entradas de diccionarios históricos de náhuatl. Usa los filtros para encontrar palabras por escritura, traducción o fuente.</p>
+
     <!-- ── Panel: Filtros ── -->
     <section class="tab-panel active" id="filtersPanel">
       <div class="filter-card" data-owner="f1">
@@ -32,8 +35,8 @@
         <div class="filter-row fields">
           <span class="label" data-i18n="label.column">Columna</span>
           <div class="pill-group field-group">
-            <button type="button" class="pill field-btn active" data-field="Escritura original" data-i18n="field.paleografia">Escritura original</button>
-            <button type="button" class="pill field-btn" data-field="Escritura estandarizada" data-i18n="field.grafia">Escritura estand.</button>
+            <button type="button" class="pill field-btn active" data-field="Escritura estandarizada" data-i18n="field.grafia">Escritura estand.</button>
+            <button type="button" class="pill field-btn" data-field="Escritura original" data-i18n="field.paleografia">Escritura original</button>
             <button type="button" class="pill field-btn" data-field="Traducción" data-i18n="field.traduccion">Traducción</button>
             <button type="button" class="pill field-btn" data-field="Comentario" data-i18n="field.comentario">Comentario</button>
           </div>
@@ -228,16 +231,16 @@
         <table id="dataTable">
           <thead>
             <tr>
-              <th data-field="Escritura original">
-                <div class="header-bar">
-                  <span data-i18n="table.header.paleografia">Escritura original</span>
-                  <button type="button" class="arrow-btn sort-btn" data-sort-field="Escritura original">⇅</button>
-                </div>
-              </th>
               <th data-field="Escritura estandarizada">
                 <div class="header-bar">
                   <span data-i18n="table.header.grafia">Escritura estandarizada</span>
                   <button type="button" class="arrow-btn sort-btn" data-sort-field="Escritura estandarizada">⇅</button>
+                </div>
+              </th>
+              <th data-field="Escritura original">
+                <div class="header-bar">
+                  <span data-i18n="table.header.paleografia">Escritura original</span>
+                  <button type="button" class="arrow-btn sort-btn" data-sort-field="Escritura original">⇅</button>
                 </div>
               </th>
               <th data-field="Traducción">

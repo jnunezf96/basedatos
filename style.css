@@ -18,6 +18,18 @@ body {
   gap: 10px;
 }
 
+/* ── Site tagline ── */
+.site-tagline {
+  margin: 0;
+  padding: 8px 12px;
+  background: #eef1ff;
+  border-left: 3px solid #4a6cf7;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  color: #445;
+  line-height: 1.5;
+}
+
 /* ── Top bar: session tabs left, panel tabs + lang right ── */
 .top-bar {
   display: flex;

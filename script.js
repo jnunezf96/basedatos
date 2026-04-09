@@ -1,6 +1,6 @@
 const TABLE_FIELDS = [
-  { key: "Escritura original", label: "Escritura original" },
   { key: "Escritura estandarizada", label: "Escritura estandarizada" },
+  { key: "Escritura original", label: "Escritura original" },
   { key: "Traducción", label: "Traducción" },
   { key: "Fuente", label: "Fuente" },
   { key: "Comentario", label: "Comentario" }
@@ -87,6 +87,7 @@ const I18N = {
     "pairs.header.a": "Forma en -a",
     "pairs.header.i": "Forma en -i",
     "pairs.header.total": "Total",
+    "site.tagline": "Busca y filtra más de 290,000 entradas de diccionarios históricos de náhuatl. Usa los filtros para encontrar palabras por escritura, traducción o fuente.",
     "table.header.paleografia": "Escritura original",
     "table.header.grafia": "Escritura estandarizada",
     "table.header.traduccion": "Traducción",
@@ -204,6 +205,7 @@ const I18N = {
     "pairs.header.a": "-a form",
     "pairs.header.i": "-i form",
     "pairs.header.total": "Total",
+    "site.tagline": "Search and filter over 290,000 entries from historical Nahuatl dictionaries. Use the filters to find words by spelling, translation, or source.",
     "table.header.paleografia": "Original writing",
     "table.header.grafia": "Standardized writing",
     "table.header.traduccion": "Translation",
