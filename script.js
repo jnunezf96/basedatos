@@ -333,7 +333,7 @@ let sortKeys = []; // [{field, dir}]
 let sortScope = "all"; // "all" | "page"
 const hiddenColumns = new Set();
 const alphaNumCollator = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
-let wimmerShowEs = false;
+let wimmerShowEs = true;
 let lastFocusedInput = null;
 let filterCards = [];
 let activeCardIndex = 0;
@@ -1843,6 +1843,8 @@ function getDisplayValue(row, fieldKey) {
 function setupWimmerTranslate() {
   const langToggle = document.getElementById("wLangToggle");
   if (langToggle) {
+    langToggle.textContent = wimmerShowEs ? "ES" : "FR";
+    langToggle.classList.toggle("active", wimmerShowEs);
     langToggle.addEventListener("click", () => {
       wimmerShowEs = !wimmerShowEs;
       langToggle.textContent = wimmerShowEs ? "ES" : "FR";
