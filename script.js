@@ -1,6 +1,6 @@
 const TABLE_FIELDS = [
-  { key: "Escritura estandarizada", label: "Escritura estandarizada" },
-  { key: "Escritura original", label: "Escritura original" },
+  { key: "Texto estandarizado", label: "Texto estandarizado" },
+  { key: "Escritura original", label: "Texto original" },
   { key: "Traducción", label: "Traducción" },
   { key: "Fuente", label: "Fuente" },
   { key: "Comentario", label: "Comentario" }
@@ -17,8 +17,8 @@ const I18N = {
     "filter.title": "Filtro",
     "label.column": "Columna",
     "label.scope": "Casilla",
-    "scope.whole": "Texto completo",
-    "scope.word": "Por palabra",
+    "scope.whole": "El total",
+    "scope.word": "La palabra",
     "grid.include": "Incluye",
     "grid.exclude": "Excluye",
     "grid.exact": "Exacto",
@@ -26,11 +26,15 @@ const I18N = {
     "grid.contains": "Contiene",
     "grid.ends": "Termina",
     "action.run": "Ejecutar",
-    "action.clear": "Limpiar",
-    "placeholder.example": "p. ej. tlali",
-    "placeholder.prefix": "prefijo",
-    "placeholder.fragment": "fragmento",
-    "placeholder.suffix": "sufijo",
+    "action.clear": "Vaciar",
+    "placeholder.exact.incl": "{casilla} es exactamente esto",
+    "placeholder.exact.excl": "{casilla} no es exactamente esto",
+    "placeholder.starts.incl": "{casilla} empieza con esto",
+    "placeholder.starts.excl": "{casilla} no empieza con esto",
+    "placeholder.any.incl": "{casilla} contiene esto",
+    "placeholder.any.excl": "{casilla} no contiene esto",
+    "placeholder.ends.incl": "{casilla} termina con esto",
+    "placeholder.ends.excl": "{casilla} no termina con esto",
     "sources.title": "Fuentes",
     "sources.fill": "Llenar",
     "regex.title": "Mini-lenguaje",
@@ -88,8 +92,8 @@ const I18N = {
     "pairs.header.i": "Forma en -i",
     "pairs.header.total": "Total",
     "site.tagline": "Busca y filtra más de 290,000 entradas de diccionarios históricos de náhuatl. Usa los filtros para encontrar palabras por escritura, traducción o fuente — los resultados aparecen en la tabla de abajo.",
-    "table.header.paleografia": "Escritura original",
-    "table.header.grafia": "Escritura estandarizada",
+    "table.header.paleografia": "Texto original",
+    "table.header.grafia": "Texto estandarizado",
     "table.header.traduccion": "Traducción",
     "table.header.fuente": "Fuente",
     "table.header.comentario": "Comentario",
@@ -101,8 +105,8 @@ const I18N = {
     "table.status.showing": "Registros mostrados: {{start}}-{{end}} de {{total}}",
     "table.empty": "No hay datos disponibles.",
     "table.export.filename": "tabla.jpg",
-    "field.paleografia": "Escritura original",
-    "field.grafia": "Escritura estandarizada",
+    "field.paleografia": "Texto original",
+    "field.grafia": "Texto estandarizado",
     "field.traduccion": "Traducción",
     "field.comentario": "Comentario",
     "nav.left": "Mover a la izquierda",
@@ -112,6 +116,11 @@ const I18N = {
     "filter.title": "Filtro",
     "lang.toggle": "English",
     "oldspanish.toggle": "Esp. antiguo",
+    "label.oldspanish": "Ortografía",
+    "label.accent": "Acento",
+    "label.logic": "Combinar",
+    "accent.sensitive": "Acento exacto",
+    "accent.insensitive": "Acento libre",
     "logic.and": "Y",
     "logic.or": "O",
     "chips.zone.and": "Y",
@@ -123,7 +132,9 @@ const I18N = {
     "groups.logic.and": "Y",
     "groups.logic.or": "O",
     "groups.edit": "Editar",
-    "groups.remove": "Quitar"
+    "groups.remove": "Quitar",
+    "table.pagesize.label": "Filas:",
+    "table.columns": "Cols"
   },
   en: {
     title: "Nahuatl database",
@@ -135,8 +146,8 @@ const I18N = {
     "filter.title": "Filter",
     "label.column": "Column",
     "label.scope": "Search in",
-    "scope.whole": "Full text",
-    "scope.word": "By word",
+    "scope.whole": "El total",
+    "scope.word": "One word",
     "grid.include": "Include",
     "grid.exclude": "Exclude",
     "grid.exact": "Exact",
@@ -145,10 +156,14 @@ const I18N = {
     "grid.ends": "Ends with",
     "action.run": "Run",
     "action.clear": "Clear",
-    "placeholder.example": "e.g. tlali",
-    "placeholder.prefix": "prefix",
-    "placeholder.fragment": "fragment",
-    "placeholder.suffix": "suffix",
+    "placeholder.exact.incl": "{casilla} is exactly this",
+    "placeholder.exact.excl": "{casilla} is not exactly this",
+    "placeholder.starts.incl": "{casilla} starts with this",
+    "placeholder.starts.excl": "{casilla} does not start with this",
+    "placeholder.any.incl": "{casilla} contains this",
+    "placeholder.any.excl": "{casilla} does not contain this",
+    "placeholder.ends.incl": "{casilla} ends with this",
+    "placeholder.ends.excl": "{casilla} does not end with this",
     "sources.title": "Sources",
     "sources.fill": "Select all",
     "regex.title": "Mini-language",
@@ -206,7 +221,7 @@ const I18N = {
     "pairs.header.i": "-i form",
     "pairs.header.total": "Total",
     "site.tagline": "Search and filter over 290,000 entries from historical Nahuatl dictionaries. Use the filters to find words by spelling, translation, or source — results appear in the table below.",
-    "table.header.paleografia": "Original writing",
+    "table.header.paleografia": "Original text",
     "table.header.grafia": "Standardized writing",
     "table.header.traduccion": "Translation",
     "table.header.fuente": "Source",
@@ -219,7 +234,7 @@ const I18N = {
     "table.status.showing": "Records shown: {{start}}-{{end}} of {{total}}",
     "table.empty": "No data available.",
     "table.export.filename": "table.jpg",
-    "field.paleografia": "Original writing",
+    "field.paleografia": "Original text",
     "field.grafia": "Standardized writing",
     "field.traduccion": "Translation",
     "field.comentario": "Comment",
@@ -230,6 +245,11 @@ const I18N = {
     "filter.title": "Filter",
     "lang.toggle": "Español",
     "oldspanish.toggle": "Old Spanish",
+    "label.oldspanish": "Spelling",
+    "label.accent": "Accent",
+    "label.logic": "Combine",
+    "accent.sensitive": "Exact accent",
+    "accent.insensitive": "Free accent",
     "logic.and": "AND",
     "logic.or": "OR",
     "chips.zone.and": "AND",
@@ -241,11 +261,13 @@ const I18N = {
     "groups.logic.and": "AND",
     "groups.logic.or": "OR",
     "groups.edit": "Edit",
-    "groups.remove": "Remove"
+    "groups.remove": "Remove",
+    "table.pagesize.label": "Rows:",
+    "table.columns": "Cols"
   }
 };
 
-const MAX_DISPLAY_ROWS = 100;
+let maxDisplayRows = 100;
 const FILTER_OWNERS = ["f1"];
 let groupCounter = 0;
 let editingGroupId = null;
@@ -259,7 +281,7 @@ let currentSessionId = "s1";
 
 const FIELD_SHORT = {
   "Escritura original": "Orig.",
-  "Escritura estandarizada": "Estand.",
+  "Texto estandarizado": "Estand.",
   "Traducción": "Trad.",
   "Comentario": "Com.",
 };
@@ -307,9 +329,9 @@ let lastRenderRows = [];
 let lastRenderTotal = 0;
 let lastFilteredRows = [];
 let displayOffset = 0;
-let sortField = null;
-let sortDir = null; // "asc" | "desc"
+let sortKeys = []; // [{field, dir}]
 let sortScope = "all"; // "all" | "page"
+const hiddenColumns = new Set();
 const alphaNumCollator = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
 let wimmerShowEs = false;
 let lastFocusedInput = null;
@@ -325,6 +347,7 @@ let lastPairMeta = null;
 document.addEventListener("DOMContentLoaded", () => {
   setupLanguageToggle();
   setupOldSpanishToggle();
+  setupAccentToggle();
   setupLogicToggle();
   setupChipsBarDelegation();
   setupSessionBar();
@@ -351,8 +374,10 @@ document.addEventListener("DOMContentLoaded", () => {
   setupSortScopeControls();
   updateSortIndicators();
   setupPaginationControls();
+  setupPageSizeControls();
+  setupColumnResizing();
+  setupColumnVisibility();
   setupComentarioToggleAll();
-  setupExportButtons();
   setupExportButtons();
   renderFuenteList();
   setupFuenteActions();
@@ -399,6 +424,9 @@ function applyTranslations() {
     if (key) el.setAttribute("placeholder", t(key));
   });
 
+  // Re-apply dynamic filter placeholders after language change
+  document.querySelectorAll(".filter-card").forEach(card => updateFilterPlaceholders(card));
+
   document.querySelectorAll("[data-i18n-aria-label]").forEach(el => {
     const key = el.dataset.i18nAriaLabel;
     if (key) el.setAttribute("aria-label", t(key));
@@ -409,6 +437,7 @@ function applyTranslations() {
 
 function refreshLanguageDependentUI() {
   const y = window.scrollY;
+  updateAccentLabels();
   if (!dataRows || !dataRows.length) {
     setStatus(t("table.status.loading"));
     return;
@@ -446,6 +475,25 @@ function setupOldSpanishToggle() {
       if (activeFilters.length) applyFilters();
     });
   });
+}
+
+function updateAccentLabels() {
+  const key = accentSensitiveMode ? "accent.sensitive" : "accent.insensitive";
+  document.querySelectorAll(".accent-btn").forEach(b => {
+    b.textContent = t(key);
+    b.classList.toggle("active", accentSensitiveMode);
+  });
+}
+
+function setupAccentToggle() {
+  document.querySelectorAll(".accent-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      accentSensitiveMode = !accentSensitiveMode;
+      updateAccentLabels();
+      if (activeFilters.length) applyFilters();
+    });
+  });
+  updateAccentLabels();
 }
 
 function setupLogicToggle() {
@@ -958,6 +1006,19 @@ function setupTabs() {
   });
 }
 
+function updateFilterPlaceholders(card) {
+  const fieldBtn = card.querySelector(".field-btn.active");
+  const campo = (fieldBtn?.dataset.placeholderLabel || fieldBtn?.textContent.trim() || "").toLowerCase();
+  const scopeBtn = card.querySelector(".scope-btn.active");
+  const casilla = (scopeBtn?.dataset.placeholderLabel || scopeBtn?.textContent.trim() || "").toLowerCase();
+  card.querySelectorAll(".filter-input[data-mode]").forEach(input => {
+    const mode = input.dataset.mode;
+    const negate = input.dataset.negate === "true";
+    const key = `placeholder.${mode}.${negate ? "excl" : "incl"}`;
+    input.placeholder = t(key).replace("{campo}", campo).replace("{casilla}", casilla);
+  });
+}
+
 function setupFilterCards() {
   FILTER_OWNERS.forEach(owner => setupFilterCard(owner));
 }
@@ -972,14 +1033,17 @@ function setupFilterCard(owner) {
     btn.addEventListener("click", () => {
       fieldButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
+      updateFilterPlaceholders(card);
     });
   });
+  updateFilterPlaceholders(card);
 
   const scopeButtons = card.querySelectorAll(".scope-btn");
   scopeButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       scopeButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
+      updateFilterPlaceholders(card);
     });
   });
 
@@ -1219,15 +1283,22 @@ function applyFilters(initial = false, options = {}) {
   }
   lastFilteredRows = matches;
   const total = matches.length;
-  let sorted = matches;
-  if (sortField && sortDir) {
-    sorted = matches.slice();
-    applySort(sorted, sortField, sortDir);
-  }
   if (displayOffset >= total && total > 0) {
-    displayOffset = Math.max(0, total - MAX_DISPLAY_ROWS);
+    displayOffset = Math.max(0, total - maxDisplayRows);
   }
-  let paged = sorted.slice(displayOffset, displayOffset + MAX_DISPLAY_ROWS);
+  let paged;
+  if (sortKeys.length) {
+    if (sortScope === "page") {
+      paged = matches.slice(displayOffset, displayOffset + maxDisplayRows);
+      applySort(paged, sortKeys);
+    } else {
+      const sorted = matches.slice();
+      applySort(sorted, sortKeys);
+      paged = sorted.slice(displayOffset, displayOffset + maxDisplayRows);
+    }
+  } else {
+    paged = matches.slice(displayOffset, displayOffset + maxDisplayRows);
+  }
   lastRenderRows = paged.slice();
   lastRenderTotal = total || dataRows.length;
   renderTable(paged, total || dataRows.length);
@@ -1244,7 +1315,7 @@ function renderTable(rows, totalCount) {
   if (!rows.length) {
     const tr = document.createElement("tr");
     const td = document.createElement("td");
-    td.colSpan = TABLE_FIELDS.length;
+    td.colSpan = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key)).length;
     td.className = "table-empty";
     td.textContent = t("table.empty");
     tr.appendChild(td);
@@ -1254,6 +1325,7 @@ function renderTable(rows, totalCount) {
       const tr = document.createElement("tr");
       let translationTd = null;
       let comentarioMeta = null;
+
       TABLE_FIELDS.forEach(field => {
         const td = document.createElement("td");
         if (field.key === "Comentario") {
@@ -1486,7 +1558,7 @@ function setupPaginationControls() {
     if (!btn) return;
     btn.addEventListener("click", () => {
       if (displayOffset <= 0) return;
-      displayOffset = Math.max(0, displayOffset - MAX_DISPLAY_ROWS);
+      displayOffset = Math.max(0, displayOffset - maxDisplayRows);
       const isFooter = btn.id && btn.id.endsWith("Footer");
       const anchor = isFooter ? getHeaderAnchorY() : null;
       const y = anchor ?? window.scrollY;
@@ -1498,7 +1570,7 @@ function setupPaginationControls() {
   const hookNext = btn => {
     if (!btn) return;
     btn.addEventListener("click", () => {
-      displayOffset += MAX_DISPLAY_ROWS;
+      displayOffset += maxDisplayRows;
       const isFooter = btn.id && btn.id.endsWith("Footer");
       const anchor = isFooter ? getHeaderAnchorY() : null;
       const y = anchor ?? window.scrollY;
@@ -1525,7 +1597,7 @@ function setupPaginationControls() {
     btn.addEventListener("click", () => {
       if (!lastRenderTotal) return;
       const total = lastRenderTotal;
-      const maxOffset = Math.max(0, total - MAX_DISPLAY_ROWS);
+      const maxOffset = Math.max(0, total - maxDisplayRows);
       if (displayOffset === maxOffset) return;
       displayOffset = maxOffset;
       const isFooter = btn.id && btn.id.endsWith("Footer");
@@ -1562,8 +1634,8 @@ function updatePaginationControls(total) {
   ].filter(Boolean);
   if (!prevs.length && !nexts.length && !firsts.length && !lasts.length) return;
   const hasPrev = displayOffset > 0;
-  const hasNext = displayOffset + MAX_DISPLAY_ROWS < total;
-  const maxOffset = Math.max(0, total - MAX_DISPLAY_ROWS);
+  const hasNext = displayOffset + maxDisplayRows < total;
+  const maxOffset = Math.max(0, total - maxDisplayRows);
   const atLast = displayOffset >= maxOffset;
   prevs.forEach(btn => (btn.disabled = !hasPrev));
   firsts.forEach(btn => (btn.disabled = !hasPrev));
@@ -1574,37 +1646,50 @@ function updatePaginationControls(total) {
 function setupSortControls() {
   const buttons = document.querySelectorAll(".sort-btn");
   buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", e => {
       const field = btn.dataset.sortField;
       if (!field) return;
       const y = window.scrollY;
-      let nextField = field;
-      let nextDir = "asc";
-      const current = { field: sortField, dir: sortDir };
-      if (current.field === field) {
-        if (current.dir === "asc") nextDir = "desc";
-        else if (current.dir === "desc") {
-          nextField = null;
-          nextDir = null;
+      if (e.shiftKey) {
+        // Shift+click: add/cycle/remove as secondary/tertiary key
+        const idx = sortKeys.findIndex(k => k.field === field);
+        if (idx === -1) {
+          sortKeys.push({ field, dir: "asc" });
+        } else if (sortKeys[idx].dir === "asc") {
+          sortKeys[idx].dir = "desc";
+        } else {
+          sortKeys.splice(idx, 1);
+        }
+      } else {
+        // Plain click: single-field sort, cycle asc→desc→off
+        if (sortKeys.length === 1 && sortKeys[0].field === field) {
+          if (sortKeys[0].dir === "asc") {
+            sortKeys = [{ field, dir: "desc" }];
+          } else {
+            sortKeys = [];
+          }
+        } else {
+          sortKeys = [{ field, dir: "asc" }];
         }
       }
-      sortField = nextField;
-      sortDir = nextDir;
       applyFilters(false, { keepOffset: true, keepCurrent: true, restoreScroll: y });
       updateSortIndicators();
     });
   });
 }
 
-function applySort(arr, field, dir) {
-  if (!field || !dir) return;
+function applySort(arr, keys) {
+  if (!keys || !keys.length) return;
   arr.sort((a, b) => {
-    const vaRaw = String(a[field] ?? "");
-    const vbRaw = String(b[field] ?? "");
-    const va = buildSortKey(vaRaw);
-    const vb = buildSortKey(vbRaw);
-    const cmp = alphaNumCollator.compare(va, vb);
-    return dir === "asc" ? cmp : -cmp;
+    for (const { field, dir } of keys) {
+      const vaRaw = String(a[field] ?? "");
+      const vbRaw = String(b[field] ?? "");
+      const va = buildSortKey(vaRaw);
+      const vb = buildSortKey(vbRaw);
+      const cmp = alphaNumCollator.compare(va, vb);
+      if (cmp !== 0) return dir === "asc" ? cmp : -cmp;
+    }
+    return 0;
   });
 }
 
@@ -1619,11 +1704,20 @@ function updateSortIndicators() {
   const buttons = document.querySelectorAll(".sort-btn");
   buttons.forEach(btn => {
     const field = btn.dataset.sortField;
-    let label = "⇅";
-    if (field === sortField) {
-      label = sortDir === "asc" ? "↑" : sortDir === "desc" ? "↓" : "⇅";
+    const idx = sortKeys.findIndex(k => k.field === field);
+    btn.textContent = "";
+    if (idx !== -1) {
+      const arrow = sortKeys[idx].dir === "asc" ? "↑" : "↓";
+      btn.textContent = arrow;
+      if (sortKeys.length > 1) {
+        const badge = document.createElement("span");
+        badge.className = "sort-badge";
+        badge.textContent = String(idx + 1);
+        btn.appendChild(badge);
+      }
+    } else {
+      btn.textContent = "⇅";
     }
-    btn.textContent = label;
   });
 }
 
@@ -1719,7 +1813,7 @@ function exportTableAsJpeg() {
       ctx.strokeStyle = "#d5daf8";
       ctx.strokeRect(x, y - rowHeight / 2, w, rowHeight);
       ctx.fillStyle = "#1a2468";
-      ctx.fillText(cell, x + 8, y);
+      ctx.fillText(cell, x + 8, y, w - 16);
       x += w;
     });
     y += rowHeight;
@@ -1778,6 +1872,19 @@ function applyHighlights(rawValue, fieldKey) {
 
   let rendered = val;
 
+  // Word scope first: wraps complete tokens before cell-scope can split them.
+  if (wordFilters.length) {
+    const segments = rendered.split(/(<[^>]+>|\s+)/g);
+    rendered = segments
+      .map(seg => {
+        if (!seg || /^<[^>]+>$/.test(seg) || /^\s+$/.test(seg)) return seg;
+        if (tokenMatchesWordFilters(seg, wordFilters)) return `<mark class="hl">${seg}</mark>`;
+        if (oldSpanishMode && tokenMatchesWordFiltersOS(seg, wordFilters)) return `<mark class="hl-os">${seg}</mark>`;
+        return seg;
+      })
+      .join("");
+  }
+
   if (cellFilters.length) {
     const regex = buildHighlightRegex(cellFilters);
     const osRegex = oldSpanishMode ? buildOsHighlightRegex(cellFilters) : null;
@@ -1792,18 +1899,6 @@ function applyHighlights(rawValue, fieldKey) {
         })
         .join("");
     }
-  }
-
-  if (wordFilters.length) {
-    const segments = rendered.split(/(<[^>]+>|\s+)/g);
-    rendered = segments
-      .map(seg => {
-        if (!seg || /^<[^>]+>$/.test(seg) || /^\s+$/.test(seg)) return seg;
-        if (tokenMatchesWordFilters(seg, wordFilters)) return `<mark class="hl">${seg}</mark>`;
-        if (oldSpanishMode && tokenMatchesWordFiltersOS(seg, wordFilters)) return `<mark class="hl-os">${seg}</mark>`;
-        return seg;
-      })
-      .join("");
   }
 
   return rendered;
@@ -1835,7 +1930,7 @@ function buildOsHighlightRegex(filters) {
     const literal = parsed.strict || parsed.loose;
     if (!literal) return;
     const expanded = reverseOsExpand(literal);
-    const relaxed = expanded.replace(/^\^/, "").replace(/\$$/, "");
+    const relaxed = normalizePatternSource(stripAnchors(expanded));
     sources.push(relaxed);
   });
   if (!sources.length) return null;
@@ -1853,16 +1948,17 @@ function highlightSegmentDual(text, normalRegex, osRegex) {
   } catch {
     return highlightSegment(text, normalRegex);
   }
+  const norm = normalRegex.accentSensitive ? text.toLowerCase() : normalizeString(text);
   let result = "";
   let lastIndex = 0;
   combined.lastIndex = 0;
   let match;
-  while ((match = combined.exec(text)) !== null) {
+  while ((match = combined.exec(norm)) !== null) {
     const start = match.index;
     const end = combined.lastIndex;
     result += text.slice(lastIndex, start);
     const cssClass = match[1] !== undefined ? "hl" : "hl-os";
-    result += `<mark class="${cssClass}">${match[0]}</mark>`;
+    result += `<mark class="${cssClass}">${text.slice(start, end)}</mark>`;
     lastIndex = end;
     if (match[0].length === 0) combined.lastIndex++;
   }
@@ -1870,19 +1966,34 @@ function highlightSegmentDual(text, normalRegex, osRegex) {
   return result;
 }
 
+// Strip regex anchors (^ and $) from a pattern source.
+// In practice none of our highlight patterns use [^...] negated classes, so a global strip is safe.
+function stripAnchors(src) {
+  return src.replace(/\^/g, "").replace(/\$/g, "");
+}
+
+// Normalize a regex pattern source for accent-insensitive matching.
+// Only safe when the pattern has no character classes (no `[`).
+function normalizePatternSource(src) {
+  return src.includes("[") ? src : normalizeString(src);
+}
+
 function buildHighlightRegex(filters) {
   const sources = [];
+  let isAccentSensitive = false;
   filters.forEach(filter => {
     const rawVal = (filter.value ?? "").trim();
     const andParts = extractContainsBothParts(rawVal);
     if (andParts && andParts.length) {
+      if (accentSensitiveMode) isAccentSensitive = true;
       andParts.forEach(p => {
         const expanded = convertWildcardPatternAllowRegex(expandVCPlaceholders(p));
-        if (expanded) sources.push(expanded);
+        if (expanded) sources.push(accentSensitiveMode ? expanded : normalizePatternSource(expanded));
       });
       return;
     }
     const parsed = parseFilterValue(filter.value ?? "", filter.mode);
+    if (parsed.accentSensitive) isAccentSensitive = true;
     let rx = parsed.strictRegex || parsed.looseRegex;
     if (!rx) {
       const literal = parsed.strict || parsed.loose;
@@ -1892,27 +2003,38 @@ function buildHighlightRegex(filters) {
       }
     }
     if (!rx) return;
-    const relaxed = rx.source.replace(/^\^/, "").replace(/\$$/, "");
-    sources.push(relaxed);
+    const relaxed = stripAnchors(rx.source);
+    // Accent-sensitive queries: lowercase the pattern but preserve accents.
+    // Plain queries: full normalization (accent-blind).
+    const adjusted = parsed.accentSensitive
+      ? relaxed.toLowerCase()
+      : normalizePatternSource(relaxed);
+    sources.push(adjusted);
   });
   if (!sources.length) return null;
   try {
-    return new RegExp(`(${sources.join("|")})`, "gi");
+    const rx = new RegExp(`(${sources.join("|")})`, "gi");
+    rx.accentSensitive = isAccentSensitive;
+    return rx;
   } catch {
     return null;
   }
 }
 
 function highlightSegment(text, regex) {
+  // For accent-sensitive queries: match on lowercase-only text (preserve accents).
+  // For plain queries: match on fully-normalized text (accent-blind).
+  // In both cases, positions map 1-to-1 back to the original displayed text.
+  const norm = regex.accentSensitive ? text.toLowerCase() : normalizeString(text);
   let result = "";
   let lastIndex = 0;
   regex.lastIndex = 0;
   let match;
-  while ((match = regex.exec(text)) !== null) {
+  while ((match = regex.exec(norm)) !== null) {
     const start = match.index;
     const end = regex.lastIndex;
     result += text.slice(lastIndex, start);
-    result += `<mark class="hl">${match[0]}</mark>`;
+    result += `<mark class="hl">${text.slice(start, end)}</mark>`;
     lastIndex = end;
     if (match[0].length === 0) regex.lastIndex++;
   }
@@ -1921,12 +2043,26 @@ function highlightSegment(text, regex) {
 }
 
 function tokenMatchesWordFilters(token, filters) {
-  const normalizedToken = normalizeString(stripHtmlTags(token));
+  const stripped = stripHtmlTags(token);
+  const normalizedToken = normalizeString(stripped);
+  const lowercaseToken = stripped.toLowerCase(); // accent-preserved
   return filters.some(filter => {
     const query = buildFilterQuery(filter);
+    const base = query.accentSensitive ? lowercaseToken : normalizedToken;
     const candidate = query.allowLoose
-      ? collapseWhitespace(stripPunctuationCharacters(normalizedToken))
-      : normalizedToken;
+      ? collapseWhitespace(stripPunctuationCharacters(base))
+      : base;
+    if (query.hasRegex && query.strictRegex) {
+      const src = query.strictRegex.source;
+      try {
+        // Accent-sensitive: lowercase pattern only; plain: full normalization
+        const adjSrc = query.accentSensitive ? src.toLowerCase() : normalizePatternSource(src);
+        const adjRx = adjSrc === src ? query.strictRegex : new RegExp(adjSrc, query.strictRegex.flags);
+        return adjRx.test(candidate);
+      } catch {
+        return query.strictRegex.test(candidate);
+      }
+    }
     return candidateMatchesQuery(candidate, query, filter.mode, query.allowLoose);
   });
 }
@@ -2024,7 +2160,7 @@ function getFieldI18nKey(fieldKey) {
   switch (fieldKey) {
     case "Escritura original":
       return "field.paleografia";
-    case "Escritura estandarizada":
+    case "Texto estandarizado":
       return "field.grafia";
     case "Traducción":
       return "field.traduccion";
@@ -2050,8 +2186,8 @@ function setupPairFinder() {
       option.textContent = labelKey ? t(labelKey) : key;
       select.appendChild(option);
     });
-    if (columns.includes("Escritura estandarizada")) {
-      select.value = "Escritura estandarizada";
+    if (columns.includes("Texto estandarizado")) {
+      select.value = "Texto estandarizado";
     }
   }
 
@@ -2273,4 +2409,108 @@ function renderPairResults(pairs, meta) {
   });
   table.appendChild(tbody);
   resultsEl.appendChild(table);
+}
+
+// ── Page-size controls ──────────────────────────────────────────
+function setupPageSizeControls() {
+  const selects = [
+    document.getElementById("pageSizeSelect"),
+    document.getElementById("pageSizeSelectFooter")
+  ].filter(Boolean);
+  selects.forEach(sel => {
+    sel.value = String(maxDisplayRows);
+    sel.addEventListener("change", () => {
+      maxDisplayRows = parseInt(sel.value, 10) || 100;
+      // Sync both selects
+      selects.forEach(s => { s.value = String(maxDisplayRows); });
+      displayOffset = 0;
+      applyFilters();
+    });
+  });
+}
+
+// ── Column resizing ─────────────────────────────────────────────
+function setupColumnResizing() {
+  const ths = document.querySelectorAll("#dataTable thead th");
+  ths.forEach(th => {
+    const handle = document.createElement("div");
+    handle.className = "col-resize-handle";
+    th.appendChild(handle);
+
+    handle.addEventListener("mousedown", e => {
+      e.preventDefault();
+      const startX = e.clientX;
+      const startWidth = th.offsetWidth;
+
+      function onMouseMove(ev) {
+        const newWidth = Math.max(50, startWidth + ev.clientX - startX);
+        th.style.width = newWidth + "px";
+        th.style.minWidth = newWidth + "px";
+      }
+      function onMouseUp() {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+      }
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    });
+  });
+}
+
+// ── Column visibility ───────────────────────────────────────────
+function setupColumnVisibility() {
+  const btn = document.getElementById("colVisibilityBtn");
+  const dropdown = document.getElementById("colVisibilityDropdown");
+  if (!btn || !dropdown) return;
+
+  // Build dropdown items
+  function buildDropdown() {
+    dropdown.innerHTML = "";
+    TABLE_FIELDS.forEach((field, idx) => {
+      const item = document.createElement("label");
+      item.className = "col-visibility-item";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !hiddenColumns.has(field.key);
+      cb.addEventListener("change", () => {
+        const visibleCount = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key)).length;
+        if (!cb.checked && visibleCount <= 1) {
+          cb.checked = true;
+          return;
+        }
+        if (cb.checked) {
+          hiddenColumns.delete(field.key);
+          document.getElementById("dataTable")?.classList.remove(`col-hidden-${idx}`);
+        } else {
+          hiddenColumns.add(field.key);
+          document.getElementById("dataTable")?.classList.add(`col-hidden-${idx}`);
+        }
+      });
+      const span = document.createElement("span");
+      span.textContent = field.label;
+      item.appendChild(cb);
+      item.appendChild(span);
+      dropdown.appendChild(item);
+    });
+  }
+
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    buildDropdown();
+    dropdown.classList.toggle("open");
+  });
+
+  document.addEventListener("click", e => {
+    if (!dropdown.contains(e.target) && e.target !== btn) {
+      dropdown.classList.remove("open");
+    }
+  });
+
+  // Inject CSS rules for col-hidden-N
+  const style = document.createElement("style");
+  TABLE_FIELDS.forEach((field, idx) => {
+    style.textContent += `#dataTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
+      `#dataTable.col-hidden-${idx} td:nth-child(${idx + 1}) { display: none; }\n`;
+  });
+  document.head.appendChild(style);
 }

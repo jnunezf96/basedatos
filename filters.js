@@ -99,7 +99,9 @@ function matchWordScope(row, filter) {
   const entry = getNormalizedEntry(row, filter.field);
   const query = buildFilterQuery(filter);
   const useLoose = query.allowLoose;
-  const words = (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
+  const words = query.accentSensitive
+    ? entry.wordsWithAccents
+    : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
   const matches = words.some(wordEntry => {
     const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
     return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
@@ -111,9 +113,14 @@ function matchWholeScope(row, filter) {
   const entry = getNormalizedEntry(row, filter.field);
   const query = buildFilterQuery(filter);
   const useLoose = query.allowLoose;
-  const candidateText = oldSpanishMode && entry.normalizedOS
-    ? (useLoose ? entry.looseTextOS : entry.normalizedOS)
-    : (useLoose ? entry.looseText : entry.normalized);
+  let candidateText;
+  if (query.accentSensitive) {
+    candidateText = useLoose ? entry.looseWithAccents : entry.withAccents;
+  } else if (oldSpanishMode && entry.normalizedOS) {
+    candidateText = useLoose ? entry.looseTextOS : entry.normalizedOS;
+  } else {
+    candidateText = useLoose ? entry.looseText : entry.normalized;
+  }
   const result = candidateMatchesQuery(candidateText, query, filter.mode, useLoose);
   return filter.negate ? !result : result;
 }
