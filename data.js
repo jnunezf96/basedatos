@@ -3,6 +3,7 @@
 let dataRows = [];
 let normalizationCache = new Map();
 let oldSpanishMode = false;
+let accentSensitiveMode = false; // false = accent-free (default); true = accent-exact
 
 // ==============================
 // CSV Loader
@@ -80,10 +81,24 @@ function getNormalizedEntry(row, field) {
         raw: word,
         loose: collapseWhitespace(stripPunctuationCharacters(word))
       }));
+    // Accent-preserved candidate: lowercase only, no NFD stripping.
+    // Used when the query itself contains accents (accent-sensitive matching).
+    const withAccents = stripHtmlTags(raw).toLowerCase();
+    const looseWithAccents = collapseWhitespace(stripPunctuationCharacters(withAccents));
+    const wordsWithAccents = withAccents
+      .split(/\s+/)
+      .filter(Boolean)
+      .map(word => ({
+        raw: word,
+        loose: collapseWhitespace(stripPunctuationCharacters(word))
+      }));
     rowCache[cacheKey] = {
       normalized,
       looseText,
-      words
+      words,
+      withAccents,
+      looseWithAccents,
+      wordsWithAccents
     };
   }
 
@@ -218,6 +233,10 @@ function parseFilterValue(rawValue, mode) {
   }
 
   const val = cleaned.trim();
+  // "Acento exacto" ON  → all queries are accent-specific (lowercase-only, no stripping).
+  // "Sin acento"   OFF → all queries ignore accents (full normalization).
+  const queryHasAccents = accentSensitiveMode;
+
   if (!val) {
     return {
       strict: "",
@@ -252,6 +271,14 @@ function parseFilterValue(rawValue, mode) {
     }
     text = text.replace(/\\-/g, "-").trim();
     if (!text) return;
+
+    // Normalize the query text to match against the appropriate candidate:
+    // - Plain queries (no accents): full normalization → accent-blind matching
+    // - Accented queries: lowercase only → accent-specific matching
+    // Skip normalization if the text uses {VC} placeholders or character classes.
+    if (!text.includes("{") && !text.includes("[")) {
+      text = queryHasAccents ? text.toLowerCase() : normalizeString(text);
+    }
 
     const expandedVC = expandVCPlaceholders(text);
     const containsBoth = buildContainsBoth(expandedVC);
@@ -288,7 +315,8 @@ function parseFilterValue(rawValue, mode) {
         strict: "",
         loose: "",
         hasRegex: true,
-        allowLoose: true,
+        allowLoose: !hasFormattingCharacters(val),
+        accentSensitive: queryHasAccents,
         hasWildcards: false,
         strictRegex: rx,
         looseRegex: rx
@@ -313,6 +341,7 @@ function parseFilterValue(rawValue, mode) {
     loose,
     hasRegex: !!strictRegex,
     allowLoose,
+    accentSensitive: queryHasAccents,
     hasWildcards,
     strictRegex,
     looseRegex

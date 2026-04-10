@@ -28,24 +28,21 @@
       <div class="filter-card" data-owner="f1">
         <div class="filter-card-head">
           <h3 data-i18n="filter.title">Filtro</h3>
-          <div class="card-arrows">
-            <button type="button" class="arrow-btn old-spanish-btn" data-i18n="oldspanish.toggle">Esp. ant.</button>
-          </div>
         </div>
         <div class="filter-row fields">
           <span class="label" data-i18n="label.column">Columna</span>
           <div class="pill-group field-group">
-            <button type="button" class="pill field-btn active" data-field="Escritura estandarizada" data-i18n="field.grafia">Escritura estand.</button>
-            <button type="button" class="pill field-btn" data-field="Escritura original" data-i18n="field.paleografia">Escritura original</button>
-            <button type="button" class="pill field-btn" data-field="Traducción" data-i18n="field.traduccion">Traducción</button>
-            <button type="button" class="pill field-btn" data-field="Comentario" data-i18n="field.comentario">Comentario</button>
+            <button type="button" class="pill field-btn active" data-field="Texto estandarizado" data-i18n="field.grafia" data-placeholder-label="estándar">Texto estand.</button>
+            <button type="button" class="pill field-btn" data-field="Escritura original" data-i18n="field.paleografia" data-placeholder-label="original">Texto original</button>
+            <button type="button" class="pill field-btn" data-field="Traducción" data-i18n="field.traduccion" data-placeholder-label="traducción">Traducción</button>
+            <button type="button" class="pill field-btn" data-field="Comentario" data-i18n="field.comentario" data-placeholder-label="comentario">Comentario</button>
           </div>
         </div>
         <div class="filter-row scopes">
           <span class="label" data-i18n="label.scope">Casilla</span>
           <div class="pill-group scope-group">
-            <button type="button" class="pill scope-btn active" data-scope="word" data-i18n="scope.word">Por palabra</button>
-            <button type="button" class="pill scope-btn" data-scope="whole" data-i18n="scope.whole">Texto completo</button>
+            <button type="button" class="pill scope-btn active" data-scope="word" data-i18n="scope.word" data-placeholder-label="la palabra">La palabra</button>
+            <button type="button" class="pill scope-btn" data-scope="whole" data-i18n="scope.whole" data-placeholder-label="el total">El total</button>
           </div>
         </div>
         <div class="filter-grid">
@@ -56,32 +53,38 @@
           </div>
           <div class="grid-row">
             <span data-i18n="grid.exact">Exacto</span>
-            <input type="text" class="filter-input" data-mode="exact" data-negate="false" placeholder="p. ej. tlali" data-i18n-placeholder="placeholder.example" autocomplete="off" />
-            <input type="text" class="filter-input" data-mode="exact" data-negate="true" placeholder="p. ej. tlali" data-i18n-placeholder="placeholder.example" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="exact" data-negate="false" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="exact" data-negate="true" autocomplete="off" />
           </div>
           <div class="grid-row">
             <span data-i18n="grid.starts">Empieza</span>
-            <input type="text" class="filter-input" data-mode="starts" data-negate="false" placeholder="prefijo" data-i18n-placeholder="placeholder.prefix" autocomplete="off" />
-            <input type="text" class="filter-input" data-mode="starts" data-negate="true" placeholder="prefijo" data-i18n-placeholder="placeholder.prefix" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="starts" data-negate="false" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="starts" data-negate="true" autocomplete="off" />
           </div>
           <div class="grid-row">
             <span data-i18n="grid.contains">Contiene</span>
-            <input type="text" class="filter-input" data-mode="any" data-negate="false" placeholder="fragmento" data-i18n-placeholder="placeholder.fragment" autocomplete="off" />
-            <input type="text" class="filter-input" data-mode="any" data-negate="true" placeholder="fragmento" data-i18n-placeholder="placeholder.fragment" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="any" data-negate="false" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="any" data-negate="true" autocomplete="off" />
           </div>
           <div class="grid-row">
             <span data-i18n="grid.ends">Termina</span>
-            <input type="text" class="filter-input" data-mode="ends" data-negate="false" placeholder="sufijo" data-i18n-placeholder="placeholder.suffix" autocomplete="off" />
-            <input type="text" class="filter-input" data-mode="ends" data-negate="true" placeholder="sufijo" data-i18n-placeholder="placeholder.suffix" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="ends" data-negate="false" autocomplete="off" />
+            <input type="text" class="filter-input" data-mode="ends" data-negate="true" autocomplete="off" />
           </div>
         </div>
         <div class="filter-actions">
-          <div class="logic-toggle" aria-label="Zona del filtro">
-            <button type="button" class="logic-btn active" data-logic="AND" data-i18n="logic.and">Y</button>
-            <button type="button" class="logic-btn" data-logic="OR" data-i18n="logic.or">O</button>
+          <div class="filter-options">
+            <button type="button" class="pill old-spanish-btn" data-i18n="oldspanish.toggle">Esp. ant.</button>
+            <button type="button" class="pill accent-btn">Acento libre</button>
+            <div class="logic-toggle" aria-label="Zona del filtro">
+              <button type="button" class="logic-btn active" data-logic="AND" data-i18n="logic.and">Y</button>
+              <button type="button" class="logic-btn" data-logic="OR" data-i18n="logic.or">O</button>
+            </div>
           </div>
-          <button type="button" class="btn primary add-btn" data-i18n="action.add">Añadir</button>
-          <button type="button" class="btn ghost clear-btn" data-i18n="action.clear">Limpiar</button>
+          <div class="filter-actions-btns">
+            <button type="button" class="btn primary add-btn" data-i18n="action.add">Añadir</button>
+            <button type="button" class="btn ghost clear-btn" data-i18n="action.clear">Vaciar</button>
+          </div>
         </div>
       </div>
     </section>
@@ -92,7 +95,7 @@
         <div class="sources-head">
           <h3 data-i18n="sources.title">Fuentes</h3>
           <div class="sources-actions">
-            <button type="button" class="btn ghost" id="fuenteClear" data-i18n="action.clear">Limpiar</button>
+            <button type="button" class="btn ghost" id="fuenteClear" data-i18n="action.clear">Vaciar</button>
             <button type="button" class="btn primary" id="fuenteFill" data-i18n="sources.fill">Llenar</button>
           </div>
         </div>
@@ -219,7 +222,20 @@
             <option value="page" data-i18n="table.sort.page">Página</option>
           </select>
         </div>
+        <div class="page-size">
+          <label for="pageSizeSelect" data-i18n="table.pagesize.label">Filas:</label>
+          <select id="pageSizeSelect">
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100" selected>100</option>
+            <option value="200">200</option>
+          </select>
+        </div>
         <div class="pager">
+          <div class="col-visibility-wrap">
+            <button type="button" class="arrow-btn" id="colVisibilityBtn" title="Columnas" data-i18n="table.columns">Cols</button>
+            <div id="colVisibilityDropdown" class="col-visibility-dropdown"></div>
+          </div>
           <button type="button" class="arrow-btn export-btn" id="exportJpeg">JPG</button>
           <button type="button" class="arrow-btn" id="pageFirst">⏮</button>
           <button type="button" class="arrow-btn" id="pagePrev">◀</button>
@@ -231,15 +247,15 @@
         <table id="dataTable">
           <thead>
             <tr>
-              <th data-field="Escritura estandarizada">
+              <th data-field="Texto estandarizado">
                 <div class="header-bar">
-                  <span data-i18n="table.header.grafia">Escritura estandarizada</span>
-                  <button type="button" class="arrow-btn sort-btn" data-sort-field="Escritura estandarizada">⇅</button>
+                  <span data-i18n="table.header.grafia">Texto estandarizado</span>
+                  <button type="button" class="arrow-btn sort-btn" data-sort-field="Texto estandarizado">⇅</button>
                 </div>
               </th>
               <th data-field="Escritura original">
                 <div class="header-bar">
-                  <span data-i18n="table.header.paleografia">Escritura original</span>
+                  <span data-i18n="table.header.paleografia">Texto original</span>
                   <button type="button" class="arrow-btn sort-btn" data-sort-field="Escritura original">⇅</button>
                 </div>
               </th>
@@ -253,7 +269,7 @@
                 <div class="header-bar">
                   <span data-i18n="table.header.fuente">Fuente</span>
                   <div class="header-actions">
-                    <button type="button" class="arrow-btn old-spanish-btn" id="wLangToggle">FR</button>
+                    <button type="button" class="arrow-btn" id="wLangToggle">FR</button>
                     <button type="button" class="arrow-btn sort-btn" data-sort-field="Fuente">⇅</button>
                   </div>
                 </div>
@@ -279,6 +295,15 @@
           <select id="sortScopeSelectFooter">
             <option value="all" data-i18n="table.sort.all">Todos</option>
             <option value="page" data-i18n="table.sort.page">Página</option>
+          </select>
+        </div>
+        <div class="page-size">
+          <label for="pageSizeSelectFooter" data-i18n="table.pagesize.label">Filas:</label>
+          <select id="pageSizeSelectFooter">
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100" selected>100</option>
+            <option value="200">200</option>
           </select>
         </div>
         <div class="pager">
