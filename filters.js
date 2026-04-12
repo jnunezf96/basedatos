@@ -170,26 +170,45 @@ function partitionSimpleFilters(filters) {
   );
 }
 
-function evaluateTextFilters(row) {
-  if (!activeFilters.length) return true;
-  const wordGroups = activeFilters.filter(filter => filter.type === "wordGroup");
-  const simpleFilters = activeFilters.filter(filter => filter.type !== "wordGroup");
+// Pre-built evaluation context — rebuilt once per applyFilters call, reused for every row.
+let _evalCtx = null;
+
+function buildEvalContext() {
+  if (!activeFilters.length) { _evalCtx = null; return; }
+  const wordGroups = activeFilters.filter(f => f.type === "wordGroup");
+  const simpleFilters = activeFilters.filter(f => f.type !== "wordGroup");
   const { quickGroups, remainingFilters } = extractWordQuickGroups(simpleFilters);
   const partitions = partitionSimpleFilters(remainingFilters);
+  const andGroups = wordGroups.filter(g => (g.logic ?? "AND") === "AND");
+  const orGroups  = wordGroups.filter(g => (g.logic ?? "AND") === "OR");
 
-  const andGroups = wordGroups.filter(group => (group.logic ?? "AND") === "AND");
-  const orGroups = wordGroups.filter(group => (group.logic ?? "AND") === "OR");
+  // Pre-compile queries and segments for each quick group (once, not per row).
+  const compiledQuickGroups = quickGroups.map(group => {
+    const accentSensitive = accentSensitiveMode;
+    const compiledFilters = group.filters.map(f => ({ filter: f, query: buildFilterQuery(f) }));
+    const segments = buildCompiledSegments(compiledFilters);
+    const hasInclude = compiledFilters.some(cf => !cf.filter.negate);
+    return { field: group.field, accentSensitive, segments, compiledFilters, hasInclude };
+  });
+
+  _evalCtx = {
+    partitions,
+    compiledQuickGroups,
+    andGroups,
+    orGroups,
+    hasOrFilters: partitions.whole.OR.length > 0 || partitions.word.OR.length > 0 || orGroups.length > 0,
+  };
+}
+
+function evaluateTextFilters(row) {
+  if (!_evalCtx) return true;
+  const { partitions, compiledQuickGroups, andGroups, orGroups, hasOrFilters } = _evalCtx;
 
   const andMatch =
     partitions.whole.AND.every(filter => matchesFilter(row, filter)) &&
     partitions.word.AND.every(filter => matchesFilter(row, filter)) &&
-    quickGroups.every(group => matchesWordQuickGroup(row, group)) &&
+    compiledQuickGroups.every(group => matchesCompiledQuickGroup(row, group)) &&
     andGroups.every(group => matchesWordGroup(row, group));
-
-  const hasOrFilters =
-    partitions.whole.OR.length > 0 ||
-    partitions.word.OR.length > 0 ||
-    orGroups.length > 0;
 
   const orMatch = hasOrFilters
     ? partitions.whole.OR.some(filter => matchesFilter(row, filter)) ||
@@ -229,20 +248,14 @@ function mapModeToWordRowType(mode) {
   return mode;
 }
 
-function matchesWordQuickGroup(row, group) {
-  if (!group || !group.filters || !group.filters.length) return false;
+// Compiled version — used with pre-built context from buildEvalContext().
+function matchesCompiledQuickGroup(row, group) {
   const entry = getNormalizedEntry(row, group.field);
   if (!entry.words.length) return false;
+  const wordList = group.accentSensitive ? entry.wordsWithAccents : entry.words;
 
-  // Use accent-preserved words when any filter in the group is accent-sensitive.
-  const accentSensitive = group.filters.some(f => buildFilterQuery(f).accentSensitive);
-  const wordList = accentSensitive ? entry.wordsWithAccents : entry.words;
-
-  const hasInclude = group.filters.some(f => !f.negate);
-  if (!hasInclude) {
-    // Exclude-only: the field must contain no word matching any exclude filter.
-    return group.filters.every(filter => {
-      const query = buildFilterQuery(filter);
+  if (!group.hasInclude) {
+    return group.compiledFilters.every(({ filter, query }) => {
       const useLoose = query.allowLoose;
       return !wordList.some(wordEntry => {
         const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
@@ -251,18 +264,43 @@ function matchesWordQuickGroup(row, group) {
     });
   }
 
-  const segments = buildWordQuickSegments(group.filters);
-  if (!segments.size) return false;
-  return wordList.some(wordEntry => wordEntryMatchesQuickSegments(wordEntry, segments));
+  if (!group.segments.size) return false;
+  return wordList.some(wordEntry => wordEntryMatchesCompiledSegments(wordEntry, group.segments));
 }
 
+// segments built from pre-compiled { filter, query } pairs.
+function buildCompiledSegments(compiledFilters) {
+  const segments = new Map();
+  compiledFilters.forEach(({ filter, query }) => {
+    const type = mapModeToWordRowType(filter.mode);
+    if (!segments.has(type)) segments.set(type, { include: [], exclude: [] });
+    const bucket = filter.negate ? segments.get(type).exclude : segments.get(type).include;
+    bucket.push({ filter, query });
+  });
+  return segments;
+}
+
+function wordEntryMatchesCompiledSegments(wordEntry, segments) {
+  if (!segments.size) return false;
+  for (const segment of segments.values()) {
+    if (segment.exclude.some(({ filter, query }) => compiledQueryMatchesWordEntry(wordEntry, filter, query))) return false;
+    if (segment.include.length && !segment.include.some(({ filter, query }) => compiledQueryMatchesWordEntry(wordEntry, filter, query))) return false;
+  }
+  return true;
+}
+
+function compiledQueryMatchesWordEntry(wordEntry, filter, query) {
+  const useLoose = query.allowLoose;
+  const source = useLoose ? wordEntry.loose : wordEntry.raw;
+  return candidateMatchesQuery(source, query, filter.mode, useLoose);
+}
+
+// Legacy path kept for matchesWordGroup (wordGroup type filters).
 function buildWordQuickSegments(filters) {
   const segments = new Map();
   filters.forEach(filter => {
     const type = mapModeToWordRowType(filter.mode);
-    if (!segments.has(type)) {
-      segments.set(type, { include: [], exclude: [] });
-    }
+    if (!segments.has(type)) segments.set(type, { include: [], exclude: [] });
     const bucket = filter.negate ? segments.get(type).exclude : segments.get(type).include;
     bucket.push(filter);
   });
@@ -272,12 +310,8 @@ function buildWordQuickSegments(filters) {
 function wordEntryMatchesQuickSegments(wordEntry, segments) {
   if (!segments.size) return false;
   for (const segment of segments.values()) {
-    if (segment.exclude.some(filter => quickFilterMatchesWordEntry(wordEntry, filter))) {
-      return false;
-    }
-    if (segment.include.length && !segment.include.some(filter => quickFilterMatchesWordEntry(wordEntry, filter))) {
-      return false;
-    }
+    if (segment.exclude.some(filter => quickFilterMatchesWordEntry(wordEntry, filter))) return false;
+    if (segment.include.length && !segment.include.some(filter => quickFilterMatchesWordEntry(wordEntry, filter))) return false;
   }
   return true;
 }
