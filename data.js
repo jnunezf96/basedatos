@@ -134,13 +134,13 @@ function expandVCPlaceholders(value) {
   if (!value) return "";
   const map = {
     C: "(?:ch|tz|hu|uh|qu|cu|uc|ll|rr|gu|[bcdfghjklmnñpqrstvwxyz])",
-    V: "[aeiouáâãäàāéêëèēíîïìīóôõöòōúûüùýÿ]",
+    V: "[aeiouáâãäàāéêëèēíîïìīóôõöòōúûüùýÿ\u1E00-\u1EFF]",
     N: "(?:m|n|ñ)",
     L: "(?:l|ll|r|rr)",
     S: "(?:tz|s|z|x)",
     G: "(?:hu|uh|y|w)",
     P: "(?:ch|tz|qu|cu|uc|p|t|c|b|d|g|k)",
-    A: "[A-Za-z\u00C0-\u024F]"
+    A: "[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]"
   };
   // Expande solo dentro de llaves { } y permite escape \{ \} \C \V \N \L \S \G
   let out = "";
@@ -387,7 +387,7 @@ function splitAlternatives(str) {
 }
 
 function convertWildcardPattern(value) {
-  const letter = "[A-Za-z\u00C0-\u024F]";
+  const letter = "[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]";
   let out = "";
   for (let i = 0; i < value.length; ) {
     const ch = value[i];
@@ -424,7 +424,7 @@ function convertWildcardPattern(value) {
 }
 
 function convertWildcardPatternAllowRegex(value) {
-  const letter = "[A-Za-z\u00C0-\u024F]";
+  const letter = "[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]";
   let out = "";
   for (let i = 0; i < value.length; ) {
     const ch = value[i];
