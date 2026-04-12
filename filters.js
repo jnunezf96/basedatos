@@ -73,57 +73,6 @@ function wordMatchesCondition(word, filterValue, mode) {
   }
 }
 
-function matchesWordFilter(word, filter) {
-  const query = buildFilterQuery(filter);
-  const candidate = query.allowLoose
-    ? collapseWhitespace(stripPunctuationCharacters(stripHtmlTags(word)))
-    : normalizeString(word);
-  const result = candidateMatchesQuery(candidate, query, filter.mode, query.allowLoose);
-  return filter.negate ? !result : result;
-}
-
-function matchesFilter(row, filter) {
-  if (filter && filter.type === "wordGroup") {
-    return matchesWordGroup(row, filter);
-  }
-  if (filter && filter.type === "fuenteSet") {
-    const val = row["Fuente"];
-    const ok = filter.value instanceof Set ? filter.value.has(val) : Array.isArray(filter.value) ? filter.value.includes(val) : false;
-    return filter.negate ? !ok : ok;
-  }
-  const scope = normalizeScope(filter.scope);
-  return scope === "word" ? matchWordScope(row, filter) : matchWholeScope(row, filter);
-}
-
-function matchWordScope(row, filter) {
-  const entry = getNormalizedEntry(row, filter.field);
-  const query = buildFilterQuery(filter);
-  const useLoose = query.allowLoose;
-  const words = query.accentSensitive
-    ? entry.wordsWithAccents
-    : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
-  const matches = words.some(wordEntry => {
-    const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
-    return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
-  });
-  return filter.negate ? !matches : matches;
-}
-
-function matchWholeScope(row, filter) {
-  const entry = getNormalizedEntry(row, filter.field);
-  const query = buildFilterQuery(filter);
-  const useLoose = query.allowLoose;
-  let candidateText;
-  if (query.accentSensitive) {
-    candidateText = useLoose ? entry.looseWithAccents : entry.withAccents;
-  } else if (oldSpanishMode && entry.normalizedOS) {
-    candidateText = useLoose ? entry.looseTextOS : entry.normalizedOS;
-  } else {
-    candidateText = useLoose ? entry.looseText : entry.normalized;
-  }
-  const result = candidateMatchesQuery(candidateText, query, filter.mode, useLoose);
-  return filter.negate ? !result : result;
-}
 
 function matchesWordGroup(row, group) {
   const expression = normalizeWordGroupStructure(group);
@@ -148,41 +97,53 @@ function evaluateExpressionOnWordEntry(wordEntry, node) {
 }
 
 function evaluateConditionAgainstWordEntry(wordEntry, condition) {
-  const query = buildFilterQuery(condition);
+  const query = condition._query || buildFilterQuery(condition);
   const useLoose = query.allowLoose;
   const source = useLoose ? wordEntry.loose : wordEntry.raw;
   const result = candidateMatchesQuery(source, query, condition.mode, useLoose);
   return condition.negate ? !result : result;
 }
 
-function partitionSimpleFilters(filters) {
-  return filters.reduce(
-    (acc, filter) => {
-      const scope = normalizeScope(filter.scope);
-      const logic = (filter.logic ?? "AND").toUpperCase() === "OR" ? "OR" : "AND";
-      acc[scope][logic].push(filter);
-      return acc;
-    },
-    {
-      whole: { AND: [], OR: [] },
-      word: { AND: [] , OR: [] }
-    }
-  );
-}
 
 // Pre-built evaluation context — rebuilt once per applyFilters call, reused for every row.
 let _evalCtx = null;
 
+// Pre-compile a single simple filter into a ready-to-run descriptor.
+function compileSimpleFilter(filter) {
+  if (filter.type === "fuenteSet") return { type: "fuenteSet", filter };
+  const query = buildFilterQuery(filter);
+  const scope = normalizeScope(filter.scope);
+  return { type: "simple", filter, query, scope };
+}
+
+// Pre-compile all conditions in a wordGroup expression tree (mutates node in place).
+function precompileExpression(node) {
+  if (!node) return;
+  if (node.type === "condition") {
+    node._query = buildFilterQuery(node);
+    return;
+  }
+  (node.children || []).forEach(precompileExpression);
+}
+
 function buildEvalContext() {
   if (!activeFilters.length) { _evalCtx = null; return; }
-  const wordGroups = activeFilters.filter(f => f.type === "wordGroup");
+
+  const wordGroups    = activeFilters.filter(f => f.type === "wordGroup");
   const simpleFilters = activeFilters.filter(f => f.type !== "wordGroup");
   const { quickGroups, remainingFilters } = extractWordQuickGroups(simpleFilters);
-  const partitions = partitionSimpleFilters(remainingFilters);
-  const andGroups = wordGroups.filter(g => (g.logic ?? "AND") === "AND");
-  const orGroups  = wordGroups.filter(g => (g.logic ?? "AND") === "OR");
 
-  // Pre-compile queries and segments for each quick group (once, not per row).
+  // Pre-compile all whole/word-scope partition filters.
+  const compiled = remainingFilters.map(compileSimpleFilter);
+  const whole = { AND: [], OR: [] };
+  const word  = { AND: [], OR: [] };
+  compiled.forEach(cf => {
+    const logic = (cf.filter.logic ?? "AND").toUpperCase() === "OR" ? "OR" : "AND";
+    if (cf.type === "fuenteSet" || cf.scope === "whole") whole[logic].push(cf);
+    else word[logic].push(cf);
+  });
+
+  // Pre-compile queries and segments for quick groups.
   const compiledQuickGroups = quickGroups.map(group => {
     const accentSensitive = accentSensitiveMode;
     const compiledFilters = group.filters.map(f => ({ filter: f, query: buildFilterQuery(f) }));
@@ -191,32 +152,76 @@ function buildEvalContext() {
     return { field: group.field, accentSensitive, segments, compiledFilters, hasInclude };
   });
 
+  // Pre-compile wordGroup expression trees.
+  wordGroups.forEach(g => precompileExpression(normalizeWordGroupStructure(g)));
+  const andGroups = wordGroups.filter(g => (g.logic ?? "AND") === "AND");
+  const orGroups  = wordGroups.filter(g => (g.logic ?? "AND") === "OR");
+
   _evalCtx = {
-    partitions,
+    whole, word,
     compiledQuickGroups,
-    andGroups,
-    orGroups,
-    hasOrFilters: partitions.whole.OR.length > 0 || partitions.word.OR.length > 0 || orGroups.length > 0,
+    andGroups, orGroups,
+    hasOrFilters: whole.OR.length > 0 || word.OR.length > 0 || orGroups.length > 0,
   };
 }
 
 function evaluateTextFilters(row) {
   if (!_evalCtx) return true;
-  const { partitions, compiledQuickGroups, andGroups, orGroups, hasOrFilters } = _evalCtx;
+  const { whole, word, compiledQuickGroups, andGroups, orGroups, hasOrFilters } = _evalCtx;
 
   const andMatch =
-    partitions.whole.AND.every(filter => matchesFilter(row, filter)) &&
-    partitions.word.AND.every(filter => matchesFilter(row, filter)) &&
+    whole.AND.every(cf => matchCompiledFilter(row, cf)) &&
+    word.AND.every(cf => matchCompiledFilter(row, cf)) &&
     compiledQuickGroups.every(group => matchesCompiledQuickGroup(row, group)) &&
     andGroups.every(group => matchesWordGroup(row, group));
 
   const orMatch = hasOrFilters
-    ? partitions.whole.OR.some(filter => matchesFilter(row, filter)) ||
-      partitions.word.OR.some(filter => matchesFilter(row, filter)) ||
+    ? whole.OR.some(cf => matchCompiledFilter(row, cf)) ||
+      word.OR.some(cf => matchCompiledFilter(row, cf)) ||
       orGroups.some(group => matchesWordGroup(row, group))
     : true;
 
   return andMatch && orMatch;
+}
+
+// Per-row evaluation using a pre-compiled filter descriptor.
+function matchCompiledFilter(row, cf) {
+  if (cf.type === "fuenteSet") {
+    const val = row["Fuente"];
+    const ok = cf.filter.value instanceof Set ? cf.filter.value.has(val) : Array.isArray(cf.filter.value) ? cf.filter.value.includes(val) : false;
+    return cf.filter.negate ? !ok : ok;
+  }
+  const { filter, query, scope } = cf;
+  if (scope === "word") return matchWordScopeCompiled(row, filter, query);
+  return matchWholeScopeCompiled(row, filter, query);
+}
+
+function matchWholeScopeCompiled(row, filter, query) {
+  const entry = getNormalizedEntry(row, filter.field);
+  const useLoose = query.allowLoose;
+  let candidateText;
+  if (query.accentSensitive) {
+    candidateText = useLoose ? entry.looseWithAccents : entry.withAccents;
+  } else if (oldSpanishMode && entry.normalizedOS) {
+    candidateText = useLoose ? entry.looseTextOS : entry.normalizedOS;
+  } else {
+    candidateText = useLoose ? entry.looseText : entry.normalized;
+  }
+  const result = candidateMatchesQuery(candidateText, query, filter.mode, useLoose);
+  return filter.negate ? !result : result;
+}
+
+function matchWordScopeCompiled(row, filter, query) {
+  const entry = getNormalizedEntry(row, filter.field);
+  const useLoose = query.allowLoose;
+  const words = query.accentSensitive
+    ? entry.wordsWithAccents
+    : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
+  const matches = words.some(wordEntry => {
+    const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
+    return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
+  });
+  return filter.negate ? !matches : matches;
 }
 
 function extractWordQuickGroups(filters) {
@@ -295,30 +300,3 @@ function compiledQueryMatchesWordEntry(wordEntry, filter, query) {
   return candidateMatchesQuery(source, query, filter.mode, useLoose);
 }
 
-// Legacy path kept for matchesWordGroup (wordGroup type filters).
-function buildWordQuickSegments(filters) {
-  const segments = new Map();
-  filters.forEach(filter => {
-    const type = mapModeToWordRowType(filter.mode);
-    if (!segments.has(type)) segments.set(type, { include: [], exclude: [] });
-    const bucket = filter.negate ? segments.get(type).exclude : segments.get(type).include;
-    bucket.push(filter);
-  });
-  return segments;
-}
-
-function wordEntryMatchesQuickSegments(wordEntry, segments) {
-  if (!segments.size) return false;
-  for (const segment of segments.values()) {
-    if (segment.exclude.some(filter => quickFilterMatchesWordEntry(wordEntry, filter))) return false;
-    if (segment.include.length && !segment.include.some(filter => quickFilterMatchesWordEntry(wordEntry, filter))) return false;
-  }
-  return true;
-}
-
-function quickFilterMatchesWordEntry(wordEntry, filter) {
-  const query = buildFilterQuery(filter);
-  const useLoose = query.allowLoose;
-  const source = useLoose ? wordEntry.loose : wordEntry.raw;
-  return candidateMatchesQuery(source, query, filter.mode, useLoose);
-}
