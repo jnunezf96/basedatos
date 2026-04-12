@@ -291,7 +291,7 @@ function parseFilterValue(rawValue, mode) {
       bodies.push({ body: redup, mode: m });
       return;
     }
-    if (/[()[\]|]/.test(expandedVC)) {
+    if (/[()|]/.test(expandedVC)) {
       bodies.push({ body: convertWildcardPatternAllowRegex(expandedVC), mode: m });
       return;
     }
