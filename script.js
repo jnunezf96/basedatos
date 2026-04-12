@@ -551,21 +551,14 @@ function setupChipsBarDelegation() {
 }
 
 function setupLiveSearch() {
-  const timers = {};
   document.querySelectorAll(".filter-card").forEach(card => {
     const owner = card.dataset.owner;
     if (!owner) return;
     card.querySelectorAll(".filter-input").forEach(input => {
-      input.addEventListener("input", () => {
-        clearTimeout(timers[owner]);
-        timers[owner] = setTimeout(() => applyFilterCard(owner), 350);
-      });
       input.addEventListener("keydown", e => {
         if (e.key === "Escape") {
           e.preventDefault();
           input.value = "";
-          clearTimeout(timers[owner]);
-          applyFilterCard(owner);
         }
       });
     });
@@ -1034,7 +1027,6 @@ function setupFilterCard(owner) {
       fieldButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       updateFilterPlaceholders(card);
-      applyFilterCard(owner);
     });
   });
   updateFilterPlaceholders(card);
@@ -1045,7 +1037,6 @@ function setupFilterCard(owner) {
       scopeButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       updateFilterPlaceholders(card);
-      applyFilterCard(owner);
     });
   });
 
