@@ -1034,6 +1034,7 @@ function setupFilterCard(owner) {
       fieldButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       updateFilterPlaceholders(card);
+      applyFilterCard(owner);
     });
   });
   updateFilterPlaceholders(card);
@@ -1044,6 +1045,7 @@ function setupFilterCard(owner) {
       scopeButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       updateFilterPlaceholders(card);
+      applyFilterCard(owner);
     });
   });
 
