@@ -1856,41 +1856,50 @@ function sanitizeInput(value) {
 // =============== Debug utility (browser console: window.debugFilter("têca")) ===============
 window.debugFilter = function(value, field = "Comentario", scope = "whole", mode = "any") {
   if (!dataRows.length) { console.warn("dataRows empty — data not loaded yet"); return; }
-  const filter = { field, mode, value, scope, negate: false };
-  const query = buildFilterQuery(filter);
-  console.log("[debugFilter] query:", {
-    regex: query.strictRegex?.toString(),
-    accentSensitive: query.accentSensitive,
-    allowLoose: query.allowLoose,
-    hasRegex: query.hasRegex,
-    accentSensitiveMode,
-    wimmerShowEs,
-  });
-  let matched = 0;
-  const samples = [];
-  dataRows.forEach(row => {
-    const entry = getNormalizedEntry(row, field);
-    let candidate;
-    if (scope === "word") {
-      const words = query.accentSensitive ? entry.wordsWithAccents : entry.words;
-      const hit = words.some(w => {
-        const c = query.allowLoose ? w.loose : w.raw;
-        return query.strictRegex ? query.strictRegex.test(c) : false;
-      });
-      if (hit) { matched++; if (samples.length < 3) samples.push({ fuente: row.Fuente, field: entry.looseWithAccents?.substring(0, 60) }); }
-    } else {
-      const candidateText = query.accentSensitive
-        ? (query.allowLoose ? entry.looseWithAccents : entry.withAccents)
-        : (query.allowLoose ? entry.looseText : entry.normalized);
-      if (query.strictRegex && query.strictRegex.test(candidateText)) {
-        matched++;
-        if (samples.length < 3) samples.push({ fuente: row.Fuente, candidate: candidateText?.substring(0, 60) });
+  console.log("[debugFilter] state:", { accentSensitiveMode, wimmerShowEs, totalRows: dataRows.length });
+
+  function runWithAccent(accentOn) {
+    const savedMode = accentSensitiveMode;
+    accentSensitiveMode = accentOn;
+    const filter = { field, mode, value, scope, negate: false };
+    const query = buildFilterQuery(filter);
+    console.log(`[debugFilter] accent=${accentOn} regex:`, query.strictRegex?.toString(), "allowLoose:", query.allowLoose);
+    let matched = 0;
+    const samples = [];
+    // Check first row to see actual candidate text
+    let firstRow = null;
+    dataRows.forEach(row => {
+      const entry = getNormalizedEntry(row, field);
+      if (!firstRow && row.Fuente === "2021 Wimmer") {
+        firstRow = { looseWithAccents: entry.looseWithAccents?.substring(0, 80), looseText: entry.looseText?.substring(0, 80) };
       }
-    }
-  });
-  console.log("[debugFilter] matched:", matched, "/ total rows:", dataRows.length);
-  if (samples.length) console.log("[debugFilter] samples:", samples);
-  return matched;
+      if (scope === "word") {
+        const words = query.accentSensitive ? entry.wordsWithAccents : entry.words;
+        const hit = words.some(w => {
+          const c = query.allowLoose ? w.loose : w.raw;
+          return query.strictRegex ? query.strictRegex.test(c) : false;
+        });
+        if (hit) { matched++; if (samples.length < 2) samples.push({ fuente: row.Fuente }); }
+      } else {
+        const candidateText = query.accentSensitive
+          ? (query.allowLoose ? entry.looseWithAccents : entry.withAccents)
+          : (query.allowLoose ? entry.looseText : entry.normalized);
+        if (query.strictRegex && query.strictRegex.test(candidateText)) {
+          matched++;
+          if (samples.length < 2) samples.push({ fuente: row.Fuente, candidate: candidateText?.substring(0, 60) });
+        }
+      }
+    });
+    accentSensitiveMode = savedMode;
+    console.log(`[debugFilter] accent=${accentOn} matched:`, matched);
+    if (firstRow) console.log(`[debugFilter] first Wimmer ${field}:`, accentOn ? firstRow.looseWithAccents : firstRow.looseText);
+    if (samples.length) console.log(`[debugFilter] samples:`, samples);
+    return matched;
+  }
+
+  const noAccent = runWithAccent(false);
+  const withAccent = runWithAccent(true);
+  return { noAccent, withAccent };
 };
 
 // =============== Highlight ===============
