@@ -1272,6 +1272,7 @@ function applyFilters(initial = false, options = {}) {
   if (!activeFilters.length) {
     matches = sampleRandomRows(dataRows.length);
   } else {
+    buildEvalContext();
     matches = dataRows.filter(row => evaluateTextFilters(row));
   }
   lastFilteredRows = matches;
