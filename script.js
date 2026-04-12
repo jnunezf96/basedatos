@@ -333,7 +333,7 @@ let sortKeys = []; // [{field, dir}]
 let sortScope = "all"; // "all" | "page"
 const hiddenColumns = new Set();
 const alphaNumCollator = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
-let wimmerShowEs = false;
+let wimmerShowEs = true;
 let lastFocusedInput = null;
 let filterCards = [];
 let activeCardIndex = 0;
@@ -1836,6 +1836,8 @@ function getDisplayValue(row, fieldKey) {
 function setupWimmerTranslate() {
   const langToggle = document.getElementById("wLangToggle");
   if (langToggle) {
+    langToggle.textContent = wimmerShowEs ? "ES" : "FR";
+    langToggle.classList.toggle("active", wimmerShowEs);
     langToggle.addEventListener("click", () => {
       wimmerShowEs = !wimmerShowEs;
       langToggle.textContent = wimmerShowEs ? "ES" : "FR";
@@ -1850,6 +1852,46 @@ function sanitizeInput(value) {
   const raw = value == null ? "" : String(value);
   return stripHtmlTags(raw).trim();
 }
+
+// =============== Debug utility (browser console: window.debugFilter("têca")) ===============
+window.debugFilter = function(value, field = "Comentario", scope = "whole", mode = "any") {
+  if (!dataRows.length) { console.warn("dataRows empty — data not loaded yet"); return; }
+  const filter = { field, mode, value, scope, negate: false };
+  const query = buildFilterQuery(filter);
+  console.log("[debugFilter] query:", {
+    regex: query.strictRegex?.toString(),
+    accentSensitive: query.accentSensitive,
+    allowLoose: query.allowLoose,
+    hasRegex: query.hasRegex,
+    accentSensitiveMode,
+    wimmerShowEs,
+  });
+  let matched = 0;
+  const samples = [];
+  dataRows.forEach(row => {
+    const entry = getNormalizedEntry(row, field);
+    let candidate;
+    if (scope === "word") {
+      const words = query.accentSensitive ? entry.wordsWithAccents : entry.words;
+      const hit = words.some(w => {
+        const c = query.allowLoose ? w.loose : w.raw;
+        return query.strictRegex ? query.strictRegex.test(c) : false;
+      });
+      if (hit) { matched++; if (samples.length < 3) samples.push({ fuente: row.Fuente, field: entry.looseWithAccents?.substring(0, 60) }); }
+    } else {
+      const candidateText = query.accentSensitive
+        ? (query.allowLoose ? entry.looseWithAccents : entry.withAccents)
+        : (query.allowLoose ? entry.looseText : entry.normalized);
+      if (query.strictRegex && query.strictRegex.test(candidateText)) {
+        matched++;
+        if (samples.length < 3) samples.push({ fuente: row.Fuente, candidate: candidateText?.substring(0, 60) });
+      }
+    }
+  });
+  console.log("[debugFilter] matched:", matched, "/ total rows:", dataRows.length);
+  if (samples.length) console.log("[debugFilter] samples:", samples);
+  return matched;
+};
 
 // =============== Highlight ===============
 function applyHighlights(rawValue, fieldKey) {
