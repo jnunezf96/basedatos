@@ -81,9 +81,9 @@ function getNormalizedEntry(row, field) {
         raw: word,
         loose: collapseWhitespace(stripPunctuationCharacters(word))
       }));
-    // Accent-preserved candidate: lowercase only, no NFD stripping.
-    // Used when the query itself contains accents (accent-sensitive matching).
-    const withAccents = stripHtmlTags(raw).toLowerCase();
+    // Accent-preserved candidate: NFC-normalized then lowercased (no accent stripping).
+    // NFC ensures precomposed form matches user input from browser keyboards.
+    const withAccents = stripHtmlTags(raw).normalize("NFC").toLowerCase();
     const looseWithAccents = collapseWhitespace(stripPunctuationCharacters(withAccents));
     const wordsWithAccents = withAccents
       .split(/\s+/)
@@ -277,7 +277,7 @@ function parseFilterValue(rawValue, mode) {
     // - Accented queries: lowercase only → accent-specific matching
     // Skip normalization if the text uses {VC} placeholders or character classes.
     if (!text.includes("{") && !text.includes("[")) {
-      text = queryHasAccents ? text.toLowerCase() : normalizeString(text);
+      text = queryHasAccents ? text.normalize("NFC").toLowerCase() : normalizeString(text);
     }
 
     const expandedVC = expandVCPlaceholders(text);
