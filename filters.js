@@ -234,13 +234,17 @@ function matchesWordQuickGroup(row, group) {
   const entry = getNormalizedEntry(row, group.field);
   if (!entry.words.length) return false;
 
+  // Use accent-preserved words when any filter in the group is accent-sensitive.
+  const accentSensitive = group.filters.some(f => buildFilterQuery(f).accentSensitive);
+  const wordList = accentSensitive ? entry.wordsWithAccents : entry.words;
+
   const hasInclude = group.filters.some(f => !f.negate);
   if (!hasInclude) {
     // Exclude-only: the field must contain no word matching any exclude filter.
     return group.filters.every(filter => {
       const query = buildFilterQuery(filter);
       const useLoose = query.allowLoose;
-      return !entry.words.some(wordEntry => {
+      return !wordList.some(wordEntry => {
         const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
         return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
       });
@@ -249,7 +253,7 @@ function matchesWordQuickGroup(row, group) {
 
   const segments = buildWordQuickSegments(group.filters);
   if (!segments.size) return false;
-  return entry.words.some(wordEntry => wordEntryMatchesQuickSegments(wordEntry, segments));
+  return wordList.some(wordEntry => wordEntryMatchesQuickSegments(wordEntry, segments));
 }
 
 function buildWordQuickSegments(filters) {
