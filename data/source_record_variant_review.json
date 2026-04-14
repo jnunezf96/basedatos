@@ -1,0 +1,589 @@
+{
+  "generated_at": "2026-04-14T21:11:18.100Z",
+  "policy": {
+    "merge_scope": "Within the same source_record_id only",
+    "merge_rule": "Merge rows when all non-ID fields match after lowercase, accent folding, punctuation folding, HTML stripping, and whitespace collapse.",
+    "canonical_choice": "Prefer more populated fields, then longer translation/comment payload, then more diacritics, then longer total content, then earlier dataset order. 2002 Mecayapan commentary-only variants may also be merged editorially when the comments are complementary notes/examples for the same source record.",
+    "review_rule": "If more than one variant remains inside a source_record_id after conservative auto-merge and the Mecayapan commentary pass, keep all survivors and list the group for manual review.",
+    "global_comment_merge_rule": "If Fuente, Texto estandarizado, Escritura original, and Traducción match, and only Comentario / Comentario (es) plus IDs differ, merge the comments into one row across the whole dataset.",
+    "global_comment_merge_notes": "Long near-duplicate comments keep the richer version; shorter note/example variants are combined linewise or by note fragments."
+  },
+  "summary": {
+    "output_rows": 275891,
+    "mecayapan_editorial_groups_merged": 43,
+    "mecayapan_editorial_rows_removed": 43,
+    "review_groups": 12,
+    "review_rows": 24,
+    "global_comment_key_groups_merged": 986,
+    "global_comment_key_rows_removed": 988,
+    "global_comment_key_conflict_groups_skipped": 6,
+    "global_comment_key_rows_reassigned_to_main": 859
+  },
+  "comment_key_conflicts": [
+    {
+      "source": "2002 Mecayapan",
+      "texto_estandarizado": "cenonoque",
+      "escritura_original": "sen-onoquej",
+      "traduccion": "estar juntos",
+      "changed_fields": [
+        "Comentario",
+        "eid",
+        "prio",
+        "record_id",
+        "source_record_id"
+      ],
+      "variants": [
+        {
+          "record_id": "2002-mecayapan:eid:175514",
+          "source_record_id": "2002-mecayapan:eid:175514",
+          "eid": "175514",
+          "prio": "12217"
+        },
+        {
+          "record_id": "2002-mecayapan:eid:175515",
+          "source_record_id": "2002-mecayapan:eid:175515",
+          "eid": "175515",
+          "comentario": "Véase: ono'",
+          "prio": "12218"
+        }
+      ]
+    },
+    {
+      "source": "2021 Wimmer",
+      "texto_estandarizado": "ahua",
+      "escritura_original": "AHHUA",
+      "traduccion": "v.t. tê-., / gronder, réprimander quelqu'un. / insulter quelqu'un. / v.récipr., se disputer, se quereller. / passif: ahhualo ou ayo.",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)",
+        "Traducción (es)",
+        "record_id"
+      ],
+      "variants": [
+        {
+          "record_id": "2021-wimmer:eid:1790070~1",
+          "source_record_id": "2021-wimmer:eid:1790070",
+          "eid": "1790070",
+          "comentario": "ahhua > ahhua-.<br/><br/><B>*~ v.t. tê-., </B> <B><br/><br/>1. ~ </B>gronder, réprimander quelqu'un.<br/><br/><b>Esp.,</b> reñir a otro (M). Dyckerhoff 1970, 221 note 8.<br/><br/><b>Angl.,</b>to scold s.o., to reprimand s.o. R.Andrews Introd 422.<br/><br/>to scold s.o., to quarrel with s.o., to irritate s.o. (K).<br/><br/><b><I> nimitzonahhua  </I></b>, je te gronde (Par.).<br/><br/><b><I> annêchonahhuah  </I></b>, vous me grondez.<br/><br/><b><I> quihuâlahhuah  </I></b>, ils le réprimandent - man schilt ihn. Sah 1927, 57.<br/><br/><b><I> in têpînâuhtia in têahhua  </I></b>, celui qui fait honte aux gens, celui qui les réprimande - er beschimpft die Leute und zanckt sie aus. Sah 1950, 105:30 = Sah4, 12.<br/><br/><b><I> cahhuah  </I></b>, ils le disputent - sie schelten ihn aus. SIS 1950, 257.<br/><br/><b><I> ayâc huel quimahhuaya  </I></b>, personne ne pouvait les réprimander - none could scold them.<br/><br/>Sah4, 34.<br/><br/><b><I> in cihuah conilhuiah inic cahhuah  </I></b>, les femmes lui disaient et l'invectivaient ainsi - the<br/><br/>women said to it, and thus chid it. A l'adresse de la chouette, chicuahtli. Sah5, 163.<br/><br/><b><I> quimahhuayah in îmichpôchhuân  </I></b>, elles grondaient leurs filles. Sah5, 183.<br/><br/><b><I> ic têahhuayah, ic quimahhuayah ic quintlacahualtiah in tênânhuân in împilhuân  </I></b>, alors les<br/><br/>mères grondaient, elles grondaient leurs enfants et les empêchaient (de lécher la pierre à moudre) - the mothers chid and scolded their young ones for it, and restrained them for it. Sah5, 188.<br/><br/><b><I> ahzo ye âcah conahhuaz  </I></b>, peut-être qu'alors quelqu'un allait le gronder - perhaps now<br/><br/>someone would chide him. Sah5, 169.<br/><br/><b><I> ayâc têahhua  </I></b>, personne ne gronde. Sah2, 262.<br/><br/><b><I>mâcamo xicchîhua in ca mitzahhuaz motahtzin</I></b>, ne fais pas ça (sans quoi, parce que) ton père va te gronder. Launey Introd. p. 317.<br/><br/><b><I>ômitzahhuaqueh auh ahmo ic ôtimonemilizcuep</I></b>, on t'a grondé, et tu n'as pas changé de vie pour autant. Launey Introd. p. 319.<br/><br/><b><I> conchachalatzah, conahhuah  </I></b>, ils élèvent une clameur contre lui, ils l'invectivent. Sah12, 57.<B><br/><br/>2. ~ </B>insulter quelqu'un.<br/><br/><b><I> in âquin têmictih in ahzo têahhuac  </I></b>, celui qui a maltraité les autres ou les a insulté. Sah2, 95.<br/><br/><b><I> intlâ âcah ôquimahhuac  </I></b>, si quelqu'un les a insultés - if any chid them. Sah4, 35.<br/><br/><b><I> inic ahmo quimahhuazqueh quincuecuenochihchîhuazqueh ahnozo quinhuîtequiz întlâcahuân  </I></b>, qu'ils n'insultent pas, qu'ils ne traitent pas avec une folle arrogance, qu'ils ne battent pas leurs esclaves. Sah4, 34.<br/><br/>Voir aussi tlahuêlîlôcâahhua.<br/><br/><B>*~ v.récipr., </B> se disputer, se quereller.<br/><br/><b>Angl.,</b> to quarrel. R.Andrews Introd 422.<br/><br/><b><I> netech mahhua  </I></b>, il y a des contestations, ils discutent - reñir vnos con otros los de vna familia. preterito: netech omauaque (M).<br/><br/><b><I> ayâc huel mahhuaya  </I></b>, personne n'osait se disputer - no one (on the day sign Four Wind) might quarrel. Sah4, 49 (maoaia).<br/><br/><b><I> titahhuah  </I></b>, nous nous disputons.<br/><br/><b><I> titocepanahhuah  </I></b>, nous nous disputons tous. Launey Introd 248.<br/><br/><B>*~ passif:</B> ahhualo ou ayo.",
+          "comentario_es": "ahhua > ahhua-.<br/><br/><B>*~ v.t. tê-., </B> <B><br/><br/>1. ~ </B>regañar, reprender a alguien.<br/><br/><b>Esp.,</b> reñir a otro (M). Dyckerhoff 1970, 221 nota 8.<br/><br/><b>Ingl.,</b>reñir a s.o., reprender a s.o. R.Andrews introdujo 422.<br/><br/>regañar a s.o., pelear con s.o., irritar a s.o. (K).<br/><br/><b><I> nimitzonahhua  </I></b>, te regaño (Par.).<br/><br/><b><I> annêchonahhuah  </I></b>, me estás regañando.<br/><br/><b><I> quihuâlahhuah  </I></b>, lo reprenden - man schilt ihn. Sa 1927, 57.<br/><br/><b><I> in têpînâuhtia in têahhua  </I></b>, el que avergüenza a la gente, el que los reprende - er beschimpft die Leute und zanckt sie aus.Sa 1950, 105:30 = Sa 4, 12.<br/><br/><b><I> cahhuah  </I></b>, lo disputan - sie schelten ihn aus. SIS 1950, 257.<br/><br/><b><I> ayâc huel quimahhuaya  </I></b>, nadie podía regañarlos - nadie podía regañarlos.<br/><br/>Sa4, 34.<br/><br/><b><I> in cihuah conilhuiah inic cahhuah  </I></b>, le dijeron las mujeres y lo insultaron así - el<br/><br/>Le decían las mujeres, y así lo reprendían. A la dirección de la lechuza, chicuahtli. Sah5, 163.<br/><br/><b><I> quimahhuayah in îmichpôchhuân  </I></b>, regañaron a sus hijas. Sah5, 183.<br/><br/><b><I> ic têahhuayah, ic quimahhuayah ic quintlacahualtiah in tênânhuân in împilhuân  </I></b>, entonces el<br/><br/>las madres regañaron, regañaron a sus hijos y les impidieron (lamer la piedra de moler); las madres reprendieron y regañaron a sus pequeños por ello, y los contuvieron por ello.Sah5, 188.<br/><br/><b><I> ahzo ye âcah conahhuaz  </I></b>, tal vez entonces alguien lo regañaría - tal vez ahora<br/><br/>alguien lo engañaría. Sah5, 169.<br/><br/><b><I> ayâc têahhua  </I></b>, nadie regaña. Sah2, 262.<br/><br/><b><I>mâcamo xicchîhua in ca mitzahhuaz motahtzin</I></b>, no hagas eso (de lo contrario, porque) tu padre te regañará. Introducción de Launey. pag. 317.<br/><br/><b><I>ômitzahhuaqueh auh ahmo ic ôtimonemilizcuep</I></b>, te reprendieron y aún no has cambiado de vida. Introducción de Launey. pag. 319.<br/><br/><b><I> conchachalatzah, conahhuah  </I></b>, alzan contra él clamor, lo injurian. Sah12, 57.<B><br/><br/>2. ~ </B>insultar a alguien.<br/><br/><b><I> in âquin têmictih in ahzo têahhuac  </I></b>, aquel que maltrataba a otros o los insultaba. Sa2, 95.<br/><br/><b><I> intlâ âcah ôquimahhuac  </I></b>, si alguien los ha insultado - si alguno los ha reprendido. Sah4, 35.<br/><br/><b><I> inic ahmo quimahhuazqueh quincuecuenochihchîhuazqueh ahnozo quinhuîtequiz întlâcahuân  </I></b>, que no insulten, que no traten con loca soberbia, que no golpeen a sus esclavos.Sa4, 34.<br/><br/>Véase también tlahuêlîlôcâahhua.<br/><br/><B>*~ v.recipr., </B> discutir, reñir.<br/><br/><b>Ingl.,</b> pelear. R. Andrews introdujo 422.<br/><br/><b><I> netech mahhua  </I></b>, hay disputas, discuten - reñir vnos con otros los de vna familia. pretérito: netech omauaque (M).<br/><br/><b><I> ayâc huel mahhuaya  </I></b>, nadie se atrevió a pelear - nadie (en el signo del día Cuatro Vientos) podría pelear. Sah4, 49 (maoaia).<br/><br/><b><I> titahhuah  </I></b>, argumentamos.<br/><br/><b><I> titocepanahhuah  </I></b>, todos discutimos. Launey introdujo 248.<br/><br/><B>*~ pasivo:</B> ahhualo o ayo.",
+          "traduccion_es": "v.t. tê-.,/ regañar, reprender a alguien. / insulto a alguien. / v.recipr., discutir, reñir. / pasivo: ahhualo o ayo.",
+          "prio": "1886"
+        },
+        {
+          "record_id": "2021-wimmer:eid:1790070~2",
+          "source_record_id": "2021-wimmer:eid:1790070",
+          "eid": "1790070",
+          "comentario": "ahhua > ahhua-.<br/><br/><B>*~ v.t. tê-., </B> <B><br/><br/>1. ~ </B>gronder, réprimander quelqu'un.<br/><br/><b>Esp.,</b> reñir a otro (M). Dyckerhoff 1970, 221 note 8.<br/><br/><b>Angl.,</b>to scold s.o., to reprimand s.o. R.Andrews Introd 422.<br/><br/>to scold s.o., to quarrel with s.o., to irritate s.o. (K).<br/><br/><b><I> nimitzonahhua  </I></b>, je te gronde (Par.).<br/><br/><b><I> annêchonahhuah  </I></b>, vous me grondez.<br/><br/><b><I> quihuâlahhuah  </I></b>, ils le réprimandent - man schilt ihn. Sah 1927, 57.<br/><br/><b><I> in têpînâuhtia in têahhua  </I></b>, celui qui fait honte aux gens, celui qui les réprimande - er beschimpft die Leute und zanckt sie aus. Sah 1950, 105:30 = Sah4, 12.<br/><br/><b><I> cahhuah  </I></b>, ils le disputent - sie schelten ihn aus. SIS 1950, 257.<br/><br/><b><I> ayâc huel quimahhuaya  </I></b>, personne ne pouvait les réprimander - none could scold them.<br/><br/>Sah4, 34.<br/><br/><b><I> in cihuah conilhuiah inic cahhuah  </I></b>, les femmes lui disaient et l'invectivaient ainsi - the<br/><br/>women said to it, and thus chid it. A l'adresse de la chouette, chicuahtli. Sah5, 163.<br/><br/><b><I> quimahhuayah in îmichpôchhuân  </I></b>, elles grondaient leurs filles. Sah5, 183.<br/><br/><b><I> ic têahhuayah, ic quimahhuayah ic quîntlacahualtiah in tênânhuân in împilhuân  </I></b>, alors les<br/><br/>mères grondaient, elles grondaient leurs enfants et les empêchaient (de lécher la pierre à moudre) - the mothers chid and scolded their young ones for it, and restrained them for it. Sah5, 188.<br/><br/><b><I> ahzo ye âcah conahhuaz  </I></b>, peut-être qu'alors quelqu'un allait le gronder - perhaps now<br/><br/>someone would chide him. Sah5, 169.<br/><br/><b><I> ayâc têahhua  </I></b>, personne ne gronde. Sah2, 262.<br/><br/><b><I>mâcamo xicchîhua in ca mitzahhuaz motahtzin</I></b>, ne fais pas ça (sans quoi, parce que) ton père va te gronder. Launey Introd. p. 317.<br/><br/><b><I>ômitzahhuaqueh auh ahmo ic ôtimonemilizcuep</I></b>, on t'a grondé, et tu n'as pas changé de vie pour autant. Launey Introd. p. 319.<br/><br/><b><I> conchachalatzah, conahhuah  </I></b>, ils élèvent une clameur contre lui, ils l'invectivent. Sah12, 57.<B><br/><br/>2. ~ </B>insulter quelqu'un.<br/><br/><b><I> in âquin têmictih in ahzo têahhuac  </I></b>, celui qui a maltraité les autres ou les a insulté. Sah2, 95.<br/><br/><b><I> intlâ âcah ôquîmahhuac  </I></b>, si quelqu'un les a insultés - if any chid them. Sah4, 35.<br/><br/><b><I> inic ahmo quimahhuazqueh quincuecuenochihchîhuazqueh ahnozo quinhuîtequiz întlâcahuân  </I></b>, qu'ils n'insultent pas, qu'ils ne traitent pas avec une folle arrogance, qu'ils ne battent pas leurs esclaves. Sah4, 34.<br/><br/>Voir aussi tlahuêlîlôcâahhua.<br/><br/><B>*~ v.récipr., </B> se disputer, se quereller.<br/><br/><b>Angl.,</b> to quarrel. R.Andrews Introd 422.<br/><br/><b><I> netech mahhua  </I></b>, il y a des contestations, ils discutent - reñir vnos con otros los de vna familia. preterito: netech omauaque (M).<br/><br/><b><I> ayâc huel mahhuaya  </I></b>, personne n'osait se disputer - no one (on the day sign Four Wind) might quarrel. Sah4, 49 (maoaia).<br/><br/><b><I> titahhuah  </I></b>, nous nous disputons.<br/><br/><b><I> titocepanahhuah  </I></b>, nous nous disputons tous. Launey Introd 248.<br/><br/><B>*~ passif:</B> ahhualo ou ayo.",
+          "comentario_es": "ahhua > ahhua-.<br/><br/><B>*~ v.t. tê-., </B> <B><br/><br/>1. ~ </B>regañar, reprender a alguien.<br/><br/><b>Esp.,</b> reñir a otro (M). Dyckerhoff 1970, 221 nota 8.<br/><br/><b>Ingl.,</b>reñir a s.o., reprender a s.o. R.Andrews introdujo 422.<br/><br/>regañar a s.o., pelear con s.o., irritar a s.o. (K).<br/><br/><b><I> nimitzonahhua  </I></b>, te regaño (Par.).<br/><br/><b><I> annêchonahhuah  </I></b>, me estás regañando.<br/><br/><b><I> quihuâlahhuah  </I></b>, lo reprenden - man schilt ihn. Sa 1927, 57.<br/><br/><b><I> in têpînâuhtia in têahhua  </I></b>, el que avergüenza a la gente, el que los reprende - er beschimpft die Leute und zanckt sie aus.Sa 1950, 105:30 = Sa 4, 12.<br/><br/><b><I> cahhuah  </I></b>, lo disputan - sie schelten ihn aus. SIS 1950, 257.<br/><br/><b><I> ayâc huel quimahhuaya  </I></b>, nadie podía regañarlos - nadie podía regañarlos.<br/><br/>Sa4, 34.<br/><br/><b><I> in cihuah conilhuiah inic cahhuah  </I></b>, le dijeron las mujeres y lo insultaron así - el<br/><br/>Le decían las mujeres, y así lo reprendían. A la dirección de la lechuza, chicuahtli. Sah5, 163.<br/><br/><b><I> quimahhuayah in îmichpôchhuân  </I></b>, regañaron a sus hijas. Sah5, 183.<br/><br/><b><I> ic têahhuayah, ic quimahhuayah ic quîntlacahualtiah in tênânhuân in împilhuân  </I></b>, entonces el<br/><br/>las madres regañaron, regañaron a sus hijos y les impidieron (lamer la piedra de moler); las madres reprendieron y regañaron a sus pequeños por ello, y los contuvieron por ello.Sah5, 188.<br/><br/><b><I> ahzo ye âcah conahhuaz  </I></b>, tal vez entonces alguien lo regañaría - tal vez ahora<br/><br/>alguien lo engañaría. Sah5, 169.<br/><br/><b><I> ayâc têahhua  </I></b>, nadie regaña. Sah2, 262.<br/><br/><b><I>mâcamo xicchîhua in ca mitzahhuaz motahtzin</I></b>, no hagas eso (de lo contrario, porque) tu padre te regañará. Introducción de Launey. pag. 317.<br/><br/><b><I>ômitzahhuaqueh auh ahmo ic ôtimonemilizcuep</I></b>, te reprendieron y aún no has cambiado de vida. Introducción de Launey. pag. 319.<br/><br/><b><I> conchachalatzah, conahhuah  </I></b>, alzan contra él clamor, lo injurian. Sah12, 57.<B><br/><br/>2. ~ </B>insultar a alguien.<br/><br/><b><I> in âquin têmictih in ahzo têahhuac  </I></b>, aquel que maltrataba a otros o los insultaba. Sa2, 95.<br/><br/><b><I> intlâ âcah ôquîmahhuac  </I></b>, si alguien los insultó - si alguno los reprendió. Sah4, 35.<br/><br/><b><I> inic ahmo quimahhuazqueh quincuecuenochihchîhuazqueh ahnozo quinhuîtequiz întlâcahuân  </I></b>, que no insulten, que no traten con loca soberbia, que no golpeen a sus esclavos.Sa4, 34.<br/><br/>Véase también tlahuêlîlôcâahhua.<br/><br/><B>*~ v.recipr., </B> discutir, reñir.<br/><br/><b>Ingl.,</b> pelear. R. Andrews introdujo 422.<br/><br/><b><I> netech mahhua  </I></b>, hay disputas, discuten - reñir vnos con otros los de vna familia. pretérito: netech omauaque (M).<br/><br/><b><I> ayâc huel mahhuaya  </I></b>, nadie se atrevió a pelear - nadie (en el signo del día Cuatro Vientos) podría pelear. Sah4, 49 (maoaia).<br/><br/><b><I> titahhuah  </I></b>, argumentamos.<br/><br/><b><I> titocepanahhuah  </I></b>, todos discutimos. Launey introdujo 248.<br/><br/><B>*~ pasivo:</B> ahhualo o ayo.",
+          "traduccion_es": "Vermont. tê-.,/ regañar, reprender a alguien. / insulto a alguien. / v.recipr., discutir, reñir. / pasivo: ahhualo o ayo.",
+          "prio": "1886"
+        }
+      ]
+    },
+    {
+      "source": "2002 Mecayapan",
+      "texto_estandarizado": "epatlach",
+      "escritura_original": "epatach",
+      "traduccion": "haba",
+      "changed_fields": [
+        "Comentario",
+        "eid",
+        "prio",
+        "record_id",
+        "source_record_id"
+      ],
+      "variants": [
+        {
+          "record_id": "2002-mecayapan:eid:173290",
+          "source_record_id": "2002-mecayapan:eid:173290",
+          "eid": "173290",
+          "prio": "24180"
+        },
+        {
+          "record_id": "2002-mecayapan:eid:173291",
+          "source_record_id": "2002-mecayapan:eid:173291",
+          "eid": "173291",
+          "comentario": "Véase: patachti'",
+          "prio": "24181"
+        }
+      ]
+    },
+    {
+      "source": "2002 Mecayapan",
+      "texto_estandarizado": "cahua",
+      "escritura_original": "quicâhua",
+      "traduccion": "dejar; poner (huevo); abandonar",
+      "changed_fields": [
+        "Comentario",
+        "eid",
+        "prio",
+        "record_id",
+        "source_record_id"
+      ],
+      "variants": [
+        {
+          "record_id": "2002-mecayapan:eid:174848",
+          "source_record_id": "2002-mecayapan:eid:174848",
+          "eid": "174848",
+          "prio": "8881"
+        },
+        {
+          "record_id": "2002-mecayapan:eid:174849",
+          "source_record_id": "2002-mecayapan:eid:174849",
+          "eid": "174849",
+          "comentario": "1. dejar<br />Sê sihuâ' yej tequipanohua cân tacualo quicâhua ipiltzîn íchân. Una mujer que trabaja en un comedor deja a su hijo en su casa.<br /> <br />2. poner (huevo)<br />Pio-ilama quicâhua itecsis taxómôl. La gallina pone sus huevos en un rincón de la casa.<br /> <br />3. abandonar<br />Amo xicâhua mosihuâ', tiao' sej tiquejlâmiquiti. No abandones a tu mujer; te vas a acordar otra vez de ella. [pret.: quicaj]<br />Sinón.: quicajtêhua<br />Véase: câhui",
+          "prio": "8882"
+        }
+      ]
+    },
+    {
+      "source": "V94 Diccionario Global SNP",
+      "texto_estandarizado": "aquin amo tlaneltoca",
+      "escritura_original": "akin amo taneltoka",
+      "traduccion": "No creyente (lit. quien no cree).",
+      "changed_fields": [
+        "Comentario",
+        "Plural",
+        "Raíz",
+        "record_id",
+        "source_record_id"
+      ],
+      "variants": [
+        {
+          "record_id": "v94-diccionario-global-snp:entry:aquin-amo-tlaneltoca:5dde4fb6dd10",
+          "source_record_id": "v94-diccionario-global-snp:entry:aquin-amo-tlaneltoca:5dde4fb6dd10",
+          "comentario": "Plural: .Akin amo taneltokaj:<br>Tipo: nombre",
+          "plural": ".Akin amo taneltokaj:",
+          "raiz": "nombre"
+        },
+        {
+          "record_id": "v94-diccionario-global-snp:entry:aquin-amo-tlaneltoca:cfbb9a36e1ac",
+          "source_record_id": "v94-diccionario-global-snp:entry:aquin-amo-tlaneltoca:cfbb9a36e1ac",
+          "comentario": "Tipo: adjetivo",
+          "raiz": "adjetivo"
+        }
+      ]
+    },
+    {
+      "source": "V94 Diccionario Global SNP",
+      "texto_estandarizado": "ixcomacatinemi",
+      "escritura_original": "ixkomakatinemi",
+      "traduccion": "Vt. Andar juzgando a alguien.",
+      "changed_fields": [
+        "Comentario",
+        "Otras formas",
+        "Pret plu",
+        "Pret sing",
+        "record_id",
+        "source_record_id"
+      ],
+      "variants": [
+        {
+          "record_id": "v94-diccionario-global-snp:entry:ixcomacatinemi:1db00bee1b51",
+          "source_record_id": "v94-diccionario-global-snp:entry:ixcomacatinemi:1db00bee1b51",
+          "comentario": "Pret sing: Ixkomakatinemik<br>Pret plu: Ixkomakatinenkej<br>Tipo: verbo",
+          "pret_sing": "Ixkomakatinemik",
+          "pret_plu": "Ixkomakatinenkej",
+          "raiz": "verbo"
+        },
+        {
+          "record_id": "v94-diccionario-global-snp:entry:ixcomacatinemi:fb5d333f8730",
+          "source_record_id": "v94-diccionario-global-snp:entry:ixcomacatinemi:fb5d333f8730",
+          "comentario": "Pret sing: Ixkomaktinemik<br>Pret plu: Ixkomaktinenkej<br>Otras formas: .Ixkomaktinemi:<br>Tipo: verbo",
+          "otras_formas": ".Ixkomaktinemi:",
+          "pret_sing": "Ixkomaktinemik",
+          "pret_plu": "Ixkomaktinenkej",
+          "raiz": "verbo"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "source_record_id": "153-trilingue:eid:1347099",
+      "source": "153? Trilingüe",
+      "eid": "1347099.0",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "153-trilingue:eid:1347099~1",
+          "fields": {
+            "eid": "1347099.0",
+            "Escritura original": "micoáni",
+            "Traducción": "Moral cosa que mata.",
+            "Fuente": "153? Trilingüe",
+            "prio": "43670.0",
+            "Texto estandarizado": "micoani",
+            "Comentario": "micoáni.  <br />  Mortal cosa que mata.  >  Moral cosa que mata.<br />  117r<br />  l?talis. e. l?tifer."
+          }
+        },
+        {
+          "original_record_id": "153-trilingue:eid:1347099~2",
+          "fields": {
+            "eid": "1347099.0",
+            "Escritura original": "micoáni",
+            "Traducción": "Mortal cosa que mata.",
+            "Fuente": "153? Trilingüe",
+            "prio": "43670.0",
+            "Texto estandarizado": "micoani",
+            "Comentario": "micoáni.  <br />  Mortal cosa que mata.  >  Mortal cosa que mata.<br />  117r<br />  mortifer. a. û."
+          }
+        }
+      ]
+    },
+    {
+      "source_record_id": "1547-olmos-v:eid:64200",
+      "source": "1547 Olmos_V ?",
+      "eid": "64200",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "1547-olmos-v:eid:64200~1",
+          "fields": {
+            "eid": "64200",
+            "Escritura original": "ayo xaxavatic",
+            "Traducción": "xugosa cosa",
+            "Fuente": "1547 Olmos_V ?",
+            "prio": "7676",
+            "Texto estandarizado": "ayo"
+          }
+        },
+        {
+          "original_record_id": "1547-olmos-v:eid:64200~2",
+          "fields": {
+            "eid": "64200",
+            "Escritura original": "ayo xaxava[c]tic",
+            "Traducción": "xugosa cosa",
+            "Fuente": "1547 Olmos_V ?",
+            "prio": "7676",
+            "Texto estandarizado": "ayo"
+          }
+        }
+      ]
+    },
+    {
+      "source_record_id": "1547-olmos-v:eid:64326",
+      "source": "1547 Olmos_V ?",
+      "eid": "64326",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "1547-olmos-v:eid:64326~1",
+          "fields": {
+            "eid": "64326",
+            "Escritura original": "nentlamati ninotequipachoa",
+            "Traducción": "Estar penado",
+            "Fuente": "1547 Olmos_V ?",
+            "prio": "61903",
+            "Texto estandarizado": "ontlamati"
+          }
+        },
+        {
+          "original_record_id": "1547-olmos-v:eid:64326~2",
+          "fields": {
+            "eid": "64326",
+            "Escritura original": "nentlamati [nontlamati] ninotequipachoa",
+            "Traducción": "Estar penado",
+            "Fuente": "1547 Olmos_V ?",
+            "prio": "61903",
+            "Texto estandarizado": "ontlamati"
+          }
+        }
+      ]
+    },
+    {
+      "source_record_id": "1547-olmos-v:eid:65764",
+      "source": "1547 Olmos_V ?",
+      "eid": "65764",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "1547-olmos-v:eid:65764~1",
+          "fields": {
+            "eid": "65764",
+            "Escritura original": "nitlatelquetza",
+            "Traducción": "ahirmar",
+            "Fuente": "1547 Olmos_V ?",
+            "prio": "77797",
+            "Texto estandarizado": "telquetza"
+          }
+        },
+        {
+          "original_record_id": "1547-olmos-v:eid:65764~2",
+          "fields": {
+            "eid": "65764",
+            "Escritura original": "nitlatelquetza",
+            "Traducción": "Ahirmar [afirmar]",
+            "Fuente": "1547 Olmos_V ?",
+            "prio": "77797",
+            "Texto estandarizado": "telquetza"
+          }
+        }
+      ]
+    },
+    {
+      "source_record_id": "1551-95-documentos-nahuas-de-la-ciudad-de-mexico:eid:165638",
+      "source": "1551-95 Documentos nahuas de la Ciudad de México",
+      "eid": "165638",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "1551-95-documentos-nahuas-de-la-ciudad-de-mexico:eid:165638~1",
+          "fields": {
+            "eid": "165638",
+            "Escritura original": "-pilotzin",
+            "Traducción": "sobrina de",
+            "Fuente": "1551-95 Documentos nahuas de la Ciudad de México",
+            "prio": "65765",
+            "Texto estandarizado": "pillotzin",
+            "Comentario": "SOBRINA DE<br /> <b>Centetl xochimilcopa ytzticac ynic ontetl tonatiuh ycallaquiyanpa ytzticac tepantzauhtica yniquetetl [F. 9v.] zan no ompa ytztica tonatiuh yquizanyanpa caltepiton ynic nauhtetl xochimilcopan ytzticac calixayo in ipilotzin catca Ana Tlaco niman noconnamicti ytoca Miguel Ocelotl oncan tlacat yn Mariana catca achtopa quimonnamicti in itoca Pedro Luys chane Quauhchinanco.</b> <br />  La una tiene la puerta hazia el poniente, [la segunda mira al occidente] tapado con adobes y la tercera, ansí mismo tiene su portada hazia donde sale el sol pequeño y el quatro tiene su portada hazia Suchimilco, con otro aposentillo, y tenía una sobrina llamada Ana Tlaco y caso con Miguel Ocelotl y alli nacio Mariana difunta muger primera que fue de Pedro Luis natural de Guachinango.  <br /> (Información sobre la propiedad de casas de Juana Xoco. Testigos : 8 tlaxilacaleque de Yopico. Año 1578, [297])<br /><br /> <b>Auh yn axcan oncan tlatoa Pedro Mazaque yhoan Ynes Tiacapan zan quelehuiznequi. Auh in icoppan omonanahoati Maria Xoco yllamatzin conito y nopilotzin Maria Anan Mocel ca nel imac yn ye no nehua in iquac tla monamacaz in cali ma ytlatzin tlaocoliloz.</b> <br />  Y que agora hablan Pedro Mazaquen e Ynes Teacapan sólo porque cudician las casas a manera de querellas hurtar ; y segunda vez la dicha vieja María Xoco dixo : mi sobrina María Ana pues me tengo de partir en sus manos, vendidas, que se vendan las casas, se le dé algo.  <br /> (Información sobre la propiedad de casas de Juana Xoco. Testigos : 8 tlaxilacaleque de Yopico. Año 1578, [321])<br /><br /> <b>Auh in calli in iquac monamacaz ayac oncan tlatoz anozo tlachalaniz yuh quitotia yn itlatol yn illamatzin Maria Xoco conito y nopilotzin Anan Mocel ca nel imac yn ye no nehuan in iquac in tla monamacaz in calli oncan ytlatzin tlaocoliloz yuh quitotia y ca nopan motlatoltiz in tlaxilacaleque ynin testigos conitohua in Pedro Luys ompa omomiquilito in Quauhchinanco.</b> <br />  Y al tiempo que se bendan las casas nadie no diga nada queriendo perturbar y ansi lo declaró la vieja Maria Xoco y dixo mi sobrina Ana Mocel y me partió de sus manos vendiéndose las casas del precio se le dé algo y dixo que los mandones del dicho barrio [tlaxilacalleque] e ablen por mí y este testigo dixo que Pedro Luis murió en Guachinango.  <br /> (Información sobre la propiedad de casas de Juana Xoco. Testigos : 8 tlaxilacaleque de Yopico. Año 1578, [316])<br /><br /> <b>Auh in iquac tla omonamacac calli in ipatiuh yes tomines misas yc topan mituz teyxtin auh yn ye ymac nonehua nopilotzin Anan Mocel man oncan tlaocoliloz in ipatiuh mochiuaz calli.</b> <br />  Si se quisiere ye despues de vendidas y el valor y tomines se digan de misas por nosotras tres me boy por mano de mi sobrina Ana Mocel y se le dé algo del precio y valor de las casas.  <br /> (Información sobre la propiedad de casas de Juana Xoco. Testigos : 8 tlaxilacaleque de Yopico. Año 1578, [307])<br /><br /> <b>Auh ini noconitohua monamacaz y nocal mochi in itlalo yhoan ychinanyo ontetl misa yc topan mitoz yn teyxtin nehuatl Maria Xoco yoan y nopilotzin Maria Anan yhoan nomiccamon Miguel Ocelotl excan moxeloz inic misa topan mitoz.</b> <br />  Mando y digo que se bendan mis casas con toda su tierra y camellones dos para que se diga de misas por nosotros tres yo Maria Xoco y mi sobrina Maria Ana y mi yerno Miguel Ocelotl y se divida en tres partes para por nosotras se digan de misas.  <br /> (Información sobre la propiedad de casas de Juana Xoco. Testigos : 8 tlaxilacaleque de Yopico. Año 1578, [314])<br />"
+          }
+        },
+        {
+          "original_record_id": "1551-95-documentos-nahuas-de-la-ciudad-de-mexico:eid:165638~2",
+          "fields": {
+            "eid": "165638",
+            "Escritura original": "-pil[l]otzin",
+            "Traducción": "sobrina de",
+            "Fuente": "1551-95 Documentos nahuas de la Ciudad de México",
+            "prio": "65765",
+            "Texto estandarizado": "pillotzin",
+            "Comentario": "SOBRINA DE<br /> <b>Auh in calli in iquac monamacaz ayac oncan tlatoz anozo tlachalaniz yuh quitotia yn itlatol yn illamatzin Maria Xoco conito y nopilotzin Anan Mocel ca nel imac yn ye no nehuan in iquac in tla monamacaz in calli oncan ytlatzin tlaocoliloz yuh quitotia y ca nopan motlatoltiz in tlaxilacaleque ynin testigos conitohua in Pedro Luys ompa omomiquilito in Quauhchinanco.</b> <br />  Y al tiempo que se bendan las casas nadie no diga nada queriendo perturbar y ansi lo declaró la vieja Maria Xoco y dixo mi sobrina Ana Mocel y me partió de sus manos vendiéndose las casas del precio se le dé algo y dixo que los mandones del dicho barrio [tlaxilacalleque] e ablen por mí y este testigo dixo que Pedro Luis murió en Guachinango.  <br /> (Información sobre la propiedad de casas de Juana Xoco. Testigos : 8 tlaxilacaleque de Yopico. Año 1578, [316])<br /><br /> <b>Centetl xochimilcopa ytzticac ynic ontetl tonatiuh ycallaquiyanpa ytzticac tepantzauhtica yniquetetl [F. 9v.] zan no ompa ytztica tonatiuh yquizanyanpa caltepiton ynic nauhtetl xochimilcopan ytzticac calixayo in ipilotzin catca Ana Tlaco niman noconnamicti ytoca Miguel Ocelotl oncan tlacat yn Mariana catca achtopa quimonnamicti in itoca Pedro Luys chane Quauhchinanco.</b> <br />  La una tiene la puerta hazia el poniente, [la segunda mira al occidente] tapado con adobes y la tercera, ansí mismo tiene su portada hazia donde sale el sol pequeño y el quatro tiene su portada hazia Suchimilco, con otro aposentillo, y tenía una sobrina llamada Ana Tlaco y caso con Miguel Ocelotl y alli nacio Mariana difunta muger primera que fue de Pedro Luis natural de Guachinango.  <br /> (Información sobre la propiedad de casas de Juana Xoco. Testigos : 8 tlaxilacaleque de Yopico. Año 1578, [297])<br /><br /> <b>Auh yn axcan oncan tlatoa Pedro Mazaque yhoan Ynes Tiacapan zan quelehuiznequi. Auh in icoppan omonanahoati Maria Xoco yllamatzin conito y nopilotzin Maria Anan Mocel ca nel imac yn ye no nehua in iquac tla monamacaz in cali ma ytlatzin tlaocoliloz.</b> <br />  Y que agora hablan Pedro Mazaquen e Ynes Teacapan sólo porque cudician las casas a manera de querellas hurtar ; y segunda vez la dicha vieja María Xoco dixo : mi sobrina María Ana pues me tengo de partir en sus manos, vendidas, que se vendan las casas, se le dé algo.  <br /> (Información sobre la propiedad de casas de Juana Xoco. Testigos : 8 tlaxilacaleque de Yopico. Año 1578, [321])<br /><br /> <b>Auh in calli yoan ytlallo ytenpanyo monamacaz cempoalli mocuiz yehoatl quimanaz yn nopilotzin Ana Xuarez ca nel  ytlalpantzinco yn ipan ycac calli auh yn  atentli ca nel ymaxcatzin ca muchi quicenhuica.</b> <br />  Y las dichas casas y suelo dellas y paredes se vendan en veynte pesos y las compre Ana Xuarez mi sobrina porque las casas están edificadas en sus propias tierras y el  callejon que va a dar hasta el acequia [atentli] pertenecen y son de las dichas casas.  <br /> (Posesión de casas y terrenos dada a María Gerónima y contradicción de Magdalena Inés. Información tomada a cinco testigos. Año 1592, [805])<br /><br /> <b>Auh in iquac tla omonamacac calli in ipatiuh yes tomines misas yc topan mituz teyxtin auh yn ye ymac nonehua nopilotzin Anan Mocel man oncan tlaocoliloz in ipatiuh mochiuaz calli.</b> <br />  Si se quisiere ye despues de vendidas y el valor y tomines se digan de misas por nosotras tres me boy por mano de mi sobrina Ana Mocel y se le dé algo del precio y valor de las casas.  <br /> (Información sobre la propiedad de casas de Juana Xoco. Testigos : 8 tlaxilacaleque de Yopico. Año 1578, [307])<br /><br /><br />SOBRINA<br /> <b>Auh in calli yoan itlallo ytepanyo monamacaz cempoalli mocuiz yehoatl quimanaz yn nopilotzin Ana Xuarez ca nel ytlalpantzinco yn ipan ycac calli auh yn atentli ca nel ymaxcatzin ca muchi quicenhuica.</b> <br />  Lo qual con la demas parte de casas tierras y paredes mando que se vendan en veynte pesos y que las conprase su sobrina Ana Xuarez a causa que parte de las dichas casas están edificadas en tierras suyas propias y el callejon que va a dar hazia la azequia [atentli] de la dicha Ana Xuarez y lo a de aver todo.  <br /> (Posesión de casas y terrenos dada a María Gerónima y contradicción de Magdalena Inés. Información tomada a cinco testigos. Año 1592, [819])<br />"
+          }
+        }
+      ]
+    },
+    {
+      "source_record_id": "1551-95-documentos-nahuas-de-la-ciudad-de-mexico:eid:167191",
+      "source": "1551-95 Documentos nahuas de la Ciudad de México",
+      "eid": "167191",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "1551-95-documentos-nahuas-de-la-ciudad-de-mexico:eid:167191~1",
+          "fields": {
+            "eid": "167191",
+            "Escritura original": "it[t]ilia, nicno",
+            "Traducción": "ver (Rev. de itta)",
+            "Fuente": "1551-95 Documentos nahuas de la Ciudad de México",
+            "prio": "35684",
+            "Texto estandarizado": "ittilia",
+            "Comentario": "VER (REV. DE ITTA)<br /> <b>Niman nezqui yn tlalli no quinmotlatlanilli ceceyaca quimotili yn Apepetzatl ytenpan ualpeua necoc cenpoualli ynemac Yztactecuihtli ya uecauhtica yn quipia auh in ascan quipia yn ipiltzin ytoca Ana.</b> <br />  Y paresció las tierras despues que les hobo preguntado uno a uno y vido que [a orillas de] lo que se llama Apepesal [es] donde comyensan quarenta brazas que son [ las que les fue dado en suerte] a Yztacteutli [hace ya tiempo que las tiene y ahora las] tiene su hija Ana.  <br /> (Información tomada por el juez de residencia Lucas García a los que estaban trabajando en la tierra llamada Tolpan, junto al río Apepetzatl, Año 1557, [3])<br /><br /> <b>Auh in  iquescan quimotili yn juez yn tlalli ytlal Piltzintecuihtli ya ysquich cauitl quipiya yn ipiltzin ytoca Gabriel Ypanmiquiz.</b> <br />  Y en (las tres  partes de tierra) [el tercer lugar] vido el juez ques tierra de Piltzin Tecuihtli todo el tiempo las a poseydo su hijo Graviel Ypanmiquiz.  <br /> (Información tomada por el juez de residencia Lucas García a los que estaban trabajando en la tierra llamada Tolpan, junto al río Apepetzatl, Año 1557, [5])<br /><br /> <b>Ynic nauhcan quimotili yn juez Atezcapan poui za matlatlacmatl yn quichiua.</b> <br />  Y en (las quatro partes) [el cuarto lugar] que vido el juez son de Atescapan que tiene diez brazas.  <br /> (Información tomada por el juez de residencia Lucas García a los que estaban trabajando en la tierra llamada Tolpan, junto al río Apepetzatl, Año 1557, [6])<br />"
+          }
+        },
+        {
+          "original_record_id": "1551-95-documentos-nahuas-de-la-ciudad-de-mexico:eid:167191~2",
+          "fields": {
+            "eid": "167191",
+            "Escritura original": "i[t]tilia, nicno",
+            "Traducción": "ver (Rev. de itta)",
+            "Fuente": "1551-95 Documentos nahuas de la Ciudad de México",
+            "prio": "35684",
+            "Texto estandarizado": "ittilia",
+            "Comentario": "VER (REV. DE ITTA)<br /> <b>[F. 4r] Yn nehuatl Miguel de los Angeles nimotetlayecolticatzin yn ipaltzinco totecuyo dios occepan axcan mixpantzinco ninopechteca yn ipaltzinco rey su magestad niquitohua ca yc oticmocaquilti yn ipanpa milli yn onpa Tlaliztacapan yn quimotlaltia Francisco Martin yhuan yn ipilhuan oquimotilito yn pipilti yn tiquinmixquechili.</b> <br />  Yo Miguel de los Angeles servidor de vuestra merced por nuestro señor dios ante vuestra merced me postro otra bes y por la magestad del rei y digo que ya consta a vuestra merced lo de la tierra de Tlalystacapan que dice Francisco Martin ser suya y [entre renglones ; de] sus hijos y los principales [pipiltin] que vuestra merced nombró lo fueron a ber.  <br /> (Contestación de Miguel de los Ángeles, vecino de San Juan Tequicaltitlan, a la demanda que le hace Francisco Martín, y disposiciones del gobernador don Antonio Valeriano. Año 1589, [607])<br />"
+          }
+        }
+      ]
+    },
+    {
+      "source_record_id": "1611-arenas:eid:69796",
+      "source": "1611 Arenas",
+      "eid": "69796",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "1611-arenas:eid:69796~1",
+          "fields": {
+            "eid": "69796",
+            "Escritura original": "palti, ni",
+            "Traducción": "mojarse",
+            "Fuente": "1611 Arenas",
+            "prio": "64342",
+            "Texto estandarizado": "palti",
+            "Comentario": "MOJARSE<br /> <b><i>ahço tipaltizque</i></b>  =   mojarnos hemos   (Preguntas, que se suelen hazer en razon de la mudança del tiempo: 2, 157)<br /><br /> <b><i>ahmo paltiz</i></b>  =   no se moge   (Palabras que se suelen dezir comunmente a un moço, quando le encargan alguna ropa para que la guarde, y la ponga en orden: 1, 19)<br />"
+          }
+        },
+        {
+          "original_record_id": "1611-arenas:eid:69796~2",
+          "fields": {
+            "eid": "69796",
+            "Escritura original": "palti[a], ni",
+            "Traducción": "mojarse",
+            "Fuente": "1611 Arenas",
+            "prio": "64342",
+            "Texto estandarizado": "palti",
+            "Comentario": "MOJARSE<br /> <b><i>ahço tipaltizque</i></b>  =   mojarnos hemos   (Preguntas, que se suelen hazer en razon de la mudança del tiempo: 1, 61)<br />"
+          }
+        }
+      ]
+    },
+    {
+      "source_record_id": "1611-arenas:eid:69826",
+      "source": "1611 Arenas",
+      "eid": "69826",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "1611-arenas:eid:69826~1",
+          "fields": {
+            "eid": "69826",
+            "Escritura original": "piltzin",
+            "Traducción": "hijo",
+            "Fuente": "1611 Arenas",
+            "prio": "65830",
+            "Texto estandarizado": "piltzin",
+            "Comentario": "HIJO<br /> <b><i>Xihuallauh nopiltzé</i></b>  =   [¡]Venid acá hijo[¡]   (Cosas que se offrecen preguntar a alguno, que se encuentra en el camino, caminando: 1, 34)<br />"
+          }
+        },
+        {
+          "original_record_id": "1611-arenas:eid:69826~2",
+          "fields": {
+            "eid": "69826",
+            "Escritura original": "piltzin[tli]",
+            "Traducción": "hijo",
+            "Fuente": "1611 Arenas",
+            "prio": "65830",
+            "Texto estandarizado": "piltzin",
+            "Comentario": "HIJO<br /> <b><i>nopiltzin</i></b>  =   mi hijo   (Lo que comunmente se suele dezir despidiendose una persona de otra: 2, 135)<br /><br /> <b><i>[Xinechtlapopolhui] nopiltziné</i></b>  =   [perdonadme] hijo, &c.   (Palabras que comunme[n]te se suelen dezir, pidiendo una persona perdon a otra de algun yerro, o descuydo: 2, 125)<br /><br /> <b><i>in mopiltzin</i></b>  =   [[¿]como está] tu hijo[?]   (Palabras que se suelen dezir preguntando a una persona por diversas cosas, y a el en particular por las suyas, y si quiere servir: 1, 12)<br /><br /> <b><i>Cuix tinechmacaznequi in mopiltzin</i></b>  =   [¿]Quieres entregarme a tu hijo[?]   (Palabras que ordinariamente se suelen dezir pidiendo algun muchacho a sus padres para enseñarle officio: 1, 74)<br />"
+          }
+        }
+      ]
+    },
+    {
+      "source_record_id": "1629-alarcon:eid:67253",
+      "source": "1629 Alarcón",
+      "eid": "67253",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "1629-alarcon:eid:67253~1",
+          "fields": {
+            "eid": "67253",
+            "Escritura original": "ita, nic-on",
+            "Traducción": "ver",
+            "Fuente": "1629 Alarcón",
+            "prio": "35651",
+            "Texto estandarizado": "itta",
+            "Comentario": "VER<br /> <b>Tla xihualhuian: tla totoconecahuican tochalchiuh-ecahuaz; amo quinmoztla, ahmo quinhuiptla, ça niman axcan toconitazque ac ye quimictia in teteo ipiltzin. / Nomatca nehuatl, nitlamacazqui, nitlamatini, nimimatca tiçitl.</b> <br />  Ea venid y subamos nuestra preçiosa escalera (porque mide el medio braço hacia arriba), que no ha de ser para mañana ni esotro dia, sino que aora luego hemos de ver quien es el que mata al hijo de los dioses. Advertid que lo mando yo, el sacerdote entendido o medico o adiuino consumado en sabiduria  <br /> (V, 1 Del sortilegio de las manos, (321-3))<br />"
+          }
+        },
+        {
+          "original_record_id": "1629-alarcon:eid:67253~2",
+          "fields": {
+            "eid": "67253",
+            "Escritura original": "it[t]a, nic-on",
+            "Traducción": "ver",
+            "Fuente": "1629 Alarcón",
+            "prio": "35651",
+            "Texto estandarizado": "itta",
+            "Comentario": "VER<br /> <b></b> <br />  Donde en el conjuro decia: «Luego ahora hemos de ver quien es el que ya mata &ª» Tla tiquitilican, toconitazque ac ye quimictia, &c.; dicen: «Hemos de ver que remedio aprovechará al hijo de los Dioses, si se halla tan bien con la mediçina llamada blanca muger? Tla tiquitilican teteo ipiltzin ahço quinamiquiz, quihuelmatiz in pahtzintli iztac atl[]inan cihuatzintli, &c. (Hija del aguayerva). Si se hallará bien con el espiritado amarillo o con el espiritado verde, &ª, aço quihuelmatiz in coçauhqui tlamacazqui, ahnoço, xoxoqui tlamacazqui (tlacopati, yerba piçiete). Y quando van diçiendo estas palabras van midiendo el medio braço hasta que sale la suerte a su voluntad, y saliendo buena, aplican la medicina con que yo formo la suerte  <br /> (V, 1 Del sortilegio de las manos, (333) (334))<br />"
+          }
+        }
+      ]
+    },
+    {
+      "source_record_id": "1780-bnf-361:eid:97086",
+      "source": "1780 ? Bnf_361",
+      "eid": "97086",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "1780-bnf-361:eid:97086~1",
+          "fields": {
+            "eid": "97086",
+            "Escritura original": "Ytech ne[c]aua[]lotiuh.",
+            "Traducción": "Albacea.",
+            "Fuente": "1780 ? Bnf_361",
+            "prio": "34428",
+            "Texto estandarizado": "itech necahualotiuh",
+            "Comentario": "Ytech ne[c]auatilotiuh."
+          }
+        },
+        {
+          "original_record_id": "1780-bnf-361:eid:97086~2",
+          "fields": {
+            "eid": "97086",
+            "Escritura original": "Ytech ne[n]aua[ti]lotiuh.",
+            "Traducción": "Albacea.",
+            "Fuente": "1780 ? Bnf_361",
+            "prio": "34428",
+            "Texto estandarizado": "itech necahualotiuh",
+            "Comentario": "Ytechnenauatilotiuh."
+          }
+        }
+      ]
+    },
+    {
+      "source_record_id": "2021-wimmer:eid:1790070",
+      "source": "2021 Wimmer",
+      "eid": "1790070",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "2021-wimmer:eid:1790070~1",
+          "fields": {
+            "eid": "1790070",
+            "Escritura original": "AHHUA",
+            "Traducción": "v.t. tê-., / gronder, réprimander quelqu'un. / insulter quelqu'un. / v.récipr., se disputer, se quereller. / passif: ahhualo ou ayo.",
+            "Fuente": "2021 Wimmer",
+            "prio": "1886",
+            "Texto estandarizado": "ahua",
+            "Comentario": "ahhua > ahhua-.<br/><br/><B>*~ v.t. tê-., </B> <B><br/><br/>1. ~ </B>gronder, réprimander quelqu'un.<br/><br/><b>Esp.,</b> reñir a otro (M). Dyckerhoff 1970, 221 note 8.<br/><br/><b>Angl.,</b>to scold s.o., to reprimand s.o. R.Andrews Introd 422.<br/><br/>to scold s.o., to quarrel with s.o., to irritate s.o. (K).<br/><br/><b><I> nimitzonahhua  </I></b>, je te gronde (Par.).<br/><br/><b><I> annêchonahhuah  </I></b>, vous me grondez.<br/><br/><b><I> quihuâlahhuah  </I></b>, ils le réprimandent - man schilt ihn. Sah 1927, 57.<br/><br/><b><I> in têpînâuhtia in têahhua  </I></b>, celui qui fait honte aux gens, celui qui les réprimande - er beschimpft die Leute und zanckt sie aus. Sah 1950, 105:30 = Sah4, 12.<br/><br/><b><I> cahhuah  </I></b>, ils le disputent - sie schelten ihn aus. SIS 1950, 257.<br/><br/><b><I> ayâc huel quimahhuaya  </I></b>, personne ne pouvait les réprimander - none could scold them.<br/><br/>Sah4, 34.<br/><br/><b><I> in cihuah conilhuiah inic cahhuah  </I></b>, les femmes lui disaient et l'invectivaient ainsi - the<br/><br/>women said to it, and thus chid it. A l'adresse de la chouette, chicuahtli. Sah5, 163.<br/><br/><b><I> quimahhuayah in îmichpôchhuân  </I></b>, elles grondaient leurs filles. Sah5, 183.<br/><br/><b><I> ic têahhuayah, ic quimahhuayah ic quintlacahualtiah in tênânhuân in împilhuân  </I></b>, alors les<br/><br/>mères grondaient, elles grondaient leurs enfants et les empêchaient (de lécher la pierre à moudre) - the mothers chid and scolded their young ones for it, and restrained them for it. Sah5, 188.<br/><br/><b><I> ahzo ye âcah conahhuaz  </I></b>, peut-être qu'alors quelqu'un allait le gronder - perhaps now<br/><br/>someone would chide him. Sah5, 169.<br/><br/><b><I> ayâc têahhua  </I></b>, personne ne gronde. Sah2, 262.<br/><br/><b><I>mâcamo xicchîhua in ca mitzahhuaz motahtzin</I></b>, ne fais pas ça (sans quoi, parce que) ton père va te gronder. Launey Introd. p. 317.<br/><br/><b><I>ômitzahhuaqueh auh ahmo ic ôtimonemilizcuep</I></b>, on t'a grondé, et tu n'as pas changé de vie pour autant. Launey Introd. p. 319.<br/><br/><b><I> conchachalatzah, conahhuah  </I></b>, ils élèvent une clameur contre lui, ils l'invectivent. Sah12, 57.<B><br/><br/>2. ~ </B>insulter quelqu'un.<br/><br/><b><I> in âquin têmictih in ahzo têahhuac  </I></b>, celui qui a maltraité les autres ou les a insulté. Sah2, 95.<br/><br/><b><I> intlâ âcah ôquimahhuac  </I></b>, si quelqu'un les a insultés - if any chid them. Sah4, 35.<br/><br/><b><I> inic ahmo quimahhuazqueh quincuecuenochihchîhuazqueh ahnozo quinhuîtequiz întlâcahuân  </I></b>, qu'ils n'insultent pas, qu'ils ne traitent pas avec une folle arrogance, qu'ils ne battent pas leurs esclaves. Sah4, 34.<br/><br/>Voir aussi tlahuêlîlôcâahhua.<br/><br/><B>*~ v.récipr., </B> se disputer, se quereller.<br/><br/><b>Angl.,</b> to quarrel. R.Andrews Introd 422.<br/><br/><b><I> netech mahhua  </I></b>, il y a des contestations, ils discutent - reñir vnos con otros los de vna familia. preterito: netech omauaque (M).<br/><br/><b><I> ayâc huel mahhuaya  </I></b>, personne n'osait se disputer - no one (on the day sign Four Wind) might quarrel. Sah4, 49 (maoaia).<br/><br/><b><I> titahhuah  </I></b>, nous nous disputons.<br/><br/><b><I> titocepanahhuah  </I></b>, nous nous disputons tous. Launey Introd 248.<br/><br/><B>*~ passif:</B> ahhualo ou ayo.",
+            "Traducción (es)": "v.t. tê-.,/ regañar, reprender a alguien. / insulto a alguien. / v.recipr., discutir, reñir. / pasivo: ahhualo o ayo.",
+            "Comentario (es)": "ahhua > ahhua-.<br/><br/><B>*~ v.t. tê-., </B> <B><br/><br/>1. ~ </B>regañar, reprender a alguien.<br/><br/><b>Esp.,</b> reñir a otro (M). Dyckerhoff 1970, 221 nota 8.<br/><br/><b>Ingl.,</b>reñir a s.o., reprender a s.o. R.Andrews introdujo 422.<br/><br/>regañar a s.o., pelear con s.o., irritar a s.o. (K).<br/><br/><b><I> nimitzonahhua  </I></b>, te regaño (Par.).<br/><br/><b><I> annêchonahhuah  </I></b>, me estás regañando.<br/><br/><b><I> quihuâlahhuah  </I></b>, lo reprenden - man schilt ihn. Sa 1927, 57.<br/><br/><b><I> in têpînâuhtia in têahhua  </I></b>, el que avergüenza a la gente, el que los reprende - er beschimpft die Leute und zanckt sie aus.Sa 1950, 105:30 = Sa 4, 12.<br/><br/><b><I> cahhuah  </I></b>, lo disputan - sie schelten ihn aus. SIS 1950, 257.<br/><br/><b><I> ayâc huel quimahhuaya  </I></b>, nadie podía regañarlos - nadie podía regañarlos.<br/><br/>Sa4, 34.<br/><br/><b><I> in cihuah conilhuiah inic cahhuah  </I></b>, le dijeron las mujeres y lo insultaron así - el<br/><br/>Le decían las mujeres, y así lo reprendían. A la dirección de la lechuza, chicuahtli. Sah5, 163.<br/><br/><b><I> quimahhuayah in îmichpôchhuân  </I></b>, regañaron a sus hijas. Sah5, 183.<br/><br/><b><I> ic têahhuayah, ic quimahhuayah ic quintlacahualtiah in tênânhuân in împilhuân  </I></b>, entonces el<br/><br/>las madres regañaron, regañaron a sus hijos y les impidieron (lamer la piedra de moler); las madres reprendieron y regañaron a sus pequeños por ello, y los contuvieron por ello.Sah5, 188.<br/><br/><b><I> ahzo ye âcah conahhuaz  </I></b>, tal vez entonces alguien lo regañaría - tal vez ahora<br/><br/>alguien lo engañaría. Sah5, 169.<br/><br/><b><I> ayâc têahhua  </I></b>, nadie regaña. Sah2, 262.<br/><br/><b><I>mâcamo xicchîhua in ca mitzahhuaz motahtzin</I></b>, no hagas eso (de lo contrario, porque) tu padre te regañará. Introducción de Launey. pag. 317.<br/><br/><b><I>ômitzahhuaqueh auh ahmo ic ôtimonemilizcuep</I></b>, te reprendieron y aún no has cambiado de vida. Introducción de Launey. pag. 319.<br/><br/><b><I> conchachalatzah, conahhuah  </I></b>, alzan contra él clamor, lo injurian. Sah12, 57.<B><br/><br/>2. ~ </B>insultar a alguien.<br/><br/><b><I> in âquin têmictih in ahzo têahhuac  </I></b>, aquel que maltrataba a otros o los insultaba. Sa2, 95.<br/><br/><b><I> intlâ âcah ôquimahhuac  </I></b>, si alguien los ha insultado - si alguno los ha reprendido. Sah4, 35.<br/><br/><b><I> inic ahmo quimahhuazqueh quincuecuenochihchîhuazqueh ahnozo quinhuîtequiz întlâcahuân  </I></b>, que no insulten, que no traten con loca soberbia, que no golpeen a sus esclavos.Sa4, 34.<br/><br/>Véase también tlahuêlîlôcâahhua.<br/><br/><B>*~ v.recipr., </B> discutir, reñir.<br/><br/><b>Ingl.,</b> pelear. R. Andrews introdujo 422.<br/><br/><b><I> netech mahhua  </I></b>, hay disputas, discuten - reñir vnos con otros los de vna familia. pretérito: netech omauaque (M).<br/><br/><b><I> ayâc huel mahhuaya  </I></b>, nadie se atrevió a pelear - nadie (en el signo del día Cuatro Vientos) podría pelear. Sah4, 49 (maoaia).<br/><br/><b><I> titahhuah  </I></b>, argumentamos.<br/><br/><b><I> titocepanahhuah  </I></b>, todos discutimos. Launey introdujo 248.<br/><br/><B>*~ pasivo:</B> ahhualo o ayo."
+          }
+        },
+        {
+          "original_record_id": "2021-wimmer:eid:1790070~2",
+          "fields": {
+            "eid": "1790070",
+            "Escritura original": "AHHUA",
+            "Traducción": "v.t. tê-., / gronder, réprimander quelqu'un. / insulter quelqu'un. / v.récipr., se disputer, se quereller. / passif: ahhualo ou ayo.",
+            "Fuente": "2021 Wimmer",
+            "prio": "1886",
+            "Texto estandarizado": "ahua",
+            "Comentario": "ahhua > ahhua-.<br/><br/><B>*~ v.t. tê-., </B> <B><br/><br/>1. ~ </B>gronder, réprimander quelqu'un.<br/><br/><b>Esp.,</b> reñir a otro (M). Dyckerhoff 1970, 221 note 8.<br/><br/><b>Angl.,</b>to scold s.o., to reprimand s.o. R.Andrews Introd 422.<br/><br/>to scold s.o., to quarrel with s.o., to irritate s.o. (K).<br/><br/><b><I> nimitzonahhua  </I></b>, je te gronde (Par.).<br/><br/><b><I> annêchonahhuah  </I></b>, vous me grondez.<br/><br/><b><I> quihuâlahhuah  </I></b>, ils le réprimandent - man schilt ihn. Sah 1927, 57.<br/><br/><b><I> in têpînâuhtia in têahhua  </I></b>, celui qui fait honte aux gens, celui qui les réprimande - er beschimpft die Leute und zanckt sie aus. Sah 1950, 105:30 = Sah4, 12.<br/><br/><b><I> cahhuah  </I></b>, ils le disputent - sie schelten ihn aus. SIS 1950, 257.<br/><br/><b><I> ayâc huel quimahhuaya  </I></b>, personne ne pouvait les réprimander - none could scold them.<br/><br/>Sah4, 34.<br/><br/><b><I> in cihuah conilhuiah inic cahhuah  </I></b>, les femmes lui disaient et l'invectivaient ainsi - the<br/><br/>women said to it, and thus chid it. A l'adresse de la chouette, chicuahtli. Sah5, 163.<br/><br/><b><I> quimahhuayah in îmichpôchhuân  </I></b>, elles grondaient leurs filles. Sah5, 183.<br/><br/><b><I> ic têahhuayah, ic quimahhuayah ic quîntlacahualtiah in tênânhuân in împilhuân  </I></b>, alors les<br/><br/>mères grondaient, elles grondaient leurs enfants et les empêchaient (de lécher la pierre à moudre) - the mothers chid and scolded their young ones for it, and restrained them for it. Sah5, 188.<br/><br/><b><I> ahzo ye âcah conahhuaz  </I></b>, peut-être qu'alors quelqu'un allait le gronder - perhaps now<br/><br/>someone would chide him. Sah5, 169.<br/><br/><b><I> ayâc têahhua  </I></b>, personne ne gronde. Sah2, 262.<br/><br/><b><I>mâcamo xicchîhua in ca mitzahhuaz motahtzin</I></b>, ne fais pas ça (sans quoi, parce que) ton père va te gronder. Launey Introd. p. 317.<br/><br/><b><I>ômitzahhuaqueh auh ahmo ic ôtimonemilizcuep</I></b>, on t'a grondé, et tu n'as pas changé de vie pour autant. Launey Introd. p. 319.<br/><br/><b><I> conchachalatzah, conahhuah  </I></b>, ils élèvent une clameur contre lui, ils l'invectivent. Sah12, 57.<B><br/><br/>2. ~ </B>insulter quelqu'un.<br/><br/><b><I> in âquin têmictih in ahzo têahhuac  </I></b>, celui qui a maltraité les autres ou les a insulté. Sah2, 95.<br/><br/><b><I> intlâ âcah ôquîmahhuac  </I></b>, si quelqu'un les a insultés - if any chid them. Sah4, 35.<br/><br/><b><I> inic ahmo quimahhuazqueh quincuecuenochihchîhuazqueh ahnozo quinhuîtequiz întlâcahuân  </I></b>, qu'ils n'insultent pas, qu'ils ne traitent pas avec une folle arrogance, qu'ils ne battent pas leurs esclaves. Sah4, 34.<br/><br/>Voir aussi tlahuêlîlôcâahhua.<br/><br/><B>*~ v.récipr., </B> se disputer, se quereller.<br/><br/><b>Angl.,</b> to quarrel. R.Andrews Introd 422.<br/><br/><b><I> netech mahhua  </I></b>, il y a des contestations, ils discutent - reñir vnos con otros los de vna familia. preterito: netech omauaque (M).<br/><br/><b><I> ayâc huel mahhuaya  </I></b>, personne n'osait se disputer - no one (on the day sign Four Wind) might quarrel. Sah4, 49 (maoaia).<br/><br/><b><I> titahhuah  </I></b>, nous nous disputons.<br/><br/><b><I> titocepanahhuah  </I></b>, nous nous disputons tous. Launey Introd 248.<br/><br/><B>*~ passif:</B> ahhualo ou ayo.",
+            "Traducción (es)": "Vermont. tê-.,/ regañar, reprender a alguien. / insulto a alguien. / v.recipr., discutir, reñir. / pasivo: ahhualo o ayo.",
+            "Comentario (es)": "ahhua > ahhua-.<br/><br/><B>*~ v.t. tê-., </B> <B><br/><br/>1. ~ </B>regañar, reprender a alguien.<br/><br/><b>Esp.,</b> reñir a otro (M). Dyckerhoff 1970, 221 nota 8.<br/><br/><b>Ingl.,</b>reñir a s.o., reprender a s.o. R.Andrews introdujo 422.<br/><br/>regañar a s.o., pelear con s.o., irritar a s.o. (K).<br/><br/><b><I> nimitzonahhua  </I></b>, te regaño (Par.).<br/><br/><b><I> annêchonahhuah  </I></b>, me estás regañando.<br/><br/><b><I> quihuâlahhuah  </I></b>, lo reprenden - man schilt ihn. Sa 1927, 57.<br/><br/><b><I> in têpînâuhtia in têahhua  </I></b>, el que avergüenza a la gente, el que los reprende - er beschimpft die Leute und zanckt sie aus.Sa 1950, 105:30 = Sa 4, 12.<br/><br/><b><I> cahhuah  </I></b>, lo disputan - sie schelten ihn aus. SIS 1950, 257.<br/><br/><b><I> ayâc huel quimahhuaya  </I></b>, nadie podía regañarlos - nadie podía regañarlos.<br/><br/>Sa4, 34.<br/><br/><b><I> in cihuah conilhuiah inic cahhuah  </I></b>, le dijeron las mujeres y lo insultaron así - el<br/><br/>Le decían las mujeres, y así lo reprendían. A la dirección de la lechuza, chicuahtli. Sah5, 163.<br/><br/><b><I> quimahhuayah in îmichpôchhuân  </I></b>, regañaron a sus hijas. Sah5, 183.<br/><br/><b><I> ic têahhuayah, ic quimahhuayah ic quîntlacahualtiah in tênânhuân in împilhuân  </I></b>, entonces el<br/><br/>las madres regañaron, regañaron a sus hijos y les impidieron (lamer la piedra de moler); las madres reprendieron y regañaron a sus pequeños por ello, y los contuvieron por ello.Sah5, 188.<br/><br/><b><I> ahzo ye âcah conahhuaz  </I></b>, tal vez entonces alguien lo regañaría - tal vez ahora<br/><br/>alguien lo engañaría. Sah5, 169.<br/><br/><b><I> ayâc têahhua  </I></b>, nadie regaña. Sah2, 262.<br/><br/><b><I>mâcamo xicchîhua in ca mitzahhuaz motahtzin</I></b>, no hagas eso (de lo contrario, porque) tu padre te regañará. Introducción de Launey. pag. 317.<br/><br/><b><I>ômitzahhuaqueh auh ahmo ic ôtimonemilizcuep</I></b>, te reprendieron y aún no has cambiado de vida. Introducción de Launey. pag. 319.<br/><br/><b><I> conchachalatzah, conahhuah  </I></b>, alzan contra él clamor, lo injurian. Sah12, 57.<B><br/><br/>2. ~ </B>insultar a alguien.<br/><br/><b><I> in âquin têmictih in ahzo têahhuac  </I></b>, aquel que maltrataba a otros o los insultaba. Sa2, 95.<br/><br/><b><I> intlâ âcah ôquîmahhuac  </I></b>, si alguien los insultó - si alguno los reprendió. Sah4, 35.<br/><br/><b><I> inic ahmo quimahhuazqueh quincuecuenochihchîhuazqueh ahnozo quinhuîtequiz întlâcahuân  </I></b>, que no insulten, que no traten con loca soberbia, que no golpeen a sus esclavos.Sa4, 34.<br/><br/>Véase también tlahuêlîlôcâahhua.<br/><br/><B>*~ v.recipr., </B> discutir, reñir.<br/><br/><b>Ingl.,</b> pelear. R. Andrews introdujo 422.<br/><br/><b><I> netech mahhua  </I></b>, hay disputas, discuten - reñir vnos con otros los de vna familia. pretérito: netech omauaque (M).<br/><br/><b><I> ayâc huel mahhuaya  </I></b>, nadie se atrevió a pelear - nadie (en el signo del día Cuatro Vientos) podría pelear. Sah4, 49 (maoaia).<br/><br/><b><I> titahhuah  </I></b>, argumentamos.<br/><br/><b><I> titocepanahhuah  </I></b>, todos discutimos. Launey introdujo 248.<br/><br/><B>*~ pasivo:</B> ahhualo o ayo."
+          }
+        }
+      ]
+    },
+    {
+      "source_record_id": "2021-wimmer:eid:1801732",
+      "source": "2021 Wimmer",
+      "eid": "1801732",
+      "merged_clusters": [],
+      "remaining_variants": [
+        {
+          "original_record_id": "2021-wimmer:eid:1801732~1",
+          "fields": {
+            "eid": "1801732",
+            "Escritura original": "ICZA",
+            "Traducción": "v.t. tla-., fouler, écraser du pied, presser une chose. / redupl.  îxquich caâna: in înmolicpi, întetepon ic tlahtlacza ie moquehquetza  , they exerted all the strength of their elbows, of their knees to hurry, to go here and there. Sah1,42. / v.t. tê-., piétiner quelqu'un. / v.récipr., / se piétiner, se presser, se fouler. / s'accoupler, en parlant des oiseaux.",
+            "Fuente": "2021 Wimmer",
+            "prio": "30353",
+            "Texto estandarizado": "icza",
+            "Comentario": "icza > icza-.<br/><br/><B>*~ v.t. tla-., </B> fouler, écraser du pied, presser une chose.<br/><br/><b>Esp.,</b>hollar o pisar algo (M).<br/><br/>hollar, pisar, oprimir. W.Jimenez Moreno I974, 46.<br/><br/><b>Angl.,</b> to tread upon s.th., to step on s.th. to step on or trample something (K).<br/><br/><b><I> nitlacza  </I></b>, je pose le pied (sur quelque chose) - I step on s.th.<br/><br/>R.Andrews Introd 441.<br/><br/><b><I> aocmo îtlaczayân in tlacza </I></b>, ce n'est plus là où il doit mettre le pied qu'il le pose. Olmos ECN11, 154 (7) = Launey Amerindia 17, 188 et Launey II 24 (55) = Bautista Huehuetlatolli 3v.<br/><br/><b><I> quihuâlicza in îtiyanquiz  </I></b>, elle vient poser le pied sur son marché - sie betritt ihren Markt. Est dit de Têteoh înnân à l'occasion de Ochpaniztli. Sah 1927, 174 = Sah2, 119.<br/><br/>Le texte esp. dit: 'a este passeo llamauan acoseamjento del tianquez porque nunca mas auja de boluer a el'.<br/><br/><b><I> in ôahcito tzompantitlan niman ic conicza in îhuêhueuh  </I></b>, quand elle est arrivée à l'endroit nommé tzompantitlan, aussitôt elle frappe du pied sur son tambour à membrane - als sie an dem 'Orte des Schädelgerüstes' angekommen war, tritt sie auf ihre Pauke. Est dit de l'incarnation de Têteoh înnân à l'occasion d'Ochpaniztli. Sah 1927, 178.<br/><br/><b><I> îhuêhuêuh quicza  </I></b>, il frappe du pied sur son tambour - su tambor lo pisa.<br/><br/>W.Jimenez Moreno 1974, 46.<br/><br/><B>*~ redupl.</B> <b><I> îxquich caâna: in înmolicpi, întetepon ic tlahtlacza ie moquehquetza  </I></b>, they exerted all the strength of their elbows, of their knees to hurry, to go here and there. Sah1, 42.<br/><br/><B>*~ v.t. tê-., </B> piétiner quelqu'un.<br/><br/><b><I> têicza  </I></b>, il piétine les autres. Est dit du dindon, huehxôlôtl. Sah11, 53.<br/><br/><B>* impers., </B> Vetancurt 1673, 11r. propose deux formes passives, iczalo et iczo. R.Andrews Introd 441 donne icxo ou iczalo.<br/><br/><B>*~ v.récipr., </B> <B><br/><br/>1. ~ </B>se piétiner, se presser, se fouler.<br/><br/>Avec redupl.<br/><br/><b><I> in canah huel mohueyichîhua, huel mohocza, tzihtzica, cahcatzca  </I></b>, when somewhere there was great congregating, there was indeed trampling, shoving, and crowding. Sah4, 121. <B><br/><br/>2. ~ </B>s'accoupler, en parlant des oiseaux.<br/><br/><b>Esp.,</b> tomarse las aues (M).",
+            "Traducción (es)": "Vermont. tla-., pisar, aplastar con el pie, presionar algo. / reduplicar.  îxquich caâna: en înmolicpi, întetepon ic tlahtlacza ie monterhquetza, ejercieron toda la fuerza de los codos, de las rodillas para apresurarse, para ir de aquí para allá. Sah1,42. / v.t. tê-., pisotear a alguien. / v. recipr., / pisotearse, apresurarse, pisarse. / compañero, hablando de pájaros.",
+            "Comentario (es)": "icza > icza-.<br/><br/><B>*~ v.t. tla-., </B> pisar, aplastar con el pie, presionar algo.<br/><br/><b>Esp.,</b>hollar o pisar algo (M).<br/><br/>gritar, pisar, oprimir. W. Jiménez Moreno I974, 46.<br/><br/><b>Ingl.,</b> pisar algo, pisar algo. pisar o pisotear algo (K).<br/><br/><b><I> nitlacza  </I></b>, pongo mi pie (en algo) - piso algo.<br/><br/>R. Andrews introdujo 441.<br/><br/><b><I> aocmo îtlaczayân in tlacza </I></b>, ya no es donde debe poner el pie donde lo pone.Olmos ECN11, 154 (7) = Launey Amerindia 17, 188 y Launey II 24 (55) = Bautista Huehuetlatolli 3v.<br/><br/><b><I> quihuâlicza in îtiyanquiz  </I></b>, viene a poner un pie en su mercado: sie betritt ihren Markt.Têteoh înnân se dice con motivo de Ochpaniztli. Sah 1927, 174 = Sah2, 119.<br/><br/>El texto esp. dice: 'esto es lo que le pasó al llamauan acoseamjento del tianquez porque nunca mas auja de boluer a el'.<br/><br/><b><I> in ôahcito tzompantitlan niman ic conicza in îhuêhueuh  </I></b>, cuando llegó al lugar llamado tzompantitlan, inmediatamente golpeó su tambor de membrana con el pie - cuando llegó al 'lugar del estante de cráneos', pisó su tambor de membrana.Se dice la encarnación de Têteoh înnân con motivo de Ochpaniztli. Sa 1927, 178.<br/><br/><b><I> îhuêhuêuh quicza  </I></b>, golpea su tambor con el pie - su tambor lo pisa.<br/><br/>W. Jiménez Moreno 1974, 46.<br/><br/><B>*~ redupl.</B> <b><I> îxquich caâna: in înmolicpi, întetepon ic tlahtlacza ie moquehquetza  </I></b>, ejercieron toda la fuerza de los codos, de las rodillas para apresurarse, para ir de aquí para allá.Sah1, 42.<br/><br/><B>*~ v.t. tê-., </B> pisotear a alguien.<br/><br/><b><I> têicza  </I></b>, pisotea a los demás. Se dice que el pavo es huehxôlôtl. Sah11, 53.<br/><br/><B>*impers.,</B> Vetancurt 1673, 11r. Ofrece dos formas pasivas, iczalo e iczo. R.Andrews Introd 441 da icxo o iczalo.<br/><br/><B>*~ v.recipr., </B> <B><br/><br/>1. ~ </B>pisotearse, apresurarse, pisotearse.<br/><br/>Con reduplicación.<br/><br/><b><I> in canah huel mohueyichîhua, huel mohocza, tzihtzica, cahcatzca  </I></b>, cuando en algún lugar había gran congregación, efectivamente había pisoteo, empujón y hacinamiento.Sah4, 121. <B><br/><br/>2. ~ </B>compañero, hablando de pájaros.<br/><br/><b>Esp.,</b> tomarse las aues (M)."
+          }
+        },
+        {
+          "original_record_id": "2021-wimmer:eid:1801732~2",
+          "fields": {
+            "eid": "1801732",
+            "Escritura original": "ICZA",
+            "Traducción": "v.t. tla-., fouler, écraser du pied, presser une chose. / redupl.  îxquich caâna: in înmolicpi, întetepon ic tlahtlacza ie moquehquetza  , they exerted all the strength of their elbows, of their knees to hurry, to go here and there. Sah1,42. / v.t. tê-., piétiner quelqu'un. / v.récipr., / se piétiner, se presser, se fouler. / s'accoupler, en parlant des oiseaux.",
+            "Fuente": "2021 Wimmer",
+            "prio": "30353",
+            "Texto estandarizado": "icza",
+            "Comentario": "icza > icza-.<br/><br/><B>*~ v.t. tla-., </B> fouler, écraser du pied, presser une chose.<br/><br/><b>Esp.,</b>hollar o pisar algo (M).<br/><br/>hollar, pisar, oprimir. W.Jimenez Moreno I974, 46.<br/><br/><b>Angl.,</b> to tread upon s.th., to step on s.th. to step on or trample something (K).<br/><br/><b><I> nitlacza  </I></b>, je pose le pied (sur quelque chose) - I step on s.th.<br/><br/>R.Andrews Introd 441.<br/><br/><b><I> aocmo îtlaczayân in tlacza </I></b>, ce n'est plus là où il doit mettre le pied qu'il le pose. Olmos ECN11, 154 (7) = Launey Amerindia 17, 188 et Launey II 24 (55) = Bautista Huehuetlatolli 3v.<br/><br/><b><I> quihuâlicza in îtiyanquiz  </I></b>, elle vient poser le pied sur son marché - sie betritt ihren Markt. Est dit de Têteoh înnân à l'occasion de Ochpaniztli. Sah 1927, 174 = Sah2, 119.<br/><br/>Le texte esp. dit: 'a este passeo llamauan acoseamjento del tianquez porque nunca mas auja de boluer a el'.<br/><br/><b><I> in ôahcito tzompantitlan niman ic conicza in îhuêhueuh  </I></b>, quand elle est arrivée à l'endroit nommé tzompantitlan, aussitôt elle frappe du pied sur son tambour à membrane - als sie an dem 'Orte des Schädelgerüstes' angekommen war, tritt sie auf ihre Pauke. Est dit de l'incarnation de Têteoh înnân à l'occasion d'Ochpaniztli. Sah 1927, 178.<br/><br/><b><I> îhuêhuêuh quicza  </I></b>, il frappe du pied sur son tambour - su tambor lo pisa.<br/><br/>W.Jimenez Moreno 1974, 46.<br/><br/><B>*~ redupl.</B> <b><I> îxquich caâna: in înmolicpi, întetepon ic tlahtlacza ie moquehquetza  </I></b>, they exerted all the strength of their elbows, of their knees to hurry, to go here and there. Sah1, 42.<br/><br/><B>*~ v.t. tê-., </B> piétiner quelqu'un.<br/><br/><b><I> têicza  </I></b>, il piétine les autres. Est dit du dindon, huehxôlôtl. Sah11, 53.<br/><br/><B>* impers., </B> Vetancurt 1673, 11r. propose deux formes passives, iczalo et iczo. R.Andrews Introd 441 donne icxo ou iczalo.<br/><br/><B>*~ v.récipr., </B> <B><br/><br/>1. ~ </B>se piétiner, se presser, se fouler.<br/><br/>Avec redupl.<br/><br/><b><I> in canah huel mohueyichîhua, huel mohocza, tzihtzica, cahcatzca  </I></b>, when somewhere there was great congregating, there was indeed trampling, shoving, and crowding. Sah4, 121. <B><br/><br/>2. ~ </B>s'accoupler, en parlant des oiseaux.<br/><br/><b>Esp.,</b> tomarse las aues (M).",
+            "Traducción (es)": "v.t. tla-., pisar, aplastar con el pie, presionar algo. / reduplicar.  îxquich caâna: en înmolicpi, întetepon ic tlahtlacza ie monterhquetza, ejercieron toda la fuerza de los codos, de las rodillas para apresurarse, para ir de aquí para allá. Sah1,42. / v.t. tê-., pisotear a alguien. / v. recipr., / pisotearse, apresurarse, pisarse. / compañero, hablando de pájaros.",
+            "Comentario (es)": "icza > icza-.<br/><br/><B>*~ v.t. tla-., </B> pisar, aplastar con el pie, presionar algo.<br/><br/><b>Esp.,</b>hollar o pisar algo (M).<br/><br/>gritar, pisar, oprimir. W. Jiménez Moreno I974, 46.<br/><br/><b>Ingl.,</b> pisar algo, pisar algo. pisar o pisotear algo (K).<br/><br/><b><I> nitlacza  </I></b>, pongo mi pie (en algo) - piso algo.<br/><br/>R. Andrews introdujo 441.<br/><br/><b><I> aocmo îtlaczayân in tlacza </I></b>, ya no es donde debe poner el pie donde lo pone.Olmos ECN11, 154 (7) = Launey Amerindia 17, 188 y Launey II 24 (55) = Bautista Huehuetlatolli 3v.<br/><br/><b><I> quihuâlicza in îtiyanquiz  </I></b>, viene a poner un pie en su mercado: sie betritt ihren Markt.Têteoh înnân se dice con motivo de Ochpaniztli. Sah 1927, 174 = Sah2, 119.<br/><br/>El texto esp. dice: 'esto es lo que le pasó al llamauan acoseamjento del tianquez porque nunca mas auja de boluer a el'.<br/><br/><b><I> in ôahcito tzompantitlan niman ic conicza in îhuêhueuh  </I></b>, cuando llegó al lugar llamado tzompantitlan, inmediatamente golpeó su tambor de membrana con el pie - cuando llegó al 'lugar del estante de cráneos', pisó su tambor de membrana.Se dice la encarnación de Têteoh înnân con motivo de Ochpaniztli. Sa 1927, 178.<br/><br/><b><I> îhuêhuêuh quicza  </I></b>, golpea su tambor con el pie - su tambor lo pisa.<br/><br/>W. Jiménez Moreno 1974, 46.<br/><br/><B>*~ redupl.</B> <b><I> îxquich caâna: in înmolicpi, întetepon ic tlahtlacza ie moquehquetza  </I></b>, ejercieron toda la fuerza de los codos, de las rodillas para apresurarse, para ir de aquí para allá.Sah1, 42.<br/><br/><B>*~ v.t. tê-., </B> pisotear a alguien.<br/><br/><b><I> têicza  </I></b>, pisotea a los demás. Se dice que el pavo es huehxôlôtl. Sah11, 53.<br/><br/><B>*impers.,</B> Vetancurt 1673, 11r. Ofrece dos formas pasivas, iczalo e iczo. R.Andrews Introd 441 da icxo o iczalo.<br/><br/><B>*~ v.recipr., </B> <B><br/><br/>1. ~ </B>pisotearse, apresurarse, pisotearse.<br/><br/>Con reduplicación.<br/><br/><b><I> in canah huel mohueyichîhua, huel mohocza, tzihtzica, cahcatzca  </I></b>, cuando en algún lugar había gran congregación, efectivamente había pisoteo, empujón y hacinamiento.Sah4, 121. <B><br/><br/>2. ~ </B>compañero, hablando de pájaros.<br/><br/><b>Esp.,</b> tomarse las aues (M)."
+          }
+        }
+      ]
+    }
+  ]
+}
