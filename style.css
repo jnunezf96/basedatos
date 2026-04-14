@@ -145,11 +145,15 @@ body {
   white-space: nowrap;
 }
 
-.tab-btn:hover { background: #eef0ff; color: #1a2468; }
+.tab-btn:not(.active):hover { background: #eef0ff; color: #1a2468; }
 
 .tab-btn.active {
   background: #4c6ef5;
   color: #fff;
+}
+
+.tab-btn.active:hover {
+  background: #3b5bdb;
 }
 
 
@@ -832,12 +836,17 @@ tr:nth-child(odd) td {
   transition: background 0.12s, color 0.12s;
 }
 
-.pill:hover { background: #e8edff; }
+.pill:not(.active):hover { background: #e8edff; }
 
 .pill.active {
   background: #4c6ef5;
   color: #fff;
   border-color: #4c6ef5;
+}
+
+.pill.active:hover {
+  background: #3b5bdb;
+  border-color: #3b5bdb;
 }
 
 .filter-grid {
@@ -946,6 +955,7 @@ tr:nth-child(odd) td {
   font-weight: 600;
   cursor: pointer;
   font-size: 13px;
+  transition: background 0.12s, color 0.12s;
 }
 
 .btn.primary {
@@ -954,10 +964,18 @@ tr:nth-child(odd) td {
   box-shadow: 0 8px 20px rgba(76, 110, 245, 0.25);
 }
 
+.btn.primary:hover {
+  background: #3b5bdb;
+}
+
 .btn.ghost {
   background: #f3f5ff;
   color: #1c2457;
   border-color: #d6dcff;
+}
+
+.btn.ghost:hover {
+  background: #e8edff;
 }
 
 .sources-card {
