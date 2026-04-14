@@ -91,7 +91,7 @@ const I18N = {
     "pairs.header.a": "Forma en -a",
     "pairs.header.i": "Forma en -i",
     "pairs.header.total": "Total",
-    "site.tagline": "Busca y filtra más de 290,000 entradas de diccionarios históricos de náhuatl. Usa los filtros para encontrar palabras por escritura, traducción o fuente — los resultados aparecen en la tabla de abajo.",
+    "site.tagline": "Busca y filtra cientos de miles de entradas de diccionarios históricos de náhuatl. Usa los filtros para encontrar palabras por escritura, traducción o fuente; los resultados aparecen en la tabla de abajo.",
     "table.header.paleografia": "Texto original",
     "table.header.grafia": "Texto estandarizado",
     "table.header.traduccion": "Traducción",
@@ -100,9 +100,18 @@ const I18N = {
     "table.sort.label": "Orden:",
     "table.sort.all": "Todos",
     "table.sort.page": "Página",
+    "table.rank.label": "Rango:",
+    "table.rank.group": "Modo de orden",
+    "table.rank.auto": "Auto",
+    "table.rank.prio": "Prio",
+    "table.rank.title.auto": "Ordena por relevancia y luego por prio",
+    "table.rank.title.prio": "Ordena solo por prio",
     "table.status.loading": "Cargando datos…",
     "table.status.none": "Sin registros para mostrar.",
     "table.status.showing": "Registros mostrados: {{start}}-{{end}} de {{total}}",
+    "table.status.detail.auto": "{{exact}} lemas exactos · {{phrase}} frases · Auto+Prio",
+    "table.status.detail.prio": "{{exact}} lemas exactos · {{phrase}} frases · Prio",
+    "table.status.detail.manual": "{{exact}} lemas exactos · {{phrase}} frases · Manual",
     "table.empty": "No hay datos disponibles.",
     "table.export.filename": "tabla.jpg",
     "field.paleografia": "Texto original",
@@ -220,7 +229,7 @@ const I18N = {
     "pairs.header.a": "-a form",
     "pairs.header.i": "-i form",
     "pairs.header.total": "Total",
-    "site.tagline": "Search and filter over 290,000 entries from historical Nahuatl dictionaries. Use the filters to find words by spelling, translation, or source — results appear in the table below.",
+    "site.tagline": "Search and filter hundreds of thousands of entries from historical Nahuatl dictionaries. Use the filters to find words by spelling, translation, or source; results appear in the table below.",
     "table.header.paleografia": "Original text",
     "table.header.grafia": "Standardized writing",
     "table.header.traduccion": "Translation",
@@ -229,9 +238,18 @@ const I18N = {
     "table.sort.label": "Sort:",
     "table.sort.all": "All",
     "table.sort.page": "Page",
+    "table.rank.label": "Rank:",
+    "table.rank.group": "Ranking mode",
+    "table.rank.auto": "Auto",
+    "table.rank.prio": "Prio",
+    "table.rank.title.auto": "Order by relevance, then prio",
+    "table.rank.title.prio": "Order only by prio",
     "table.status.loading": "Loading data…",
     "table.status.none": "No records to show.",
     "table.status.showing": "Records shown: {{start}}-{{end}} of {{total}}",
+    "table.status.detail.auto": "{{exact}} exact lemmas · {{phrase}} phrases · Auto+Prio",
+    "table.status.detail.prio": "{{exact}} exact lemmas · {{phrase}} phrases · Prio",
+    "table.status.detail.manual": "{{exact}} exact lemmas · {{phrase}} phrases · Manual",
     "table.empty": "No data available.",
     "table.export.filename": "table.jpg",
     "field.paleografia": "Original text",
@@ -343,6 +361,8 @@ let comentarioAllExpanded = false;
 let currentLang = "es";
 let lastPairResults = null;
 let lastPairMeta = null;
+let rankingMode = "auto";
+let lastRankingSummary = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   setupLanguageToggle();
@@ -372,6 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupTabs();
   setupSortControls();
   setupSortScopeControls();
+  setupRankingModeControl();
   updateSortIndicators();
   setupPaginationControls();
   setupPageSizeControls();
@@ -391,7 +412,10 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then(text => {
       const rows = text.split("\n").filter(Boolean).map(line => JSON.parse(line));
-      rows.forEach((row, idx) => (row._rid = idx));
+      rows.forEach((row, idx) => {
+        row._rid = row.record_id || idx;
+        row._prio = parsePriority(row.prio);
+      });
       dataRows = rows;
       applyFuenteFilters();
     });
@@ -438,11 +462,12 @@ function applyTranslations() {
 function refreshLanguageDependentUI() {
   const y = window.scrollY;
   updateAccentLabels();
+  updateRankingModeControls();
   if (!dataRows || !dataRows.length) {
     setStatus(t("table.status.loading"));
     return;
   }
-  renderTable(lastRenderRows, lastRenderTotal || dataRows.length);
+  renderTable(lastRenderRows, lastRenderTotal);
   refreshPairFinderUI();
   requestAnimationFrame(() => {
     window.scrollTo({ top: y, behavior: "auto" });
@@ -473,6 +498,41 @@ function setupOldSpanishToggle() {
       btns.forEach(b => b.classList.toggle("active", oldSpanishMode));
       normalizationCache = new Map();
       if (activeFilters.length) applyFilters();
+    });
+  });
+}
+
+function updateRankingModeControls() {
+  document.querySelectorAll(".rank-mode").forEach(group => {
+    group.setAttribute("aria-label", t("table.rank.group"));
+  });
+  document.querySelectorAll(".rank-mode-btn").forEach(btn => {
+    const mode = btn.dataset.rankMode === "prio" ? "prio" : "auto";
+    const active = rankingMode === mode;
+    const textKey = mode === "prio" ? "table.rank.prio" : "table.rank.auto";
+    const titleKey = mode === "prio" ? "table.rank.title.prio" : "table.rank.title.auto";
+    btn.textContent = t(textKey);
+    btn.title = t(titleKey);
+    btn.setAttribute("aria-label", t(titleKey));
+    btn.setAttribute("aria-pressed", String(active));
+    btn.classList.toggle("active", active);
+  });
+}
+
+function setupRankingModeControl() {
+  const saved = localStorage.getItem("nahuatl-rank-mode");
+  if (saved === "auto" || saved === "prio") {
+    rankingMode = saved;
+  }
+  updateRankingModeControls();
+  document.querySelectorAll(".rank-mode-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const nextMode = btn.dataset.rankMode === "prio" ? "prio" : "auto";
+      if (nextMode === rankingMode) return;
+      rankingMode = nextMode;
+      localStorage.setItem("nahuatl-rank-mode", rankingMode);
+      updateRankingModeControls();
+      applyFilters(false, { keepOffset: true, keepCurrent: true, restoreScroll: window.scrollY });
     });
   });
 }
@@ -1263,6 +1323,84 @@ function removeOwnerFilters(owner) {
   activeFilters = activeFilters.filter(filter => filter.owner !== owner);
 }
 
+function getDominantLemmaFilter(filters = activeFilters) {
+  const substantiveFilters = (filters || []).filter(filter => filter.type !== "fuenteSet");
+  if (!substantiveFilters.length) return null;
+  if (substantiveFilters.some(filter => String(filter.logic || "AND").toUpperCase() === "OR")) {
+    return null;
+  }
+  const candidates = substantiveFilters.filter(filter =>
+    !filter.negate &&
+    filter.field === "Texto estandarizado" &&
+    normalizeScope(filter.scope) === "word" &&
+    filter.mode === "exact" &&
+    String(filter.logic || "AND").toUpperCase() === "AND"
+  );
+  return candidates.length === 1 ? candidates[0] : null;
+}
+
+function buildRankingContext(rows) {
+  const context = {
+    mode: rankingMode,
+    dominantLemmaFilter: getDominantLemmaFilter(activeFilters),
+    exactCount: 0,
+    phraseCount: 0,
+    usesLemmaTiering: false,
+    getTier: () => 2
+  };
+
+  if (!context.dominantLemmaFilter) return context;
+
+  const tierCache = new WeakMap();
+  const query = buildFilterQuery(context.dominantLemmaFilter);
+  const mode = context.dominantLemmaFilter.mode;
+
+  context.getTier = row => {
+    if (tierCache.has(row)) return tierCache.get(row);
+    const entry = getNormalizedEntry(row, context.dominantLemmaFilter.field);
+    const useLoose = query.allowLoose;
+    const words = query.accentSensitive
+      ? entry.wordsWithAccents
+      : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
+    const matched = words.some(wordEntry => {
+      const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
+      return candidateMatchesQuery(candidate, query, mode, useLoose);
+    });
+    const tier = !matched ? 2 : words.length === 1 ? 0 : 1;
+    tierCache.set(row, tier);
+    return tier;
+  };
+
+  rows.forEach(row => {
+    const tier = context.getTier(row);
+    if (tier === 0) context.exactCount += 1;
+    else if (tier === 1) context.phraseCount += 1;
+  });
+
+  context.usesLemmaTiering = rankingMode === "auto" && (context.exactCount > 0 || context.phraseCount > 0);
+  return context;
+}
+
+function buildRankingSummary(context, manualOverride = false) {
+  if (!context || !context.dominantLemmaFilter) return null;
+  const detailKey = manualOverride
+    ? "table.status.detail.manual"
+    : context.usesLemmaTiering
+      ? "table.status.detail.auto"
+      : "table.status.detail.prio";
+  return t(detailKey, {
+    exact: context.exactCount,
+    phrase: context.phraseCount
+  });
+}
+
+function getRankingComparator(context) {
+  if (context && context.usesLemmaTiering) {
+    return (a, b) => compareLemmaPriority(a, b, context);
+  }
+  return comparePriorityOrder;
+}
+
 function applyFilters(initial = false, options = {}) {
   if (!dataRows.length) return;
   if (!options.keepOffset) {
@@ -1270,12 +1408,14 @@ function applyFilters(initial = false, options = {}) {
   }
   let matches = [];
   if (!activeFilters.length) {
-    matches = sampleRandomRows(dataRows.length);
+    matches = dataRows.slice();
   } else {
     buildEvalContext();
     matches = dataRows.filter(row => evaluateTextFilters(row));
   }
   lastFilteredRows = matches;
+  const rankingContext = buildRankingContext(matches);
+  const rankingComparator = getRankingComparator(rankingContext);
   const total = matches.length;
   if (displayOffset >= total && total > 0) {
     displayOffset = Math.max(0, total - maxDisplayRows);
@@ -1283,19 +1423,24 @@ function applyFilters(initial = false, options = {}) {
   let paged;
   if (sortKeys.length) {
     if (sortScope === "page") {
-      paged = matches.slice(displayOffset, displayOffset + maxDisplayRows);
-      applySort(paged, sortKeys);
+      const baseRows = matches.slice();
+      baseRows.sort(rankingComparator);
+      paged = baseRows.slice(displayOffset, displayOffset + maxDisplayRows);
+      applyManualSort(paged, sortKeys);
     } else {
       const sorted = matches.slice();
-      applySort(sorted, sortKeys);
+      applyManualSort(sorted, sortKeys);
       paged = sorted.slice(displayOffset, displayOffset + maxDisplayRows);
     }
   } else {
-    paged = matches.slice(displayOffset, displayOffset + maxDisplayRows);
+    const sorted = matches.slice();
+    sorted.sort(rankingComparator);
+    paged = sorted.slice(displayOffset, displayOffset + maxDisplayRows);
   }
   lastRenderRows = paged.slice();
-  lastRenderTotal = total || dataRows.length;
-  renderTable(paged, total || dataRows.length);
+  lastRenderTotal = total;
+  lastRankingSummary = buildRankingSummary(rankingContext, sortKeys.length > 0);
+  renderTable(paged, total);
   updateSortIndicators();
   restoreScroll(options);
   renderActiveFilterChips();
@@ -1317,6 +1462,7 @@ function renderTable(rows, totalCount) {
   } else {
     rows.forEach(row => {
       const tr = document.createElement("tr");
+      if (row.record_id) tr.dataset.recordId = row.record_id;
       let translationTd = null;
       let comentarioMeta = null;
 
@@ -1424,24 +1570,41 @@ function renderTable(rows, totalCount) {
   updateComentarioToggleButton(rows);
 }
 
+function setTableStatusMessage(baseText, detailText = "") {
+  const targets = [
+    document.getElementById("tableStatus"),
+    document.querySelector(".table-footer .table-status")
+  ].filter(Boolean);
+  targets.forEach(el => {
+    if (!detailText) {
+      el.textContent = baseText;
+      return;
+    }
+    el.replaceChildren();
+    const main = document.createElement("span");
+    main.textContent = baseText;
+    const detail = document.createElement("span");
+    detail.className = "table-status-detail";
+    detail.textContent = detailText;
+    el.append(main, detail);
+  });
+}
+
 function setStatus(message) {
-  const el = document.getElementById("tableStatus");
-  if (el) el.textContent = message;
+  setTableStatusMessage(message);
 }
 
 function updateTableStatus(displayed, total) {
-  const el = document.getElementById("tableStatus");
-  const footerStatus = document.querySelector(".table-footer .table-status");
-  if (!el) return;
   if (!total) {
-    el.textContent = t("table.status.none");
-    if (footerStatus) footerStatus.textContent = el.textContent;
+    setTableStatusMessage(t("table.status.none"));
     return;
   }
   const start = total === 0 ? 0 : Math.min(displayOffset + 1, total);
   const end = Math.min(displayOffset + displayed, total);
-  el.textContent = t("table.status.showing", { start, end, total });
-  if (footerStatus) footerStatus.textContent = el.textContent;
+  setTableStatusMessage(
+    t("table.status.showing", { start, end, total }),
+    lastRankingSummary || ""
+  );
 }
 
 function restoreScroll(options) {
@@ -1503,7 +1666,7 @@ function setupComentarioToggleAll() {
     } else {
       lastRenderRows.forEach(r => expandedComments.add(r._rid));
     }
-    renderTable(lastRenderRows, lastRenderTotal || dataRows.length);
+    renderTable(lastRenderRows, lastRenderTotal);
     requestAnimationFrame(() => {
       window.scrollTo({ top: y, behavior: "auto" });
     });
@@ -1672,19 +1835,25 @@ function setupSortControls() {
   });
 }
 
-function applySort(arr, keys) {
+function applyManualSort(arr, keys) {
   if (!keys || !keys.length) return;
   arr.sort((a, b) => {
     for (const { field, dir } of keys) {
-      const vaRaw = String(a[field] ?? "");
-      const vbRaw = String(b[field] ?? "");
+      const vaRaw = String(getSortFieldValue(a, field));
+      const vbRaw = String(getSortFieldValue(b, field));
       const va = buildSortKey(vaRaw);
       const vb = buildSortKey(vbRaw);
       const cmp = alphaNumCollator.compare(va, vb);
       if (cmp !== 0) return dir === "asc" ? cmp : -cmp;
     }
-    return 0;
+    return compareRecordId(a, b);
   });
+}
+
+function getSortFieldValue(row, field) {
+  const isDisplayField = TABLE_FIELDS.some(entry => entry.key === field);
+  if (isDisplayField) return getDisplayValue(row, field);
+  return row[field] ?? "";
 }
 
 function buildSortKey(value) {
@@ -1692,6 +1861,42 @@ function buildSortKey(value) {
   return String(raw || "")
     .replace(/^[^0-9A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+/, "")
     .trim();
+}
+
+function parsePriority(value) {
+  if (value == null || value === "") return Number.POSITIVE_INFINITY;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : Number.POSITIVE_INFINITY;
+}
+
+function compareLemmaPriority(a, b, context) {
+  const tierA = context.getTier(a);
+  const tierB = context.getTier(b);
+  if (tierA !== tierB) return tierA - tierB;
+  return comparePriorityOrder(a, b);
+}
+
+function comparePriorityOrder(a, b) {
+  const pa = Number.isFinite(a._prio) ? a._prio : Number.POSITIVE_INFINITY;
+  const pb = Number.isFinite(b._prio) ? b._prio : Number.POSITIVE_INFINITY;
+  if (pa !== pb) return pa - pb;
+
+  const headA = buildSortKey(getDisplayValue(a, "Texto estandarizado") || getDisplayValue(a, "Escritura original"));
+  const headB = buildSortKey(getDisplayValue(b, "Texto estandarizado") || getDisplayValue(b, "Escritura original"));
+  const headCmp = alphaNumCollator.compare(headA, headB);
+  if (headCmp !== 0) return headCmp;
+
+  const sourceCmp = alphaNumCollator.compare(
+    buildSortKey(getDisplayValue(a, "Fuente")),
+    buildSortKey(getDisplayValue(b, "Fuente"))
+  );
+  if (sourceCmp !== 0) return sourceCmp;
+
+  return compareRecordId(a, b);
+}
+
+function compareRecordId(a, b) {
+  return alphaNumCollator.compare(String(a.record_id || a._rid || ""), String(b.record_id || b._rid || ""));
 }
 
 function updateSortIndicators() {

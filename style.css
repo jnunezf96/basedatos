@@ -186,6 +186,14 @@ body {
   font-size: 13px;
   color: #4b5275;
   flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.table-status-detail {
+  font-size: 12px;
+  color: #6b7397;
 }
 
 .sort-scope {
@@ -739,6 +747,27 @@ tr:nth-child(odd) td {
 
 .arrow-btn:hover {
   background: #e8ecff;
+}
+
+.rank-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rank-mode-label {
+  font-size: 11px;
+  color: #5d6690;
+}
+
+.rank-mode-btn.active {
+  background: #4c6ef5;
+  border-color: #4c6ef5;
+  color: #fff;
+}
+
+.rank-mode-btn.active:hover {
+  background: #3b5bdb;
 }
 
 .arrow-btn.old-spanish-btn {

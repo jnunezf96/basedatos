@@ -21,7 +21,7 @@
     </div>
 
     <!-- ── Site tagline ── -->
-    <p class="site-tagline" data-i18n="site.tagline">Busca y filtra más de 290,000 entradas de diccionarios históricos de náhuatl. Usa los filtros para encontrar palabras por escritura, traducción o fuente — los resultados aparecen en la tabla de abajo.</p>
+    <p class="site-tagline" data-i18n="site.tagline">Busca y filtra cientos de miles de entradas de diccionarios históricos de náhuatl. Usa los filtros para encontrar palabras por escritura, traducción o fuente; los resultados aparecen en la tabla de abajo.</p>
 
     <!-- ── Panel: Filtros ── -->
     <section class="tab-panel active" id="filtersPanel">
@@ -221,6 +221,11 @@
             <option value="all" data-i18n="table.sort.all">Todos</option>
             <option value="page" data-i18n="table.sort.page">Página</option>
           </select>
+          <div class="rank-mode" role="group" aria-label="Modo de orden">
+            <span class="rank-mode-label" data-i18n="table.rank.label">Rango:</span>
+            <button type="button" class="arrow-btn rank-mode-btn" data-rank-mode="auto">Auto</button>
+            <button type="button" class="arrow-btn rank-mode-btn" data-rank-mode="prio">Prio</button>
+          </div>
         </div>
         <div class="page-size">
           <label for="pageSizeSelect" data-i18n="table.pagesize.label">Filas:</label>
@@ -296,6 +301,11 @@
             <option value="all" data-i18n="table.sort.all">Todos</option>
             <option value="page" data-i18n="table.sort.page">Página</option>
           </select>
+          <div class="rank-mode" role="group" aria-label="Modo de orden">
+            <span class="rank-mode-label" data-i18n="table.rank.label">Rango:</span>
+            <button type="button" class="arrow-btn rank-mode-btn" data-rank-mode="auto">Auto</button>
+            <button type="button" class="arrow-btn rank-mode-btn" data-rank-mode="prio">Prio</button>
+          </div>
         </div>
         <div class="page-size">
           <label for="pageSizeSelectFooter" data-i18n="table.pagesize.label">Filas:</label>
