@@ -366,16 +366,16 @@ let activeCardIndex = 0;
 const expandedComments = new Set();
 const expandableComments = new Set();
 const commentAnchors = new Map();
-let stickyHeaderResizeObserver = null;
-let stickyTableSyncFrame = 0;
 let currentLang = "es";
+let ghostSyncFrame = 0;
+let theadObserver = null;
 let lastPairResults = null;
 let lastPairMeta = null;
 let rankingMode = "auto";
 let lastRankingSummary = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  setupStickyTableOffsets();
+  setupGhostHeader();
   setupLanguageToggle();
   setupOldSpanishToggle();
   setupAccentToggle();
@@ -476,7 +476,7 @@ function applyTranslations() {
 }
 
 function refreshLanguageDependentUI() {
-  const y = window.scrollY;
+  const y = getTableScrollTop();
   updateAccentLabels();
   updateRankingModeControls();
   if (!dataRows || !dataRows.length) {
@@ -486,7 +486,7 @@ function refreshLanguageDependentUI() {
   renderTable(lastRenderRows, lastRenderTotal);
   refreshPairFinderUI();
   requestAnimationFrame(() => {
-    window.scrollTo({ top: y, behavior: "auto" });
+    setTableScroll(y);
   });
 }
 
@@ -1500,27 +1500,27 @@ function renderTable(rows, totalCount) {
 	                setCommentExpanded(row._rid, content, btn, false);
 	                if (anchor) {
 	                  requestAnimationFrame(() => {
+	                    const w = getTableWrapper();
 	                    const rect = btn.getBoundingClientRect();
-                    const centerNow = rect.top + rect.height / 2 + window.scrollY;
-                    const anchorCenter = anchor.center;
-                    const viewTop = window.scrollY;
-                    const viewBottom = viewTop + window.innerHeight;
-                    // Si el punto original está fuera de vista, llévalo a la pantalla; si está visible, solo ajusta la diferencia.
-                    if (anchorCenter < viewTop || anchorCenter > viewBottom) {
-                      const targetTop = anchorCenter - window.innerHeight * 0.5;
-                      window.scrollTo({ top: targetTop, behavior: "smooth" });
-                    } else {
-                      const delta = centerNow - anchorCenter;
-                      if (Math.abs(delta) > 1) {
-                        window.scrollBy({ top: delta, behavior: "smooth" });
-                      }
+	                    const scrollTop = getTableScrollTop();
+	                    const centerNow = rect.top + rect.height / 2 + scrollTop;
+	                    const anchorCenter = anchor.center;
+	                    const viewTop = scrollTop;
+	                    const viewH = w ? w.clientHeight : window.innerHeight;
+	                    const viewBottom = viewTop + viewH;
+	                    if (anchorCenter < viewTop || anchorCenter > viewBottom) {
+	                      setTableScroll(anchorCenter - viewH * 0.5, "smooth");
+	                    } else {
+	                      const delta = centerNow - anchorCenter;
+	                      if (Math.abs(delta) > 1 && w) w.scrollBy({ top: delta, behavior: "smooth" });
 	                    }
 	                  });
 	                }
 	              } else {
 	                const rect = btn.getBoundingClientRect();
-	                const center = rect.top + rect.height / 2 + window.scrollY;
-	                commentAnchors.set(row._rid, { scrollY: window.scrollY, center });
+	                const scrollTop = getTableScrollTop();
+	                const center = rect.top + rect.height / 2 + scrollTop;
+	                commentAnchors.set(row._rid, { scrollY: scrollTop, center });
 	                setCommentExpanded(row._rid, content, btn, true);
 	              }
 	              updateComentarioToggleButton(lastRenderRows);
@@ -1554,13 +1554,11 @@ function renderTable(rows, totalCount) {
   updateTableStatus(rows.length, totalCount);
   updatePaginationControls(totalCount);
   updateComentarioToggleButton(rows);
-  queueStickyTableOffsetsSync();
 }
 
 function setTableStatusMessage(baseText, detailText = "") {
   const targets = [
-    document.getElementById("tableStatus"),
-    document.querySelector(".table-footer .table-status")
+    document.getElementById("tableStatus")
   ].filter(Boolean);
   targets.forEach(el => {
     if (!detailText) {
@@ -1571,7 +1569,7 @@ function setTableStatusMessage(baseText, detailText = "") {
     const main = document.createElement("span");
     main.textContent = baseText;
     const detail = document.createElement("span");
-    detail.className = "table-status-detail";
+    detail.className = "result-info-detail";
     detail.textContent = detailText;
     el.append(main, detail);
   });
@@ -1599,16 +1597,16 @@ function restoreScroll(options) {
   const y = options.restoreScroll;
   const behavior = options.restoreBehavior === "smooth" ? "smooth" : "auto";
   requestAnimationFrame(() => {
-    window.scrollTo({ top: y, behavior });
+    setTableScroll(y, behavior);
   });
 }
 
 function getPrimaryTableCard() {
-  return document.querySelector(".excel-table-card");
+  return document.querySelector(".data-panel");
 }
 
 function getPrimaryTableHeader() {
-  return document.querySelector(".table-header:not(.table-footer)");
+  return document.querySelector(".table-toolbar");
 }
 
 function getHeaderAnchorY() {
@@ -1623,67 +1621,128 @@ function getHeaderAnchorY() {
   return rect.top + window.scrollY;
 }
 
-function getTableRestoreOptions(triggerEl, fallbackY = window.scrollY) {
-  const isFooterControl = !!triggerEl?.closest?.(".table-footer");
-  const anchor = isFooterControl ? getHeaderAnchorY() : null;
-  const y = anchor ?? fallbackY;
+function getTableRestoreOptions() {
   return {
     keepOffset: true,
     keepCurrent: true,
-    restoreScroll: y,
-    ...(isFooterControl ? { restoreBehavior: "smooth" } : {})
+    restoreScroll: getTableScrollTop(),
   };
 }
 
-function syncStickyTableOffsets() {
-  const card = getPrimaryTableCard();
-  const header = getPrimaryTableHeader();
-  if (!card) return;
-  const headerRect = header ? header.getBoundingClientRect() : null;
-  const headerHeight = headerRect ? Math.ceil(headerRect.height) : 0;
-  card.style.setProperty("--table-header-offset", `${headerHeight}px`);
-  const wrapper = document.querySelector(".table-wrapper");
-  const thead = document.querySelector("#dataTable thead");
-  const table = document.getElementById("dataTable");
-  if (!wrapper || !thead || !table) {
-    card.style.setProperty("--table-thead-translate", "0px");
-    return;
-  }
-  const cardStyles = window.getComputedStyle(card);
-  const wrapperStyles = window.getComputedStyle(wrapper);
-  const cardGap = parseFloat(cardStyles.rowGap || cardStyles.gap || "0") || 0;
-  const wrapperBorderTop = parseFloat(wrapperStyles.borderTopWidth || "0") || 0;
-  const tableRect = table.getBoundingClientRect();
-  const theadHeight = Math.ceil(thead.getBoundingClientRect().height || 0);
-  const naturalTop = tableRect.top;
-  const naturalGap = Math.round(cardGap + wrapperBorderTop);
-  const headerBottom = headerRect ? headerRect.bottom : 0;
-  const targetTop = headerBottom + naturalGap;
-  const maxTranslate = Math.max(0, Math.round(tableRect.height - theadHeight));
-  const desiredTranslate = Math.max(0, Math.round(targetTop - naturalTop));
-  const translate = Math.min(desiredTranslate, maxTranslate);
-  card.style.setProperty("--table-thead-translate", `${translate}px`);
+function getTableScrollTop() {
+  return window.scrollY;
 }
 
-function queueStickyTableOffsetsSync() {
-  if (stickyTableSyncFrame) return;
-  stickyTableSyncFrame = requestAnimationFrame(() => {
-    stickyTableSyncFrame = 0;
-    syncStickyTableOffsets();
+function setTableScroll(y, behavior = "auto") {
+  window.scrollTo({ top: y, behavior });
+}
+
+// ── Ghost thead: mirrors real col-headers so both freeze in .sticky-band ──
+
+function syncGhostHeader() {
+  const realThead = document.querySelector("thead.col-headers");
+  const ghostThead = document.querySelector(".ghost-thead-table thead");
+  if (!realThead || !ghostThead) return;
+
+  ghostThead.innerHTML = realThead.innerHTML;
+
+  // Strip IDs so getElementById always resolves to the real thead elements
+  ghostThead.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
+
+  const realThs = Array.from(realThead.querySelectorAll("th"));
+  const ghostThs = Array.from(ghostThead.querySelectorAll("th"));
+
+  // Copy inline widths from resized columns
+  realThs.forEach((th, i) => {
+    if (!ghostThs[i]) return;
+    const s = th.getAttribute("style");
+    if (s) ghostThs[i].setAttribute("style", s);
+    else ghostThs[i].removeAttribute("style");
+  });
+
+  // Forward button clicks to their real counterparts by index
+  const realBtns = Array.from(realThead.querySelectorAll("button"));
+  Array.from(ghostThead.querySelectorAll("button")).forEach((btn, i) => {
+    btn.style.pointerEvents = "auto";
+    btn.tabIndex = 0;
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      realBtns[i]?.click();
+    });
+  });
+
+  // Make resize handles interactive
+  setupGhostResize(realThs, ghostThs);
+}
+
+function setupGhostResize(realThs, ghostThs) {
+  ghostThs.forEach((ghostTh, i) => {
+    const handle = ghostTh.querySelector(".col-resize-handle");
+    const realTh = realThs[i];
+    if (!handle || !realTh) return;
+    handle.style.pointerEvents = "auto";
+
+    handle.addEventListener("mousedown", e => {
+      e.preventDefault();
+      const startX = e.clientX;
+      const startWidth = ghostTh.getBoundingClientRect().width;
+
+      // Pause observer so realTh style updates don't trigger re-sync mid-drag
+      theadObserver?.disconnect();
+
+      function onMouseMove(ev) {
+        const w = Math.max(50, startWidth + ev.clientX - startX) + "px";
+        ghostTh.style.width = w;
+        ghostTh.style.minWidth = w;
+        realTh.style.width = w;
+        realTh.style.minWidth = w;
+      }
+      function onMouseUp() {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+        const rt = document.querySelector("thead.col-headers");
+        if (rt && theadObserver) {
+          theadObserver.observe(rt, {
+            subtree: true, childList: true, attributes: true, characterData: true,
+          });
+        }
+        syncGhostHeader();
+      }
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    });
   });
 }
 
-function setupStickyTableOffsets() {
-  syncStickyTableOffsets();
-  window.addEventListener("resize", queueStickyTableOffsetsSync);
-  window.addEventListener("scroll", syncStickyTableOffsets, { passive: true });
-  const header = getPrimaryTableHeader();
-  if (!header || typeof ResizeObserver !== "function") return;
-  stickyHeaderResizeObserver?.disconnect();
-  stickyHeaderResizeObserver = new ResizeObserver(() => {
-    queueStickyTableOffsetsSync();
+function queueGhostSync() {
+  if (ghostSyncFrame) return;
+  ghostSyncFrame = requestAnimationFrame(() => {
+    ghostSyncFrame = 0;
+    syncGhostHeader();
   });
-  stickyHeaderResizeObserver.observe(header);
+}
+
+function setupGhostHeader() {
+  const tableScroll = document.querySelector(".table-scroll");
+  const ghostTheadTable = document.querySelector(".ghost-thead-table");
+  const realThead = document.querySelector("thead.col-headers");
+  if (!tableScroll || !ghostTheadTable || !realThead) return;
+
+  // Sync horizontal scroll offset so ghost moves with the table
+  tableScroll.addEventListener("scroll", () => {
+    ghostTheadTable.style.transform = `translateX(-${tableScroll.scrollLeft}px)`;
+  }, { passive: true });
+
+  // Auto-sync whenever real thead content or attributes change
+  theadObserver = new MutationObserver(queueGhostSync);
+  theadObserver.observe(realThead, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    characterData: true,
+  });
+
+  syncGhostHeader();
 }
 
 function sampleRandomRows(size) {
@@ -1785,7 +1844,7 @@ function setupComentarioToggleAll() {
   btn.addEventListener("click", () => {
     const expandableRows = getExpandableRenderRows(lastRenderRows);
     if (!expandableRows.length) return;
-    const y = window.scrollY;
+    const y = getTableScrollTop();
     if (areAllExpandableCommentsExpanded(expandableRows)) {
       expandableRows.forEach(r => expandedComments.delete(r._rid));
     } else {
@@ -1793,7 +1852,7 @@ function setupComentarioToggleAll() {
     }
     renderTable(lastRenderRows, lastRenderTotal);
     requestAnimationFrame(() => {
-      window.scrollTo({ top: y, behavior: "auto" });
+      setTableScroll(y);
     });
   });
 }
@@ -1818,22 +1877,10 @@ function resetComentarioState() {
 }
 
 function setupPaginationControls() {
-  const prevs = [
-    document.getElementById("pagePrev"),
-    document.getElementById("pagePrevFooter")
-  ];
-  const nexts = [
-    document.getElementById("pageNext"),
-    document.getElementById("pageNextFooter")
-  ];
-  const firsts = [
-    document.getElementById("pageFirst"),
-    document.getElementById("pageFirstFooter")
-  ];
-  const lasts = [
-    document.getElementById("pageLast"),
-    document.getElementById("pageLastFooter")
-  ];
+  const prevs = [document.getElementById("pagePrev")];
+  const nexts = [document.getElementById("pageNext")];
+  const firsts = [document.getElementById("pageFirst")];
+  const lasts = [document.getElementById("pageLast")];
 
   const hookPrev = btn => {
     if (!btn) return;
@@ -1875,10 +1922,7 @@ function setupPaginationControls() {
   [...firsts].forEach(hookFirst);
   [...lasts].forEach(hookLast);
 
-  const pageInputs = [
-    document.getElementById("pageInput"),
-    document.getElementById("pageInputFooter")
-  ];
+  const pageInputs = [document.getElementById("pageInput")];
   pageInputs.forEach(input => {
     if (!input) return;
     const commit = () => {
@@ -1898,22 +1942,10 @@ function setupPaginationControls() {
 }
 
 function updatePaginationControls(total) {
-  const prevs = [
-    document.getElementById("pagePrev"),
-    document.getElementById("pagePrevFooter")
-  ].filter(Boolean);
-  const nexts = [
-    document.getElementById("pageNext"),
-    document.getElementById("pageNextFooter")
-  ].filter(Boolean);
-  const firsts = [
-    document.getElementById("pageFirst"),
-    document.getElementById("pageFirstFooter")
-  ].filter(Boolean);
-  const lasts = [
-    document.getElementById("pageLast"),
-    document.getElementById("pageLastFooter")
-  ].filter(Boolean);
+  const prevs = [document.getElementById("pagePrev")].filter(Boolean);
+  const nexts = [document.getElementById("pageNext")].filter(Boolean);
+  const firsts = [document.getElementById("pageFirst")].filter(Boolean);
+  const lasts = [document.getElementById("pageLast")].filter(Boolean);
   if (!prevs.length && !nexts.length && !firsts.length && !lasts.length) return;
   const hasPrev = displayOffset > 0;
   const hasNext = displayOffset + maxDisplayRows < total;
@@ -1926,19 +1958,19 @@ function updatePaginationControls(total) {
 
   const currentPage = total === 0 ? 1 : Math.floor(displayOffset / maxDisplayRows) + 1;
   const totalPages = Math.max(1, Math.ceil(total / maxDisplayRows));
-  [document.getElementById("pageInput"), document.getElementById("pageInputFooter")]
-    .forEach(el => { if (el && document.activeElement !== el) el.value = currentPage; });
-  [document.getElementById("pageTotal"), document.getElementById("pageTotalFooter")]
-    .forEach(el => { if (el) el.textContent = `de ${totalPages} pág.`; });
+  const pageInput = document.getElementById("pageInput");
+  if (pageInput && document.activeElement !== pageInput) pageInput.value = currentPage;
+  const pageTotal = document.getElementById("pageTotal");
+  if (pageTotal) pageTotal.textContent = `de ${totalPages} pág.`;
 }
 
 function setupSortControls() {
-  const buttons = document.querySelectorAll(".sort-btn");
+  const buttons = document.querySelectorAll("#dataTable .sort-btn");
   buttons.forEach(btn => {
     btn.addEventListener("click", e => {
       const field = btn.dataset.sortField;
       if (!field) return;
-      const y = window.scrollY;
+      const y = getTableScrollTop();
       if (e.shiftKey) {
         // Shift+click: add/cycle/remove as secondary/tertiary key
         const idx = sortKeys.findIndex(k => k.field === field);
@@ -2032,7 +2064,7 @@ function compareRecordId(a, b) {
 }
 
 function updateSortIndicators() {
-  const buttons = document.querySelectorAll(".sort-btn");
+  const buttons = document.querySelectorAll("#dataTable .sort-btn");
   buttons.forEach(btn => {
     const field = btn.dataset.sortField;
     const idx = sortKeys.findIndex(k => k.field === field);
@@ -2053,10 +2085,7 @@ function updateSortIndicators() {
 }
 
 function setupSortScopeControls() {
-  const selects = [
-    document.getElementById("sortScopeSelect"),
-    document.getElementById("sortScopeSelectFooter")
-  ].filter(Boolean);
+  const selects = [document.getElementById("sortScopeSelect")].filter(Boolean);
   const applyScope = (val, triggerEl = null) => {
     sortScope = val === "page" ? "page" : "all";
     applyFilters(false, getTableRestoreOptions(triggerEl));
@@ -2069,20 +2098,14 @@ function setupSortScopeControls() {
 }
 
 function updateSortScopeIndicators() {
-  const selects = [
-    document.getElementById("sortScopeSelect"),
-    document.getElementById("sortScopeSelectFooter")
-  ].filter(Boolean);
+  const selects = [document.getElementById("sortScopeSelect")].filter(Boolean);
   selects.forEach(sel => {
     sel.value = sortScope;
   });
 }
 
 function setupExportButtons() {
-  const buttons = [
-    document.getElementById("exportJpeg"),
-    document.getElementById("exportJpegFooter")
-  ].filter(Boolean);
+  const buttons = [document.getElementById("exportJpeg")].filter(Boolean);
   buttons.forEach(btn => {
     btn.addEventListener("click", () => exportTableAsJpeg());
   });
@@ -2179,7 +2202,7 @@ function setupWimmerTranslate() {
       langToggle.textContent = wimmerShowEs ? "ES" : "FR";
       langToggle.classList.toggle("active", wimmerShowEs);
       normalizationCache = new Map();
-      applyFilters();
+      applyFilters(false, getTableRestoreOptions());
     });
   }
 }
@@ -2745,10 +2768,7 @@ function renderPairResults(pairs, meta) {
 
 // ── Page-size controls ──────────────────────────────────────────
 function setupPageSizeControls() {
-  const selects = [
-    document.getElementById("pageSizeSelect"),
-    document.getElementById("pageSizeSelectFooter")
-  ].filter(Boolean);
+  const selects = [document.getElementById("pageSizeSelect")].filter(Boolean);
   selects.forEach(sel => {
     sel.value = String(maxDisplayRows);
     sel.addEventListener("change", () => {
@@ -2810,12 +2830,15 @@ function setupColumnVisibility() {
           cb.checked = true;
           return;
         }
+        const ghostTable = document.querySelector(".ghost-thead-table");
         if (cb.checked) {
           hiddenColumns.delete(field.key);
           document.getElementById("dataTable")?.classList.remove(`col-hidden-${idx}`);
+          ghostTable?.classList.remove(`col-hidden-${idx}`);
         } else {
           hiddenColumns.add(field.key);
           document.getElementById("dataTable")?.classList.add(`col-hidden-${idx}`);
+          ghostTable?.classList.add(`col-hidden-${idx}`);
         }
       });
       const span = document.createElement("span");
@@ -2838,11 +2861,12 @@ function setupColumnVisibility() {
     }
   });
 
-  // Inject CSS rules for col-hidden-N
+  // Inject CSS rules for col-hidden-N (real table + ghost thead)
   const style = document.createElement("style");
   TABLE_FIELDS.forEach((field, idx) => {
     style.textContent += `#dataTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
       `#dataTable.col-hidden-${idx} td:nth-child(${idx + 1}) { display: none; }\n`;
+    style.textContent += `.ghost-thead-table.col-hidden-${idx} th:nth-child(${idx + 1}) { display: none; }\n`;
   });
   document.head.appendChild(style);
 }

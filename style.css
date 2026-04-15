@@ -9,7 +9,7 @@ body {
   color: #132044;
 }
 
-.excel-shell {
+.app-shell {
   max-width: 1200px;
   margin: 0 auto;
   padding: 16px 20px 40px;
@@ -164,42 +164,66 @@ body {
   white-space: nowrap;
 }
 
-.excel-table-card {
-  --table-header-offset: 0px;
-  --table-thead-translate: 0px;
+.data-panel {
   background: #ffffff;
   border-radius: 14px;
   padding: 10px 12px;
   box-shadow: inset 0 1px 0 #eef1ff, 0 8px 24px rgba(15, 25, 70, 0.07);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
 }
 
-.table-header-anchor {
+.scroll-anchor {
   height: 0;
 }
 
-div.table-header {
+/* ── Sticky band: toolbar + ghost thead freeze together ── */
+.sticky-band {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #fff;
+  margin: -10px -12px 0;
+  padding: 10px 12px 0;
+  border-radius: 14px 14px 0 0;
+}
+
+.ghost-thead {
+  overflow: hidden;
+  border: 1px solid #dde2ff;
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+}
+
+.ghost-thead-table {
+  width: 100%;
+  min-width: 908px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+/* Real thead hidden — keeps layout space so tbody rows start at the right position */
+/* visibility:collapse removes height from layout so no gap between ghost thead and tbody */
+thead.col-headers {
+  visibility: collapse;
+}
+
+div.table-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #eef0fc;
-  position: sticky;
-  top: 0;
+  padding: 8px 0;
+  border-bottom: 1px solid #dde2ff;
   background: #fff;
-  z-index: 3;
 }
 
-.table-footer {
-  padding-top: 8px;
-  border-top: 1px solid #eef0fc;
-}
 
-.table-status {
+
+.result-info {
   font-size: 13px;
   color: #4b5275;
   flex: 1 1 200px;
@@ -208,24 +232,24 @@ div.table-header {
   gap: 2px;
 }
 
-.table-status-detail {
+.result-info-detail {
   font-size: 12px;
   color: #6b7397;
 }
 
-.table-controls {
+.toolbar-controls {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.ctrl-group {
+.export-group, .sort-group, .page-group {
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
-.ctrl-sep {
+.toolbar-sep {
   width: 1px;
   height: 18px;
   background: #dde2ff;
@@ -283,12 +307,11 @@ div.table-header {
   white-space: nowrap;
 }
 
-.table-wrapper {
+.table-scroll {
   overflow-x: auto;
-  overflow-y: visible;
   border: 1px solid #dde2ff;
-  border-radius: 12px;
-  min-width: 908px;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
 }
 
 table {
@@ -369,19 +392,6 @@ td:nth-child(5) {
   width: 260px;
 }
 
-/* ── Floating table head under sticky controls ── */
-#dataTable thead {
-  position: relative;
-  transform: translateY(var(--table-thead-translate, 0px));
-  z-index: 2;
-  will-change: transform;
-}
-
-.table-wrapper thead th {
-  position: relative;
-  top: auto;
-  z-index: 2;
-}
 
 /* ── Page-size control ── */
 .page-size {

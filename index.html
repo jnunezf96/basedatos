@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="excel-shell">
+  <div class="app-shell">
 
     <!-- ── Top bar: session tabs left, panel tabs right ── -->
     <div class="top-bar">
@@ -212,20 +212,21 @@
     <div id="activeFiltersBar" class="active-filters-bar" style="display:none"></div>
 
     <!-- ── Data table ── -->
-    <section class="excel-table-card">
-      <div id="tableHeaderAnchor" class="table-header-anchor" aria-hidden="true"></div>
-      <div class="table-header">
-        <div id="tableStatus" class="table-status" data-i18n="table.status.loading">Cargando datos…</div>
-        <div class="table-controls">
-          <div class="ctrl-group">
+    <section class="data-panel">
+      <div id="tableHeaderAnchor" class="scroll-anchor" aria-hidden="true"></div>
+      <div class="sticky-band">
+      <div class="table-toolbar">
+        <div id="tableStatus" class="result-info" data-i18n="table.status.loading">Cargando datos…</div>
+        <div class="toolbar-controls">
+          <div class="export-group">
             <button type="button" class="arrow-btn export-btn" id="exportJpeg">JPG</button>
             <div class="col-visibility-wrap">
               <button type="button" class="arrow-btn" id="colVisibilityBtn" title="Columnas" data-i18n="table.columns">Cols</button>
               <div id="colVisibilityDropdown" class="col-visibility-dropdown"></div>
             </div>
           </div>
-          <div class="ctrl-sep"></div>
-          <div class="ctrl-group">
+          <div class="toolbar-sep"></div>
+          <div class="sort-group">
             <div class="sort-scope">
               <label for="sortScopeSelect" data-i18n="table.sort.label">Orden:</label>
               <select id="sortScopeSelect">
@@ -241,8 +242,8 @@
               </select>
             </div>
           </div>
-          <div class="ctrl-sep"></div>
-          <div class="ctrl-group">
+          <div class="toolbar-sep"></div>
+          <div class="page-group">
             <div class="page-size">
               <label for="pageSizeSelect" data-i18n="table.pagesize.label">Filas:</label>
               <select id="pageSizeSelect">
@@ -265,9 +266,13 @@
           </div>
         </div>
       </div>
-      <div class="table-wrapper">
+      <div class="ghost-thead" aria-hidden="true">
+        <table class="ghost-thead-table"><thead></thead></table>
+      </div>
+      </div><!-- /.sticky-band -->
+      <div class="table-scroll">
         <table id="dataTable">
-          <thead>
+          <thead class="col-headers">
             <tr>
               <th data-field="Texto estandarizado">
                 <div class="header-bar">
@@ -310,56 +315,9 @@
           <tbody></tbody>
         </table>
       </div>
-      <div class="table-header table-footer">
-        <div class="table-status"></div>
-        <div class="table-controls">
-          <div class="ctrl-group">
-            <button type="button" class="arrow-btn export-btn" id="exportJpegFooter">JPG</button>
-          </div>
-          <div class="ctrl-sep"></div>
-          <div class="ctrl-group">
-            <div class="sort-scope">
-              <label for="sortScopeSelectFooter" data-i18n="table.sort.label">Orden:</label>
-              <select id="sortScopeSelectFooter">
-                <option value="all" data-i18n="table.sort.all">Todos</option>
-                <option value="page" data-i18n="table.sort.page">Página</option>
-              </select>
-            </div>
-            <div class="rank-mode">
-              <label for="rankModeSelectFooter" class="rank-mode-label" data-i18n="table.rank.label">Rango:</label>
-              <select id="rankModeSelectFooter" class="rank-mode-select">
-                <option value="auto" data-i18n="table.rank.auto">Auto</option>
-                <option value="prio" data-i18n="table.rank.prio">Prio</option>
-              </select>
-            </div>
-          </div>
-          <div class="ctrl-sep"></div>
-          <div class="ctrl-group">
-            <div class="page-size">
-              <label for="pageSizeSelectFooter" data-i18n="table.pagesize.label">Filas:</label>
-              <select id="pageSizeSelectFooter">
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100" selected>100</option>
-                <option value="200">200</option>
-              </select>
-            </div>
-            <div class="pager">
-              <button type="button" class="arrow-btn page-skip" id="pageFirstFooter" title="Primera página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9,1 6,5.5 9,10"/><polyline points="5,1 2,5.5 5,10"/></svg></button>
-              <button type="button" class="arrow-btn" id="pagePrevFooter" title="Página anterior"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5,1 1,5.5 5,10"/></svg></button>
-              <span class="page-indicator">
-                <input type="text" id="pageInputFooter" class="page-input" value="1" aria-label="Página actual">
-                <span class="page-total" id="pageTotalFooter">de — pág.</span>
-              </span>
-              <button type="button" class="arrow-btn" id="pageNextFooter" title="Página siguiente"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2,1 6,5.5 2,10"/></svg></button>
-              <button type="button" class="arrow-btn page-skip" id="pageLastFooter" title="Última página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3,1 6,5.5 3,10"/><polyline points="7,1 10,5.5 7,10"/></svg></button>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
-  </div>
+  </div> <!-- .app-shell -->
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="data.js"></script>
