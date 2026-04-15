@@ -165,6 +165,8 @@ body {
 }
 
 .excel-table-card {
+  --table-header-offset: 0px;
+  --table-thead-translate: 0px;
   background: #ffffff;
   border-radius: 14px;
   padding: 10px 12px;
@@ -172,6 +174,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.table-header-anchor {
+  height: 0;
 }
 
 div.table-header {
@@ -213,20 +219,17 @@ div.table-header {
   gap: 8px;
 }
 
-.table-controls .col-visibility-wrap {
-  padding-left: 10px;
-  border-left: 1px solid #dde2ff;
-}
-
-.table-actions {
-  display: flex;
+.ctrl-group {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
-.table-actions .pager {
-  padding-left: 10px;
-  border-left: 1px solid #dde2ff;
+.ctrl-sep {
+  width: 1px;
+  height: 18px;
+  background: #dde2ff;
+  flex-shrink: 0;
 }
 
 .sort-scope {
@@ -281,7 +284,8 @@ div.table-header {
 }
 
 .table-wrapper {
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: visible;
   border: 1px solid #dde2ff;
   border-radius: 12px;
   min-width: 908px;
@@ -365,10 +369,17 @@ td:nth-child(5) {
   width: 260px;
 }
 
-/* ── Sticky header ── */
+/* ── Floating table head under sticky controls ── */
+#dataTable thead {
+  position: relative;
+  transform: translateY(var(--table-thead-translate, 0px));
+  z-index: 2;
+  will-change: transform;
+}
+
 .table-wrapper thead th {
-  position: sticky;
-  top: 0;
+  position: relative;
+  top: auto;
   z-index: 2;
 }
 
@@ -700,6 +711,7 @@ tr:nth-child(odd) td {
   padding-right: 38px;
 }
 
+.traduccion-text,
 .comentario-text {
   white-space: normal;
   padding: 0;
@@ -809,6 +821,12 @@ tr:nth-child(odd) td {
   background: #e8ecff;
 }
 
+.arrow-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+  box-shadow: none;
+}
+
 .arrow-btn.page-skip {
   min-width: 26px;
   padding: 4px 5px;
@@ -826,22 +844,20 @@ tr:nth-child(odd) td {
 .rank-mode {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .rank-mode-label {
-  font-size: 11px;
-  color: #5d6690;
+  font-size: 12px;
+  color: #2c345b;
 }
 
-.rank-mode-btn.active {
-  background: #4c6ef5;
-  border-color: #4c6ef5;
-  color: #fff;
-}
-
-.rank-mode-btn.active:hover {
-  background: #3b5bdb;
+.rank-mode-select {
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #d5daf8;
+  font-size: 12px;
+  background: #fff;
 }
 
 .arrow-btn.old-spanish-btn {

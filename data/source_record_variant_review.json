@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-14T22:30:46.221542Z",
+  "generated_at": "2026-04-15T04:15:53.623Z",
   "policy": {
     "merge_scope": "Within the same source_record_id only",
     "merge_rule": "Merge rows when all non-ID fields match after lowercase, accent folding, punctuation folding, HTML stripping, and whitespace collapse.",
@@ -35,7 +35,11 @@
     "molina2_idem_normalization_missing_m2_support": 1342,
     "molina2_idem_normalization_missing_m1_support": 7,
     "molina2_idem_normalization_m1_disagreement": 40,
-    "molina2_idem_normalization_unparseable": 1
+    "molina2_idem_normalization_unparseable": 1,
+    "molina2_idem_tail_rewrite_rewritten": 25,
+    "bracket_idem_rewrite_rewritten": 5,
+    "standalone_idem_rows_remaining": 188,
+    "standalone_idem_translation_rows_remaining": 3
   },
   "comment_key_conflicts": [
     {
@@ -19488,9 +19492,14 @@
       }
     }
   ],
-  "remaining_idem_total": 753,
+  "remaining_idem_total": 188,
   "remaining_idem_by_source": {
-    "1571 Molina 2": 753
+    "1565 Sahagún Escolios": 175,
+    "153? Trilingüe": 9,
+    "1780 ? Bnf_361": 6,
+    "1551-95 Documentos nahuas de la Ciudad de México": 3,
+    "1580 CF Index": 2,
+    "1547 Olmos_V ?": 1
   },
   "last_idem_cleanup_changed_eids_sample": [
     "241957",
@@ -19593,5 +19602,872 @@
     "247185",
     "247074",
     "247129"
+  ],
+  "molina2_idem_rightmost_rule": "For 1571 Molina 2 rows whose original Traducción in bak11 started with idem., resolve the chain to the rightmost non-idem definition. Set Traducción to that final gloss without support markers, and move all outer idem text plus each intermediate reference into Comentario as separate <br /> lines.",
+  "molina2_idem_rightmost_scanned_original_rows": 1406,
+  "molina2_idem_rightmost_rewritten_resolved": 1405,
+  "molina2_idem_rightmost_rewritten_manual": 1,
+  "molina2_idem_rightmost_rewritten_total": 1407,
+  "molina2_idem_rightmost_rewritten_with_outer_text": 305,
+  "molina2_idem_rightmost_rewritten_with_nested_chain": 147,
+  "molina2_idem_rightmost_remaining_idem_after": 0,
+  "molina2_idem_rightmost_examples": [
+    {
+      "eid": "241906",
+      "record_id": "1571-molina-2:eid:241906",
+      "texto_estandarizado": "tlatelchiuhqui",
+      "escritura_original": "Tlatelchiuhqui",
+      "original_idem_traduccion": "idem.  (Tlatclchiuani: menospreciador desta manera, y sacudido.)",
+      "before": {
+        "Traducción": "menospreciador desta manera, y sacudido.",
+        "Comentario": "Cf. Tlatclchiuani: menospreciador desta manera, y sacudido."
+      },
+      "after": {
+        "Traducción": "menospreciador desta manera, y sacudido.",
+        "Comentario": "Cf. Tlatclchiuani: menospreciador desta manera, y sacudido."
+      }
+    },
+    {
+      "eid": "241957",
+      "record_id": "1571-molina-2:eid:241957",
+      "texto_estandarizado": "tlatentiani",
+      "escritura_original": "Tlatentiani",
+      "original_idem_traduccion": "idem.  (Tlatenti: amolador, o afilador de cuchillo. &c.)",
+      "before": {
+        "Traducción": "amolador, o afilador de cuchillo. &c.",
+        "Comentario": "Cf. Tlatenti: amolador, o afilador de cuchillo. &c."
+      },
+      "after": {
+        "Traducción": "amolador, o afilador de cuchillo. &c.",
+        "Comentario": "Cf. Tlatenti: amolador, o afilador de cuchillo. &c."
+      }
+    },
+    {
+      "eid": "242007",
+      "record_id": "1571-molina-2:eid:242007",
+      "texto_estandarizado": "tlateomatiliztli",
+      "escritura_original": "Tlateomatiliztli",
+      "original_idem_traduccion": "idem.  (Tlateomachiliztli: deuocion, exercicio spiritual, o cerimonia ecclesiastica.)",
+      "before": {
+        "Traducción": "deuocion, exercicio spiritual, o cerimonia ecclesiastica.",
+        "Comentario": "Cf. Tlateomachiliztli: deuocion, exercicio spiritual, o cerimonia ecclesiastica."
+      },
+      "after": {
+        "Traducción": "deuocion, exercicio spiritual, o cerimonia ecclesiastica.",
+        "Comentario": "Cf. Tlateomachiliztli: deuocion, exercicio spiritual, o cerimonia ecclesiastica."
+      }
+    },
+    {
+      "eid": "242012",
+      "record_id": "1571-molina-2:eid:242012",
+      "texto_estandarizado": "tlateononotzqui",
+      "escritura_original": "Tlateononotzqui",
+      "original_idem_traduccion": "idem.  (Tlateononotzani: el que inuoca y llama a dios en la tribulacion.)",
+      "before": {
+        "Traducción": "el que inuoca y llama a dios en la tribulacion.",
+        "Comentario": "Cf. Tlateononotzani: el que inuoca y llama a dios en la tribulacion."
+      },
+      "after": {
+        "Traducción": "el que inuoca y llama a dios en la tribulacion.",
+        "Comentario": "Cf. Tlateononotzani: el que inuoca y llama a dios en la tribulacion."
+      }
+    },
+    {
+      "eid": "242036",
+      "record_id": "1571-molina-2:eid:242036",
+      "texto_estandarizado": "tlatepitonolli",
+      "escritura_original": "Tlatepitonolli",
+      "original_idem_traduccion": "idem.  (Tlatepitilillí: cosa achicada o acortada.)",
+      "before": {
+        "Traducción": "cosa achicada o acortada.",
+        "Comentario": "Cf. Tlatepitilillí: cosa achicada o acortada."
+      },
+      "after": {
+        "Traducción": "cosa achicada o acortada.",
+        "Comentario": "Cf. Tlatepitilillí: cosa achicada o acortada."
+      }
+    },
+    {
+      "eid": "242042",
+      "record_id": "1571-molina-2:eid:242042",
+      "texto_estandarizado": "tlatepitztililli",
+      "escritura_original": "Tlatepitztililli",
+      "original_idem_traduccion": "idem.  (Tlatepitzolli: cosa recalcada assi.)",
+      "before": {
+        "Traducción": "cosa recalcada assi.",
+        "Comentario": "Cf. Tlatepitzolli: cosa recalcada assi."
+      },
+      "after": {
+        "Traducción": "cosa recalcada assi.",
+        "Comentario": "Cf. Tlatepitzolli: cosa recalcada assi."
+      }
+    },
+    {
+      "eid": "222097",
+      "record_id": "1571-molina-2:eid:222097",
+      "texto_estandarizado": "canauhconetontli",
+      "escritura_original": "Canauhconetontli",
+      "original_idem_traduccion": "idem.  (Canauhconetl: anadino.)",
+      "before": {
+        "Traducción": "anadino.",
+        "Comentario": "Cf. Canauhconetl: anadino."
+      },
+      "after": {
+        "Traducción": "anadino.",
+        "Comentario": "Cf. Canauhconetl: anadino."
+      }
+    },
+    {
+      "eid": "242086",
+      "record_id": "1571-molina-2:eid:242086",
+      "texto_estandarizado": "tlatequipachoani",
+      "escritura_original": "Tlatequipachoani",
+      "original_idem_traduccion": "idem.  (Tlatequipachoa: el que da pena y aflicion aotros.)",
+      "before": {
+        "Traducción": "el que da pena y aflicion aotros.",
+        "Comentario": "Cf. Tlatequipachoa: el que da pena y aflicion aotros."
+      },
+      "after": {
+        "Traducción": "el que da pena y aflicion aotros.",
+        "Comentario": "Cf. Tlatequipachoa: el que da pena y aflicion aotros."
+      }
+    },
+    {
+      "eid": "242092",
+      "record_id": "1571-molina-2:eid:242092",
+      "texto_estandarizado": "tlatequipanoani",
+      "escritura_original": "Tlatequipanoani",
+      "original_idem_traduccion": "idem.  (Tlatequipano: trabajador.)",
+      "before": {
+        "Traducción": "trabajador.",
+        "Comentario": "Cf. Tlatequipano: trabajador."
+      },
+      "after": {
+        "Traducción": "trabajador.",
+        "Comentario": "Cf. Tlatequipano: trabajador."
+      }
+    },
+    {
+      "eid": "242101",
+      "record_id": "1571-molina-2:eid:242101",
+      "texto_estandarizado": "tlatetecuitzaliztli",
+      "escritura_original": "Tlatetecuitzaliztli",
+      "original_idem_traduccion": "idem.  (Tlatetecuiniliztli: estruendo de patadas, o de golpes.)",
+      "before": {
+        "Traducción": "estruendo de patadas, o de golpes.",
+        "Comentario": "Cf. Tlatetecuiniliztli: estruendo de patadas, o de golpes."
+      },
+      "after": {
+        "Traducción": "estruendo de patadas, o de golpes.",
+        "Comentario": "Cf. Tlatetecuiniliztli: estruendo de patadas, o de golpes."
+      }
+    },
+    {
+      "eid": "222102",
+      "record_id": "1571-molina-2:eid:222102",
+      "texto_estandarizado": "cancuixpan?",
+      "escritura_original": "Cancuixpan?",
+      "original_idem_traduccion": "idem.  (Cancuix?: adonde, por donde, o aque parte?. preguntando. aduerbio.)",
+      "before": {
+        "Traducción": "adonde, por donde, o aque parte?. preguntando. aduerbio.",
+        "Comentario": "Cf. Cancuix?: adonde, por donde, o aque parte?. preguntando. aduerbio."
+      },
+      "after": {
+        "Traducción": "adonde, por donde, o aque parte?. preguntando. aduerbio.",
+        "Comentario": "Cf. Cancuix?: adonde, por donde, o aque parte?. preguntando. aduerbio."
+      }
+    },
+    {
+      "eid": "242164",
+      "record_id": "1571-molina-2:eid:242164",
+      "texto_estandarizado": "tlatetzilmalinqui",
+      "escritura_original": "Tlatetzilmalinqui",
+      "original_idem_traduccion": "idem.  (Tlatetzilmalinani: el que tuerce fuertemente algun cordel, sobre la pierna o muslo.)",
+      "before": {
+        "Traducción": "el que tuerce fuertemente algun cordel, sobre la pierna o muslo.",
+        "Comentario": "Cf. Tlatetzilmalinani: el que tuerce fuertemente algun cordel, sobre la pierna o muslo."
+      },
+      "after": {
+        "Traducción": "el que tuerce fuertemente algun cordel, sobre la pierna o muslo.",
+        "Comentario": "Cf. Tlatetzilmalinani: el que tuerce fuertemente algun cordel, sobre la pierna o muslo."
+      }
+    },
+    {
+      "eid": "242167",
+      "record_id": "1571-molina-2:eid:242167",
+      "texto_estandarizado": "tlatetzoneuhqui",
+      "escritura_original": "Tlatetzoneuhqui",
+      "original_idem_traduccion": "idem.  (Tlatetzoneuani: el que haze cimiento de pared.)",
+      "before": {
+        "Traducción": "el que haze cimiento de pared.",
+        "Comentario": "Cf. Tlatetzoneuani: el que haze cimiento de pared."
+      },
+      "after": {
+        "Traducción": "el que haze cimiento de pared.",
+        "Comentario": "Cf. Tlatetzoneuani: el que haze cimiento de pared."
+      }
+    },
+    {
+      "eid": "242192",
+      "record_id": "1571-molina-2:eid:242192",
+      "texto_estandarizado": "tlatexoni",
+      "escritura_original": "Tlatexoni",
+      "original_idem_traduccion": "idem. o muela para moler algo o piedra de molino.  (Tlatexolouiloni: mano de mortero o de almirez.)",
+      "before": {
+        "Traducción": "mano de mortero o de almirez.",
+        "Comentario": "o muela para moler algo o piedra de molino.<br />Cf. Tlatexolouiloni: mano de mortero o de almirez."
+      },
+      "after": {
+        "Traducción": "mano de mortero o de almirez.",
+        "Comentario": "o muela para moler algo o piedra de molino.<br />Cf. Tlatexolouiloni: mano de mortero o de almirez."
+      }
+    },
+    {
+      "eid": "242205",
+      "record_id": "1571-molina-2:eid:242205",
+      "texto_estandarizado": "tlaticpahuic",
+      "escritura_original": "Tlaticpauic",
+      "original_idem_traduccion": "idem.  (Tlaticpa: hazia dentro, o delo interior.)",
+      "before": {
+        "Traducción": "hazia dentro, o delo interior.",
+        "Comentario": "Cf. Tlaticpa: hazia dentro, o delo interior."
+      },
+      "after": {
+        "Traducción": "hazia dentro, o delo interior.",
+        "Comentario": "Cf. Tlaticpa: hazia dentro, o delo interior."
+      }
+    },
+    {
+      "eid": "247639",
+      "record_id": "1571-molina-2:eid:247639",
+      "texto_estandarizado": "tlatla  +",
+      "escritura_original": "Yuuilia, nitlatla",
+      "original_idem_traduccion": "idem. preterito: onitlatlayuuili.  (Yuuilia, nitla: hazer sombra poniendose delante de otros. pret: onitlayuuili.)",
+      "before": {
+        "Traducción": "hazer sombra poniendose delante de otros",
+        "Comentario": "preterito: onitlatlayuuili.<br />Cf. Yuuilia, nitla: hazer sombra poniendose delante de otros. pret: onitlayuuili."
+      },
+      "after": {
+        "Traducción": "hazer sombra poniendose delante de otros",
+        "Comentario": "preterito: onitlatlayuuili.<br />Cf. Yuuilia, nitla: hazer sombra poniendose delante de otros. pret: onitlayuuili."
+      }
+    },
+    {
+      "eid": "242225",
+      "record_id": "1571-molina-2:eid:242225",
+      "texto_estandarizado": "tlatlacaahuilana",
+      "escritura_original": "Tlatlacaauilana, nite",
+      "original_idem_traduccion": "idem. prete: onitetlatlacaauilan.  (Tlatlacaana, nite: asechar o espiar a otro. pre: onitetlatlacaan.)",
+      "before": {
+        "Traducción": "asechar o espiar a otro",
+        "Comentario": "prete: onitetlatlacaauilan.<br />Cf. Tlatlacaana, nite: asechar o espiar a otro. pre: onitetlatlacaan."
+      },
+      "after": {
+        "Traducción": "asechar o espiar a otro",
+        "Comentario": "prete: onitetlatlacaauilan.<br />Cf. Tlatlacaana, nite: asechar o espiar a otro. pre: onitetlatlacaan."
+      }
+    },
+    {
+      "eid": "242255",
+      "record_id": "1571-molina-2:eid:242255",
+      "texto_estandarizado": "tlatlacencuililli",
+      "escritura_original": "Tlatlacencuililli",
+      "original_idem_traduccion": "idem.  (Tlatlacencaualtilli: deseredado, despojado y desposeido de quanto tenia.)",
+      "before": {
+        "Traducción": "deseredado, despojado y desposeido de quanto tenia.",
+        "Comentario": "Cf. Tlatlacencaualtilli: deseredado, despojado y desposeido de quanto tenia."
+      },
+      "after": {
+        "Traducción": "deseredado, despojado y desposeido de quanto tenia.",
+        "Comentario": "Cf. Tlatlacencaualtilli: deseredado, despojado y desposeido de quanto tenia."
+      }
+    },
+    {
+      "eid": "242276",
+      "record_id": "1571-molina-2:eid:242276",
+      "texto_estandarizado": "tlatlacolcehuapahualiztli",
+      "escritura_original": "Tlatlacolceuapaualiztli",
+      "original_idem_traduccion": "idem.  (Tlatlacolcequaloliztli: elada, o frialdad d[e] pecados)",
+      "before": {
+        "Traducción": "elada, o frialdad d[e] pecados",
+        "Comentario": "Cf. Tlatlacolcequaloliztli: elada, o frialdad d[e] pecados"
+      },
+      "after": {
+        "Traducción": "elada, o frialdad d[e] pecados",
+        "Comentario": "Cf. Tlatlacolcequaloliztli: elada, o frialdad d[e] pecados"
+      }
+    },
+    {
+      "eid": "242286",
+      "record_id": "1571-molina-2:eid:242286",
+      "texto_estandarizado": "tlatlacolnexxotla",
+      "escritura_original": "Tlatlacolnexxotla, nite",
+      "original_idem_traduccion": "idem. preterito: onitetlatlacolnexxotlac.  (Tlatlacolnextia, nite: descubrir, o manifestar pecados agenos. pre: onitetlatlacolnexti.)",
+      "before": {
+        "Traducción": "descubrir, o manifestar pecados agenos",
+        "Comentario": "preterito: onitetlatlacolnexxotlac.<br />Cf. Tlatlacolnextia, nite: descubrir, o manifestar pecados agenos. pre: onitetlatlacolnexti."
+      },
+      "after": {
+        "Traducción": "descubrir, o manifestar pecados agenos",
+        "Comentario": "preterito: onitetlatlacolnexxotlac.<br />Cf. Tlatlacolnextia, nite: descubrir, o manifestar pecados agenos. pre: onitetlatlacolnexti."
+      }
+    },
+    {
+      "eid": "242296",
+      "record_id": "1571-molina-2:eid:242296",
+      "texto_estandarizado": "tlatlacolpeuhcayotl",
+      "escritura_original": "Tlatlacolpeuhcayotl",
+      "original_idem_traduccion": "idem.  (Tlatlacolpeualiztli: pecado original.)",
+      "before": {
+        "Traducción": "pecado original.",
+        "Comentario": "Cf. Tlatlacolpeualiztli: pecado original."
+      },
+      "after": {
+        "Traducción": "pecado original.",
+        "Comentario": "Cf. Tlatlacolpeualiztli: pecado original."
+      }
+    },
+    {
+      "eid": "222108",
+      "record_id": "1571-molina-2:eid:222108",
+      "texto_estandarizado": "cannelpa tiazque",
+      "escritura_original": "Cannelpa tiazque",
+      "original_idem_traduccion": "idem.  (Canneltiazque: adonde emos de yr.)",
+      "before": {
+        "Traducción": "adonde emos de yr.",
+        "Comentario": "Cf. Canneltiazque: adonde emos de yr."
+      },
+      "after": {
+        "Traducción": "adonde emos de yr.",
+        "Comentario": "Cf. Canneltiazque: adonde emos de yr."
+      }
+    },
+    {
+      "eid": "232524",
+      "record_id": "1571-molina-2:eid:232524",
+      "texto_estandarizado": "achtopa  +",
+      "escritura_original": "Ocye achtopa",
+      "original_idem_traduccion": "idem.  (Ocyeachto: y primeramente, o ante todas cosas. s. harcis esto. &c.)",
+      "before": {
+        "Traducción": "y primeramente, o ante todas cosas. s. harcis esto. &c.",
+        "Comentario": "Cf. Ocyeachto: y primeramente, o ante todas cosas. s. harcis esto. &c."
+      },
+      "after": {
+        "Traducción": "y primeramente, o ante todas cosas. s. harcis esto. &c.",
+        "Comentario": "Cf. Ocyeachto: y primeramente, o ante todas cosas. s. harcis esto. &c."
+      }
+    },
+    {
+      "eid": "242641",
+      "record_id": "1571-molina-2:eid:242641",
+      "texto_estandarizado": "tlatlahuelilocatiliani",
+      "escritura_original": "Tlatlauelilocatiliani",
+      "original_idem_traduccion": "idem.  (Tlatlauelilocatilia: el que haze vellacos alos otros. pre: otlatlauelilocatili.)",
+      "before": {
+        "Traducción": "el que haze vellacos alos otros",
+        "Comentario": "Cf. Tlatlauelilocatilia: el que haze vellacos alos otros. pre: otlatlauelilocatili."
+      },
+      "after": {
+        "Traducción": "el que haze vellacos alos otros",
+        "Comentario": "Cf. Tlatlauelilocatilia: el que haze vellacos alos otros. pre: otlatlauelilocatili."
+      }
+    },
+    {
+      "eid": "242642",
+      "record_id": "1571-molina-2:eid:242642",
+      "texto_estandarizado": "tlatlahuelilocatini",
+      "escritura_original": "Tlatlauelilocatini",
+      "original_idem_traduccion": "idem.  (Tlatlauelilocati: el que se haze vellaco.)",
+      "before": {
+        "Traducción": "el que se haze vellaco.",
+        "Comentario": "Cf. Tlatlauelilocati: el que se haze vellaco."
+      },
+      "after": {
+        "Traducción": "el que se haze vellaco.",
+        "Comentario": "Cf. Tlatlauelilocati: el que se haze vellaco."
+      }
+    },
+    {
+      "eid": "242376",
+      "record_id": "1571-molina-2:eid:242376",
+      "texto_estandarizado": "tlatlallantatacani",
+      "escritura_original": "Tlatlallantatacani",
+      "original_idem_traduccion": "idem.  (Tlatlallantatacac: minador, o sacador y cauador d[e] tierra.)",
+      "before": {
+        "Traducción": "minador, o sacador y cauador d[e] tierra.",
+        "Comentario": "Cf. Tlatlallantatacac: minador, o sacador y cauador d[e] tierra."
+      },
+      "after": {
+        "Traducción": "minador, o sacador y cauador d[e] tierra.",
+        "Comentario": "Cf. Tlatlallantatacac: minador, o sacador y cauador d[e] tierra."
+      }
+    },
+    {
+      "eid": "242397",
+      "record_id": "1571-molina-2:eid:242397",
+      "texto_estandarizado": "tlatlalpitzqui",
+      "escritura_original": "Tlatlalpitzqui",
+      "original_idem_traduccion": "idem.  (Tlatlalpitzani: el que sopla assi.)",
+      "before": {
+        "Traducción": "el que sopla assi.",
+        "Comentario": "Cf. Tlatlalpitzani: el que sopla assi."
+      },
+      "after": {
+        "Traducción": "el que sopla assi.",
+        "Comentario": "Cf. Tlatlalpitzani: el que sopla assi."
+      }
+    },
+    {
+      "eid": "242414",
+      "record_id": "1571-molina-2:eid:242414",
+      "texto_estandarizado": "tlatlamachtentiqui",
+      "escritura_original": "Tlatlamachtentiqui",
+      "original_idem_traduccion": "idem.  (Tlatlamachtentiani: orlador.)",
+      "before": {
+        "Traducción": "orlador.",
+        "Comentario": "Cf. Tlatlamachtentiani: orlador."
+      },
+      "after": {
+        "Traducción": "orlador.",
+        "Comentario": "Cf. Tlatlamachtentiani: orlador."
+      }
+    },
+    {
+      "eid": "242423",
+      "record_id": "1571-molina-2:eid:242423",
+      "texto_estandarizado": "tlatlamanilia",
+      "escritura_original": "Tlatlamanilia, tito",
+      "original_idem_traduccion": "idem. pre: otitotlatlamanilique  (Tlatlamanilia, nite: echar suertes sin hechizeria. &c prete: onitetlatlamanili.)",
+      "before": {
+        "Traducción": "echar suertes sin hechizeria. &c",
+        "Comentario": "pre: otitotlatlamanilique<br />Cf. Tlatlamanilia, nite: echar suertes sin hechizeria. &c prete: onitetlatlamanili."
+      },
+      "after": {
+        "Traducción": "echar suertes sin hechizeria. &c",
+        "Comentario": "pre: otitotlatlamanilique<br />Cf. Tlatlamanilia, nite: echar suertes sin hechizeria. &c prete: onitetlatlamanili."
+      }
+    },
+    {
+      "eid": "222118",
+      "record_id": "1571-molina-2:eid:222118",
+      "texto_estandarizado": "capa tzontecomatl",
+      "escritura_original": "Capa tzontecomatl",
+      "original_idem_traduccion": "idem.  (Capa quechquemitl: capilla de capa.)",
+      "before": {
+        "Traducción": "capilla de capa.",
+        "Comentario": "Cf. Capa quechquemitl: capilla de capa."
+      },
+      "after": {
+        "Traducción": "capilla de capa.",
+        "Comentario": "Cf. Capa quechquemitl: capilla de capa."
+      }
+    }
+  ],
+  "molina2_idem_rightmost_rewritten_current_merged_idem": 1,
+  "molina2_idem_tail_rewrite_rule": "For remaining 1571 Molina 2 rows whose Traducción still contained a standalone idem token after the earlier pass, resolve the rightmost explicit gloss from the trailing parenthetical chain even when idem is not sentence-initial. Move additive or support text into Comentario as <br />-separated lines and flatten Cf. lines to explicit glosses.",
+  "molina2_idem_tail_rewrite_rewritten": 25,
+  "molina2_idem_tail_rewrite_examples": [
+    {
+      "eid": "222138",
+      "record_id": "1571-molina-2:eid:222138",
+      "texto_estandarizado": "caquitia",
+      "escritura_original": "Caquitia, nitetla",
+      "before": {
+        "Traducción": "idem, o hazer oyr alos sordos. preterito: onitetlacaquiti.  (Caquitia, nicte: dar relacion de algo aotros, o notificarles algo. pre: onictecaquiti.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "dar relacion de algo aotros, o notificarles algo.",
+        "Comentario": "o hazer oyr alos sordos.<br />preterito: onitetlacaquiti.<br />Cf. Caquitia, nicte: dar relacion de algo aotros, o notificarles algo. pre: onictecaquiti."
+      }
+    },
+    {
+      "eid": "222317",
+      "record_id": "1571-molina-2:eid:222317",
+      "texto_estandarizado": "cayepa?",
+      "escritura_original": "Cayepa?",
+      "before": {
+        "Traducción": "idem, o hazia donde.  (Cancuixpan?: idem.  (Cancuix?: adonde, por donde, o aque parte?. preguntando. aduerbio.))",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "adonde, por donde, o aque parte?. preguntando. aduerbio.",
+        "Comentario": "o hazia donde.<br />Cf. Cancuixpan?: adonde, por donde, o aque parte?. preguntando. aduerbio.<br />Cf. Cancuix?: adonde, por donde, o aque parte?. preguntando. aduerbio."
+      }
+    },
+    {
+      "eid": "220192",
+      "record_id": "1571-molina-2:eid:220192",
+      "texto_estandarizado": "acicaitta",
+      "escritura_original": "Acicaitta, nitla",
+      "before": {
+        "Traducción": "idem, o ver algo perfectamente. preterito: onitlaacicaittac.  (Acicacaqui, nitla: comprehender, o alcançar a saber enteramente la cosa, o el negocio. preteri: onicacicacac.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "comprehender, o alcançar a saber enteramente la cosa, o el negocio.",
+        "Comentario": "o ver algo perfectamente.<br />preterito: onitlaacicaittac.<br />Cf. Acicacaqui, nitla: comprehender, o alcançar a saber enteramente la cosa, o el negocio. preteri: onicacicacac."
+      }
+    },
+    {
+      "eid": "246466",
+      "record_id": "1571-molina-2:eid:246466",
+      "texto_estandarizado": "xoxochitlatli",
+      "escritura_original": "Xoxochitlatli",
+      "before": {
+        "Traducción": "idem  (Xoxochitla: jardin.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "jardin.",
+        "Comentario": "Cf. Xoxochitla: jardin."
+      }
+    },
+    {
+      "eid": "248449",
+      "record_id": "1571-molina-2:eid:248449",
+      "texto_estandarizado": "zatlatzonco",
+      "escritura_original": "çatlatzonco",
+      "before": {
+        "Traducción": "idem  (çatlatzaccan: idem.  (çatepan: despues, ala postre, o al cabo.))",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "despues, ala postre, o al cabo.",
+        "Comentario": "Cf. çatlatzaccan: despues, ala postre, o al cabo.<br />Cf. çatepan: despues, ala postre, o al cabo."
+      }
+    },
+    {
+      "eid": "227691",
+      "record_id": "1571-molina-2:eid:227691",
+      "texto_estandarizado": "acohuetzini  +",
+      "escritura_original": "Iyullo acouetzini",
+      "before": {
+        "Traducción": "idem  (Iyullo acoyani: contemplatiuo.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "contemplatiuo.",
+        "Comentario": "Cf. Iyullo acoyani: contemplatiuo."
+      }
+    },
+    {
+      "eid": "223190",
+      "record_id": "1571-molina-2:eid:223190",
+      "texto_estandarizado": "chiccanahua",
+      "escritura_original": "Chiccanaua, nite",
+      "before": {
+        "Traducción": "idem  (Chiccaloa, nonte: echar por fuerça a alguno de casa. prete: onontechiccalo.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "echar por fuerça a alguno de casa.",
+        "Comentario": "Cf. Chiccaloa, nonte: echar por fuerça a alguno de casa. prete: onontechiccalo."
+      }
+    },
+    {
+      "eid": "246978",
+      "record_id": "1571-molina-2:eid:246978",
+      "texto_estandarizado": "huecauh  +",
+      "escritura_original": "Yecuel vecauh",
+      "before": {
+        "Traducción": "idem,  (Yecuel quezquilhuitl: idem.  (Yecuel quezqui: idem.  (Yecuel nechca: dias ha.)))",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "dias ha.",
+        "Comentario": "Cf. Yecuel quezquilhuitl: dias ha.<br />Cf. Yecuel quezqui: dias ha.<br />Cf. Yecuel nechca: dias ha."
+      }
+    },
+    {
+      "eid": "245714",
+      "record_id": "1571-molina-2:eid:245714",
+      "texto_estandarizado": "huehuetzquitia",
+      "escritura_original": "Veuetzquitia, nitetla",
+      "before": {
+        "Traducción": "idem p: onitetlaueuetzquiti.  (Veuetzquitia, nite: hazer reir a otros diziendo gracias. &c. pre: oniteueuetzquiti.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "hazer reir a otros diziendo gracias. &c.",
+        "Comentario": "p: onitetlaueuetzquiti.<br />Cf. Veuetzquitia, nite: hazer reir a otros diziendo gracias. &c. pre: oniteueuetzquiti."
+      }
+    },
+    {
+      "eid": "225221",
+      "record_id": "1571-molina-2:eid:225221",
+      "texto_estandarizado": "icniuhtla",
+      "escritura_original": "Icniuhtla, nite",
+      "before": {
+        "Traducción": "idem, o hazer amigos a los enemistados. prete: oniteicniuhtlac.  (Icniuhtia, nite: dar aconocer a otros paraque se amen. pret: oniteicniuhti.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "dar aconocer a otros paraque se amen.",
+        "Comentario": "o hazer amigos a los enemistados.<br />prete: oniteicniuhtlac.<br />Cf. Icniuhtia, nite: dar aconocer a otros paraque se amen. pret: oniteicniuhti."
+      }
+    },
+    {
+      "eid": "220461",
+      "record_id": "1571-molina-2:eid:220461",
+      "texto_estandarizado": "amaxactli",
+      "escritura_original": "Amaxactli",
+      "before": {
+        "Traducción": "idem  (Amaxac: lugar donde se diuide el rio en muchas partes. s. en arroyos o acequias.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "lugar donde se diuide el rio en muchas partes. s. en arroyos o acequias.",
+        "Comentario": "Cf. Amaxac: lugar donde se diuide el rio en muchas partes. s. en arroyos o acequias."
+      }
+    },
+    {
+      "eid": "227873",
+      "record_id": "1571-molina-2:eid:227873",
+      "texto_estandarizado": "iztlaca tlacuiloani",
+      "escritura_original": "Iztlaca tlacuiloani",
+      "before": {
+        "Traducción": "idem,  (Iztlaca tlacuilo: escriptor falso.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "escriptor falso.",
+        "Comentario": "Cf. Iztlaca tlacuilo: escriptor falso."
+      }
+    },
+    {
+      "eid": "220087",
+      "record_id": "1571-molina-2:eid:220087",
+      "texto_estandarizado": "acan ompohui",
+      "escritura_original": "Acan ompoui",
+      "before": {
+        "Traducción": "idem  (Acan oyeuati: cosa insufficiente y falta, o persona de quien no se haze caso.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "cosa insufficiente y falta, o persona de quien no se haze caso.",
+        "Comentario": "Cf. Acan oyeuati: cosa insufficiente y falta, o persona de quien no se haze caso."
+      }
+    },
+    {
+      "eid": "220089",
+      "record_id": "1571-molina-2:eid:220089",
+      "texto_estandarizado": "acan ontlamachiyoa",
+      "escritura_original": "Acan ontlamachioa",
+      "before": {
+        "Traducción": "idem  (Acan oyeuati: cosa insufficiente y falta, o persona de quien no se haze caso.)",
+        "Comentario": "Cf. Acan ompoui: idem  (Acan oyeuati: cosa insufficiente y falta, o persona de quien no se haze caso.)"
+      },
+      "after": {
+        "Traducción": "cosa insufficiente y falta, o persona de quien no se haze caso.",
+        "Comentario": "Cf. Acan oyeuati: cosa insufficiente y falta, o persona de quien no se haze caso.<br />Cf. Acan ompoui: cosa insufficiente y falta, o persona de quien no se haze caso."
+      }
+    },
+    {
+      "eid": "229463",
+      "record_id": "1571-molina-2:eid:229463",
+      "texto_estandarizado": "momiccatlapiquini",
+      "escritura_original": "Momiccatlapiquini",
+      "before": {
+        "Traducción": "idem  (Momiccanenequi: fingir q[ue] esta muerto. preter: omomiccanenec.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "fingir q[ue] esta muerto.",
+        "Comentario": "Cf. Momiccanenequi: fingir q[ue] esta muerto. preter: omomiccanenec."
+      }
+    },
+    {
+      "eid": "229476",
+      "record_id": "1571-molina-2:eid:229476",
+      "texto_estandarizado": "momocihuiani",
+      "escritura_original": "Momociuiani",
+      "before": {
+        "Traducción": "apresurado enlo que haze. idem.  (Momociuia: negociado, o accelerado, o d[e]sasosegado.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "negociado, o accelerado, o d[e]sasosegado.",
+        "Comentario": "apresurado enlo que haze.<br />Cf. Momociuia: negociado, o accelerado, o d[e]sasosegado."
+      }
+    },
+    {
+      "eid": "229477",
+      "record_id": "1571-molina-2:eid:229477",
+      "texto_estandarizado": "momocihuiqui",
+      "escritura_original": "Momociuiqui",
+      "before": {
+        "Traducción": "apresurado enlo que haze. idem.  (Momociuia: negociado, o accelerado, o d[e]sasosegado.)",
+        "Comentario": "o negociado.<br />Cf. Momociuiani: apresurado enlo que haze. idem.  (Momociuia: negociado, o accelerado, o d[e]sasosegado.)"
+      },
+      "after": {
+        "Traducción": "negociado, o accelerado, o d[e]sasosegado.",
+        "Comentario": "apresurado enlo que haze.<br />Cf. Momociuia: negociado, o accelerado, o d[e]sasosegado.<br />o negociado.<br />Cf. Momociuiani: negociado, o accelerado, o d[e]sasosegado."
+      }
+    },
+    {
+      "eid": "229561",
+      "record_id": "1571-molina-2:eid:229561",
+      "texto_estandarizado": "mopachoqui",
+      "escritura_original": "Mopachoqui",
+      "before": {
+        "Traducción": "idem  (Mopacho: inclinado encoruado o agaçapado.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "inclinado encoruado o agaçapado.",
+        "Comentario": "Cf. Mopacho: inclinado encoruado o agaçapado."
+      }
+    },
+    {
+      "eid": "229875",
+      "record_id": "1571-molina-2:eid:229875",
+      "texto_estandarizado": "moyolcocoqui",
+      "escritura_original": "Moyolcocoqui",
+      "before": {
+        "Traducción": "idem  (Moyolcocoani: embidioso, o penitente arrepentido y contrito.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "embidioso, o penitente arrepentido y contrito.",
+        "Comentario": "Cf. Moyolcocoani: embidioso, o penitente arrepentido y contrito."
+      }
+    },
+    {
+      "eid": "230375",
+      "record_id": "1571-molina-2:eid:230375",
+      "texto_estandarizado": "neahuiltiloni",
+      "escritura_original": "Neauiltiloni",
+      "before": {
+        "Traducción": "idem  (Neauiltiliztli: juego de recreacion y passatiempo.)",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "juego de recreacion y passatiempo.",
+        "Comentario": "Cf. Neauiltiliztli: juego de recreacion y passatiempo."
+      }
+    }
+  ],
+  "bracket_idem_rewrite_rule": "For non-Molina rows where Traducción begins with idem and includes an explicit bracketed gloss, replace Traducción with the bracketed gloss and move any trailing additive text into Comentario.",
+  "bracket_idem_rewrite_rewritten": 5,
+  "bracket_idem_rewrite_examples": [
+    {
+      "eid": "65987",
+      "record_id": "1547-olmos-v:eid:65987",
+      "source": "1547 Olmos_V ?",
+      "texto_estandarizado": "cima",
+      "escritura_original": "nitlaçima",
+      "before": {
+        "Traducción": "idem [rrastrillar al magueyo sacar el hilo del]",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "rrastrillar al magueyo sacar el hilo del",
+        "Comentario": null
+      }
+    },
+    {
+      "eid": "291732",
+      "record_id": "1595-rincon:eid:291732",
+      "source": "1595 Rincón",
+      "texto_estandarizado": "huehuentzin",
+      "escritura_original": "veuentzin.",
+      "before": {
+        "Traducción": "idem [el viejo]",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "el viejo",
+        "Comentario": null
+      }
+    },
+    {
+      "eid": "98789",
+      "record_id": "1780-bnf-361:eid:98789",
+      "source": "1780 ? Bnf_361",
+      "texto_estandarizado": "nanuituma",
+      "escritura_original": "[]nanuituma, nite",
+      "before": {
+        "Traducción": "idem [Desercar, ò destruir la cerca]",
+        "Comentario": ": Tenanuituma, ni ; otra letra en el entrerrenglón"
+      },
+      "after": {
+        "Traducción": "Desercar, ò destruir la cerca",
+        "Comentario": ": Tenanuituma, ni; otra letra en el entrerrenglón"
+      }
+    },
+    {
+      "eid": "64790",
+      "record_id": "1547-olmos-v:eid:64790",
+      "source": "1547 Olmos_V ?",
+      "texto_estandarizado": "tlaitia",
+      "escritura_original": "ninotlaytia",
+      "before": {
+        "Traducción": "idem [beuer ponçoña]",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "beuer ponçoña",
+        "Comentario": null
+      }
+    },
+    {
+      "eid": "65668",
+      "record_id": "1547-olmos-v:eid:65668",
+      "source": "1547 Olmos_V ?",
+      "texto_estandarizado": "tlapehualtia",
+      "escritura_original": "nitlapehualtia",
+      "before": {
+        "Traducción": "idem [Començar algo] y dar ocassion",
+        "Comentario": null
+      },
+      "after": {
+        "Traducción": "Començar algo",
+        "Comentario": "y dar ocassion"
+      }
+    }
+  ],
+  "remaining_idem_metric": "Unique rows with a standalone idem token in any string field.",
+  "standalone_idem_field_hits_remaining": 196,
+  "standalone_idem_field_hits_remaining_by_field": {
+    "Comentario": 185,
+    "Escritura original": 4,
+    "Texto estandarizado": 4,
+    "Traducción": 3
+  },
+  "standalone_idem_translation_rows_remaining": 3,
+  "standalone_idem_translation_rows_remaining_by_source": {
+    "1547 Olmos_V ?": 1,
+    "1551-95 Documentos nahuas de la Ciudad de México": 1,
+    "1780 ? Bnf_361": 1
+  },
+  "standalone_idem_translation_unresolved_examples": [
+    {
+      "eid": "66262",
+      "record_id": "1547-olmos-v:eid:66262",
+      "source": "1547 Olmos_V ?",
+      "texto_estandarizado": "tololoa",
+      "escritura_original": "titololoa",
+      "traduccion": "idem quid titononotza",
+      "comentario": null
+    },
+    {
+      "eid": "169357",
+      "record_id": "1551-95-documentos-nahuas-de-la-ciudad-de-mexico:eid:169357",
+      "source": "1551-95 Documentos nahuas de la Ciudad de México",
+      "texto_estandarizado": "ihuan",
+      "escritura_original": "yoan",
+      "traduccion": "y / ítem / con más / idem / y también",
+      "comentario": "Y<br /> <b>Auh ymixpan omuchiuh testigos don Baltazar de la Cruz yoan Baltazar señor alcalde yoan Joseph Xuarez yoan Gabriel Jacobo Juan Hernandez muchitin tetecuti Joan Garcia Davalos español topile nican Sanctiago Tlatelulco.</b> <br />  Todo lo qual se hizo presentes por testigos don Baltasar de la Cruz y Baltazar de San Sebastian alcalde y Josephe Xuarez y Gabriel Jacobo y Juan Hernandez todos principales [tetecuhtin] y Garcia de Avalos español alguazil [topile] (anparador de los naturales) del dicho pueblo de Santiago Tlatilulco.  <br /> (Posesión de casas y terrenos dada a María Gerónima y contradicción de Magdalena Inés. Información tomada a cinco testigos. Año 1592, [798])<br /><br /> <b>[F. 2v.] Yn ipan ciudad Mexico Santigo Tlatelulco yc cempoalli onchicuey mani metztli de julio de mil quinientos y noventa y dos años otiquintlacaquiltique yn Antonio Joseph yoan ynamic Magdalena Ynes chaneque Santa Ana Huitzilla ypanpa yn itlanoa[a]tiltzin totlatocauh visorrey y nican Nueva España yn tlacpac teneuhtica.</b> <br />  En la ciudad de Mexico en la parte de Santiago Tlatilulco veynte ocho diaz del mes de julio mil e quinientos y noventa y dos años notifiqué y dí a entender a Anton Josephe y a Madalena Ynes su muger vezinos (del barrio) de Sancta Ana Huitzilan lo proveydo y mandado por el señor virrey desta Nueva España.  <br /> (Comunicación a Antonio Joseph y a su esposa Magdalena Inés, de la demanda que le ha puesto María Gerónima, esposa de Juan Escalante. Año 1592, [774])<br /><br /> <b>Tlatlaniloc yn testigo ylhuiloc cuix ticmati ynic omacoc posesion in Juan de Escalante yoan yn inamic oquito yn testigo ca nelli ca uel melaoac yn niquitoa ca ye uppaniayan in maco posesion auh yn Antonio Joseph ca zan omoyocox ynic oquixixitini yn itepan Juan de Escalante yoan ynamic yoan yn ye uecauh inquizayan oquitzatzacu yoan in estacas oquiquiquixti amo ytencopa justicia.</b> <br />  [Le fue preguntado al testigo si sabia que se le dio posesion a Juan de Escalante y a su  esposa] Y este testigo vido que la dicha Maria Geronima tomó dos veces posesion de las dichas casas y tierras por mano de la justicia y Anton Jusephe yndio y Angelina Ynes su muger de su autoridad derribaron una pared de las dichas casas y cerró la antigua entrada y salida de ellas y arranco las estacas sin autoridad de la justicia que se avian puesto quando tomó la posesion de ellas la dicha Maria Geronima.  <br /> (Posesión de casas y terrenos dada a María Gerónima y contradicción de Magdalena Inés. Información tomada a cinco testigos. Año 1592, [814])<br /><br /> <b>Auh yn occentetl quauhtecpa ytzticac yoan yn ioatllo [sic] ontetl yoan caltzalanyo atencopa quiztica tonatiuh ycalaquiampa ytzticac uncan ocatcaya ce español ytoca Francisco de Castro español texedor oquimototoquili yehoatzin juez gobernador auh yn yehoatl Maria Geronima yyoma otlatzatzacu yoan nouian onenen yn ioatoalco yoan calitic.</b> <br />  Y en otras casas que tienen las puertas hazia el norte con sus dos patios y un callejon que va a dar a una acequia de agua [atenco] hazia el poniente y en ellas hallaron a Francisco de Castro español tejedor que bibia en ellas al qual echó de ellas el dicho juez governador y la dicha Maria Gerónima en señal de posesion abrio y cerro las puertas de las dichas casas y se paseo por ellas y por pos [sic] dichos patios [dentro de la casa] (callejon).  <br /> (Posesión de casas y terrenos dada a María Gerónima y contradicción de Magdalena Inés. Información tomada a cinco testigos. Año 1592, [795])<br /><br /> <b>Cecenyaca oquinmomaquili juramento yn testigos nican audiencia yn ipanpa yc moteilhuia Maria Geronima yn inamic Juan de Escalante ynic mixnamiqui Antonio Joseph yoan yn inamic Magdalena Ynes chaneque Sancta Ana Huitzilla auh yn yehoatzin juez gobernador oquimopaccacelili auh ynic nelti yn quimotlalilia yfirmatzin ytocatzintica fecha ut supra don Gaspar de Mendoza nixpa Francisco Millan escribano.</b> <br />  [A cada uno de los testigos tomó juramento en la Audiencia] sobre el pleyto que trata [Maria Gerónima y su esposo Juan de  Escalante] con Anton Josephe y Madalena Ynes su muger vezinos de Sancta Ana Huitzilan y el dicho juez gobernador los uvo por presentados y firmólo de su nonbre. Don Gaspar de Mendoza. Ante mí Francisco Millan, escrivano.  <br /> (Posesión de casas y terrenos dada a María Gerónima y contradicción de Magdalena Inés. Información tomada a cinco testigos. Año 1592, [801])<br /><br /> <b>Auh yn iquac oquicaque yn omoteneuhque Antonio Joseph yoan ynamic oquitoque ca ticpaccacelia yn itlanaoatiltzin totlatocauh ca tiquitoa ca amo tiquiximati yn inamic Juan de Escalante camo quen ticnotza ca oc motrassuntaros yn ixquich notitulos yoan  noposesion yn quenin uel axccaoa yn nonamic.</b> <br />  Y abiendo entendido dixeron que obedecian lo proveydo y mandado por su señoria y que no conocen a la muger del dicho Joan de Escalante ni le an parentesco ninguno y que están trasuntado los titulos que tienen y la posesion por donde constara ser la dicha su muger heredera de la dicha casa y solar.  <br /> (Comunicación a Antonio Joseph y a su esposa Magdalena Inés, de la demanda que le ha puesto María Gerónima, esposa de Juan Escalante. Año 1592, [776])<br /><br /> <b>Ytechcopa in enformacion quichioaznequi Maria Geronima yn inamic Juan de Escalante español ypanpa calli yoan tepantli oquixitini yoan yn inamic yoan ipanpa yn oquitzacu yn oncan inquizayan yoan yncalaquian yn incalytic.</b> <br />  En el auto de suso contenido en razon de la ynformacion que se ofrece a dar María Gerónima muger de Joan de Escalante español sobre las casas y solar y pared que le derribaron y callejon que le cerraron de su entrada y salida [de su casa].  <br /> (Comunicación a Antonio Joseph y a su esposa Magdalena Inés, de la demanda que le ha puesto María Gerónima, esposa de Juan Escalante. Año 1592, [775])<br /><br /> <b>Auh yoan yn caltontli yn ompa monoltitoc tlayxiptlayotl teopantonco yoan mochi yn itualli yoan yn quin motecac tepantli ca mochi no quinamaca yn oniquinteneuh noxuiuan auh quimanazque cempoalli pesos ynin tomines ytech pouiz yn animan misas cantadas yc nopan mitoz yn onpa Sanctiago.</b> <br />  Y el aposento y oratorio donde están las ymagenes con el patio y la pared nueva todo esto mando a las dichas mis nietas y an de pagar veynte pesos en reales para hazer bien pur mi ánima y se digan misas cantadas por ella en la yglesia de Santiago [Tlatilulco].  <br /> (Información sobre el cumplimiento del testamento de Angelina de la Cruz. Año 1579, [781])<br /><br /> <b>Auh niman ymatica oquimocuili oquimotennamiquili auh niman nixpan yn  neoatl nescribano yoan testigos tlazintlan titoteneoazque ymatitech oquimanili yn Maria Geronima oquimocalaqui centetl ytic calli tonatiuh yquizayampa ytzticac.</b> <br />  Ante mí el presente escrivano y ante los testigos yuso escriptos tomo por la mano a la dicha Maria Gerónima y la metió en unas casas que tienen las puertas hazia el oriente.  <br /> (Posesión de casas y terrenos dada a María Gerónima y contradicción de Magdalena Inés. Información tomada a cinco testigos. Año 1592, [794])<br /><br /><br />ITEM<br /> <b>Yoan nicteneua yn ompa Petlachiuhcan mani nomilcoal ynic motamachiua tonatiuh yquizaian itztoc ynic uiac napoalquauitl auh ynic patlauac necoc yxquich quiquaxochnamiqui yn imil Tapian niquitoa ompoalli yntech pouiz yn noxuiuan Diego de Castañeda yoan Baltasar auh yn oc ompoalli yntech pouiz yn albaceas tlatzintla tocayeticate.</b> <br />  Yten declaro que en (el pago que llaman) Petlachiuhcan tengo otras tierras que conpre [milcoali] que medidas hacia la parte donde sale el sol tiene en largo ochenta baras [quauitl] y de ancho tiene lo mismo y linde con tierras de Tapia mando que de ellas aya quarenta (baras) mi nieto Diego de Castañeda y Baltasar y las otras quarenta (brazas) las ayan y hereden mis albaceas que de yuso seran nonbrados.  <br /> (Testamento de Angelina Martina, pochteca de Tlatelolco, tlaxilacalli de San Martín Telpochcaltitlan Pochtlan. Año 1580, [526])<br /><br /> <b>Yoan nicteneua yn ompa San Mateo Techichiquilyacac mani nomilcoal nicouili Bartolomen Xilotl Coatlan chane nicmacac cempoalli ochiquacen pesos ynic motamachiua tonatiuh yquizaian ytztoc ynic uiac napoalquauitl auh ynic patlauac necoc yxquich quiquaxochnamiqui yn imil don Miguel Garcia ynin ytech pouiz yn nomon Hernando Ximenez.</b> <br />  Yten declaro que en el pago de Sant Mateo Techichiquilyacac tengo otro pedazo de tierra que conpre [milcoali] a Bartolome Xilotl vecino [del barrio] de Coatlan en veynte y seis pesos que medidas hace donde sale el sol en largo tiene ochenta baras [quauitl] y de ancho tiene lo mismo y linde con tierras de don Miguel Garcia las quales mando que herede el dicho mi yerno Hernando Ximenez.  <br /> (Testamento de Angelina Martina, pochteca de Tlatelolco, tlaxilacalli de San Martín Telpochcaltitlan Pochtlan. Año 1580, [524])<br /><br /> <b>Yoan nicteneua yn ompa San Bartolome Atapauacan mani nomilcoal ynic motamachiua ynic [F. 8r] uiac caxtolquauitl necoc ixquich quiquaxochnamiqui yn imil Coacue ytech pouiz yn noxuiuh Joana Maximiliana.</b> <br />  Yten declaro que en el pago de Sant Bartolome Atapahuacan tengo otras tierras que conpre [milcoali] que tiene de largo y en ancho quince baras [quauitl] son en quadra y linde con tierras de Coacue las quales herede la dicha mi nieta Juana Maximiliana.  <br /> (Testamento de Angelina Martina, pochteca de Tlatelolco, tlaxilacalli de San Martín Telpochcaltitlan Pochtlan. Año 1580, [523])<br /><br /> <b>Yoan nicteneua yn Maria ynamic catca quauhxinqui quimotlacui chicome pesos nictlapopolhuia amo quixtlauaz.</b> <br />  [F. 6r.] Yten declaro que Maria yndia muger que fue de un carpintero le presté siete pesos los quales le perdono y mando no se cobren.  <br /> (Testamento de Angelina Martina, pochteca de Tlatelolco, tlaxilacalli de San Martín Telpochcaltitlan Pochtlan. Año 1580, [528])<br /><br /> <b>Yoan nicteneua yn ompa Xochimilco yn ipan tlaiacatl Macuiluacan onoc nochinancoal chicontetl quauhtlacopa y itztoc ynic uiuiac hoompoalquauitl mamacuiltacatl actica nicouili yn omic Pochtecatlailotlac catca Francisco Quiauh yoan yn axcan honca ynamic Maria Tiacapa ompa chaneque niquinmacac matlactli omome pesos monamacaz azo zan no yeuatl quiualcoaz yn tenamic ma zan quicuepaz yn izqui niquinmacac tomines auh yn tla moxicoz ma zan tlaco xeliuiz yn quimanaz nican yntech pouiz yn nouaiolque.</b> <br />  Yten declaro que en pueblo de Xochimilco en el barrio [tlaiacatl] que llaman Macuilhuacan tengo siete camellones de tierra que conpre que están hacia la parte del monte en largo que cada uno tiene quarenta baras [quauitl] y caben en el anchor a cinco matas de maizal los quales conpré a un yndio (mercader) que se decía Francisco Quiauh Pochtecatlaylotlac y a su muger Maria Tiacapan que de presente es biba vecinos en el dicho pueblo y los conpré en doce pesos mando se vendan y si la dicha muger las quisiere conprar se le den bolbiendo lo que por ellos les dí en tomines y si no quisiere dé la mitad y sea para mis deudos y parientes.  <br /> (Testamento de Angelina Martina, pochteca de Tlatelolco, tlaxilacalli de San Martín Telpochcaltitlan Pochtlan. Año 1580, [527])<br /><br /> <b>Yoan nicteneua honca chicuacentetl yamanqui iztac icpatetl yoan chicuhnauhtetl yapalictetl yoan ontlatetectontli quapachicpatl yoan nauhtetl tzomiycpatetl azul yoan achiton costaltica cah ichcatzomitl za no azul amo uel quizqui monamacaz ytech pouiz yn santisima trinidad yn iteopan pochteca yoan ome alauacapetlatl yancuic mocauatiuh yxpantzinco mozouaz in santisima trinidad.</b> <br />  Yten declaro que tengo seis obillos de hilo de algodon y nueve obillos de hilo leonado y dos telas de hilo urdidos de color leonado y quatro obillos de hilo [de lana] azul y un poco de lana que esta en un costal y es teñida en azul [que no salió bien] mando se venda y el valor de ello sea para la Santisima Trinidad en el altar de los mercaderes [pochteca] y tanbién se lleven dos petates de palma [alauac petlatl nuevos] para que se pongan delante del altar de la Santisima Trinidad.  <br /> (Testamento de Angelina Martina, pochteca de Tlatelolco, tlaxilacalli de San Martín Telpochcaltitlan Pochtlan. Año 1580, [501])<br /><br /> <b>Yoan nicteneua yn ompa Santa Maria Magdalena Coatlayauhcan mani nomilcoal nicouili Joana Tlahco [entre renglones : don Baltazar Tlilancalqui ynamic] Santa Ana ychan Xopilco nicmacac cempoalli onchicuacen pesos ynic uiac napoalquauitl necoc ixquich yntech pouiz yn nicuhtzitziuan Simon Pedro Yoan Bernaldino.</b> <br />  Yten declaro que en el pago de Santa Maria Madalena Coatlayaucan tengo otras tierras que conpre [milcoali] a la muger de don Baltasar Tlilancalqui que se dice Juana Tlaco vecina (del barrio) de Santa Ana Xopilco y le dio por ellas veynte y seys pesos que tienen de largo ochenta baras [quauitl] y lo propio tienen de ancho lo qual ayan y hereden los dichos mis visnietos Simon Pedro y Bernardino.  <br /> (Testamento de Angelina Martina, pochteca de Tlatelolco, tlaxilacalli de San Martín Telpochcaltitlan Pochtlan. Año 1580, [525])<br /><br /><br />CON MAS<br /> <b>Auh yn iquac oiuh oquimocaquilti niman omotlapo yn calli omocalaqui yn calitic yoan occepan omotamachiuh yn calli zan centequiztimani tonatiuh yquizayampa ytzticac ynic patlaoac yn ixpampa namatl ypan cenmolicpitl  auh yn iyomotlan ynic huiac ematl ypan ce molicpitl yoan ythuallo yoan yn quin omotecat tepantli yoan muchi ytlallo umpa onaci atenco.</b> <br />  Y aviendolo entendido el dicho juez governador mandó abrir las puertas de las dichas casas y entró en ellas y se medieron las dichas casas que las puertas de ellas estan hazia el oriente que tienen de  ancho quatro brazas y un codo y de largo tres brazas y un codo con mas el patio y una pared nueva y las tierras que llegan al acequia [atenco].  <br /> (Posesión de un terreno y casa que vendieron los albaceas de Angelina de la Cruz a Ana Xuárez. Año 1591, [789])<br /><br /><br />E<br /> <b>Auh in yehuantin Pedro Mazaquen yoan in Ynes Tiacapan yhoan Magdalena Anan Moncel atle oquitoque mochintin ymixpan tlaxilacaleque omochiuhtinen yn omotocateneuhque y tlacpac yhoan ypan in pregun ynic omochiuh yuh oneltic yn ixpantzinco mahuiztililoni señor governador alcaldes yuan jueces yc oquimoneltilique oquimotlalilique inin firmatzin. Antonio Valeriano, Francisco Martin alcalde, Miguel Sanchez Juez, Thoribio Lucas juez. Pasó ante mi Diego Leonardo escrivano.</b> <br />  Y los dichos Pedro Mazquen e Ynes Tiacapan Madalena Ana Mocel no dixeron nada en presencia de todos los del barrio y mandones de el [tlaxilacalleque] y ansi se hizieron presentes los sobre dichos arriba nombrados aviendose fecho pregon y ansi se averiguó en presencia de los señores governador alcaldes juezes y por verdad los firmaron de sus nombres. Antonio Valeriano, Francisco Martin, alcalde, Miguel Sanchez, Toribio Lucas, juez. Paso ante mí Diego Leonardo, escrivano.  <br /> (Orden del gobernador y los alcaldes para que Pedro Mazaquen e Inés Tiacapan presenten sus testigos. Año 1578, [337])<br /><br /><br />IDEM<br /> <b>Yoan nicteneua ylamatzin Cilia Juana ycaltepotzco mani tlalmantli nicouili Maria ychpuch nicmacac ey pesos ynic motamachiua tonatiuh iquizaian itztoc ynic huiac chiconquauitl auh ynic patlauac necoc yxquich monamacaz ma nel ipatiuh yc mocuiz ey pesos ce peso macoz yn omoteneuh Ciliatzin auh yn ome peso ytech pouiz yn naniman.</b> <br />  Yten declaro que una vieja que se llama Cecilia Juana tiene unas casas y detras de ellas tengo un pedazo de tierra [tlalmantli] que compré a Maria Yxpoch en tres pesos que medido hacia la parte donde sale el sol a lo largo tiene siete baras [quauitl] y en ancho tiene lo mismo mando se venda aunque sea por los tres pesos y el uno se le de a la dicha Cecilia y los dos sean para que se haga bien de mi ánima.  <br /> (Testamento de Angelina Martina, pochteca de Tlatelolco, tlaxilacalli de San Martín Telpochcaltitlan Pochtlan. Año 1580, [492])<br /><br /><br />Y TAMBIEN<br /> <b>Yoan nicteneua honca chicuacentetl yamanqui iztac icpatetl yoan chicuhnauhtetl yapalictetl yoan ontlatetectontli quapachicpatl yoan nauhtetl tzomiycpatetl azul yoan achiton costaltica cah ichcatzomitl za no azul amo uel quizqui monamacaz ytech pouiz yn santisima trinidad yn iteopan pochteca yoan ome alauacapetlatl yancuic mocauatiuh yxpantzinco mozouaz in santisima trinidad.</b> <br />  Yten declaro que tengo seis obillos de hilo de algodon y nueve obillos de hilo leonado y dos telas de hilo urdidos de color leonado y quatro obillos de hilo [de lana] azul y un poco de lana que esta en un costal y es teñida en azul [que no salió bien] mando se venda y el valor de ello sea para la Santisima Trinidad en el altar de los mercaderes [pochteca] y tanbién se lleven dos petates de palma [alauac petlatl nuevos] para que se pongan delante del altar de la Santisima Trinidad.  <br /> (Testamento de Angelina Martina, pochteca de Tlatelolco, tlaxilacalli de San Martín Telpochcaltitlan Pochtlan. Año 1580, [501])<br />"
+    },
+    {
+      "eid": "71598",
+      "record_id": "1780-bnf-361:eid:71598",
+      "source": "1780 ? Bnf_361",
+      "texto_estandarizado": "anamacani",
+      "escritura_original": "Anamacani",
+      "traduccion": "idem",
+      "comentario": "añadido"
+    }
   ]
 }

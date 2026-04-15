@@ -364,8 +364,10 @@ let lastFocusedInput = null;
 let filterCards = [];
 let activeCardIndex = 0;
 const expandedComments = new Set();
+const expandableComments = new Set();
 const commentAnchors = new Map();
-let comentarioAllExpanded = false;
+let stickyHeaderResizeObserver = null;
+let stickyTableSyncFrame = 0;
 let currentLang = "es";
 let lastPairResults = null;
 let lastPairMeta = null;
@@ -373,6 +375,7 @@ let rankingMode = "auto";
 let lastRankingSummary = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+  setupStickyTableOffsets();
   setupLanguageToggle();
   setupOldSpanishToggle();
   setupAccentToggle();
@@ -516,19 +519,12 @@ function setupOldSpanishToggle() {
 }
 
 function updateRankingModeControls() {
-  document.querySelectorAll(".rank-mode").forEach(group => {
-    group.setAttribute("aria-label", t("table.rank.group"));
-  });
-  document.querySelectorAll(".rank-mode-btn").forEach(btn => {
-    const mode = btn.dataset.rankMode === "prio" ? "prio" : "auto";
-    const active = rankingMode === mode;
-    const textKey = mode === "prio" ? "table.rank.prio" : "table.rank.auto";
-    const titleKey = mode === "prio" ? "table.rank.title.prio" : "table.rank.title.auto";
-    btn.textContent = t(textKey);
-    btn.title = t(titleKey);
-    btn.setAttribute("aria-label", t(titleKey));
-    btn.setAttribute("aria-pressed", String(active));
-    btn.classList.toggle("active", active);
+  document.querySelectorAll(".rank-mode-select").forEach(sel => {
+    sel.value = rankingMode;
+    sel.title = t(rankingMode === "prio" ? "table.rank.title.prio" : "table.rank.title.auto");
+    sel.querySelectorAll("option").forEach(opt => {
+      opt.textContent = t(opt.value === "prio" ? "table.rank.prio" : "table.rank.auto");
+    });
   });
 }
 
@@ -538,14 +534,14 @@ function setupRankingModeControl() {
     rankingMode = saved;
   }
   updateRankingModeControls();
-  document.querySelectorAll(".rank-mode-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const nextMode = btn.dataset.rankMode === "prio" ? "prio" : "auto";
+  document.querySelectorAll(".rank-mode-select").forEach(sel => {
+    sel.addEventListener("change", () => {
+      const nextMode = sel.value === "prio" ? "prio" : "auto";
       if (nextMode === rankingMode) return;
       rankingMode = nextMode;
       localStorage.setItem("nahuatl-rank-mode", rankingMode);
       updateRankingModeControls();
-      applyFilters(false, { keepOffset: true, keepCurrent: true, restoreScroll: window.scrollY });
+      applyFilters(false, getTableRestoreOptions(sel));
     });
   });
 }
@@ -1463,6 +1459,7 @@ function renderTable(rows, totalCount) {
   const tbody = document.querySelector("#dataTable tbody");
   if (!tbody) return;
   tbody.innerHTML = "";
+  expandableComments.clear();
 
   if (!rows.length) {
     const tr = document.createElement("tr");
@@ -1474,10 +1471,10 @@ function renderTable(rows, totalCount) {
     tbody.appendChild(tr);
   } else {
     rows.forEach(row => {
-      const tr = document.createElement("tr");
-      if (row.record_id) tr.dataset.recordId = row.record_id;
-      let translationTd = null;
-      let comentarioMeta = null;
+	      const tr = document.createElement("tr");
+	      if (row.record_id) tr.dataset.recordId = row.record_id;
+	      let translationMeasureEl = null;
+	      let comentarioMeta = null;
 
       TABLE_FIELDS.forEach(field => {
         const td = document.createElement("td");
@@ -1486,28 +1483,24 @@ function renderTable(rows, totalCount) {
           const safe = raw == null ? "" : String(raw);
           if (!safe.trim()) {
             td.textContent = "";
-          } else {
-            td.classList.add("comentario-cell");
-            const expanded = expandedComments.has(row._rid);
-            const content = document.createElement("div");
-            content.className = expanded ? "comentario-text" : "comentario-text collapsed";
-            content.innerHTML = applyHighlights(safe, field.key);
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "comentario-toggle";
-            btn.textContent = expanded ? "−" : "+";
-            btn.addEventListener("click", e => {
-              e.stopPropagation();
-              const isExpanded = expandedComments.has(row._rid);
-              if (isExpanded) {
-                const anchor = commentAnchors.get(row._rid);
-                expandedComments.delete(row._rid);
-                content.classList.add("collapsed");
-                btn.textContent = "+";
-                commentAnchors.delete(row._rid);
-                if (anchor) {
-                  requestAnimationFrame(() => {
-                    const rect = btn.getBoundingClientRect();
+	          } else {
+	            td.classList.add("comentario-cell");
+	            const content = document.createElement("div");
+	            content.className = "comentario-text collapsed";
+	            content.innerHTML = applyHighlights(safe, field.key);
+	            const btn = document.createElement("button");
+	            btn.type = "button";
+	            btn.className = "comentario-toggle";
+	            btn.addEventListener("click", e => {
+	              e.stopPropagation();
+	              if (!expandableComments.has(row._rid)) return;
+	              const isExpanded = expandedComments.has(row._rid);
+	              if (isExpanded) {
+	                const anchor = commentAnchors.get(row._rid);
+	                setCommentExpanded(row._rid, content, btn, false);
+	                if (anchor) {
+	                  requestAnimationFrame(() => {
+	                    const rect = btn.getBoundingClientRect();
                     const centerNow = rect.top + rect.height / 2 + window.scrollY;
                     const anchorCenter = anchor.center;
                     const viewTop = window.scrollY;
@@ -1521,66 +1514,47 @@ function renderTable(rows, totalCount) {
                       if (Math.abs(delta) > 1) {
                         window.scrollBy({ top: delta, behavior: "smooth" });
                       }
-                    }
-                  });
-                }
-              } else {
-                expandedComments.add(row._rid);
-                const rect = btn.getBoundingClientRect();
-                const center = rect.top + rect.height / 2 + window.scrollY;
-                commentAnchors.set(row._rid, { scrollY: window.scrollY, center });
-                content.classList.remove("collapsed");
-                btn.textContent = "−";
-              }
-              updateComentarioToggleButton(lastRenderRows);
-            });
-            td.appendChild(content);
-            td.appendChild(btn);
-            comentarioMeta = { td, content, btn, rowId: row._rid, expanded };
-          }
-        } else {
-          const raw = getDisplayValue(row, field.key);
-          td.innerHTML = applyHighlights(raw, field.key);
-          if (field.key === "Traducción") {
-            translationTd = td;
+	                    }
+	                  });
+	                }
+	              } else {
+	                const rect = btn.getBoundingClientRect();
+	                const center = rect.top + rect.height / 2 + window.scrollY;
+	                commentAnchors.set(row._rid, { scrollY: window.scrollY, center });
+	                setCommentExpanded(row._rid, content, btn, true);
+	              }
+	              updateComentarioToggleButton(lastRenderRows);
+	            });
+	            td.appendChild(content);
+	            td.appendChild(btn);
+	            comentarioMeta = { content, btn, rowId: row._rid };
+	          }
+	        } else {
+	          const raw = getDisplayValue(row, field.key);
+	          if (field.key === "Traducción") {
+            const content = document.createElement("div");
+	            content.className = "traduccion-text";
+	            content.innerHTML = applyHighlights(raw, field.key);
+	            td.appendChild(content);
+	            translationMeasureEl = content;
+	          } else {
+	            td.innerHTML = applyHighlights(raw, field.key);
           }
         }
         tr.appendChild(td);
       });
       tbody.appendChild(tr);
 
-      // Ajusta Comentario en función de la altura de Traducción
-      if (comentarioMeta && translationTd) {
-        const transHeight =
-          Math.floor(translationTd.scrollHeight || translationTd.clientHeight || 0);
-        const contentEl = comentarioMeta.content;
-        const btnEl = comentarioMeta.btn;
-        // mide contenido natural
-        const naturalHeight = Math.floor(contentEl.scrollHeight);
-        const needsToggle = naturalHeight - transHeight > 1;
-        const maxH = transHeight > 0 ? `${transHeight}px` : "120px";
-        contentEl.style.setProperty("--comentario-max-height", maxH);
-        contentEl.dataset.maxHeight = maxH;
-        if (!needsToggle) {
-          // Alturas iguales: si estaba expandido, conserva el botón para poder colapsar.
-          contentEl.classList.remove("collapsed");
-          if (comentarioMeta.expanded) {
-            comentarioMeta.btn.textContent = "−";
-          } else {
-            comentarioMeta.btn.remove();
-          }
-        } else if (comentarioMeta.expanded) {
-          contentEl.classList.remove("collapsed");
-        } else {
-          contentEl.classList.add("collapsed");
-        }
-      }
-    });
-  }
+	      if (comentarioMeta) {
+	        syncComentarioCell(comentarioMeta, translationMeasureEl);
+	      }
+	    });
+	  }
 
   updateTableStatus(rows.length, totalCount);
   updatePaginationControls(totalCount);
   updateComentarioToggleButton(rows);
+  queueStickyTableOffsetsSync();
 }
 
 function setTableStatusMessage(baseText, detailText = "") {
@@ -1629,18 +1603,87 @@ function restoreScroll(options) {
   });
 }
 
-function getFooterAnchorY() {
-  const footer = document.querySelector(".table-footer");
-  if (!footer) return null;
-  const rect = footer.getBoundingClientRect();
-  return rect.top + window.scrollY;
+function getPrimaryTableCard() {
+  return document.querySelector(".excel-table-card");
+}
+
+function getPrimaryTableHeader() {
+  return document.querySelector(".table-header:not(.table-footer)");
 }
 
 function getHeaderAnchorY() {
-  const header = document.querySelector(".table-header:not(.table-footer)");
+  const anchor = document.getElementById("tableHeaderAnchor");
+  if (anchor) {
+    const rect = anchor.getBoundingClientRect();
+    return rect.top + window.scrollY;
+  }
+  const header = getPrimaryTableHeader();
   if (!header) return null;
   const rect = header.getBoundingClientRect();
   return rect.top + window.scrollY;
+}
+
+function getTableRestoreOptions(triggerEl, fallbackY = window.scrollY) {
+  const isFooterControl = !!triggerEl?.closest?.(".table-footer");
+  const anchor = isFooterControl ? getHeaderAnchorY() : null;
+  const y = anchor ?? fallbackY;
+  return {
+    keepOffset: true,
+    keepCurrent: true,
+    restoreScroll: y,
+    ...(isFooterControl ? { restoreBehavior: "smooth" } : {})
+  };
+}
+
+function syncStickyTableOffsets() {
+  const card = getPrimaryTableCard();
+  const header = getPrimaryTableHeader();
+  if (!card) return;
+  const headerRect = header ? header.getBoundingClientRect() : null;
+  const headerHeight = headerRect ? Math.ceil(headerRect.height) : 0;
+  card.style.setProperty("--table-header-offset", `${headerHeight}px`);
+  const wrapper = document.querySelector(".table-wrapper");
+  const thead = document.querySelector("#dataTable thead");
+  const table = document.getElementById("dataTable");
+  if (!wrapper || !thead || !table) {
+    card.style.setProperty("--table-thead-translate", "0px");
+    return;
+  }
+  const cardStyles = window.getComputedStyle(card);
+  const wrapperStyles = window.getComputedStyle(wrapper);
+  const cardGap = parseFloat(cardStyles.rowGap || cardStyles.gap || "0") || 0;
+  const wrapperBorderTop = parseFloat(wrapperStyles.borderTopWidth || "0") || 0;
+  const tableRect = table.getBoundingClientRect();
+  const theadHeight = Math.ceil(thead.getBoundingClientRect().height || 0);
+  const naturalTop = tableRect.top;
+  const naturalGap = Math.round(cardGap + wrapperBorderTop);
+  const headerBottom = headerRect ? headerRect.bottom : 0;
+  const targetTop = headerBottom + naturalGap;
+  const maxTranslate = Math.max(0, Math.round(tableRect.height - theadHeight));
+  const desiredTranslate = Math.max(0, Math.round(targetTop - naturalTop));
+  const translate = Math.min(desiredTranslate, maxTranslate);
+  card.style.setProperty("--table-thead-translate", `${translate}px`);
+}
+
+function queueStickyTableOffsetsSync() {
+  if (stickyTableSyncFrame) return;
+  stickyTableSyncFrame = requestAnimationFrame(() => {
+    stickyTableSyncFrame = 0;
+    syncStickyTableOffsets();
+  });
+}
+
+function setupStickyTableOffsets() {
+  syncStickyTableOffsets();
+  window.addEventListener("resize", queueStickyTableOffsetsSync);
+  window.addEventListener("scroll", syncStickyTableOffsets, { passive: true });
+  const header = getPrimaryTableHeader();
+  if (!header || typeof ResizeObserver !== "function") return;
+  stickyHeaderResizeObserver?.disconnect();
+  stickyHeaderResizeObserver = new ResizeObserver(() => {
+    queueStickyTableOffsetsSync();
+  });
+  stickyHeaderResizeObserver.observe(header);
 }
 
 function sampleRandomRows(size) {
@@ -1667,17 +1710,86 @@ function shuffleArray(arr) {
   return arr;
 }
 
+function getComentarioLineHeight(el) {
+  const computed = window.getComputedStyle(el);
+  const lineHeight = parseFloat(computed.lineHeight);
+  const fontSize = parseFloat(computed.fontSize);
+  if (Number.isFinite(lineHeight)) return lineHeight;
+  if (Number.isFinite(fontSize)) return fontSize * 1.35;
+  return 18;
+}
+
+function getComentarioClampHeight(commentEl, translationEl) {
+  const translationHeight = Math.ceil(translationEl?.scrollHeight || translationEl?.clientHeight || 0);
+  const lineHeight = getComentarioLineHeight(commentEl);
+  const slack = Math.max(2, Math.round(lineHeight * 0.12));
+  const baseHeight = translationHeight > 0 ? translationHeight : 120;
+  return { lineHeight, clampHeight: baseHeight + slack };
+}
+
+function isComentarioExpandable(commentEl, clampHeight, lineHeight) {
+  const maxH = `${clampHeight}px`;
+  commentEl.style.setProperty("--comentario-max-height", maxH);
+  commentEl.dataset.maxHeight = maxH;
+  const wasCollapsed = commentEl.classList.contains("collapsed");
+  commentEl.classList.add("collapsed");
+  const visibleHeight = Math.ceil(commentEl.clientHeight || clampHeight);
+  const naturalHeight = Math.ceil(commentEl.scrollHeight);
+  if (!wasCollapsed) {
+    commentEl.classList.remove("collapsed");
+  }
+  const hiddenHeight = Math.max(0, naturalHeight - visibleHeight);
+  const meaningfulOverflow = Math.max(10, Math.round(lineHeight * 0.8));
+  return hiddenHeight >= meaningfulOverflow;
+}
+
+function setCommentExpanded(rowId, contentEl, btnEl, expanded) {
+  if (expanded) {
+    expandedComments.add(rowId);
+    contentEl.classList.remove("collapsed");
+    btnEl.textContent = "−";
+    return;
+  }
+  expandedComments.delete(rowId);
+  commentAnchors.delete(rowId);
+  contentEl.classList.add("collapsed");
+  btnEl.textContent = "+";
+}
+
+function syncComentarioCell(meta, translationEl) {
+  const { rowId, content, btn } = meta;
+  const { lineHeight, clampHeight } = getComentarioClampHeight(content, translationEl);
+  const expandable = isComentarioExpandable(content, clampHeight, lineHeight);
+  if (!expandable) {
+    setCommentExpanded(rowId, content, btn, false);
+    content.classList.remove("collapsed");
+    btn.remove();
+    return false;
+  }
+  expandableComments.add(rowId);
+  setCommentExpanded(rowId, content, btn, expandedComments.has(rowId));
+  return true;
+}
+
+function getExpandableRenderRows(rows = lastRenderRows) {
+  return rows.filter(r => expandableComments.has(r._rid));
+}
+
+function areAllExpandableCommentsExpanded(rows = lastRenderRows) {
+  return rows.length > 0 && rows.every(r => expandedComments.has(r._rid));
+}
+
 function setupComentarioToggleAll() {
   const btn = document.getElementById("comentarioExpandAll");
   if (!btn) return;
   btn.addEventListener("click", () => {
-    if (!lastRenderRows.length) return;
+    const expandableRows = getExpandableRenderRows(lastRenderRows);
+    if (!expandableRows.length) return;
     const y = window.scrollY;
-    const hasExpanded = lastRenderRows.some(r => expandedComments.has(r._rid));
-    if (hasExpanded) {
-      lastRenderRows.forEach(r => expandedComments.delete(r._rid));
+    if (areAllExpandableCommentsExpanded(expandableRows)) {
+      expandableRows.forEach(r => expandedComments.delete(r._rid));
     } else {
-      lastRenderRows.forEach(r => expandedComments.add(r._rid));
+      expandableRows.forEach(r => expandedComments.add(r._rid));
     }
     renderTable(lastRenderRows, lastRenderTotal);
     requestAnimationFrame(() => {
@@ -1689,21 +1801,20 @@ function setupComentarioToggleAll() {
 function updateComentarioToggleButton(rows) {
   const btn = document.getElementById("comentarioExpandAll");
   if (!btn) return;
-  if (!rows.length) {
+  const expandableRows = getExpandableRenderRows(rows);
+  if (!expandableRows.length) {
     btn.textContent = "+";
     btn.disabled = true;
     return;
   }
   btn.disabled = false;
-  const expandedCount = rows.filter(r => expandedComments.has(r._rid)).length;
-  comentarioAllExpanded = expandedCount === rows.length && rows.length > 0;
-  btn.textContent = expandedCount > 0 ? "−" : "+";
+  btn.textContent = areAllExpandableCommentsExpanded(expandableRows) ? "−" : "+";
 }
 
 function resetComentarioState() {
   expandedComments.clear();
+  expandableComments.clear();
   commentAnchors.clear();
-  comentarioAllExpanded = false;
 }
 
 function setupPaginationControls() {
@@ -1729,24 +1840,14 @@ function setupPaginationControls() {
     btn.addEventListener("click", () => {
       if (displayOffset <= 0) return;
       displayOffset = Math.max(0, displayOffset - maxDisplayRows);
-      const isFooter = btn.id && btn.id.endsWith("Footer");
-      const anchor = isFooter ? getHeaderAnchorY() : null;
-      const y = anchor ?? window.scrollY;
-      const options = { keepOffset: true, keepCurrent: true, restoreScroll: y };
-      if (isFooter) options.restoreBehavior = "smooth";
-      applyFilters(false, options);
+      applyFilters(false, getTableRestoreOptions(btn));
     });
   };
   const hookNext = btn => {
     if (!btn) return;
     btn.addEventListener("click", () => {
       displayOffset += maxDisplayRows;
-      const isFooter = btn.id && btn.id.endsWith("Footer");
-      const anchor = isFooter ? getHeaderAnchorY() : null;
-      const y = anchor ?? window.scrollY;
-      const options = { keepOffset: true, keepCurrent: true, restoreScroll: y };
-      if (isFooter) options.restoreBehavior = "smooth";
-      applyFilters(false, options);
+      applyFilters(false, getTableRestoreOptions(btn));
     });
   };
   const hookFirst = btn => {
@@ -1754,12 +1855,7 @@ function setupPaginationControls() {
     btn.addEventListener("click", () => {
       if (displayOffset === 0) return;
       displayOffset = 0;
-      const isFooter = btn.id && btn.id.endsWith("Footer");
-      const anchor = isFooter ? getHeaderAnchorY() : null;
-      const y = anchor ?? window.scrollY;
-      const options = { keepOffset: true, keepCurrent: true, restoreScroll: y };
-      if (isFooter) options.restoreBehavior = "smooth";
-      applyFilters(false, options);
+      applyFilters(false, getTableRestoreOptions(btn));
     });
   };
   const hookLast = btn => {
@@ -1770,12 +1866,7 @@ function setupPaginationControls() {
       const maxOffset = Math.max(0, total - maxDisplayRows);
       if (displayOffset === maxOffset) return;
       displayOffset = maxOffset;
-      const isFooter = btn.id && btn.id.endsWith("Footer");
-      const anchor = isFooter ? getHeaderAnchorY() : null;
-      const y = anchor ?? window.scrollY;
-      const options = { keepOffset: true, keepCurrent: true, restoreScroll: y };
-      if (isFooter) options.restoreBehavior = "smooth";
-      applyFilters(false, options);
+      applyFilters(false, getTableRestoreOptions(btn));
     });
   };
 
@@ -1798,12 +1889,7 @@ function setupPaginationControls() {
       const newOffset = (page - 1) * maxDisplayRows;
       if (newOffset === displayOffset) return;
       displayOffset = newOffset;
-      const isFooter = input.id.endsWith("Footer");
-      const anchor = isFooter ? getHeaderAnchorY() : null;
-      const y = anchor ?? window.scrollY;
-      const options = { keepOffset: true, keepCurrent: true, restoreScroll: y };
-      if (isFooter) options.restoreBehavior = "smooth";
-      applyFilters(false, options);
+      applyFilters(false, getTableRestoreOptions(input));
     };
     input.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); commit(); input.blur(); } });
     input.addEventListener("blur", commit);
@@ -1971,16 +2057,14 @@ function setupSortScopeControls() {
     document.getElementById("sortScopeSelect"),
     document.getElementById("sortScopeSelectFooter")
   ].filter(Boolean);
-  const applyScope = val => {
+  const applyScope = (val, triggerEl = null) => {
     sortScope = val === "page" ? "page" : "all";
-    const anchor = val === "page" ? getFooterAnchorY() : null;
-    const y = anchor ?? window.scrollY;
-    applyFilters(false, { keepOffset: true, keepCurrent: true, restoreScroll: y });
+    applyFilters(false, getTableRestoreOptions(triggerEl));
     updateSortScopeIndicators();
   };
   selects.forEach(sel => {
     sel.value = sortScope;
-    sel.addEventListener("change", () => applyScope(sel.value));
+    sel.addEventListener("change", () => applyScope(sel.value, sel));
   });
 }
 
@@ -2672,7 +2756,7 @@ function setupPageSizeControls() {
       // Sync both selects
       selects.forEach(s => { s.value = String(maxDisplayRows); });
       displayOffset = 0;
-      applyFilters();
+      applyFilters(false, getTableRestoreOptions(sel));
     });
   });
 }

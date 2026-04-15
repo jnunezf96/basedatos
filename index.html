@@ -213,46 +213,55 @@
 
     <!-- ── Data table ── -->
     <section class="excel-table-card">
+      <div id="tableHeaderAnchor" class="table-header-anchor" aria-hidden="true"></div>
       <div class="table-header">
         <div id="tableStatus" class="table-status" data-i18n="table.status.loading">Cargando datos…</div>
         <div class="table-controls">
-          <div class="sort-scope">
-            <label for="sortScopeSelect" data-i18n="table.sort.label">Orden:</label>
-            <select id="sortScopeSelect">
-              <option value="all" data-i18n="table.sort.all">Todos</option>
-              <option value="page" data-i18n="table.sort.page">Página</option>
-            </select>
+          <div class="ctrl-group">
+            <button type="button" class="arrow-btn export-btn" id="exportJpeg">JPG</button>
+            <div class="col-visibility-wrap">
+              <button type="button" class="arrow-btn" id="colVisibilityBtn" title="Columnas" data-i18n="table.columns">Cols</button>
+              <div id="colVisibilityDropdown" class="col-visibility-dropdown"></div>
+            </div>
           </div>
-          <div class="rank-mode" role="group" aria-label="Modo de orden">
-            <span class="rank-mode-label" data-i18n="table.rank.label">Rango:</span>
-            <button type="button" class="arrow-btn rank-mode-btn" data-rank-mode="auto">Auto</button>
-            <button type="button" class="arrow-btn rank-mode-btn" data-rank-mode="prio">Prio</button>
+          <div class="ctrl-sep"></div>
+          <div class="ctrl-group">
+            <div class="sort-scope">
+              <label for="sortScopeSelect" data-i18n="table.sort.label">Orden:</label>
+              <select id="sortScopeSelect">
+                <option value="all" data-i18n="table.sort.all">Todos</option>
+                <option value="page" data-i18n="table.sort.page">Página</option>
+              </select>
+            </div>
+            <div class="rank-mode">
+              <label for="rankModeSelect" class="rank-mode-label" data-i18n="table.rank.label">Rango:</label>
+              <select id="rankModeSelect" class="rank-mode-select">
+                <option value="auto" data-i18n="table.rank.auto">Auto</option>
+                <option value="prio" data-i18n="table.rank.prio">Prio</option>
+              </select>
+            </div>
           </div>
-          <div class="col-visibility-wrap">
-            <button type="button" class="arrow-btn" id="colVisibilityBtn" title="Columnas" data-i18n="table.columns">Cols</button>
-            <div id="colVisibilityDropdown" class="col-visibility-dropdown"></div>
-          </div>
-          <div class="page-size">
-            <label for="pageSizeSelect" data-i18n="table.pagesize.label">Filas:</label>
-            <select id="pageSizeSelect">
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100" selected>100</option>
-              <option value="200">200</option>
-            </select>
-          </div>
-        </div>
-        <div class="table-actions">
-          <button type="button" class="arrow-btn export-btn" id="exportJpeg">JPG</button>
-          <div class="pager">
-            <button type="button" class="arrow-btn page-skip" id="pageFirst" title="Primera página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9,1 6,5.5 9,10"/><polyline points="5,1 2,5.5 5,10"/></svg></button>
-            <button type="button" class="arrow-btn" id="pagePrev" title="Página anterior"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5,1 1,5.5 5,10"/></svg></button>
-            <span class="page-indicator">
-              <input type="text" id="pageInput" class="page-input" value="1" aria-label="Página actual">
-              <span class="page-total" id="pageTotal">de — pág.</span>
-            </span>
-            <button type="button" class="arrow-btn" id="pageNext" title="Página siguiente"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2,1 6,5.5 2,10"/></svg></button>
-            <button type="button" class="arrow-btn page-skip" id="pageLast" title="Última página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3,1 6,5.5 3,10"/><polyline points="7,1 10,5.5 7,10"/></svg></button>
+          <div class="ctrl-sep"></div>
+          <div class="ctrl-group">
+            <div class="page-size">
+              <label for="pageSizeSelect" data-i18n="table.pagesize.label">Filas:</label>
+              <select id="pageSizeSelect">
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100" selected>100</option>
+                <option value="200">200</option>
+              </select>
+            </div>
+            <div class="pager">
+              <button type="button" class="arrow-btn page-skip" id="pageFirst" title="Primera página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9,1 6,5.5 9,10"/><polyline points="5,1 2,5.5 5,10"/></svg></button>
+              <button type="button" class="arrow-btn" id="pagePrev" title="Página anterior"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5,1 1,5.5 5,10"/></svg></button>
+              <span class="page-indicator">
+                <input type="text" id="pageInput" class="page-input" value="1" aria-label="Página actual">
+                <span class="page-total" id="pageTotal">de — pág.</span>
+              </span>
+              <button type="button" class="arrow-btn" id="pageNext" title="Página siguiente"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2,1 6,5.5 2,10"/></svg></button>
+              <button type="button" class="arrow-btn page-skip" id="pageLast" title="Última página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3,1 6,5.5 3,10"/><polyline points="7,1 10,5.5 7,10"/></svg></button>
+            </div>
           </div>
         </div>
       </div>
@@ -304,39 +313,47 @@
       <div class="table-header table-footer">
         <div class="table-status"></div>
         <div class="table-controls">
-          <div class="sort-scope">
-            <label for="sortScopeSelectFooter" data-i18n="table.sort.label">Orden:</label>
-            <select id="sortScopeSelectFooter">
-              <option value="all" data-i18n="table.sort.all">Todos</option>
-              <option value="page" data-i18n="table.sort.page">Página</option>
-            </select>
+          <div class="ctrl-group">
+            <button type="button" class="arrow-btn export-btn" id="exportJpegFooter">JPG</button>
           </div>
-          <div class="rank-mode" role="group" aria-label="Modo de orden">
-            <span class="rank-mode-label" data-i18n="table.rank.label">Rango:</span>
-            <button type="button" class="arrow-btn rank-mode-btn" data-rank-mode="auto">Auto</button>
-            <button type="button" class="arrow-btn rank-mode-btn" data-rank-mode="prio">Prio</button>
+          <div class="ctrl-sep"></div>
+          <div class="ctrl-group">
+            <div class="sort-scope">
+              <label for="sortScopeSelectFooter" data-i18n="table.sort.label">Orden:</label>
+              <select id="sortScopeSelectFooter">
+                <option value="all" data-i18n="table.sort.all">Todos</option>
+                <option value="page" data-i18n="table.sort.page">Página</option>
+              </select>
+            </div>
+            <div class="rank-mode">
+              <label for="rankModeSelectFooter" class="rank-mode-label" data-i18n="table.rank.label">Rango:</label>
+              <select id="rankModeSelectFooter" class="rank-mode-select">
+                <option value="auto" data-i18n="table.rank.auto">Auto</option>
+                <option value="prio" data-i18n="table.rank.prio">Prio</option>
+              </select>
+            </div>
           </div>
-          <div class="page-size">
-            <label for="pageSizeSelectFooter" data-i18n="table.pagesize.label">Filas:</label>
-            <select id="pageSizeSelectFooter">
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100" selected>100</option>
-              <option value="200">200</option>
-            </select>
-          </div>
-        </div>
-        <div class="table-actions">
-          <button type="button" class="arrow-btn export-btn" id="exportJpegFooter">JPG</button>
-          <div class="pager">
-            <button type="button" class="arrow-btn page-skip" id="pageFirstFooter" title="Primera página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9,1 6,5.5 9,10"/><polyline points="5,1 2,5.5 5,10"/></svg></button>
-            <button type="button" class="arrow-btn" id="pagePrevFooter" title="Página anterior"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5,1 1,5.5 5,10"/></svg></button>
-            <span class="page-indicator">
-              <input type="text" id="pageInputFooter" class="page-input" value="1" aria-label="Página actual">
-              <span class="page-total" id="pageTotalFooter">de — pág.</span>
-            </span>
-            <button type="button" class="arrow-btn" id="pageNextFooter" title="Página siguiente"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2,1 6,5.5 2,10"/></svg></button>
-            <button type="button" class="arrow-btn page-skip" id="pageLastFooter" title="Última página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3,1 6,5.5 3,10"/><polyline points="7,1 10,5.5 7,10"/></svg></button>
+          <div class="ctrl-sep"></div>
+          <div class="ctrl-group">
+            <div class="page-size">
+              <label for="pageSizeSelectFooter" data-i18n="table.pagesize.label">Filas:</label>
+              <select id="pageSizeSelectFooter">
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100" selected>100</option>
+                <option value="200">200</option>
+              </select>
+            </div>
+            <div class="pager">
+              <button type="button" class="arrow-btn page-skip" id="pageFirstFooter" title="Primera página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9,1 6,5.5 9,10"/><polyline points="5,1 2,5.5 5,10"/></svg></button>
+              <button type="button" class="arrow-btn" id="pagePrevFooter" title="Página anterior"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5,1 1,5.5 5,10"/></svg></button>
+              <span class="page-indicator">
+                <input type="text" id="pageInputFooter" class="page-input" value="1" aria-label="Página actual">
+                <span class="page-total" id="pageTotalFooter">de — pág.</span>
+              </span>
+              <button type="button" class="arrow-btn" id="pageNextFooter" title="Página siguiente"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2,1 6,5.5 2,10"/></svg></button>
+              <button type="button" class="arrow-btn page-skip" id="pageLastFooter" title="Última página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3,1 6,5.5 3,10"/><polyline points="7,1 10,5.5 7,10"/></svg></button>
+            </div>
           </div>
         </div>
       </div>
