@@ -1783,6 +1783,32 @@ function setupPaginationControls() {
   [...nexts].forEach(hookNext);
   [...firsts].forEach(hookFirst);
   [...lasts].forEach(hookLast);
+
+  const pageInputs = [
+    document.getElementById("pageInput"),
+    document.getElementById("pageInputFooter")
+  ];
+  pageInputs.forEach(input => {
+    if (!input) return;
+    const commit = () => {
+      const total = lastRenderTotal;
+      const totalPages = Math.max(1, Math.ceil(total / maxDisplayRows));
+      const page = Math.min(Math.max(1, parseInt(input.value, 10) || 1), totalPages);
+      input.value = page;
+      const newOffset = (page - 1) * maxDisplayRows;
+      if (newOffset === displayOffset) return;
+      displayOffset = newOffset;
+      const isFooter = input.id.endsWith("Footer");
+      const anchor = isFooter ? getHeaderAnchorY() : null;
+      const y = anchor ?? window.scrollY;
+      const options = { keepOffset: true, keepCurrent: true, restoreScroll: y };
+      if (isFooter) options.restoreBehavior = "smooth";
+      applyFilters(false, options);
+    };
+    input.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); commit(); input.blur(); } });
+    input.addEventListener("blur", commit);
+    input.addEventListener("focus", () => input.select());
+  });
 }
 
 function updatePaginationControls(total) {
@@ -1811,6 +1837,13 @@ function updatePaginationControls(total) {
   firsts.forEach(btn => (btn.disabled = !hasPrev));
   nexts.forEach(btn => (btn.disabled = !hasNext));
   lasts.forEach(btn => (btn.disabled = !hasNext || atLast));
+
+  const currentPage = total === 0 ? 1 : Math.floor(displayOffset / maxDisplayRows) + 1;
+  const totalPages = Math.max(1, Math.ceil(total / maxDisplayRows));
+  [document.getElementById("pageInput"), document.getElementById("pageInputFooter")]
+    .forEach(el => { if (el && document.activeElement !== el) el.value = currentPage; });
+  [document.getElementById("pageTotal"), document.getElementById("pageTotalFooter")]
+    .forEach(el => { if (el) el.textContent = `de ${totalPages} pág.`; });
 }
 
 function setupSortControls() {
