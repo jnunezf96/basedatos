@@ -1,10 +1,11 @@
 const TABLE_FIELDS = [
-  { key: "Texto estandarizado", label: "Edición" },
-  { key: "Escritura original", label: "Original" },
-  { key: "Traducción", label: "Traducción" },
-  { key: "Fuente", label: "Fuente" },
-  { key: "Comentario", label: "Comentario" }
+  { key: "Texto estandarizado", label: "Edición", defaultWidth: 120 },
+  { key: "Escritura original", label: "Original", defaultWidth: 120 },
+  { key: "Traducción", label: "Traducción", defaultWidth: 260 },
+  { key: "Fuente", label: "Fuente", defaultWidth: 120 },
+  { key: "Comentario", label: "Comentario", defaultWidth: 260 }
 ];
+const TABLE_MIN_WIDTH = 908;
 
 const I18N = {
   es: {
@@ -358,7 +359,18 @@ let displayOffset = 0;
 let sortKeys = []; // [{field, dir}]
 let sortScope = "all"; // "all" | "page"
 const hiddenColumns = new Set();
+const columnWidths = new Map(TABLE_FIELDS.map(field => [field.key, field.defaultWidth]));
 const alphaNumCollator = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
+const emptyBrowseSeed = (() => {
+  try {
+    if (globalThis.crypto?.getRandomValues) {
+      const bytes = new Uint32Array(1);
+      globalThis.crypto.getRandomValues(bytes);
+      return bytes[0] >>> 0;
+    }
+  } catch {}
+  return Math.floor(Math.random() * 0x100000000) >>> 0;
+})();
 let wimmerShowEs = true;
 let lastFocusedInput = null;
 let filterCards = [];
@@ -367,15 +379,12 @@ const expandedComments = new Set();
 const expandableComments = new Set();
 const commentAnchors = new Map();
 let currentLang = "es";
-let ghostSyncFrame = 0;
-let theadObserver = null;
 let lastPairResults = null;
 let lastPairMeta = null;
 let rankingMode = "auto";
 let lastRankingSummary = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  setupGhostHeader();
   setupLanguageToggle();
   setupOldSpanishToggle();
   setupAccentToggle();
@@ -409,6 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupPageSizeControls();
   setupColumnResizing();
   setupColumnVisibility();
+  setupStickyHeaderTable();
   setupComentarioToggleAll();
   setupExportButtons();
   renderFuenteList();
@@ -426,6 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
       rows.forEach((row, idx) => {
         row._rid = row.record_id || idx;
         row._prio = parsePriority(row.prio);
+        row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
       });
       dataRows = rows;
       applyFuenteFilters();
@@ -1348,6 +1359,10 @@ function getDominantLemmaFilter(filters = activeFilters) {
   return candidates.length === 1 ? candidates[0] : null;
 }
 
+function isUnfilteredBrowseState(filters = activeFilters) {
+  return !(filters && filters.length);
+}
+
 function buildRankingContext(rows) {
   const context = {
     mode: rankingMode,
@@ -1403,7 +1418,10 @@ function buildRankingSummary(context, manualOverride = false) {
   });
 }
 
-function getRankingComparator(context) {
+function getRankingComparator(context, options = {}) {
+  if (options.randomizeBrowse) {
+    return compareBrowseOrder;
+  }
   if (context && context.usesLemmaTiering) {
     return (a, b) => compareLemmaPriority(a, b, context);
   }
@@ -1424,7 +1442,9 @@ function applyFilters(initial = false, options = {}) {
   }
   lastFilteredRows = matches;
   const rankingContext = buildRankingContext(matches);
-  const rankingComparator = getRankingComparator(rankingContext);
+  const rankingComparator = getRankingComparator(rankingContext, {
+    randomizeBrowse: isUnfilteredBrowseState(activeFilters)
+  });
   const total = matches.length;
   if (displayOffset >= total && total > 0) {
     displayOffset = Math.max(0, total - maxDisplayRows);
@@ -1609,6 +1629,18 @@ function getPrimaryTableHeader() {
   return document.querySelector(".table-toolbar");
 }
 
+function getHeaderTable() {
+  return document.getElementById("dataHeaderTable");
+}
+
+function getBodyTable() {
+  return document.getElementById("dataTable");
+}
+
+function getTableScrollElement() {
+  return document.querySelector(".table-scroll");
+}
+
 function getHeaderAnchorY() {
   const anchor = document.getElementById("tableHeaderAnchor");
   if (anchor) {
@@ -1637,112 +1669,50 @@ function setTableScroll(y, behavior = "auto") {
   window.scrollTo({ top: y, behavior });
 }
 
-// ── Ghost thead: mirrors real col-headers so both freeze in .sticky-band ──
+function getColumnWidth(fieldKey) {
+  return columnWidths.get(fieldKey) || TABLE_FIELDS.find(field => field.key === fieldKey)?.defaultWidth || 140;
+}
 
-function syncGhostHeader() {
-  const realThead = document.querySelector("thead.col-headers");
-  const ghostThead = document.querySelector(".ghost-thead-table thead");
-  if (!realThead || !ghostThead) return;
+function syncHeaderHorizontalScroll() {
+  const headerTable = getHeaderTable();
+  const tableScroll = getTableScrollElement();
+  if (!headerTable || !tableScroll) return;
+  headerTable.style.transform = `translateX(-${tableScroll.scrollLeft}px)`;
+}
 
-  ghostThead.innerHTML = realThead.innerHTML;
-
-  // Strip IDs so getElementById always resolves to the real thead elements
-  ghostThead.querySelectorAll("[id]").forEach(el => el.removeAttribute("id"));
-
-  const realThs = Array.from(realThead.querySelectorAll("th"));
-  const ghostThs = Array.from(ghostThead.querySelectorAll("th"));
-
-  // Copy inline widths from resized columns
-  realThs.forEach((th, i) => {
-    if (!ghostThs[i]) return;
-    const s = th.getAttribute("style");
-    if (s) ghostThs[i].setAttribute("style", s);
-    else ghostThs[i].removeAttribute("style");
-  });
-
-  // Forward button clicks to their real counterparts by index
-  const realBtns = Array.from(realThead.querySelectorAll("button"));
-  Array.from(ghostThead.querySelectorAll("button")).forEach((btn, i) => {
-    btn.style.pointerEvents = "auto";
-    btn.tabIndex = 0;
-    btn.addEventListener("click", e => {
-      e.stopPropagation();
-      realBtns[i]?.click();
+function syncColumnLayout() {
+  const visibleWidth = TABLE_FIELDS.reduce((sum, field, idx) => {
+    return hiddenColumns.has(field.key) ? sum : sum + getColumnWidth(field.key);
+  }, 0);
+  const minWidth = Math.max(TABLE_MIN_WIDTH, visibleWidth);
+  [getHeaderTable(), getBodyTable()].forEach(table => {
+    if (!table) return;
+    let colgroup = table.querySelector("colgroup");
+    if (!colgroup) {
+      colgroup = document.createElement("colgroup");
+      table.insertBefore(colgroup, table.firstChild);
+    }
+    colgroup.innerHTML = "";
+    TABLE_FIELDS.forEach((field, idx) => {
+      const col = document.createElement("col");
+      const width = getColumnWidth(field.key);
+      col.style.width = `${width}px`;
+      col.style.minWidth = `${width}px`;
+      colgroup.appendChild(col);
+      table.classList.toggle(`col-hidden-${idx}`, hiddenColumns.has(field.key));
     });
+    table.style.width = "100%";
+    table.style.minWidth = `${minWidth}px`;
   });
-
-  // Make resize handles interactive
-  setupGhostResize(realThs, ghostThs);
+  syncHeaderHorizontalScroll();
 }
 
-function setupGhostResize(realThs, ghostThs) {
-  ghostThs.forEach((ghostTh, i) => {
-    const handle = ghostTh.querySelector(".col-resize-handle");
-    const realTh = realThs[i];
-    if (!handle || !realTh) return;
-    handle.style.pointerEvents = "auto";
-
-    handle.addEventListener("mousedown", e => {
-      e.preventDefault();
-      const startX = e.clientX;
-      const startWidth = ghostTh.getBoundingClientRect().width;
-
-      // Pause observer so realTh style updates don't trigger re-sync mid-drag
-      theadObserver?.disconnect();
-
-      function onMouseMove(ev) {
-        const w = Math.max(50, startWidth + ev.clientX - startX) + "px";
-        ghostTh.style.width = w;
-        ghostTh.style.minWidth = w;
-        realTh.style.width = w;
-        realTh.style.minWidth = w;
-      }
-      function onMouseUp() {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-        const rt = document.querySelector("thead.col-headers");
-        if (rt && theadObserver) {
-          theadObserver.observe(rt, {
-            subtree: true, childList: true, attributes: true, characterData: true,
-          });
-        }
-        syncGhostHeader();
-      }
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    });
-  });
-}
-
-function queueGhostSync() {
-  if (ghostSyncFrame) return;
-  ghostSyncFrame = requestAnimationFrame(() => {
-    ghostSyncFrame = 0;
-    syncGhostHeader();
-  });
-}
-
-function setupGhostHeader() {
-  const tableScroll = document.querySelector(".table-scroll");
-  const ghostTheadTable = document.querySelector(".ghost-thead-table");
-  const realThead = document.querySelector("thead.col-headers");
-  if (!tableScroll || !ghostTheadTable || !realThead) return;
-
-  // Sync horizontal scroll offset so ghost moves with the table
-  tableScroll.addEventListener("scroll", () => {
-    ghostTheadTable.style.transform = `translateX(-${tableScroll.scrollLeft}px)`;
-  }, { passive: true });
-
-  // Auto-sync whenever real thead content or attributes change
-  theadObserver = new MutationObserver(queueGhostSync);
-  theadObserver.observe(realThead, {
-    subtree: true,
-    childList: true,
-    attributes: true,
-    characterData: true,
-  });
-
-  syncGhostHeader();
+function setupStickyHeaderTable() {
+  const tableScroll = getTableScrollElement();
+  if (!tableScroll) return;
+  tableScroll.addEventListener("scroll", syncHeaderHorizontalScroll, { passive: true });
+  window.addEventListener("resize", syncHeaderHorizontalScroll);
+  syncColumnLayout();
 }
 
 function sampleRandomRows(size) {
@@ -1965,7 +1935,7 @@ function updatePaginationControls(total) {
 }
 
 function setupSortControls() {
-  const buttons = document.querySelectorAll("#dataTable .sort-btn");
+  const buttons = document.querySelectorAll("#dataHeaderTable .sort-btn");
   buttons.forEach(btn => {
     btn.addEventListener("click", e => {
       const field = btn.dataset.sortField;
@@ -2033,11 +2003,27 @@ function parsePriority(value) {
   return Number.isFinite(parsed) ? parsed : Number.POSITIVE_INFINITY;
 }
 
+function computeBrowseOrderKey(value) {
+  const text = String(value ?? "");
+  let hash = 2166136261 ^ emptyBrowseSeed;
+  for (let i = 0; i < text.length; i += 1) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
 function compareLemmaPriority(a, b, context) {
   const tierA = context.getTier(a);
   const tierB = context.getTier(b);
   if (tierA !== tierB) return tierA - tierB;
   return comparePriorityOrder(a, b);
+}
+
+function compareBrowseOrder(a, b) {
+  const browseCmp = (a._browseOrder ?? 0) - (b._browseOrder ?? 0);
+  if (browseCmp !== 0) return browseCmp;
+  return compareRecordId(a, b);
 }
 
 function comparePriorityOrder(a, b) {
@@ -2064,7 +2050,7 @@ function compareRecordId(a, b) {
 }
 
 function updateSortIndicators() {
-  const buttons = document.querySelectorAll("#dataTable .sort-btn");
+  const buttons = document.querySelectorAll("#dataHeaderTable .sort-btn");
   buttons.forEach(btn => {
     const field = btn.dataset.sortField;
     const idx = sortKeys.findIndex(k => k.field === field);
@@ -2112,10 +2098,11 @@ function setupExportButtons() {
 }
 
 function exportTableAsJpeg() {
-  const table = document.getElementById("dataTable");
-  if (!table) return;
+  const headerTable = getHeaderTable();
+  const table = getBodyTable();
+  if (!headerTable || !table) return;
   const rows = [];
-  const head = table.tHead?.rows[0];
+  const head = headerTable.tHead?.rows[0];
   if (head) {
     rows.push(
       Array.from(head.cells)
@@ -2783,8 +2770,9 @@ function setupPageSizeControls() {
 
 // ── Column resizing ─────────────────────────────────────────────
 function setupColumnResizing() {
-  const ths = document.querySelectorAll("#dataTable thead th");
-  ths.forEach(th => {
+  const ths = document.querySelectorAll("#dataHeaderTable thead th");
+  ths.forEach((th, idx) => {
+    if (th.querySelector(".col-resize-handle")) return;
     const handle = document.createElement("div");
     handle.className = "col-resize-handle";
     th.appendChild(handle);
@@ -2792,12 +2780,15 @@ function setupColumnResizing() {
     handle.addEventListener("mousedown", e => {
       e.preventDefault();
       const startX = e.clientX;
-      const startWidth = th.offsetWidth;
+      const field = TABLE_FIELDS[idx];
+      const startWidth = th.getBoundingClientRect().width;
 
       function onMouseMove(ev) {
         const newWidth = Math.max(50, startWidth + ev.clientX - startX);
-        th.style.width = newWidth + "px";
-        th.style.minWidth = newWidth + "px";
+        if (field) {
+          columnWidths.set(field.key, newWidth);
+          syncColumnLayout();
+        }
       }
       function onMouseUp() {
         document.removeEventListener("mousemove", onMouseMove);
@@ -2807,6 +2798,7 @@ function setupColumnResizing() {
       document.addEventListener("mouseup", onMouseUp);
     });
   });
+  syncColumnLayout();
 }
 
 // ── Column visibility ───────────────────────────────────────────
@@ -2830,16 +2822,15 @@ function setupColumnVisibility() {
           cb.checked = true;
           return;
         }
-        const ghostTable = document.querySelector(".ghost-thead-table");
+        const y = getTableScrollTop();
         if (cb.checked) {
           hiddenColumns.delete(field.key);
-          document.getElementById("dataTable")?.classList.remove(`col-hidden-${idx}`);
-          ghostTable?.classList.remove(`col-hidden-${idx}`);
         } else {
           hiddenColumns.add(field.key);
-          document.getElementById("dataTable")?.classList.add(`col-hidden-${idx}`);
-          ghostTable?.classList.add(`col-hidden-${idx}`);
         }
+        syncColumnLayout();
+        renderTable(lastRenderRows, lastRenderTotal);
+        requestAnimationFrame(() => setTableScroll(y));
       });
       const span = document.createElement("span");
       span.textContent = field.label;
@@ -2861,12 +2852,14 @@ function setupColumnVisibility() {
     }
   });
 
-  // Inject CSS rules for col-hidden-N (real table + ghost thead)
+  // Inject CSS rules for col-hidden-N (header + body tables)
   const style = document.createElement("style");
   TABLE_FIELDS.forEach((field, idx) => {
-    style.textContent += `#dataTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
+    style.textContent += `#dataHeaderTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
+      `#dataHeaderTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
+      `#dataTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
       `#dataTable.col-hidden-${idx} td:nth-child(${idx + 1}) { display: none; }\n`;
-    style.textContent += `.ghost-thead-table.col-hidden-${idx} th:nth-child(${idx + 1}) { display: none; }\n`;
   });
   document.head.appendChild(style);
+  syncColumnLayout();
 }

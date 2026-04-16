@@ -178,7 +178,7 @@ body {
   height: 0;
 }
 
-/* ── Sticky band: toolbar + ghost thead freeze together ── */
+/* ── Sticky band: toolbar + real header table freeze together ── */
 .sticky-band {
   position: sticky;
   top: 0;
@@ -189,25 +189,25 @@ body {
   border-radius: 14px 14px 0 0;
 }
 
-.ghost-thead {
+.table-head-shell {
   overflow: hidden;
   border: 1px solid #dde2ff;
+  border-top: none;
   border-bottom: none;
   border-radius: 12px 12px 0 0;
 }
 
-.ghost-thead-table {
+#dataHeaderTable {
   width: 100%;
   min-width: 908px;
   table-layout: fixed;
   border-collapse: collapse;
   background: #fff;
+  will-change: transform;
 }
 
-/* Real thead hidden — keeps layout space so tbody rows start at the right position */
-/* visibility:collapse removes height from layout so no gap between ghost thead and tbody */
-thead.col-headers {
-  visibility: collapse;
+#dataHeaderTable th {
+  border-bottom: none;
 }
 
 div.table-toolbar {
@@ -217,7 +217,6 @@ div.table-toolbar {
   justify-content: space-between;
   gap: 8px;
   padding: 8px 0;
-  border-bottom: 1px solid #dde2ff;
   background: #fff;
 }
 
@@ -316,9 +315,13 @@ div.table-toolbar {
 
 table {
   width: 100%;
-  table-layout: fixed;
   border-collapse: collapse;
   background: #fff;
+}
+
+#dataTable {
+  min-width: 908px;
+  table-layout: fixed;
 }
 
 th {
