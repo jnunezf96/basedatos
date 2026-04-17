@@ -15,6 +15,14 @@ const I18N = {
     "tab.sources": "Fuentes",
     "tab.regex": "Regex",
     "tab.pairs": "Pares a/i",
+    "tab.reverse": "Reverso",
+    "reverse.title": "Búsqueda inversa",
+    "reverse.hint": "Escribe una palabra en español o francés para encontrar lemas en náhuatl cuya traducción la contenga. Los resultados se muestran agrupados por lema, ordenados por cantidad de fuentes que los respaldan.",
+    "reverse.submit": "Buscar",
+    "reverse.includeComment": "Incluir Comentario",
+    "reverse.chipLabel": "Significado",
+    "tab.compare": "Comparar lema",
+    "tab.browse": "Relaciones",
     "filter.title": "Filtro",
     "label.column": "Columna",
     "label.scope": "Casilla",
@@ -96,6 +104,51 @@ const I18N = {
     "pairs.header.a": "Forma en -a",
     "pairs.header.i": "Forma en -i",
     "pairs.header.total": "Total",
+    "compare.title": "Comparar lema",
+    "compare.run": "Comparar",
+    "compare.clear": "Limpiar",
+    "compare.query.label": "Lema exacto",
+    "compare.query.placeholder": "Ej. chihua",
+    "compare.scope": "{{selected}}/{{total}} fuentes en alcance",
+    "compare.prompt": "Escribe un lema exacto para comparar fuentes.",
+    "compare.noSources": "Selecciona al menos una fuente para comparar.",
+    "compare.noMatches": "No hay coincidencias exactas para \"{{query}}\" en las fuentes seleccionadas.",
+    "compare.suggestions": "Prueba estas variantes exactas:",
+    "compare.summary": "Fuentes: {{sources}} · Filas: {{rows}} · Originales únicos: {{originals}} · Traducciones únicas: {{translations}}",
+    "compare.singleSource": "Solo 1 fuente en alcance para este lema.",
+    "compare.comment.toggle": "Comentario",
+    "browse.title": "Relaciones",
+    "browse.run": "Explorar",
+    "browse.clear": "Limpiar",
+    "browse.mode.label": "Modo",
+    "browse.mode.shared": "Compartidos por fuentes",
+    "browse.mode.attested": "Muy atestiguados",
+    "browse.mode.unique": "Únicos de una fuente",
+    "browse.mode.divergent": "Traducciones divergentes",
+    "browse.threshold.attested": "Fuentes mín.",
+    "browse.threshold.divergent": "Trad. mín.",
+    "browse.target.label": "Fuente objetivo",
+    "browse.target.placeholder": "Elige una fuente",
+    "browse.scope": "{{selected}}/{{total}} fuentes en alcance",
+    "browse.prompt": "Elige un modo y explora lemas por relación.",
+    "browse.noSources": "Selecciona al menos una fuente para explorar relaciones.",
+    "browse.shared.requiresSources": "Selecciona al menos 2 fuentes para ver lemas compartidos.",
+    "browse.divergent.requiresSources": "Selecciona al menos 2 fuentes para medir divergencia en traducción.",
+    "browse.unique.requiresTarget": "Elige una fuente objetivo dentro del alcance actual.",
+    "browse.noResults.shared": "No hay lemas compartidos por todas las fuentes seleccionadas.",
+    "browse.noResults.attested": "No hay lemas que alcancen ese nivel de atestiguación.",
+    "browse.noResults.unique": "No hay lemas únicos para esa fuente dentro del alcance actual.",
+    "browse.noResults.divergent": "No hay lemas con ese nivel de divergencia en traducción.",
+    "browse.summary": "Lemas: {{lemmas}} · Fuentes en alcance: {{selected}}/{{total}}",
+    "browse.badge.sources": "{{count}} fuentes",
+    "browse.badge.rows": "{{count}} filas",
+    "browse.badge.translations": "{{count}} trads.",
+    "browse.meta.sources": "Fuentes: {{sources}}",
+    "browse.meta.translations": "Traducciones: {{translations}}",
+    "browse.meta.counts": "{{sources}} fuentes · {{rows}} filas · {{translations}} traducciones",
+    "browse.compare": "Aislar",
+    "browse.pagesize.label": "Filas",
+    "browse.page": "Pág. {{page}} de {{total}}",
     "site.tagline": "Busca y filtra cientos de miles de entradas de diccionarios históricos de náhuatl. Usa los filtros para encontrar palabras por escritura, traducción o fuente; los resultados aparecen en la tabla de abajo.",
     "table.header.paleografia": "Original",
     "table.header.grafia": "Edición",
@@ -105,20 +158,20 @@ const I18N = {
     "table.sort.label": "Orden:",
     "table.sort.all": "Todos",
     "table.sort.page": "Página",
-    "table.rank.label": "Rango:",
-    "table.rank.group": "Modo de orden",
-    "table.rank.auto": "Auto",
-    "table.rank.prio": "Prio",
-    "table.rank.title.auto": "Ordena por relevancia y luego por prio",
-    "table.rank.title.prio": "Ordena solo por prio",
     "table.status.loading": "Cargando datos…",
     "table.status.none": "Sin registros para mostrar.",
     "table.status.showing": "Registros mostrados: {{start}}-{{end}} de {{total}}",
-    "table.status.detail.auto": "{{exact}} lemas exactos · {{phrase}} frases · Auto+Prio",
-    "table.status.detail.prio": "{{exact}} lemas exactos · {{phrase}} frases · Prio",
+    "table.status.detail.auto": "{{exact}} lemas exactos · {{phrase}} frases",
     "table.status.detail.manual": "{{exact}} lemas exactos · {{phrase}} frases · Manual",
     "table.empty": "No hay datos disponibles.",
     "table.export.filename": "tabla.jpg",
+    "table.export.png.filename": "tabla.png",
+    "table.export.label": "Exportar ▾",
+    "table.export.jpeg": "Imagen (JPG)",
+    "table.export.png": "Imagen (PNG)",
+    "table.export.csv": "Hoja de cálculo (CSV)",
+    "table.export.csv.filename": "nahuatl.csv",
+    "table.export.empty": "No hay resultados para exportar.",
     "field.paleografia": "Original",
     "field.grafia": "Edición",
     "field.traduccion": "Traducción",
@@ -135,20 +188,19 @@ const I18N = {
     "label.logic": "Combinar",
     "accent.sensitive": "Acento exacto",
     "accent.insensitive": "Acento libre",
+    "accent.loose": "Libre",
+    "accent.strict": "Exacto",
     "logic.and": "Y",
     "logic.or": "O",
     "chips.zone.and": "Y",
     "chips.zone.or": "O",
-    "tab.groups": "Grupos",
-    "groups.title": "Grupos activos",
-    "groups.clearAll": "Limpiar todo",
-    "groups.empty": "Sin grupos activos. Añade filtros desde la pestaña Filtros.",
-    "groups.logic.and": "Y",
-    "groups.logic.or": "O",
-    "groups.edit": "Editar",
-    "groups.remove": "Quitar",
     "table.pagesize.label": "Filas:",
-    "table.columns": "Cols"
+    "table.columns": "Cols ▾",
+    "view.rows": "Filas",
+    "view.lemmas": "Lemas",
+    "view.lemmas.summary": "Lemas: {{lemmas}} (de {{rows}} filas)",
+    "view.lemmas.empty": "Ningún lema coincide con los filtros.",
+    "compare.chipLabel": "Comparar"
   },
   en: {
     title: "Nahuatl database",
@@ -157,6 +209,14 @@ const I18N = {
     "tab.sources": "Sources",
     "tab.regex": "Regex guide",
     "tab.pairs": "a/i pairs",
+    "tab.reverse": "Reverse",
+    "reverse.title": "Reverse lookup",
+    "reverse.hint": "Type a Spanish or French word to find Nahuatl lemmas whose translation contains it. Results are grouped by lemma, ranked by the number of sources that back each meaning.",
+    "reverse.submit": "Search",
+    "reverse.includeComment": "Include Comment",
+    "reverse.chipLabel": "Meaning",
+    "tab.compare": "Compare lemma",
+    "tab.browse": "Browse",
     "filter.title": "Filter",
     "label.column": "Column",
     "label.scope": "Search in",
@@ -238,6 +298,51 @@ const I18N = {
     "pairs.header.a": "-a form",
     "pairs.header.i": "-i form",
     "pairs.header.total": "Total",
+    "compare.title": "Compare lemma",
+    "compare.run": "Compare",
+    "compare.clear": "Clear",
+    "compare.query.label": "Exact lemma",
+    "compare.query.placeholder": "E.g. chihua",
+    "compare.scope": "{{selected}}/{{total}} sources in scope",
+    "compare.prompt": "Enter an exact lemma to compare sources.",
+    "compare.noSources": "Select at least one source to compare.",
+    "compare.noMatches": "No exact matches for \"{{query}}\" in the selected sources.",
+    "compare.suggestions": "Try these exact variants:",
+    "compare.summary": "Sources: {{sources}} · Rows: {{rows}} · Unique originals: {{originals}} · Unique translations: {{translations}}",
+    "compare.singleSource": "Only 1 source is in scope for this lemma.",
+    "compare.comment.toggle": "Comment",
+    "browse.title": "Browse relationships",
+    "browse.run": "Browse",
+    "browse.clear": "Clear",
+    "browse.mode.label": "Mode",
+    "browse.mode.shared": "Shared by sources",
+    "browse.mode.attested": "Widely attested",
+    "browse.mode.unique": "Unique to source",
+    "browse.mode.divergent": "Divergent translations",
+    "browse.threshold.attested": "Min. sources",
+    "browse.threshold.divergent": "Min. trans.",
+    "browse.target.label": "Target source",
+    "browse.target.placeholder": "Choose a source",
+    "browse.scope": "{{selected}}/{{total}} sources in scope",
+    "browse.prompt": "Choose a mode and browse lemmas by relationship.",
+    "browse.noSources": "Select at least one source to browse relationships.",
+    "browse.shared.requiresSources": "Select at least 2 sources to browse shared lemmas.",
+    "browse.divergent.requiresSources": "Select at least 2 sources to measure translation divergence.",
+    "browse.unique.requiresTarget": "Choose a target source within the current scope.",
+    "browse.noResults.shared": "No lemmas are shared by all selected sources.",
+    "browse.noResults.attested": "No lemmas reach that attestation threshold.",
+    "browse.noResults.unique": "No lemmas are unique to that source within the current scope.",
+    "browse.noResults.divergent": "No lemmas reach that translation-divergence threshold.",
+    "browse.summary": "Lemmas: {{lemmas}} · Sources in scope: {{selected}}/{{total}}",
+    "browse.badge.sources": "{{count}} sources",
+    "browse.badge.rows": "{{count}} rows",
+    "browse.badge.translations": "{{count}} trans.",
+    "browse.meta.sources": "Sources: {{sources}}",
+    "browse.meta.translations": "Translations: {{translations}}",
+    "browse.meta.counts": "{{sources}} sources · {{rows}} rows · {{translations}} translations",
+    "browse.compare": "Isolate",
+    "browse.pagesize.label": "Rows",
+    "browse.page": "Page {{page}} of {{total}}",
     "site.tagline": "Search and filter hundreds of thousands of entries from historical Nahuatl dictionaries. Use the filters to find words by spelling, translation, or source; results appear in the table below.",
     "table.header.paleografia": "Original",
     "table.header.grafia": "Edition",
@@ -247,20 +352,20 @@ const I18N = {
     "table.sort.label": "Sort:",
     "table.sort.all": "All",
     "table.sort.page": "Page",
-    "table.rank.label": "Rank:",
-    "table.rank.group": "Ranking mode",
-    "table.rank.auto": "Auto",
-    "table.rank.prio": "Prio",
-    "table.rank.title.auto": "Order by relevance, then prio",
-    "table.rank.title.prio": "Order only by prio",
     "table.status.loading": "Loading data…",
     "table.status.none": "No records to show.",
     "table.status.showing": "Records shown: {{start}}-{{end}} of {{total}}",
-    "table.status.detail.auto": "{{exact}} exact lemmas · {{phrase}} phrases · Auto+Prio",
-    "table.status.detail.prio": "{{exact}} exact lemmas · {{phrase}} phrases · Prio",
+    "table.status.detail.auto": "{{exact}} exact lemmas · {{phrase}} phrases",
     "table.status.detail.manual": "{{exact}} exact lemmas · {{phrase}} phrases · Manual",
     "table.empty": "No data available.",
     "table.export.filename": "table.jpg",
+    "table.export.png.filename": "table.png",
+    "table.export.label": "Export ▾",
+    "table.export.jpeg": "Image (JPG)",
+    "table.export.png": "Image (PNG)",
+    "table.export.csv": "Spreadsheet (CSV)",
+    "table.export.csv.filename": "nahuatl.csv",
+    "table.export.empty": "Nothing to export.",
     "field.paleografia": "Original",
     "field.grafia": "Edition",
     "field.traduccion": "Translation",
@@ -277,20 +382,19 @@ const I18N = {
     "label.logic": "Combine",
     "accent.sensitive": "Exact accent",
     "accent.insensitive": "Free accent",
+    "accent.loose": "Free",
+    "accent.strict": "Exact",
     "logic.and": "AND",
     "logic.or": "OR",
     "chips.zone.and": "AND",
     "chips.zone.or": "OR",
-    "tab.groups": "Groups",
-    "groups.title": "Active groups",
-    "groups.clearAll": "Clear all",
-    "groups.empty": "No active groups. Add filters from the Filters tab.",
-    "groups.logic.and": "AND",
-    "groups.logic.or": "OR",
-    "groups.edit": "Edit",
-    "groups.remove": "Remove",
     "table.pagesize.label": "Rows:",
-    "table.columns": "Cols"
+    "table.columns": "Cols ▾",
+    "view.rows": "Rows",
+    "view.lemmas": "Lemmas",
+    "view.lemmas.summary": "Lemmas: {{lemmas}} (of {{rows}} rows)",
+    "view.lemmas.empty": "No lemmas match the current filters.",
+    "compare.chipLabel": "Compare"
   }
 };
 
@@ -320,6 +424,8 @@ function escapeHtml(str) {
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 const FUENTE_OWNER = "fuentes";
+const COMPARE_OWNER = "compareOwner";
+const REVERSE_OWNER = "reverseOwner";
 const FUENTE_OPTIONS = [
   "153? Trilingüe",
   "1547 Olmos_G",
@@ -359,6 +465,7 @@ let displayOffset = 0;
 let sortKeys = []; // [{field, dir}]
 let sortScope = "all"; // "all" | "page"
 const hiddenColumns = new Set();
+const expandedLemmas = new Set();
 const columnWidths = new Map(TABLE_FIELDS.map(field => [field.key, field.defaultWidth]));
 const alphaNumCollator = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
 const emptyBrowseSeed = (() => {
@@ -378,13 +485,17 @@ let activeCardIndex = 0;
 const expandedComments = new Set();
 const expandableComments = new Set();
 const commentAnchors = new Map();
+const pendingComentarioSync = new WeakMap();
 let currentLang = "es";
 let lastPairResults = null;
 let lastPairMeta = null;
-let rankingMode = "auto";
 let lastRankingSummary = null;
+let tableViewMode = "rows"; // "rows" | "lemmas"
+let lastLemmaItems = [];
+let lastLemmaPageOffsets = [0];
 
 document.addEventListener("DOMContentLoaded", () => {
+  loadColumnState();
   setupLanguageToggle();
   setupOldSpanishToggle();
   setupAccentToggle();
@@ -412,19 +523,21 @@ document.addEventListener("DOMContentLoaded", () => {
   setupTabs();
   setupSortControls();
   setupSortScopeControls();
-  setupRankingModeControl();
   updateSortIndicators();
   setupPaginationControls();
   setupPageSizeControls();
-  setupColumnResizing();
-  setupColumnVisibility();
+  setupColumnZoneInteractions();
   setupStickyHeaderTable();
   setupComentarioToggleAll();
+  setupLemmaToggleAll();
   setupExportButtons();
   renderFuenteList();
   setupFuenteActions();
   setupWimmerTranslate();
   setupPairFinder();
+  setupViewToggle();
+  setupEdicionCellClick();
+  setupReverseLookup();
   fetch("data/data.jsonl.gz")
     .then(r => {
       const ds = new DecompressionStream("gzip");
@@ -489,11 +602,11 @@ function applyTranslations() {
 function refreshLanguageDependentUI() {
   const y = getTableScrollTop();
   updateAccentLabels();
-  updateRankingModeControls();
   if (!dataRows || !dataRows.length) {
     setStatus(t("table.status.loading"));
     return;
   }
+  updateViewToggleLabels();
   renderTable(lastRenderRows, lastRenderTotal);
   refreshPairFinderUI();
   requestAnimationFrame(() => {
@@ -529,46 +642,20 @@ function setupOldSpanishToggle() {
   });
 }
 
-function updateRankingModeControls() {
-  document.querySelectorAll(".rank-mode-select").forEach(sel => {
-    sel.value = rankingMode;
-    sel.title = t(rankingMode === "prio" ? "table.rank.title.prio" : "table.rank.title.auto");
-    sel.querySelectorAll("option").forEach(opt => {
-      opt.textContent = t(opt.value === "prio" ? "table.rank.prio" : "table.rank.auto");
-    });
-  });
-}
-
-function setupRankingModeControl() {
-  const saved = localStorage.getItem("nahuatl-rank-mode");
-  if (saved === "auto" || saved === "prio") {
-    rankingMode = saved;
-  }
-  updateRankingModeControls();
-  document.querySelectorAll(".rank-mode-select").forEach(sel => {
-    sel.addEventListener("change", () => {
-      const nextMode = sel.value === "prio" ? "prio" : "auto";
-      if (nextMode === rankingMode) return;
-      rankingMode = nextMode;
-      localStorage.setItem("nahuatl-rank-mode", rankingMode);
-      updateRankingModeControls();
-      applyFilters(false, getTableRestoreOptions(sel));
-    });
-  });
-}
-
 function updateAccentLabels() {
-  const key = accentSensitiveMode ? "accent.sensitive" : "accent.insensitive";
-  document.querySelectorAll(".accent-btn").forEach(b => {
-    b.textContent = t(key);
-    b.classList.toggle("active", accentSensitiveMode);
+  document.querySelectorAll(".accent-btn").forEach(btn => {
+    const mode = btn.dataset.accent;
+    btn.textContent = t(mode === "strict" ? "accent.strict" : "accent.loose");
+    btn.classList.toggle("active", (mode === "strict") === accentSensitiveMode);
   });
 }
 
 function setupAccentToggle() {
   document.querySelectorAll(".accent-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      accentSensitiveMode = !accentSensitiveMode;
+      const nextMode = btn.dataset.accent === "strict";
+      if (nextMode === accentSensitiveMode) return;
+      accentSensitiveMode = nextMode;
       updateAccentLabels();
       if (activeFilters.length) applyFilters();
     });
@@ -622,9 +709,11 @@ function setupChipsBarDelegation() {
       return;
     }
 
-    // Chip body click → load for editing
+    // Chip body click → load for editing (skip synthetic chips — they have no editor)
     const chip = e.target.closest("[data-group-id]");
     if (chip && !e.target.closest(".chip-remove")) {
+      if (chip.dataset.groupId === COMPARE_OWNER) return;
+      if (chip.dataset.groupId === REVERSE_OWNER) return;
       loadGroupForEditing(chip.dataset.groupId);
     }
   });
@@ -653,21 +742,59 @@ function renderActiveFilterChips() {
   const f1Card = document.querySelector(".filter-card[data-owner='f1']");
   if (f1Card) f1Card.classList.toggle("filter-card--active", activeFilters.some(f => f.owner === "f1"));
 
-  // Collect committed groups (not f1 preview, not fuente)
+  // Collect committed groups (not f1 preview, not fuente, not compare)
   const groups = new Map();
   activeFilters.forEach(f => {
     if (f.type === "fuenteSet" || f.owner === FUENTE_OWNER || f.owner === "f1") return;
+    if (f.owner === COMPARE_OWNER) return;
+    if (f.owner === REVERSE_OWNER) return;
     if (!groups.has(f.owner)) groups.set(f.owner, []);
     groups.get(f.owner).push(f);
   });
 
-  if (!groups.size) {
+  const compareFilter = activeFilters.find(f => f.owner === COMPARE_OWNER) || null;
+  const reverseFilter = activeFilters.find(f => f.owner === REVERSE_OWNER) || null;
+
+  if (!groups.size && !compareFilter && !reverseFilter) {
     bar.style.display = "none";
     bar.innerHTML = "";
     return;
   }
   bar.style.display = "";
   bar.innerHTML = "";
+
+  // Compare chip (rendered first, visually distinct)
+  if (compareFilter) {
+    const zone = document.createElement("div");
+    zone.className = "chips-zone chips-zone-compare";
+    const chip = document.createElement("span");
+    chip.className = "filter-chip chip-compare";
+    chip.dataset.groupId = COMPARE_OWNER;
+    const val = String(compareFilter.value);
+    const display = val.length > 20 ? val.slice(0, 18) + "…" : val;
+    chip.innerHTML =
+      `<span class="chip-label"><span class="chip-field">${escapeHtml(t("compare.chipLabel"))}</span> "${escapeHtml(display)}"</span>` +
+      `<button type="button" class="chip-remove" aria-label="Quitar filtro">×</button>`;
+    zone.appendChild(chip);
+    bar.appendChild(zone);
+  }
+
+  // Reverse-lookup chip (meaning → lemmas)
+  if (reverseFilter) {
+    const zone = document.createElement("div");
+    zone.className = "chips-zone chips-zone-reverse";
+    const chip = document.createElement("span");
+    chip.className = "filter-chip chip-reverse";
+    chip.dataset.groupId = REVERSE_OWNER;
+    const val = String(reverseFilter.value);
+    const display = val.length > 24 ? val.slice(0, 22) + "…" : val;
+    const fieldsBadge = Array.isArray(reverseFilter.fields) && reverseFilter.fields.includes("Comentario") ? " +C" : "";
+    chip.innerHTML =
+      `<span class="chip-label"><span class="chip-field">${escapeHtml(t("reverse.chipLabel") + fieldsBadge)}</span> "${escapeHtml(display)}"</span>` +
+      `<button type="button" class="chip-remove" aria-label="Quitar filtro">×</button>`;
+    zone.appendChild(chip);
+    bar.appendChild(zone);
+  }
 
   // Partition by logic using groupOrder for ordering
   const andIds = groupOrder.filter(g => g.logic === "AND" && groups.has(g.id)).map(g => g.id);
@@ -740,7 +867,7 @@ function renderActiveFilterChips() {
     bar.appendChild(zone);
   }
 
-  const totalGroups = andIds.length + orIds.length;
+  const totalGroups = andIds.length + orIds.length + (compareFilter ? 1 : 0) + (reverseFilter ? 1 : 0);
   if (totalGroups > 1) {
     const clearAll = document.createElement("button");
     clearAll.type = "button";
@@ -749,150 +876,6 @@ function renderActiveFilterChips() {
     bar.appendChild(clearAll);
   }
 
-}
-
-function updateGroupsBadge(count) {
-  const badge = document.getElementById("groupsBadge");
-  if (!badge) return;
-  if (count > 0) {
-    badge.textContent = count;
-    badge.style.display = "";
-  } else {
-    badge.style.display = "none";
-  }
-}
-
-function renderGroupsPanel(groups, andIds, orIds) {
-  const list = document.getElementById("groupsList");
-  const empty = document.getElementById("groupsEmpty");
-  if (!list) return;
-  list.innerHTML = "";
-
-  const totalGroups = (andIds ? andIds.length : 0) + (orIds ? orIds.length : 0);
-  if (empty) empty.style.display = totalGroups === 0 ? "" : "none";
-  if (totalGroups === 0) return;
-
-  const MODE_LABEL = { exact: "exacto", starts: "empieza", any: "contiene", ends: "termina" };
-
-  function makeGroupCard(groupId, filters, logic) {
-    const field = filters[0].field;
-    const scope = filters[0].scope || "whole";
-    const fieldLabel = FIELD_SHORT[field] || field;
-    const scopeLabel = scope === "word" ? " · palabra" : "";
-    const logicLabel = logic === "OR" ? t("groups.logic.or") : t("groups.logic.and");
-
-    const card = document.createElement("div");
-    card.className = "group-card";
-    card.dataset.groupId = groupId;
-    if (groupId === editingGroupId) card.classList.add("group-card--editing");
-
-    const head = document.createElement("div");
-    head.className = "group-card-head";
-
-    const meta = document.createElement("span");
-    meta.className = "group-card-meta";
-    const logicPill = document.createElement("span");
-    logicPill.className = `group-logic-pill group-logic-pill--${logic.toLowerCase()}`;
-    logicPill.textContent = logicLabel;
-    meta.appendChild(logicPill);
-    const fieldSpan = document.createElement("span");
-    fieldSpan.className = "group-card-field";
-    fieldSpan.textContent = fieldLabel + scopeLabel;
-    meta.appendChild(fieldSpan);
-    head.appendChild(meta);
-
-    const actions = document.createElement("div");
-    actions.className = "group-card-actions";
-
-    const editBtn = document.createElement("button");
-    editBtn.type = "button";
-    editBtn.className = "btn ghost group-edit-btn";
-    editBtn.dataset.action = "edit";
-    editBtn.dataset.groupId = groupId;
-    editBtn.textContent = t("groups.edit");
-
-    const removeBtn = document.createElement("button");
-    removeBtn.type = "button";
-    removeBtn.className = "btn ghost group-remove-btn";
-    removeBtn.dataset.action = "remove";
-    removeBtn.dataset.groupId = groupId;
-    removeBtn.textContent = t("groups.remove");
-
-    actions.appendChild(editBtn);
-    actions.appendChild(removeBtn);
-    head.appendChild(actions);
-    card.appendChild(head);
-
-    const condList = document.createElement("ul");
-    condList.className = "group-conditions";
-    filters.forEach(f => {
-      const li = document.createElement("li");
-      li.className = "group-condition" + (f.negate ? " group-condition--excl" : "");
-      const modeLabel = MODE_LABEL[f.mode] || f.mode;
-      const sign = f.negate ? "excluye" : "incluye";
-      li.innerHTML = `<span class="gcond-sign">${sign}</span> <span class="gcond-mode">${modeLabel}</span> <span class="gcond-value">${escapeHtml(String(f.value))}</span>`;
-      condList.appendChild(li);
-    });
-    card.appendChild(condList);
-
-    return card;
-  }
-
-  // AND section
-  if (andIds && andIds.length) {
-    andIds.forEach(id => {
-      const filters = groups.get(id);
-      if (filters) list.appendChild(makeGroupCard(id, filters, "AND"));
-    });
-  }
-
-  // OR section
-  if (orIds && orIds.length) {
-    if (andIds && andIds.length) {
-      const sep = document.createElement("div");
-      sep.className = "groups-section-sep";
-      sep.textContent = "— " + t("groups.logic.or") + " —";
-      list.appendChild(sep);
-    }
-    orIds.forEach(id => {
-      const filters = groups.get(id);
-      if (filters) list.appendChild(makeGroupCard(id, filters, "OR"));
-    });
-  }
-}
-
-function setupGroupsPanel() {
-  const clearAllBtn = document.getElementById("groupsClearAll");
-  if (clearAllBtn) {
-    clearAllBtn.addEventListener("click", () => {
-      if (editingGroupId) cancelEdit();
-      activeFilters = activeFilters.filter(f => f.owner === "f1" || f.owner === FUENTE_OWNER || f.type === "fuenteSet");
-      groupOrder = [];
-      renderActiveFilterChips();
-      applyFilters();
-    });
-  }
-
-  const list = document.getElementById("groupsList");
-  if (list) {
-    list.addEventListener("click", e => {
-      const btn = e.target.closest("[data-action]");
-      if (!btn) return;
-      const groupId = btn.dataset.groupId;
-      if (btn.dataset.action === "remove") {
-        if (editingGroupId === groupId) cancelEdit();
-        activeFilters = activeFilters.filter(f => f.owner !== groupId);
-        groupOrder = groupOrder.filter(g => g.id !== groupId);
-        renderActiveFilterChips();
-        applyFilters();
-      } else if (btn.dataset.action === "edit") {
-        loadGroupForEditing(groupId);
-        // Switch to Filtros tab so user can edit
-        const filtersTab = document.querySelector(".tab-btn[data-tab='filtersPanel']");
-        if (filtersTab) filtersTab.click();
-      }
-    });
-  }
 }
 
 // ── Session management ─────────────────────────────────────────
@@ -1365,7 +1348,6 @@ function isUnfilteredBrowseState(filters = activeFilters) {
 
 function buildRankingContext(rows) {
   const context = {
-    mode: rankingMode,
     dominantLemmaFilter: getDominantLemmaFilter(activeFilters),
     exactCount: 0,
     phraseCount: 0,
@@ -1401,17 +1383,13 @@ function buildRankingContext(rows) {
     else if (tier === 1) context.phraseCount += 1;
   });
 
-  context.usesLemmaTiering = rankingMode === "auto" && (context.exactCount > 0 || context.phraseCount > 0);
+  context.usesLemmaTiering = context.exactCount > 0 || context.phraseCount > 0;
   return context;
 }
 
 function buildRankingSummary(context, manualOverride = false) {
   if (!context || !context.dominantLemmaFilter) return null;
-  const detailKey = manualOverride
-    ? "table.status.detail.manual"
-    : context.usesLemmaTiering
-      ? "table.status.detail.auto"
-      : "table.status.detail.prio";
+  const detailKey = manualOverride ? "table.status.detail.manual" : "table.status.detail.auto";
   return t(detailKey, {
     exact: context.exactCount,
     phrase: context.phraseCount
@@ -1441,12 +1419,33 @@ function applyFilters(initial = false, options = {}) {
     matches = dataRows.filter(row => evaluateTextFilters(row));
   }
   lastFilteredRows = matches;
+
+  if (tableViewMode === "lemmas") {
+    const lemmaItems = buildLemmaItemsFromRows(matches);
+    lastLemmaItems = lemmaItems;
+    lastLemmaPageOffsets = computeLemmaPageOffsets(lemmaItems, maxDisplayRows);
+    const total = lemmaItems.length;
+    if (displayOffset >= total) {
+      displayOffset = lastLemmaPageOffsets[lastLemmaPageOffsets.length - 1] || 0;
+    } else {
+      displayOffset = lastLemmaPageOffsets[findLemmaPageIndex(displayOffset)] || 0;
+    }
+    lastRenderRows = [];
+    lastRenderTotal = total;
+    lastRankingSummary = null;
+    renderTable([], total);
+    updateSortIndicators();
+    restoreScroll(options);
+    renderActiveFilterChips();
+    return;
+  }
+
   const rankingContext = buildRankingContext(matches);
   const rankingComparator = getRankingComparator(rankingContext, {
     randomizeBrowse: isUnfilteredBrowseState(activeFilters)
   });
   const total = matches.length;
-  if (displayOffset >= total && total > 0) {
+  if (displayOffset >= total) {
     displayOffset = Math.max(0, total - maxDisplayRows);
   }
   let paged;
@@ -1481,6 +1480,17 @@ function renderTable(rows, totalCount) {
   tbody.innerHTML = "";
   expandableComments.clear();
 
+  syncDataPanelViewAttribute();
+
+  if (tableViewMode === "lemmas") {
+    renderLemmasIntoTbody(tbody, totalCount);
+    updateTableStatusForLemmas(totalCount);
+    updatePaginationControls(totalCount);
+    updateComentarioToggleButton([]);
+    updateLemmaToggleButton();
+    return;
+  }
+
   if (!rows.length) {
     const tr = document.createElement("tr");
     const td = document.createElement("td");
@@ -1490,90 +1500,97 @@ function renderTable(rows, totalCount) {
     tr.appendChild(td);
     tbody.appendChild(tr);
   } else {
+    let stripeIdx = 0;
     rows.forEach(row => {
-	      const tr = document.createElement("tr");
-	      if (row.record_id) tr.dataset.recordId = row.record_id;
-	      let translationMeasureEl = null;
-	      let comentarioMeta = null;
-
-      TABLE_FIELDS.forEach(field => {
-        const td = document.createElement("td");
-        if (field.key === "Comentario") {
-          const raw = getDisplayValue(row, field.key);
-          const safe = raw == null ? "" : String(raw);
-          if (!safe.trim()) {
-            td.textContent = "";
-	          } else {
-	            td.classList.add("comentario-cell");
-	            const content = document.createElement("div");
-	            content.className = "comentario-text collapsed";
-	            content.innerHTML = applyHighlights(safe, field.key);
-	            const btn = document.createElement("button");
-	            btn.type = "button";
-	            btn.className = "comentario-toggle";
-	            btn.addEventListener("click", e => {
-	              e.stopPropagation();
-	              if (!expandableComments.has(row._rid)) return;
-	              const isExpanded = expandedComments.has(row._rid);
-	              if (isExpanded) {
-	                const anchor = commentAnchors.get(row._rid);
-	                setCommentExpanded(row._rid, content, btn, false);
-	                if (anchor) {
-	                  requestAnimationFrame(() => {
-	                    const w = getTableWrapper();
-	                    const rect = btn.getBoundingClientRect();
-	                    const scrollTop = getTableScrollTop();
-	                    const centerNow = rect.top + rect.height / 2 + scrollTop;
-	                    const anchorCenter = anchor.center;
-	                    const viewTop = scrollTop;
-	                    const viewH = w ? w.clientHeight : window.innerHeight;
-	                    const viewBottom = viewTop + viewH;
-	                    if (anchorCenter < viewTop || anchorCenter > viewBottom) {
-	                      setTableScroll(anchorCenter - viewH * 0.5, "smooth");
-	                    } else {
-	                      const delta = centerNow - anchorCenter;
-	                      if (Math.abs(delta) > 1 && w) w.scrollBy({ top: delta, behavior: "smooth" });
-	                    }
-	                  });
-	                }
-	              } else {
-	                const rect = btn.getBoundingClientRect();
-	                const scrollTop = getTableScrollTop();
-	                const center = rect.top + rect.height / 2 + scrollTop;
-	                commentAnchors.set(row._rid, { scrollY: scrollTop, center });
-	                setCommentExpanded(row._rid, content, btn, true);
-	              }
-	              updateComentarioToggleButton(lastRenderRows);
-	            });
-	            td.appendChild(content);
-	            td.appendChild(btn);
-	            comentarioMeta = { content, btn, rowId: row._rid };
-	          }
-	        } else {
-	          const raw = getDisplayValue(row, field.key);
-	          if (field.key === "Traducción") {
-            const content = document.createElement("div");
-	            content.className = "traduccion-text";
-	            content.innerHTML = applyHighlights(raw, field.key);
-	            td.appendChild(content);
-	            translationMeasureEl = content;
-	          } else {
-	            td.innerHTML = applyHighlights(raw, field.key);
-          }
-        }
-        tr.appendChild(td);
-      });
+      const { tr, comentarioMeta, translationMeasureEl } = buildDataRow(row);
+      if (stripeIdx % 2 === 0) tr.classList.add("stripe-alt");
+      stripeIdx++;
       tbody.appendChild(tr);
-
-	      if (comentarioMeta) {
-	        syncComentarioCell(comentarioMeta, translationMeasureEl);
-	      }
-	    });
-	  }
+      if (comentarioMeta) syncComentarioCell(comentarioMeta, translationMeasureEl);
+    });
+  }
 
   updateTableStatus(rows.length, totalCount);
   updatePaginationControls(totalCount);
   updateComentarioToggleButton(rows);
+  updateLemmaToggleButton();
+}
+
+function buildDataRow(row) {
+  const tr = document.createElement("tr");
+  if (row.record_id) tr.dataset.recordId = row.record_id;
+  let translationMeasureEl = null;
+  let comentarioMeta = null;
+
+  TABLE_FIELDS.forEach(field => {
+    const td = document.createElement("td");
+    if (field.key === "Comentario") {
+      const raw = getDisplayValue(row, field.key);
+      const safe = raw == null ? "" : String(raw);
+      if (!safe.trim()) {
+        td.textContent = "";
+      } else {
+        td.classList.add("comentario-cell");
+        const content = document.createElement("div");
+        content.className = "comentario-text collapsed";
+        content.innerHTML = applyHighlights(safe, field.key);
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "comentario-toggle";
+        btn.addEventListener("click", e => {
+          e.stopPropagation();
+          if (!expandableComments.has(row._rid)) return;
+          const isExpanded = expandedComments.has(row._rid);
+          if (isExpanded) {
+            const anchor = commentAnchors.get(row._rid);
+            setCommentExpanded(row._rid, content, btn, false);
+            if (anchor) {
+              requestAnimationFrame(() => {
+                const w = getTableWrapper();
+                const rect = btn.getBoundingClientRect();
+                const scrollTop = getTableScrollTop();
+                const centerNow = rect.top + rect.height / 2 + scrollTop;
+                const anchorCenter = anchor.center;
+                const viewTop = scrollTop;
+                const viewH = w ? w.clientHeight : window.innerHeight;
+                const viewBottom = viewTop + viewH;
+                if (anchorCenter < viewTop || anchorCenter > viewBottom) {
+                  setTableScroll(anchorCenter - viewH * 0.5, "smooth");
+                } else {
+                  const delta = centerNow - anchorCenter;
+                  if (Math.abs(delta) > 1 && w) w.scrollBy({ top: delta, behavior: "smooth" });
+                }
+              });
+            }
+          } else {
+            const rect = btn.getBoundingClientRect();
+            const scrollTop = getTableScrollTop();
+            const center = rect.top + rect.height / 2 + scrollTop;
+            commentAnchors.set(row._rid, { scrollY: scrollTop, center });
+            setCommentExpanded(row._rid, content, btn, true);
+          }
+          updateComentarioToggleButton(lastRenderRows);
+        });
+        td.appendChild(content);
+        td.appendChild(btn);
+        comentarioMeta = { content, btn, rowId: row._rid };
+      }
+    } else {
+      const raw = getDisplayValue(row, field.key);
+      if (field.key === "Traducción") {
+        const content = document.createElement("div");
+        content.className = "traduccion-text";
+        content.innerHTML = applyHighlights(raw, field.key);
+        td.appendChild(content);
+        translationMeasureEl = content;
+      } else {
+        td.innerHTML = applyHighlights(raw, field.key);
+      }
+    }
+    tr.appendChild(td);
+  });
+
+  return { tr, comentarioMeta, translationMeasureEl };
 }
 
 function setTableStatusMessage(baseText, detailText = "") {
@@ -1680,6 +1697,60 @@ function syncHeaderHorizontalScroll() {
   headerTable.style.transform = `translateX(-${tableScroll.scrollLeft}px)`;
 }
 
+const COLUMN_STATE_KEY = "nawat-columns-v1";
+
+function saveColumnState() {
+  try {
+    const payload = {
+      order: TABLE_FIELDS.map(f => f.key),
+      widths: Object.fromEntries(columnWidths),
+      hidden: [...hiddenColumns]
+    };
+    localStorage.setItem(COLUMN_STATE_KEY, JSON.stringify(payload));
+  } catch {}
+}
+
+function loadColumnState() {
+  let payload;
+  try {
+    const raw = localStorage.getItem(COLUMN_STATE_KEY);
+    if (!raw) return;
+    payload = JSON.parse(raw);
+  } catch { return; }
+  if (!payload || typeof payload !== "object") return;
+
+  if (Array.isArray(payload.order)) {
+    const byKey = new Map(TABLE_FIELDS.map(f => [f.key, f]));
+    const ordered = [];
+    payload.order.forEach(key => {
+      const field = byKey.get(key);
+      if (field && !ordered.includes(field)) ordered.push(field);
+    });
+    TABLE_FIELDS.forEach(field => {
+      if (!ordered.includes(field)) ordered.push(field);
+    });
+    if (ordered.length === TABLE_FIELDS.length) {
+      TABLE_FIELDS.length = 0;
+      ordered.forEach(f => TABLE_FIELDS.push(f));
+    }
+  }
+
+  if (payload.widths && typeof payload.widths === "object") {
+    Object.entries(payload.widths).forEach(([key, w]) => {
+      if (columnWidths.has(key) && Number.isFinite(w) && w >= 50) {
+        columnWidths.set(key, w);
+      }
+    });
+  }
+
+  if (Array.isArray(payload.hidden)) {
+    hiddenColumns.clear();
+    payload.hidden.forEach(key => {
+      if (TABLE_FIELDS.some(f => f.key === key)) hiddenColumns.add(key);
+    });
+  }
+}
+
 function syncColumnLayout() {
   const visibleWidth = TABLE_FIELDS.reduce((sum, field, idx) => {
     return hiddenColumns.has(field.key) ? sum : sum + getColumnWidth(field.key);
@@ -1704,6 +1775,7 @@ function syncColumnLayout() {
     table.style.width = "100%";
     table.style.minWidth = `${minWidth}px`;
   });
+  updateSideLitState();
   syncHeaderHorizontalScroll();
 }
 
@@ -1712,6 +1784,7 @@ function setupStickyHeaderTable() {
   if (!tableScroll) return;
   tableScroll.addEventListener("scroll", syncHeaderHorizontalScroll, { passive: true });
   window.addEventListener("resize", syncHeaderHorizontalScroll);
+  window.addEventListener("resize", syncColumnLayout);
   syncColumnLayout();
 }
 
@@ -1808,6 +1881,85 @@ function areAllExpandableCommentsExpanded(rows = lastRenderRows) {
   return rows.length > 0 && rows.every(r => expandedComments.has(r._rid));
 }
 
+function getVisibleLemmas() {
+  if (tableViewMode !== "lemmas") return [];
+  const offsets = lastLemmaPageOffsets && lastLemmaPageOffsets.length
+    ? lastLemmaPageOffsets : [0];
+  const pageIdx = findLemmaPageIndex(displayOffset);
+  const startIdx = offsets[pageIdx] || 0;
+  const endIdx = pageIdx + 1 < offsets.length ? offsets[pageIdx + 1] : lastLemmaItems.length;
+  return lastLemmaItems.slice(startIdx, endIdx).map(item => item.lemma);
+}
+
+function flushPendingSyncsInChunks(pendingList, chunkSize = 40) {
+  if (!pendingList.length) return;
+  let i = 0;
+  const step = () => {
+    const end = Math.min(i + chunkSize, pendingList.length);
+    for (; i < end; i++) {
+      const p = pendingList[i];
+      syncComentarioCell(p.comentarioMeta, p.translationMeasureEl);
+    }
+    if (i < pendingList.length) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+function setupLemmaToggleAll() {
+  const btn = document.getElementById("lemmaExpandAll");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const lemmas = getVisibleLemmas();
+    if (!lemmas.length) return;
+    const allExpanded = lemmas.every(l => expandedLemmas.has(l));
+    const tbody = document.querySelector("#dataTable tbody");
+    if (!tbody) return;
+
+    lemmas.forEach(lemma => {
+      const groupRow = tbody.querySelector(`tr.lemma-group-row[data-lemma="${CSS.escape(lemma)}"]`);
+      if (!groupRow) return;
+      const toggleBtn = groupRow.querySelector(".lemma-toggle");
+      const isExpanded = expandedLemmas.has(lemma);
+      if (allExpanded && isExpanded) {
+        expandedLemmas.delete(lemma);
+        groupRow.classList.remove("expanded");
+        if (toggleBtn) toggleBtn.textContent = "+";
+        removeLemmaDetailRows(tbody, lemma);
+      } else if (!allExpanded && !isExpanded) {
+        expandedLemmas.add(lemma);
+        groupRow.classList.add("expanded");
+        if (toggleBtn) toggleBtn.textContent = "−";
+        const item = lastLemmaItems.find(it => it.lemma === lemma);
+        if (item) {
+          const stripe = groupRow.classList.contains("stripe-alt");
+          appendLemmaDetailRowsAfter(groupRow, item, stripe);
+        }
+      }
+    });
+    lastLemmaPageOffsets = computeLemmaPageOffsets(lastLemmaItems, maxDisplayRows);
+    updatePaginationControls(lastLemmaItems.length);
+    updateLemmaToggleButton();
+  });
+}
+
+function updateLemmaToggleButton() {
+  const btn = document.getElementById("lemmaExpandAll");
+  if (!btn) return;
+  if (tableViewMode !== "lemmas") {
+    btn.hidden = true;
+    return;
+  }
+  const lemmas = getVisibleLemmas();
+  btn.hidden = false;
+  if (!lemmas.length) {
+    btn.textContent = "+";
+    btn.disabled = true;
+    return;
+  }
+  btn.disabled = false;
+  btn.textContent = lemmas.every(l => expandedLemmas.has(l)) ? "−" : "+";
+}
+
 function setupComentarioToggleAll() {
   const btn = document.getElementById("comentarioExpandAll");
   if (!btn) return;
@@ -1856,14 +2008,27 @@ function setupPaginationControls() {
     if (!btn) return;
     btn.addEventListener("click", () => {
       if (displayOffset <= 0) return;
-      displayOffset = Math.max(0, displayOffset - maxDisplayRows);
+      if (tableViewMode === "lemmas") {
+        const pageIdx = findLemmaPageIndex(displayOffset);
+        if (pageIdx <= 0) return;
+        displayOffset = lastLemmaPageOffsets[pageIdx - 1] || 0;
+      } else {
+        displayOffset = Math.max(0, displayOffset - maxDisplayRows);
+      }
       applyFilters(false, getTableRestoreOptions(btn));
     });
   };
   const hookNext = btn => {
     if (!btn) return;
     btn.addEventListener("click", () => {
-      displayOffset += maxDisplayRows;
+      if (tableViewMode === "lemmas") {
+        const pageIdx = findLemmaPageIndex(displayOffset);
+        const next = lastLemmaPageOffsets[pageIdx + 1];
+        if (next == null) return;
+        displayOffset = next;
+      } else {
+        displayOffset += maxDisplayRows;
+      }
       applyFilters(false, getTableRestoreOptions(btn));
     });
   };
@@ -1879,8 +2044,13 @@ function setupPaginationControls() {
     if (!btn) return;
     btn.addEventListener("click", () => {
       if (!lastRenderTotal) return;
-      const total = lastRenderTotal;
-      const maxOffset = Math.max(0, total - maxDisplayRows);
+      let maxOffset;
+      if (tableViewMode === "lemmas") {
+        maxOffset = lastLemmaPageOffsets[lastLemmaPageOffsets.length - 1] || 0;
+      } else {
+        const total = lastRenderTotal;
+        maxOffset = Math.max(0, total - maxDisplayRows);
+      }
       if (displayOffset === maxOffset) return;
       displayOffset = maxOffset;
       applyFilters(false, getTableRestoreOptions(btn));
@@ -1897,10 +2067,19 @@ function setupPaginationControls() {
     if (!input) return;
     const commit = () => {
       const total = lastRenderTotal;
-      const totalPages = Math.max(1, Math.ceil(total / maxDisplayRows));
-      const page = Math.min(Math.max(1, parseInt(input.value, 10) || 1), totalPages);
-      input.value = page;
-      const newOffset = (page - 1) * maxDisplayRows;
+      let totalPages;
+      let newOffset;
+      if (tableViewMode === "lemmas") {
+        totalPages = Math.max(1, lastLemmaPageOffsets.length);
+        const page = Math.min(Math.max(1, parseInt(input.value, 10) || 1), totalPages);
+        input.value = page;
+        newOffset = lastLemmaPageOffsets[page - 1] || 0;
+      } else {
+        totalPages = Math.max(1, Math.ceil(total / maxDisplayRows));
+        const page = Math.min(Math.max(1, parseInt(input.value, 10) || 1), totalPages);
+        input.value = page;
+        newOffset = (page - 1) * maxDisplayRows;
+      }
       if (newOffset === displayOffset) return;
       displayOffset = newOffset;
       applyFilters(false, getTableRestoreOptions(input));
@@ -1917,17 +2096,28 @@ function updatePaginationControls(total) {
   const firsts = [document.getElementById("pageFirst")].filter(Boolean);
   const lasts = [document.getElementById("pageLast")].filter(Boolean);
   if (!prevs.length && !nexts.length && !firsts.length && !lasts.length) return;
-  const hasPrev = displayOffset > 0;
-  const hasNext = displayOffset + maxDisplayRows < total;
-  const maxOffset = Math.max(0, total - maxDisplayRows);
-  const atLast = displayOffset >= maxOffset;
+
+  let hasPrev, hasNext, currentPage, totalPages;
+  if (tableViewMode === "lemmas") {
+    const offsets = lastLemmaPageOffsets && lastLemmaPageOffsets.length
+      ? lastLemmaPageOffsets : [0];
+    totalPages = Math.max(1, offsets.length);
+    const pageIdx = findLemmaPageIndex(displayOffset);
+    currentPage = total === 0 ? 1 : pageIdx + 1;
+    hasPrev = pageIdx > 0;
+    hasNext = pageIdx + 1 < offsets.length;
+  } else {
+    hasPrev = displayOffset > 0;
+    hasNext = displayOffset + maxDisplayRows < total;
+    currentPage = total === 0 ? 1 : Math.floor(displayOffset / maxDisplayRows) + 1;
+    totalPages = Math.max(1, Math.ceil(total / maxDisplayRows));
+  }
+
   prevs.forEach(btn => (btn.disabled = !hasPrev));
   firsts.forEach(btn => (btn.disabled = !hasPrev));
   nexts.forEach(btn => (btn.disabled = !hasNext));
-  lasts.forEach(btn => (btn.disabled = !hasNext || atLast));
+  lasts.forEach(btn => (btn.disabled = !hasNext));
 
-  const currentPage = total === 0 ? 1 : Math.floor(displayOffset / maxDisplayRows) + 1;
-  const totalPages = Math.max(1, Math.ceil(total / maxDisplayRows));
   const pageInput = document.getElementById("pageInput");
   if (pageInput && document.activeElement !== pageInput) pageInput.value = currentPage;
   const pageTotal = document.getElementById("pageTotal");
@@ -2051,13 +2241,21 @@ function compareRecordId(a, b) {
 
 function updateSortIndicators() {
   const buttons = document.querySelectorAll("#dataHeaderTable .sort-btn");
+  const inLemmasView = tableViewMode === "lemmas";
   buttons.forEach(btn => {
     const field = btn.dataset.sortField;
     const idx = sortKeys.findIndex(k => k.field === field);
     btn.textContent = "";
+    btn.classList.remove("sort-child");
     if (idx !== -1) {
       const arrow = sortKeys[idx].dir === "asc" ? "↑" : "↓";
       btn.textContent = arrow;
+      if (inLemmasView && field !== "Texto estandarizado") {
+        btn.classList.add("sort-child");
+        btn.title = "Orden dentro de cada lema";
+      } else {
+        btn.title = "";
+      }
       if (sortKeys.length > 1) {
         const badge = document.createElement("span");
         badge.className = "sort-badge";
@@ -2066,6 +2264,7 @@ function updateSortIndicators() {
       }
     } else {
       btn.textContent = "⇅";
+      btn.title = "";
     }
   });
 }
@@ -2091,13 +2290,85 @@ function updateSortScopeIndicators() {
 }
 
 function setupExportButtons() {
-  const buttons = [document.getElementById("exportJpeg")].filter(Boolean);
-  buttons.forEach(btn => {
-    btn.addEventListener("click", () => exportTableAsJpeg());
+  const btn = document.getElementById("exportMenuBtn");
+  const dropdown = document.getElementById("exportMenuDropdown");
+  if (!btn || !dropdown) return;
+
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    dropdown.classList.toggle("open");
+  });
+
+  document.addEventListener("click", e => {
+    if (!dropdown.contains(e.target) && e.target !== btn) {
+      dropdown.classList.remove("open");
+    }
+  });
+
+  dropdown.addEventListener("click", e => {
+    const item = e.target.closest(".export-menu-item");
+    if (!item) return;
+    dropdown.classList.remove("open");
+    const kind = item.dataset.export;
+    if (kind === "jpeg") exportTableAsImage("jpeg");
+    else if (kind === "png") exportTableAsImage("png");
+    else if (kind === "csv") exportAsCsv();
   });
 }
 
-function exportTableAsJpeg() {
+// ── Export helpers (CSV) ─────────────────────────────────────────────────
+
+function getExportRows() {
+  const rows = Array.isArray(lastFilteredRows) ? lastFilteredRows.slice() : [];
+  return rows;
+}
+
+function downloadBlob(content, filename, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.download = filename;
+  link.href = url;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function csvEscape(value) {
+  const s = value == null ? "" : String(value);
+  if (/[",\r\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+  return s;
+}
+
+function exportAsCsv() {
+  const rows = getExportRows();
+  if (!rows.length) {
+    alert(t("table.export.empty"));
+    return;
+  }
+  const columns = [
+    "record_id",
+    "Fuente",
+    "eid",
+    "Texto estandarizado",
+    "Escritura original",
+    "Traducción",
+    "Comentario"
+  ];
+  const lines = [columns.join(",")];
+  rows.forEach(row => {
+    const cells = columns.map(col => {
+      if (col === "Traducción" || col === "Comentario") {
+        return csvEscape(getDisplayValue(row, col));
+      }
+      return csvEscape(row[col] ?? "");
+    });
+    lines.push(cells.join(","));
+  });
+  const BOM = "\uFEFF";
+  downloadBlob(BOM + lines.join("\r\n") + "\r\n", t("table.export.csv.filename"), "text/csv;charset=utf-8");
+}
+
+function exportTableAsImage(format = "jpeg") {
   const headerTable = getHeaderTable();
   const table = getBodyTable();
   if (!headerTable || !table) return;
@@ -2157,14 +2428,106 @@ function exportTableAsJpeg() {
     });
     y += rowHeight;
   });
-  canvas.toBlob(b => {
-    if (!b) return;
-    const link = document.createElement("a");
-    link.download = t("table.export.filename");
-    link.href = URL.createObjectURL(b);
-    link.click();
-    URL.revokeObjectURL(link.href);
-  }, "image/jpeg", 0.95);
+  const isPng = format === "png";
+  const mime = isPng ? "image/png" : "image/jpeg";
+  const filename = isPng ? t("table.export.png.filename") : t("table.export.filename");
+  if (isPng) {
+    canvas.toBlob(b => {
+      if (!b) return;
+      const link = document.createElement("a");
+      link.download = filename;
+      link.href = URL.createObjectURL(b);
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }, mime);
+  } else {
+    canvas.toBlob(b => {
+      if (!b) return;
+      const link = document.createElement("a");
+      link.download = filename;
+      link.href = URL.createObjectURL(b);
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }, mime, 0.95);
+  }
+}
+
+function isQuestionLike(text) {
+  if (!text) return false;
+  const t = String(text).trim();
+  if (!t) return false;
+  return t.startsWith("¿") || t.endsWith("?");
+}
+
+// For Wimmer 2021: auto-translated Traducciones sometimes turn French relative
+// clauses ("Qui est pointu.") into Spanish questions ("¿Quién es astuto?").
+// Pull the first plain-text definition block out of the Comentario; return ""
+// if the Comentario also presents the sense as a question (i.e. the word
+// really is an interrogative, like TLEHHUATL or CANNEL).
+function extractWimmerDefinition(commentaryHtml, lemma) {
+  if (!commentaryHtml) return "";
+  const blocks = String(commentaryHtml)
+    .split(/\s*(?:<br\s*\/?>\s*){2,}/i)
+    .map(b => b.trim())
+    .filter(Boolean);
+  const lemmaKey = lemma ? normalizeString(String(lemma)).toLowerCase() : "";
+
+  for (const block of blocks) {
+    const plain = collapseWhitespace(stripHtmlTags(block)).trim();
+    if (!plain) continue;
+
+    // Markup-wrapped block with question content → legitimate interrogative.
+    if (/^</.test(block)) {
+      if (/[¿?]/.test(plain)) return "";
+      continue;
+    }
+
+    // Single-token blocks are lemma headers ("tlehhuâtl:"); skip.
+    if (!/\s/.test(plain)) continue;
+
+    // Skip grammar-metadata line ("lemma, éventuel de ...").
+    if (lemmaKey) {
+      const firstToken = normalizeString((block.match(/^[^\s,:.;()<]+/) || [""])[0]).toLowerCase();
+      if (firstToken && (lemmaKey.startsWith(firstToken) || firstToken.startsWith(lemmaKey))) continue;
+    }
+
+    if (/^Forma?\s*:/i.test(plain)) continue;
+    if (isQuestionLike(plain)) return "";
+    return plain;
+  }
+  return "";
+}
+
+// Wimmer 2021 references "Launey Introd" / "Andrews Introd" (his grammar and
+// Andrews' grammar) appear in Comentario with varied forms — OCR typos in the
+// source ("lntrod", "Intod", "Intro", truncated) and auto-translation garbling
+// in the Spanish copy ("Introducción", "introdujo", "presentó"). Normalize
+// them all to the canonical "Author Introd" form.
+const WIMMER_REF_REGEX = /\b(Launey|Andrews)\s+(?:Introducción|Introduction|introdujo|presentó|lntrod|Intod|Intro|introd)\b\.?/g;
+
+function normalizeWimmerReferences(text) {
+  if (!text) return text;
+  return String(text).replace(WIMMER_REF_REGEX, "$1 Introd");
+}
+
+function getWimmerComentario(row, comentarioKey) {
+  const raw = row[comentarioKey];
+  if (!raw) return raw ?? "";
+  const cacheKey = `__wimmerCom_${comentarioKey}`;
+  if (row[cacheKey] !== undefined) return row[cacheKey];
+  const normalized = normalizeWimmerReferences(raw);
+  row[cacheKey] = normalized;
+  return normalized;
+}
+
+function getWimmerTraduccion(row, traduccionKey, comentarioKey) {
+  const raw = row[traduccionKey];
+  if (!raw || !isQuestionLike(raw)) return raw ?? "";
+  const cacheKey = `__wimmerDef_${traduccionKey}`;
+  if (row[cacheKey] !== undefined) return row[cacheKey] || raw;
+  const def = extractWimmerDefinition(getWimmerComentario(row, comentarioKey), row["Texto estandarizado"]);
+  row[cacheKey] = def;
+  return def || raw;
 }
 
 function getDisplayValue(row, fieldKey) {
@@ -2172,7 +2535,15 @@ function getDisplayValue(row, fieldKey) {
     const esKey = fieldKey === "Traducción" ? "Traducción (es)"
                 : fieldKey === "Comentario"  ? "Comentario (es)"
                 : null;
-    if (esKey && row[esKey]) return row[esKey];
+    if (esKey && row[esKey]) {
+      if (fieldKey === "Traducción") return getWimmerTraduccion(row, "Traducción (es)", "Comentario (es)");
+      if (fieldKey === "Comentario") return getWimmerComentario(row, "Comentario (es)");
+      return row[esKey];
+    }
+  }
+  if (row.Fuente === "2021 Wimmer") {
+    if (fieldKey === "Traducción") return getWimmerTraduccion(row, "Traducción", "Comentario");
+    if (fieldKey === "Comentario") return getWimmerComentario(row, "Comentario");
   }
   return row[fieldKey] ?? "";
 }
@@ -2384,11 +2755,25 @@ function highlightSegment(text, regex) {
   return result;
 }
 
+function partitionWordFiltersByGroup(filters) {
+  const groups = new Map();
+  const singles = [];
+  filters.forEach(f => {
+    if (f.wordGroupId) {
+      if (!groups.has(f.wordGroupId)) groups.set(f.wordGroupId, []);
+      groups.get(f.wordGroupId).push(f);
+    } else {
+      singles.push(f);
+    }
+  });
+  return { groups, singles };
+}
+
 function tokenMatchesWordFilters(token, filters) {
   const stripped = stripHtmlTags(token);
   const normalizedToken = normalizeString(stripped);
   const lowercaseToken = stripped.toLowerCase(); // accent-preserved
-  return filters.some(filter => {
+  const testFilter = filter => {
     const query = buildFilterQuery(filter);
     const base = query.accentSensitive ? lowercaseToken : normalizedToken;
     const candidate = query.allowLoose
@@ -2397,7 +2782,6 @@ function tokenMatchesWordFilters(token, filters) {
     if (query.hasRegex && query.strictRegex) {
       const src = query.strictRegex.source;
       try {
-        // Accent-sensitive: lowercase pattern only; plain: full normalization
         const adjSrc = query.accentSensitive ? src.toLowerCase() : normalizePatternSource(src);
         const adjRx = adjSrc === src ? query.strictRegex : new RegExp(adjSrc, query.strictRegex.flags);
         return adjRx.test(candidate);
@@ -2406,18 +2790,28 @@ function tokenMatchesWordFilters(token, filters) {
       }
     }
     return candidateMatchesQuery(candidate, query, filter.mode, query.allowLoose);
-  });
+  };
+  const { groups, singles } = partitionWordFiltersByGroup(filters);
+  for (const group of groups.values()) {
+    if (group.every(testFilter)) return true;
+  }
+  return singles.some(testFilter);
 }
 
 function tokenMatchesWordFiltersOS(token, filters) {
   const normalizedToken = normalizeOldSpanish(normalizeString(stripHtmlTags(token)));
-  return filters.some(filter => {
+  const testFilter = filter => {
     const query = buildFilterQuery(filter);
     const candidate = query.allowLoose
       ? collapseWhitespace(stripPunctuationCharacters(normalizedToken))
       : normalizedToken;
     return candidateMatchesQuery(candidate, query, filter.mode, query.allowLoose);
-  });
+  };
+  const { groups, singles } = partitionWordFiltersByGroup(filters);
+  for (const group of groups.values()) {
+    if (group.every(testFilter)) return true;
+  }
+  return singles.some(testFilter);
 }
 
 function extractContainsBothParts(text) {
@@ -2482,15 +2876,17 @@ function applyFuenteFilters() {
   const selectedCount = selectedFuentes.size;
   // Si no hay selección, se filtra todo afuera (sin coincidencias).
   if (selectedCount === 0) {
+    lastFilteredRows = [];
+    lastRenderRows = [];
+    lastRenderTotal = 0;
+    lastLemmaItems = [];
     renderTable([], 0);
     return;
   }
-  // Si todas están seleccionadas, no filtramos la columna Fuente.
   if (selectedCount === totalOptions) {
     applyFilters();
     return;
   }
-  // Un solo filtro con set de pertenencia para evaluar rápido.
   appendFilter("Fuente", "exact", new Set(selectedFuentes), "AND", false, "whole", {
     owner: FUENTE_OWNER,
     type: "fuenteSet"
@@ -2513,6 +2909,444 @@ function getFieldI18nKey(fieldKey) {
     default:
       return "";
   }
+}
+
+// ── Compare / lemma helpers (shared by inline compare and lemmas views) ──
+
+function compareLemmaRows(a, b) {
+  const pa = Number.isFinite(a._prio) ? a._prio : Number.POSITIVE_INFINITY;
+  const pb = Number.isFinite(b._prio) ? b._prio : Number.POSITIVE_INFINITY;
+  if (pa !== pb) return pa - pb;
+  const originalCmp = alphaNumCollator.compare(
+    buildSortKey(a["Escritura original"]),
+    buildSortKey(b["Escritura original"])
+  );
+  if (originalCmp !== 0) return originalCmp;
+  return compareRecordId(a, b);
+}
+
+function getBrowseDisplayedTranslation(row) {
+  return collapseWhitespace(stripHtmlTags(String(getDisplayValue(row, "Traducción") || ""))).trim();
+}
+
+function getBrowseNormalizedTranslation(row) {
+  return collapseWhitespace(normalizeString(stripHtmlTags(String(getDisplayValue(row, "Traducción") || "")))).trim();
+}
+
+function collectBrowseTranslations(rows) {
+  const stats = new Map();
+  rows.forEach(row => {
+    const normalized = getBrowseNormalizedTranslation(row);
+    const display = getBrowseDisplayedTranslation(row);
+    if (!normalized || !display) return;
+    const existing = stats.get(normalized);
+    if (existing) {
+      existing.count += 1;
+    } else {
+      stats.set(normalized, { display, normalized, count: 1 });
+    }
+  });
+  const ranked = [...stats.values()].sort((a, b) => {
+    if (b.count !== a.count) return b.count - a.count;
+    return alphaNumCollator.compare(a.normalized, b.normalized);
+  });
+  return {
+    count: stats.size,
+    sample: ranked.slice(0, 3).map(entry => entry.display)
+  };
+}
+
+function buildLemmaGroupRow(item) {
+  const tr = document.createElement("tr");
+  tr.className = "lemma-group-row";
+  tr.dataset.lemma = item.lemma;
+  if (expandedLemmas.has(item.lemma)) tr.classList.add("expanded");
+
+  const headerKeys = new Set(["Texto estandarizado", "Escritura original", "Traducción"]);
+  const headerSpan = TABLE_FIELDS.filter(f => headerKeys.has(f.key) && !hiddenColumns.has(f.key)).length;
+  const edicionVisible = !hiddenColumns.has("Texto estandarizado");
+  let headerRendered = false;
+
+  TABLE_FIELDS.forEach(field => {
+    if (headerKeys.has(field.key)) {
+      if (headerRendered) return;
+      if (!headerSpan) return;
+      headerRendered = true;
+
+      const td = document.createElement("td");
+      td.dataset.field = edicionVisible ? "Texto estandarizado" : field.key;
+      if (headerSpan > 1) td.colSpan = headerSpan;
+
+      const wrap = document.createElement("div");
+      wrap.className = "lemma-edicion-cell";
+
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "lemma-toggle";
+      toggle.setAttribute("aria-label", "Expandir/Colapsar");
+      toggle.textContent = expandedLemmas.has(item.lemma) ? "−" : "+";
+      wrap.appendChild(toggle);
+
+      const title = document.createElement("span");
+      title.className = "lemma-title";
+      title.textContent = item.lemma;
+      wrap.appendChild(title);
+
+      const count = document.createElement("span");
+      count.className = "lemma-count";
+      count.textContent = `(${item.rowCount})`;
+      count.title = t("browse.meta.counts", {
+        sources: item.sourceCount,
+        rows: item.rowCount,
+        translations: item.translationCount
+      });
+      wrap.appendChild(count);
+
+      const action = document.createElement("button");
+      action.type = "button";
+      action.className = "browse-compare-btn";
+      action.dataset.browseCompare = item.lemma;
+      action.textContent = t("browse.compare");
+      wrap.appendChild(action);
+
+      td.appendChild(wrap);
+      tr.appendChild(td);
+      return;
+    }
+
+    const td = document.createElement("td");
+    td.dataset.field = field.key;
+    if (field.key === "Fuente") {
+      td.textContent = String(item.sourceCount || 0);
+      if (item.sources && item.sources.length) td.title = item.sources.join(", ");
+    } else {
+      td.textContent = "";
+    }
+    tr.appendChild(td);
+  });
+
+  return tr;
+}
+
+function toggleLemmaExpansion(groupRow, lemma) {
+  const tbody = groupRow.parentElement;
+  if (!tbody) return;
+  const expanded = expandedLemmas.has(lemma);
+  const toggleBtn = groupRow.querySelector(".lemma-toggle");
+  if (expanded) {
+    expandedLemmas.delete(lemma);
+    groupRow.classList.remove("expanded");
+    if (toggleBtn) toggleBtn.textContent = "+";
+    removeLemmaDetailRows(tbody, lemma);
+  } else {
+    expandedLemmas.add(lemma);
+    groupRow.classList.add("expanded");
+    if (toggleBtn) toggleBtn.textContent = "−";
+    const item = lastLemmaItems.find(it => it.lemma === lemma);
+    if (item) {
+      const stripe = groupRow.classList.contains("stripe-alt");
+      appendLemmaDetailRowsAfter(groupRow, item, stripe);
+    }
+  }
+  lastLemmaPageOffsets = computeLemmaPageOffsets(lastLemmaItems, maxDisplayRows);
+  updatePaginationControls(lastLemmaItems.length);
+  updateLemmaToggleButton();
+}
+
+// ── View-mode helpers (rows / lemmas) ─────────────────────────────────
+
+function syncDataPanelViewAttribute() {
+  const panel = document.querySelector(".data-panel");
+  if (panel) panel.dataset.viewMode = tableViewMode;
+}
+
+function updateViewToggleButtons() {
+  document.querySelectorAll(".view-btn[data-view]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.view === tableViewMode);
+  });
+}
+
+function updateViewToggleLabels() {
+  updateViewToggleButtons();
+}
+
+function setViewMode(next) {
+  if (next !== "rows" && next !== "lemmas") return;
+  if (tableViewMode === next) return;
+  tableViewMode = next;
+  displayOffset = 0;
+  if (next === "lemmas" && hiddenColumns.has("Texto estandarizado")) {
+    hiddenColumns.delete("Texto estandarizado");
+    syncColumnLayout();
+  }
+  updateViewToggleButtons();
+  applyFilters();
+}
+
+function setupViewToggle() {
+  document.querySelectorAll(".view-btn[data-view]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      setViewMode(btn.dataset.view);
+    });
+  });
+  updateViewToggleButtons();
+}
+
+// ── Compare chip (synthetic filter on Texto estandarizado) ──────────
+
+function hasCompareChip() {
+  return activeFilters.some(f => f.owner === COMPARE_OWNER);
+}
+
+function setCompareChip(lemma) {
+  const query = sanitizeInput(lemma).trim();
+  if (!query) return;
+  activeFilters = activeFilters.filter(f => f.owner !== COMPARE_OWNER);
+  appendFilter("Texto estandarizado", "exact", query, "AND", false, "whole", {
+    owner: COMPARE_OWNER,
+    type: "compare",
+    strictCompare: true
+  });
+  displayOffset = 0;
+  renderActiveFilterChips();
+  applyFilters();
+}
+
+function removeCompareChip() {
+  if (!hasCompareChip()) return;
+  activeFilters = activeFilters.filter(f => f.owner !== COMPARE_OWNER);
+  renderActiveFilterChips();
+  applyFilters();
+}
+
+// ── Reverse lookup chip (meaning → ranked lemmas) ───────────────────
+
+function hasReverseChip() {
+  return activeFilters.some(f => f.owner === REVERSE_OWNER);
+}
+
+function setReverseChip(query, options = {}) {
+  const val = sanitizeInput(query).trim();
+  activeFilters = activeFilters.filter(f => f.owner !== REVERSE_OWNER);
+  if (!val) {
+    renderActiveFilterChips();
+    applyFilters();
+    return;
+  }
+  const fields = options.includeComment ? ["Traducción", "Comentario"] : ["Traducción"];
+  appendFilter("Traducción", "any", val, "AND", false, "word", {
+    owner: REVERSE_OWNER,
+    type: "reverse",
+    fields
+  });
+  if (tableViewMode !== "rows") {
+    tableViewMode = "rows";
+    updateViewToggleButtons();
+  }
+  displayOffset = 0;
+  renderActiveFilterChips();
+  applyFilters();
+}
+
+function removeReverseChip() {
+  if (!hasReverseChip()) return;
+  activeFilters = activeFilters.filter(f => f.owner !== REVERSE_OWNER);
+  renderActiveFilterChips();
+  applyFilters();
+}
+
+function setupReverseLookup() {
+  const input = document.getElementById("reverseInput");
+  const submit = document.getElementById("reverseSubmit");
+  const clear = document.getElementById("reverseClear");
+  const includeComment = document.getElementById("reverseIncludeComment");
+  if (!input || !submit) return;
+
+  function run() {
+    const query = input.value.trim();
+    if (!query) {
+      removeReverseChip();
+      return;
+    }
+    setReverseChip(query, { includeComment: !!(includeComment && includeComment.checked) });
+  }
+
+  submit.addEventListener("click", run);
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      run();
+    } else if (e.key === "Escape") {
+      input.value = "";
+    }
+  });
+  if (clear) {
+    clear.addEventListener("click", () => {
+      input.value = "";
+      removeReverseChip();
+    });
+  }
+  if (includeComment) {
+    includeComment.addEventListener("change", () => {
+      if (hasReverseChip() && input.value.trim()) run();
+    });
+  }
+}
+
+function setupEdicionCellClick() {
+  const tbody = document.querySelector("#dataTable tbody");
+  if (!tbody) return;
+  tbody.addEventListener("click", e => {
+    const cmpBtn = e.target.closest(".browse-compare-btn[data-browse-compare]");
+    if (cmpBtn) {
+      e.stopPropagation();
+      setCompareChip(cmpBtn.dataset.browseCompare || "");
+      return;
+    }
+    const cell = e.target.closest("td");
+    if (!cell) return;
+    const tr = cell.closest("tr");
+    if (!tr) return;
+    if (tr.classList.contains("lemma-group-row")) {
+      toggleLemmaExpansion(tr, tr.dataset.lemma || "");
+      return;
+    }
+  });
+}
+
+function buildLemmaItemsFromRows(rows) {
+  const map = new Map();
+  rows.forEach(row => {
+    const lemma = sanitizeInput(row["Texto estandarizado"]);
+    if (!lemma) return;
+    let entry = map.get(lemma);
+    if (!entry) {
+      entry = { lemma, rows: [] };
+      map.set(lemma, entry);
+    }
+    entry.rows.push(row);
+  });
+  const items = [];
+  const hasUserSort = Array.isArray(sortKeys) && sortKeys.length > 0;
+  const childSortKeys = hasUserSort
+    ? sortKeys.filter(k => k.field !== "Texto estandarizado")
+    : [];
+  map.forEach(entry => {
+    const sortedRows = entry.rows.slice();
+    if (childSortKeys.length) {
+      applyManualSort(sortedRows, childSortKeys);
+    } else {
+      sortedRows.sort(compareLemmaRows);
+    }
+    const sourceSet = new Set(sortedRows.map(r => r["Fuente"]).filter(Boolean));
+    const sources = [...sourceSet].sort((a, b) => alphaNumCollator.compare(a, b));
+    const translations = collectBrowseTranslations(sortedRows);
+    items.push({
+      lemma: entry.lemma,
+      rows: sortedRows,
+      sources,
+      sourceCount: sources.length,
+      rowCount: sortedRows.length,
+      translationCount: translations.count,
+      sampleTranslations: translations.sample
+    });
+  });
+  const lemmaSortKey = hasUserSort
+    ? sortKeys.find(k => k.field === "Texto estandarizado")
+    : null;
+  if (lemmaSortKey) {
+    const dir = lemmaSortKey.dir === "desc" ? -1 : 1;
+    items.sort((a, b) => dir * alphaNumCollator.compare(a.lemma, b.lemma));
+  } else {
+    items.sort((a, b) => {
+      if (a.sourceCount !== b.sourceCount) return b.sourceCount - a.sourceCount;
+      if (a.rowCount !== b.rowCount) return b.rowCount - a.rowCount;
+      return alphaNumCollator.compare(a.lemma, b.lemma);
+    });
+  }
+  return items;
+}
+
+function renderLemmasIntoTbody(tbody, totalCount) {
+  if (!totalCount) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    const visibleCount = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key)).length;
+    td.colSpan = Math.max(1, visibleCount || TABLE_FIELDS.length);
+    td.className = "table-empty";
+    td.textContent = t("view.lemmas.empty");
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+
+  const offsets = lastLemmaPageOffsets && lastLemmaPageOffsets.length
+    ? lastLemmaPageOffsets : [0];
+  const pageIdx = findLemmaPageIndex(displayOffset);
+  const startIdx = offsets[pageIdx];
+  const endIdx = pageIdx + 1 < offsets.length ? offsets[pageIdx + 1] : lastLemmaItems.length;
+  const slice = lastLemmaItems.slice(startIdx, endIdx);
+
+  slice.forEach((item, groupIdx) => {
+    const stripe = groupIdx % 2 === 0;
+    const groupRow = buildLemmaGroupRow(item);
+    if (stripe) groupRow.classList.add("stripe-alt");
+    tbody.appendChild(groupRow);
+    if (expandedLemmas.has(item.lemma)) {
+      appendLemmaDetailRowsAfter(groupRow, item, stripe);
+    }
+  });
+}
+
+function appendLemmaDetailRowsAfter(anchorRow, item, stripe) {
+  let anchor = anchorRow;
+  item.rows.forEach(row => {
+    const { tr, comentarioMeta, translationMeasureEl } = buildDataRow(row);
+    tr.classList.add("lemma-detail-row");
+    tr.dataset.lemma = item.lemma;
+    if (stripe) tr.classList.add("stripe-alt");
+    const edicionCell = tr.querySelector('td[data-field="Texto estandarizado"]');
+    if (edicionCell) edicionCell.textContent = "";
+    anchor.after(tr);
+    anchor = tr;
+    if (comentarioMeta) syncComentarioCell(comentarioMeta, translationMeasureEl);
+  });
+}
+
+function removeLemmaDetailRows(tbody, lemma) {
+  tbody.querySelectorAll(`tr.lemma-detail-row[data-lemma="${CSS.escape(lemma)}"]`)
+    .forEach(tr => tr.remove());
+}
+
+function computeLemmaPageOffsets(items, pageSize) {
+  if (!items.length || pageSize <= 0) return [0];
+  const offsets = [0];
+  let i = 0;
+  while (i < items.length) {
+    let cost = 0;
+    while (i < items.length) {
+      const itemCost = 1 + (expandedLemmas.has(items[i].lemma) ? items[i].rows.length : 0);
+      if (cost > 0 && cost + itemCost > pageSize) break;
+      cost += itemCost;
+      i++;
+    }
+    if (i < items.length) offsets.push(i);
+  }
+  return offsets;
+}
+
+function findLemmaPageIndex(itemOffset) {
+  const offsets = lastLemmaPageOffsets;
+  if (!offsets || !offsets.length) return 0;
+  for (let p = offsets.length - 1; p >= 0; p--) {
+    if (itemOffset >= offsets[p]) return p;
+  }
+  return 0;
+}
+
+function updateTableStatusForLemmas(total) {
+  const rowsTotal = lastFilteredRows.length;
+  setTableStatusMessage(t("view.lemmas.summary", { lemmas: total, rows: rowsTotal }));
 }
 
 function setupPairFinder() {
@@ -2768,98 +3602,252 @@ function setupPageSizeControls() {
   });
 }
 
-// ── Column resizing ─────────────────────────────────────────────
-function setupColumnResizing() {
-  const ths = document.querySelectorAll("#dataHeaderTable thead th");
-  ths.forEach((th, idx) => {
-    if (th.querySelector(".col-resize-handle")) return;
-    const handle = document.createElement("div");
-    handle.className = "col-resize-handle";
-    th.appendChild(handle);
+// ── Column reorder (shared helper used by zone drag) ────────────
+function moveColumn(srcKey, dstKey) {
+  const srcIdx = TABLE_FIELDS.findIndex(f => f.key === srcKey);
+  const dstIdx = TABLE_FIELDS.findIndex(f => f.key === dstKey);
+  if (srcIdx < 0 || dstIdx < 0 || srcIdx === dstIdx) return;
 
-    handle.addEventListener("mousedown", e => {
-      e.preventDefault();
-      const startX = e.clientX;
-      const field = TABLE_FIELDS[idx];
-      const startWidth = th.getBoundingClientRect().width;
+  const [moved] = TABLE_FIELDS.splice(srcIdx, 1);
+  TABLE_FIELDS.splice(dstIdx, 0, moved);
 
-      function onMouseMove(ev) {
-        const newWidth = Math.max(50, startWidth + ev.clientX - startX);
-        if (field) {
-          columnWidths.set(field.key, newWidth);
-          syncColumnLayout();
-        }
-      }
-      function onMouseUp() {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-      }
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    });
-  });
-  syncColumnLayout();
-}
-
-// ── Column visibility ───────────────────────────────────────────
-function setupColumnVisibility() {
-  const btn = document.getElementById("colVisibilityBtn");
-  const dropdown = document.getElementById("colVisibilityDropdown");
-  if (!btn || !dropdown) return;
-
-  // Build dropdown items
-  function buildDropdown() {
-    dropdown.innerHTML = "";
-    TABLE_FIELDS.forEach((field, idx) => {
-      const item = document.createElement("label");
-      item.className = "col-visibility-item";
-      const cb = document.createElement("input");
-      cb.type = "checkbox";
-      cb.checked = !hiddenColumns.has(field.key);
-      cb.addEventListener("change", () => {
-        const visibleCount = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key)).length;
-        if (!cb.checked && visibleCount <= 1) {
-          cb.checked = true;
-          return;
-        }
-        const y = getTableScrollTop();
-        if (cb.checked) {
-          hiddenColumns.delete(field.key);
-        } else {
-          hiddenColumns.add(field.key);
-        }
-        syncColumnLayout();
-        renderTable(lastRenderRows, lastRenderTotal);
-        requestAnimationFrame(() => setTableScroll(y));
-      });
-      const span = document.createElement("span");
-      span.textContent = field.label;
-      item.appendChild(cb);
-      item.appendChild(span);
-      dropdown.appendChild(item);
-    });
+  const headerRow = document.querySelector("#dataHeaderTable thead tr");
+  if (headerRow) {
+    const srcTh = headerRow.querySelector(`th[data-field="${CSS.escape(srcKey)}"]`);
+    const dstTh = headerRow.querySelector(`th[data-field="${CSS.escape(dstKey)}"]`);
+    if (srcTh && dstTh) {
+      if (srcIdx < dstIdx) dstTh.after(srcTh);
+      else dstTh.before(srcTh);
+    }
   }
 
-  btn.addEventListener("click", e => {
-    e.stopPropagation();
-    buildDropdown();
-    dropdown.classList.toggle("open");
-  });
+  const y = getTableScrollTop();
+  syncColumnLayout();
+  renderTable(lastRenderRows, lastRenderTotal);
+  requestAnimationFrame(() => setTableScroll(y));
+  saveColumnState();
+}
 
-  document.addEventListener("click", e => {
-    if (!dropdown.contains(e.target) && e.target !== btn) {
-      dropdown.classList.remove("open");
+// ── Zone-based header interactions ──────────────────────────────
+// Left/right edges: drag=resize, click=show adjacent hidden run.
+// Top/bottom bands: drag=reorder, click=hide (circular: last hide restores all).
+const ZONE_EDGE_PX = 6;
+const ZONE_BAND_PX = 8;
+const DRAG_THRESHOLD_PX = 4;
+
+function computeZone(th, clientX, clientY) {
+  const rect = th.getBoundingClientRect();
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  if (x < ZONE_EDGE_PX) return "left";
+  if (x > rect.width - ZONE_EDGE_PX) return "right";
+  if (y < ZONE_BAND_PX) return "top";
+  if (y > rect.height - ZONE_BAND_PX) return "bottom";
+  return "body";
+}
+
+function getHiddenRun(key, side) {
+  const idx = TABLE_FIELDS.findIndex(f => f.key === key);
+  if (idx < 0) return [];
+  const step = side === "left" ? -1 : 1;
+  const run = [];
+  for (let i = idx + step; i >= 0 && i < TABLE_FIELDS.length; i += step) {
+    const k = TABLE_FIELDS[i].key;
+    if (!hiddenColumns.has(k)) break;
+    run.push(k);
+  }
+  return run;
+}
+
+function hideColumnCircular(key) {
+  if (tableViewMode === "lemmas" && key === "Texto estandarizado") return;
+  const total = TABLE_FIELDS.length;
+  const willBeHidden = hiddenColumns.size + (hiddenColumns.has(key) ? 0 : 1);
+  const y = getTableScrollTop();
+  if (willBeHidden >= total) {
+    hiddenColumns.clear();
+  } else {
+    hiddenColumns.add(key);
+  }
+  sortKeys = sortKeys.filter(k => !hiddenColumns.has(k.field));
+  syncColumnLayout();
+  renderTable(lastRenderRows, lastRenderTotal);
+  requestAnimationFrame(() => setTableScroll(y));
+  saveColumnState();
+}
+
+function showHiddenRun(key, side) {
+  const run = getHiddenRun(key, side);
+  if (!run.length) return;
+  run.forEach(k => hiddenColumns.delete(k));
+  const y = getTableScrollTop();
+  saveColumnState();
+  syncColumnLayout();
+  renderTable(lastRenderRows, lastRenderTotal);
+  requestAnimationFrame(() => setTableScroll(y));
+}
+
+function updateSideLitState() {
+  const headerRow = document.querySelector("#dataHeaderTable thead tr");
+  if (!headerRow) return;
+  const visible = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key));
+  const firstVisibleKey = visible.length ? visible[0].key : null;
+  const lastVisibleKey = visible.length ? visible[visible.length - 1].key : null;
+  TABLE_FIELDS.forEach(field => {
+    const th = headerRow.querySelector(`th[data-field="${CSS.escape(field.key)}"]`);
+    if (!th) return;
+    if (hiddenColumns.has(field.key)) {
+      th.classList.remove("th-left-lit", "th-right-lit", "th-edge-outer-left", "th-edge-outer-right");
+      return;
     }
+    th.classList.toggle("th-left-lit", getHiddenRun(field.key, "left").length > 0);
+    th.classList.toggle("th-right-lit", getHiddenRun(field.key, "right").length > 0);
+    th.classList.toggle("th-edge-outer-left", field.key === firstVisibleKey);
+    th.classList.toggle("th-edge-outer-right", field.key === lastVisibleKey);
+  });
+}
+
+function setupColumnZoneInteractions() {
+  if (!document.getElementById("colHiddenStyleTag")) {
+    const style = document.createElement("style");
+    style.id = "colHiddenStyleTag";
+    TABLE_FIELDS.forEach((_, idx) => {
+      style.textContent += `#dataHeaderTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
+        `#dataHeaderTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
+        `#dataTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
+        `#dataTable.col-hidden-${idx} td:nth-child(${idx + 1}) { display: none; }\n`;
+    });
+    document.head.appendChild(style);
+  }
+
+  const headerTable = getHeaderTable();
+  if (!headerTable) return;
+  const ths = headerTable.querySelectorAll("thead th[data-field]");
+
+  ths.forEach(th => {
+    th.addEventListener("mousemove", e => {
+      if (e.buttons) return;
+      if (e.target.closest("button, input, a")) {
+        th.classList.remove("th-hover-left", "th-hover-right", "th-hover-top", "th-hover-bottom", "th-hover-body");
+        return;
+      }
+      const zone = computeZone(th, e.clientX, e.clientY);
+      th.classList.remove("th-hover-left", "th-hover-right", "th-hover-top", "th-hover-bottom", "th-hover-body");
+      th.classList.add(`th-hover-${zone}`);
+    });
+    th.addEventListener("mouseleave", () => {
+      th.classList.remove("th-hover-left", "th-hover-right", "th-hover-top", "th-hover-bottom", "th-hover-body");
+    });
+
+    th.addEventListener("mousedown", e => {
+      if (e.button !== 0) return;
+      if (e.target.closest("button, input, a")) return;
+      const zone = computeZone(th, e.clientX, e.clientY);
+      if (zone === "body") return;
+      e.preventDefault();
+
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const srcKey = th.dataset.field;
+      let dragStarted = false;
+
+      // Split-pane resize: dragging a border shrinks one neighbor and grows the
+      // other by the same amount; outer edges of the table stay fixed, so table
+      // total width is invariant. Both neighbors must be visible; otherwise no-op.
+      let leftKey = null;
+      let rightKey = null;
+      let startLeftWidth = 0;
+      let startRightWidth = 0;
+      const idx = TABLE_FIELDS.findIndex(f => f.key === srcKey);
+      if (zone === "left" || zone === "right") {
+        if (zone === "right") {
+          leftKey = srcKey;
+          let nextIdx = idx + 1;
+          while (nextIdx < TABLE_FIELDS.length && hiddenColumns.has(TABLE_FIELDS[nextIdx].key)) nextIdx++;
+          if (nextIdx < TABLE_FIELDS.length) rightKey = TABLE_FIELDS[nextIdx].key;
+        } else {
+          rightKey = srcKey;
+          let prevIdx = idx - 1;
+          while (prevIdx >= 0 && hiddenColumns.has(TABLE_FIELDS[prevIdx].key)) prevIdx--;
+          if (prevIdx >= 0) leftKey = TABLE_FIELDS[prevIdx].key;
+        }
+        if (leftKey && rightKey) {
+          startLeftWidth = getColumnWidth(leftKey);
+          startRightWidth = getColumnWidth(rightKey);
+        } else {
+          leftKey = null;
+          rightKey = null;
+        }
+      }
+
+      function clearDropTargets() {
+        headerTable.querySelectorAll(".col-drop-target")
+          .forEach(el => el.classList.remove("col-drop-target"));
+      }
+
+      function onMove(ev) {
+        const dx = ev.clientX - startX;
+        const dy = ev.clientY - startY;
+        const moved = Math.hypot(dx, dy) > DRAG_THRESHOLD_PX;
+
+        if (zone === "left" || zone === "right") {
+          if (!moved) return;
+          dragStarted = true;
+          if (!leftKey || !rightKey) return; // outer edges: no-op
+          const MIN = 50;
+          const totalPair = startLeftWidth + startRightWidth;
+          let newLeft = startLeftWidth + dx;
+          if (newLeft < MIN) newLeft = MIN;
+          if (newLeft > totalPair - MIN) newLeft = totalPair - MIN;
+          const newRight = totalPair - newLeft;
+          columnWidths.set(leftKey, newLeft);
+          columnWidths.set(rightKey, newRight);
+          syncColumnLayout();
+          return;
+        }
+
+        if (zone === "top" || zone === "bottom") {
+          if (!moved) return;
+          dragStarted = true;
+          clearDropTargets();
+          const under = document.elementFromPoint(ev.clientX, ev.clientY);
+          const dstTh = under && under.closest("#dataHeaderTable thead th");
+          if (dstTh && dstTh.dataset.field && dstTh.dataset.field !== srcKey) {
+            dstTh.classList.add("col-drop-target");
+          }
+        }
+      }
+
+      function onUp(ev) {
+        window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("mouseup", onUp);
+
+        if (!dragStarted) {
+          if (zone === "top" || zone === "bottom") {
+            hideColumnCircular(srcKey);
+          } else if (zone === "left" || zone === "right") {
+            showHiddenRun(srcKey, zone);
+          }
+          return;
+        }
+
+        if (zone === "top" || zone === "bottom") {
+          const under = document.elementFromPoint(ev.clientX, ev.clientY);
+          const dstTh = under && under.closest("#dataHeaderTable thead th");
+          clearDropTargets();
+          if (dstTh && dstTh.dataset.field && dstTh.dataset.field !== srcKey) {
+            moveColumn(srcKey, dstTh.dataset.field);
+          }
+        } else if (zone === "left" || zone === "right") {
+          saveColumnState();
+        }
+      }
+
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", onUp);
+    });
   });
 
-  // Inject CSS rules for col-hidden-N (header + body tables)
-  const style = document.createElement("style");
-  TABLE_FIELDS.forEach((field, idx) => {
-    style.textContent += `#dataHeaderTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
-      `#dataHeaderTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
-      `#dataTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
-      `#dataTable.col-hidden-${idx} td:nth-child(${idx + 1}) { display: none; }\n`;
-  });
-  document.head.appendChild(style);
   syncColumnLayout();
 }
+

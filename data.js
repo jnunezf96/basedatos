@@ -120,7 +120,11 @@ function getNormalizedValue(row, field) {
 }
 
 function buildFilterQuery(filter) {
-  return parseFilterValue(filter.value ?? "", filter.mode);
+  const query = parseFilterValue(filter.value ?? "", filter.mode);
+  if (filter && filter.strictCompare) {
+    query.allowLoose = false;
+  }
+  return query;
 }
 
 function escapeRegex(ch) {

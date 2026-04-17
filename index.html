@@ -13,11 +13,12 @@
       <div class="session-bar" id="sessionBar"></div>
       <nav class="panel-tabs">
         <button type="button" class="tab-btn active" data-tab="filtersPanel" data-i18n="tab.filters">Filtros</button>
+        <button type="button" class="tab-btn" data-tab="reversePanel" data-i18n="tab.reverse">Reverso</button>
         <button type="button" class="tab-btn" data-tab="sourcesPanel" data-i18n="tab.sources">Fuentes</button>
         <button type="button" class="tab-btn" data-tab="regexPanel" data-i18n="tab.regex">Regex</button>
         <button type="button" class="tab-btn" data-tab="pairsPanel" data-i18n="tab.pairs">Pares a/i</button>
-        <button type="button" class="btn ghost lang-toggle" id="langToggle" data-i18n="lang.toggle">English</button>
       </nav>
+      <button type="button" class="btn action lang-toggle" id="langToggle" data-i18n="lang.toggle">English</button>
     </div>
 
     <!-- ── Site tagline ── -->
@@ -75,7 +76,13 @@
         <div class="filter-actions">
           <div class="filter-options">
             <button type="button" class="pill old-spanish-btn" data-i18n="oldspanish.toggle">Esp. ant.</button>
-            <button type="button" class="pill accent-btn">Acento libre</button>
+            <div class="accent-field">
+              <span class="accent-field-label" data-i18n="label.accent">Acento</span>
+              <div class="accent-toggle" aria-label="Sensibilidad de acento">
+                <button type="button" class="accent-btn" data-accent="loose" data-i18n="accent.loose">Libre</button>
+                <button type="button" class="accent-btn" data-accent="strict" data-i18n="accent.strict">Exacto</button>
+              </div>
+            </div>
             <div class="logic-toggle" aria-label="Zona del filtro">
               <button type="button" class="logic-btn active" data-logic="AND" data-i18n="logic.and">Y</button>
               <button type="button" class="logic-btn" data-logic="OR" data-i18n="logic.or">O</button>
@@ -84,6 +91,26 @@
           <div class="filter-actions-btns">
             <button type="button" class="btn primary add-btn" data-i18n="action.add">Añadir</button>
             <button type="button" class="btn ghost clear-btn" data-i18n="action.clear">Vaciar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Panel: Reverso ── -->
+    <section class="tab-panel" id="reversePanel">
+      <div class="sources-card reverse-card">
+        <div class="sources-head">
+          <h3 data-i18n="reverse.title">Búsqueda inversa</h3>
+        </div>
+        <p class="reverse-hint" data-i18n="reverse.hint">Escribe una palabra en español o francés para encontrar lemas en náhuatl cuya traducción la contenga. Los resultados se muestran agrupados por lema, ordenados por cantidad de fuentes que los respaldan.</p>
+        <div class="reverse-controls">
+          <input type="text" id="reverseInput" class="reverse-input" autocomplete="off" spellcheck="false" />
+          <div class="reverse-field-toggle">
+            <label class="reverse-field-opt"><input type="checkbox" id="reverseIncludeComment" /><span data-i18n="reverse.includeComment">Incluir Comentario</span></label>
+          </div>
+          <div class="reverse-actions">
+            <button type="button" class="btn primary" id="reverseSubmit" data-i18n="reverse.submit">Buscar</button>
+            <button type="button" class="btn ghost" id="reverseClear" data-i18n="action.clear">Vaciar</button>
           </div>
         </div>
       </div>
@@ -218,11 +245,27 @@
         <div class="table-toolbar">
           <div id="tableStatus" class="result-info" data-i18n="table.status.loading">Cargando datos…</div>
           <div class="toolbar-controls">
+            <div class="view-group">
+              <div class="view-toggle" role="group" aria-label="Vista">
+                <button type="button" class="view-btn active" data-view="rows" data-i18n="view.rows">Filas</button>
+                <button type="button" class="view-btn" data-view="lemmas" data-i18n="view.lemmas">Lemas</button>
+              </div>
+            </div>
+            <div class="toolbar-sep"></div>
+            <div class="view-actions">
+              <button type="button" class="arrow-btn active" id="wLangToggle" title="Idioma del comentario">ES</button>
+              <button type="button" class="arrow-btn lemma-toggle-all" id="lemmaExpandAll" title="Expandir/Colapsar lemas" hidden>+</button>
+              <button type="button" class="arrow-btn comentario-toggle-all" id="comentarioExpandAll" title="Expandir/Colapsar comentarios">+</button>
+            </div>
+            <div class="toolbar-sep"></div>
             <div class="export-group">
-              <button type="button" class="arrow-btn export-btn" id="exportJpeg">JPG</button>
-              <div class="col-visibility-wrap">
-                <button type="button" class="arrow-btn" id="colVisibilityBtn" title="Columnas" data-i18n="table.columns">Cols</button>
-                <div id="colVisibilityDropdown" class="col-visibility-dropdown"></div>
+              <div class="export-menu-wrap">
+                <button type="button" class="arrow-btn export-btn" id="exportMenuBtn" title="Exportar" data-i18n="table.export.label">Exportar ▾</button>
+                <div id="exportMenuDropdown" class="export-menu-dropdown">
+                  <button type="button" class="export-menu-item" data-export="jpeg" data-i18n="table.export.jpeg">Imagen (JPG)</button>
+                  <button type="button" class="export-menu-item" data-export="png" data-i18n="table.export.png">Imagen (PNG)</button>
+                  <button type="button" class="export-menu-item" data-export="csv" data-i18n="table.export.csv">Hoja de cálculo (CSV)</button>
+                </div>
               </div>
             </div>
             <div class="toolbar-sep"></div>
@@ -232,13 +275,6 @@
                 <select id="sortScopeSelect">
                   <option value="all" data-i18n="table.sort.all">Todos</option>
                   <option value="page" data-i18n="table.sort.page">Página</option>
-                </select>
-              </div>
-              <div class="rank-mode">
-                <label for="rankModeSelect" class="rank-mode-label" data-i18n="table.rank.label">Rango:</label>
-                <select id="rankModeSelect" class="rank-mode-select">
-                  <option value="auto" data-i18n="table.rank.auto">Auto</option>
-                  <option value="prio" data-i18n="table.rank.prio">Prio</option>
                 </select>
               </div>
             </div>
@@ -274,7 +310,9 @@
                 <th data-field="Texto estandarizado">
                   <div class="header-bar">
                     <span data-i18n="table.header.grafia">Edición</span>
-                    <button type="button" class="arrow-btn sort-btn" data-sort-field="Texto estandarizado">⇅</button>
+                    <div class="header-actions">
+                      <button type="button" class="arrow-btn sort-btn" data-sort-field="Texto estandarizado">⇅</button>
+                    </div>
                   </div>
                 </th>
                 <th data-field="Escritura original">
@@ -293,7 +331,6 @@
                   <div class="header-bar">
                     <span data-i18n="table.header.fuente">Fuente</span>
                     <div class="header-actions">
-                      <button type="button" class="arrow-btn active" id="wLangToggle">ES</button>
                       <button type="button" class="arrow-btn sort-btn" data-sort-field="Fuente">⇅</button>
                     </div>
                   </div>
@@ -303,7 +340,6 @@
                     <span data-i18n="table.header.comentario">Comentario</span>
                     <div class="header-actions">
                       <button type="button" class="arrow-btn sort-btn" data-sort-field="Comentario">⇅</button>
-                      <button type="button" class="arrow-btn comentario-toggle-all" id="comentarioExpandAll">+</button>
                     </div>
                   </div>
                 </th>

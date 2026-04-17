@@ -111,6 +111,16 @@ let _evalCtx = null;
 // Pre-compile a single simple filter into a ready-to-run descriptor.
 function compileSimpleFilter(filter) {
   if (filter.type === "fuenteSet") return { type: "fuenteSet", filter };
+  if (filter.type === "reverse") {
+    const tokens = String(filter.value || "")
+      .split(/[\s,;]+/)
+      .map(tok => normalizeString(tok.trim()))
+      .filter(Boolean);
+    const fields = Array.isArray(filter.fields) && filter.fields.length
+      ? filter.fields
+      : ["Traducción"];
+    return { type: "reverse", filter, tokens, fields };
+  }
   const query = buildFilterQuery(filter);
   const scope = normalizeScope(filter.scope);
   return { type: "simple", filter, query, scope };
@@ -189,6 +199,19 @@ function matchCompiledFilter(row, cf) {
   if (cf.type === "fuenteSet") {
     const val = row["Fuente"];
     const ok = cf.filter.value instanceof Set ? cf.filter.value.has(val) : Array.isArray(cf.filter.value) ? cf.filter.value.includes(val) : false;
+    return cf.filter.negate ? !ok : ok;
+  }
+  if (cf.type === "reverse") {
+    if (!cf.tokens.length) return true;
+    const ok = cf.tokens.every(tok => {
+      return cf.fields.some(field => {
+        const entry = getNormalizedEntry(row, field);
+        return entry.words.some(w => {
+          const src = w.loose || w.raw;
+          return src === tok || src.startsWith(tok);
+        });
+      });
+    });
     return cf.filter.negate ? !ok : ok;
   }
   const { filter, query, scope } = cf;
