@@ -1647,7 +1647,7 @@ function getPrimaryTableHeader() {
 }
 
 function getHeaderTable() {
-  return document.getElementById("dataHeaderTable");
+  return document.getElementById("dataTable");
 }
 
 function getBodyTable() {
@@ -1688,13 +1688,6 @@ function setTableScroll(y, behavior = "auto") {
 
 function getColumnWidth(fieldKey) {
   return columnWidths.get(fieldKey) || TABLE_FIELDS.find(field => field.key === fieldKey)?.defaultWidth || 140;
-}
-
-function syncHeaderHorizontalScroll() {
-  const headerTable = getHeaderTable();
-  const tableScroll = getTableScrollElement();
-  if (!headerTable || !tableScroll) return;
-  headerTable.style.transform = `translateX(-${tableScroll.scrollLeft}px)`;
 }
 
 const COLUMN_STATE_KEY = "nawat-columns-v1";
@@ -1756,8 +1749,8 @@ function syncColumnLayout() {
     return hiddenColumns.has(field.key) ? sum : sum + getColumnWidth(field.key);
   }, 0);
   const minWidth = Math.max(TABLE_MIN_WIDTH, visibleWidth);
-  [getHeaderTable(), getBodyTable()].forEach(table => {
-    if (!table) return;
+  const table = getBodyTable();
+  if (table) {
     let colgroup = table.querySelector("colgroup");
     if (!colgroup) {
       colgroup = document.createElement("colgroup");
@@ -1774,16 +1767,11 @@ function syncColumnLayout() {
     });
     table.style.width = "100%";
     table.style.minWidth = `${minWidth}px`;
-  });
+  }
   updateSideLitState();
-  syncHeaderHorizontalScroll();
 }
 
 function setupStickyHeaderTable() {
-  const tableScroll = getTableScrollElement();
-  if (!tableScroll) return;
-  tableScroll.addEventListener("scroll", syncHeaderHorizontalScroll, { passive: true });
-  window.addEventListener("resize", syncHeaderHorizontalScroll);
   window.addEventListener("resize", syncColumnLayout);
   syncColumnLayout();
 }
@@ -2125,7 +2113,7 @@ function updatePaginationControls(total) {
 }
 
 function setupSortControls() {
-  const buttons = document.querySelectorAll("#dataHeaderTable .sort-btn");
+  const buttons = document.querySelectorAll("#dataTable .sort-btn");
   buttons.forEach(btn => {
     btn.addEventListener("click", e => {
       const field = btn.dataset.sortField;
@@ -2240,7 +2228,7 @@ function compareRecordId(a, b) {
 }
 
 function updateSortIndicators() {
-  const buttons = document.querySelectorAll("#dataHeaderTable .sort-btn");
+  const buttons = document.querySelectorAll("#dataTable .sort-btn");
   const inLemmasView = tableViewMode === "lemmas";
   buttons.forEach(btn => {
     const field = btn.dataset.sortField;
@@ -3611,7 +3599,7 @@ function moveColumn(srcKey, dstKey) {
   const [moved] = TABLE_FIELDS.splice(srcIdx, 1);
   TABLE_FIELDS.splice(dstIdx, 0, moved);
 
-  const headerRow = document.querySelector("#dataHeaderTable thead tr");
+  const headerRow = document.querySelector("#dataTable thead tr");
   if (headerRow) {
     const srcTh = headerRow.querySelector(`th[data-field="${CSS.escape(srcKey)}"]`);
     const dstTh = headerRow.querySelector(`th[data-field="${CSS.escape(dstKey)}"]`);
@@ -3688,7 +3676,7 @@ function showHiddenRun(key, side) {
 }
 
 function updateSideLitState() {
-  const headerRow = document.querySelector("#dataHeaderTable thead tr");
+  const headerRow = document.querySelector("#dataTable thead tr");
   if (!headerRow) return;
   const visible = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key));
   const firstVisibleKey = visible.length ? visible[0].key : null;
@@ -3712,9 +3700,8 @@ function setupColumnZoneInteractions() {
     const style = document.createElement("style");
     style.id = "colHiddenStyleTag";
     TABLE_FIELDS.forEach((_, idx) => {
-      style.textContent += `#dataHeaderTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
-        `#dataHeaderTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
-        `#dataTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
+      style.textContent += `#dataTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
+        `#dataTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
         `#dataTable.col-hidden-${idx} td:nth-child(${idx + 1}) { display: none; }\n`;
     });
     document.head.appendChild(style);
@@ -3811,7 +3798,7 @@ function setupColumnZoneInteractions() {
           dragStarted = true;
           clearDropTargets();
           const under = document.elementFromPoint(ev.clientX, ev.clientY);
-          const dstTh = under && under.closest("#dataHeaderTable thead th");
+          const dstTh = under && under.closest("#dataTable thead th");
           if (dstTh && dstTh.dataset.field && dstTh.dataset.field !== srcKey) {
             dstTh.classList.add("col-drop-target");
           }
@@ -3833,7 +3820,7 @@ function setupColumnZoneInteractions() {
 
         if (zone === "top" || zone === "bottom") {
           const under = document.elementFromPoint(ev.clientX, ev.clientY);
-          const dstTh = under && under.closest("#dataHeaderTable thead th");
+          const dstTh = under && under.closest("#dataTable thead th");
           clearDropTargets();
           if (dstTh && dstTh.dataset.field && dstTh.dataset.field !== srcKey) {
             moveColumn(srcKey, dstTh.dataset.field);

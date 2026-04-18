@@ -165,55 +165,22 @@ body {
   flex-direction: column;
   gap: 0;
   height: 100vh;
-  overflow-y: auto;
-  scrollbar-gutter: stable;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-}
-.data-panel::-webkit-scrollbar {
-  width: 10px;
-  background: transparent;
-}
-.data-panel::-webkit-scrollbar-thumb,
-.data-panel::-webkit-scrollbar-track {
-  background: transparent;
+  overflow: hidden;
 }
 
 .scroll-anchor {
   height: 0;
 }
 
-/* ── Sticky band: toolbar + real header table freeze together ── */
+/* ── Band wrapping the toolbar ── */
 .sticky-band {
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  flex: 0 0 auto;
   background: #fff;
   margin: -10px -12px 0;
   padding: 10px 12px 0;
   border-radius: 14px 14px 0 0;
 }
 
-.table-head-shell {
-  overflow: hidden;
-  border: 1px solid #dde2ff;
-  border-top: none;
-  border-bottom: none;
-  border-radius: 12px 12px 0 0;
-}
-
-#dataHeaderTable {
-  width: 100%;
-  min-width: 908px;
-  table-layout: fixed;
-  border-collapse: collapse;
-  background: #fff;
-  will-change: transform;
-}
-
-#dataHeaderTable th {
-  border-bottom: none;
-}
 
 div.table-toolbar {
   display: flex;
@@ -312,10 +279,30 @@ div.table-toolbar {
 }
 
 .table-scroll {
-  overflow-x: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
   border: 1px solid #dde2ff;
   border-top: none;
   border-radius: 0 0 12px 12px;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.table-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: transparent;
+}
+.table-scroll::-webkit-scrollbar-thumb,
+.table-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#dataTable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
 }
 
 table {
@@ -476,46 +463,46 @@ td:nth-child(5) {
 
 /* ── Column zone interactions ── */
 /* Hover-driven cursor per zone (drag always available on the edge/band) */
-#dataHeaderTable th.th-hover-left,
-#dataHeaderTable th.th-hover-right {
+#dataTable th.th-hover-left,
+#dataTable th.th-hover-right {
   cursor: col-resize;
 }
 /* Outer edges of the table have no resize partner on the far side — keep default */
-#dataHeaderTable th.th-edge-outer-left.th-hover-left,
-#dataHeaderTable th.th-edge-outer-right.th-hover-right {
+#dataTable th.th-edge-outer-left.th-hover-left,
+#dataTable th.th-edge-outer-right.th-hover-right {
   cursor: default;
 }
-#dataHeaderTable th.th-edge-outer-left.th-hover-left.th-left-lit,
-#dataHeaderTable th.th-edge-outer-right.th-hover-right.th-right-lit {
+#dataTable th.th-edge-outer-left.th-hover-left.th-left-lit,
+#dataTable th.th-edge-outer-right.th-hover-right.th-right-lit {
   cursor: pointer;
 }
-#dataHeaderTable th.th-hover-top,
-#dataHeaderTable th.th-hover-bottom {
+#dataTable th.th-hover-top,
+#dataTable th.th-hover-bottom {
   cursor: move;
 }
 
 /* "Lit" side edges signal that clicking will restore hidden neighbors */
-#dataHeaderTable th.th-left-lit {
+#dataTable th.th-left-lit {
   box-shadow: inset 2px 0 0 #4c6ef5;
 }
-#dataHeaderTable th.th-right-lit {
+#dataTable th.th-right-lit {
   box-shadow: inset -2px 0 0 #4c6ef5;
 }
-#dataHeaderTable th.th-left-lit.th-right-lit {
+#dataTable th.th-left-lit.th-right-lit {
   box-shadow: inset 2px 0 0 #4c6ef5, inset -2px 0 0 #4c6ef5;
 }
 
 /* Hover affordance: darken the whole column on top/bottom hover, and on
    lit left/right hover (where the click will restore). */
-#dataHeaderTable th.th-hover-top,
-#dataHeaderTable th.th-hover-bottom,
-#dataHeaderTable th.th-hover-left.th-left-lit,
-#dataHeaderTable th.th-hover-right.th-right-lit {
+#dataTable th.th-hover-top,
+#dataTable th.th-hover-bottom,
+#dataTable th.th-hover-left.th-left-lit,
+#dataTable th.th-hover-right.th-right-lit {
   filter: brightness(0.95);
 }
 
 /* Drop target during reorder drag */
-#dataHeaderTable th.col-drop-target {
+#dataTable th.col-drop-target {
   outline: 2px dashed #4c6ef5;
   outline-offset: -2px;
 }
