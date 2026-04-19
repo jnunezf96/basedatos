@@ -49,7 +49,8 @@ const I18N = {
     "placeholder.ends.incl": "{casilla} de {campo} termina con...",
     "placeholder.ends.excl": "{casilla} de {campo} no termina con...",
     "sources.title": "Fuentes",
-    "sources.fill": "Llenar",
+    "sources.fill": "Todas",
+    "sources.clear": "Ninguna",
     "regex.title": "Mini-lenguaje",
     "rx.wildcards": "Comodines",
     "rx.q1": "1 letra cualquiera",
@@ -243,7 +244,8 @@ const I18N = {
     "placeholder.ends.incl": "{casilla} in {campo} ends with...",
     "placeholder.ends.excl": "{casilla} in {campo} does not end with...",
     "sources.title": "Sources",
-    "sources.fill": "Select all",
+    "sources.fill": "All",
+    "sources.clear": "None",
     "regex.title": "Mini-language",
     "rx.wildcards": "Wildcards",
     "rx.q1": "any 1 letter",
@@ -457,7 +459,8 @@ const FUENTE_OPTIONS = [
   "1992 Karttunen",
   "V94 Diccionario Global SNP"
 ];
-const selectedFuentes = new Set(FUENTE_OPTIONS);
+sessions[0].fuentes = new Set(FUENTE_OPTIONS);
+let selectedFuentes = sessions[0].fuentes;
 let lastRenderRows = [];
 let lastRenderTotal = 0;
 let lastFilteredRows = [];
@@ -511,7 +514,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.addEventListener("keydown", e => {
     if (e.key === "Enter") {
-      const otherPanel = document.activeElement?.closest("#sourcesPanel, #regexPanel, #pairsPanel");
+      const otherPanel = document.activeElement?.closest("#regexPanel, #pairsPanel");
       if (!otherPanel) {
         e.preventDefault();
         commitFilterCard();
@@ -900,6 +903,14 @@ function saveCurrentSession() {
   );
   session.order = groupOrder.slice();
   session.groupCounter = groupCounter;
+  session.displayOffset = displayOffset;
+  session.sortKeys = sortKeys.slice();
+  session.sortScope = sortScope;
+  session.viewMode = tableViewMode;
+  session.expandedComments = Array.from(expandedComments);
+  session.expandedLemmas = Array.from(expandedLemmas);
+  const scroller = getTableScrollElement();
+  session.scrollTop = scroller ? scroller.scrollTop : 0;
 }
 
 function loadSession(sessionId) {
@@ -914,43 +925,70 @@ function loadSession(sessionId) {
   const card = document.querySelector(".filter-card[data-owner='f1']");
   if (card) card.querySelectorAll(".filter-input").forEach(i => (i.value = ""));
 
-  // Remove committed and f1 filters (keep fuente)
-  activeFilters = activeFilters.filter(f => f.owner === FUENTE_OWNER || f.type === "fuenteSet");
+  // Drop all filters — fuente state now lives on the session itself
+  activeFilters = [];
 
   currentSessionId = sessionId;
   const session = sessions.find(s => s.id === sessionId);
   if (session) {
-    activeFilters = [
-      ...activeFilters,
-      ...session.filters
-    ];
+    activeFilters = session.filters.slice();
     groupOrder = session.order.slice();
     groupCounter = session.groupCounter;
+    selectedFuentes = session.fuentes;
+    displayOffset = session.displayOffset ?? 0;
+    sortKeys = (session.sortKeys ?? []).slice();
+    sortScope = session.sortScope ?? "all";
+    tableViewMode = session.viewMode ?? "rows";
+    expandedComments.clear();
+    (session.expandedComments ?? []).forEach(id => expandedComments.add(id));
+    expandedLemmas.clear();
+    (session.expandedLemmas ?? []).forEach(id => expandedLemmas.add(id));
   }
 
   renderSessionBar();
-  applyFilters();
+  renderFuenteList();
+  updateSortIndicators();
+  updateSortScopeIndicators();
+  updateViewToggleButtons();
+  applyFuenteFilters({ keepOffset: true });
+
+  const scroller = getTableScrollElement();
+  if (scroller && session) scroller.scrollTop = session.scrollTop ?? 0;
 }
 
 function addSession() {
   saveCurrentSession();
   sessionCounter++;
   const id = `s${sessionCounter}`;
-  sessions.push({ id, filters: [], order: [], groupCounter: 0 });
+  const newSession = { id, filters: [], order: [], groupCounter: 0, fuentes: new Set(FUENTE_OPTIONS) };
+  sessions.push(newSession);
 
   // Cancel edit, clear card
   if (editingGroupId) cancelEdit();
   const card = document.querySelector(".filter-card[data-owner='f1']");
   if (card) card.querySelectorAll(".filter-input").forEach(i => (i.value = ""));
 
-  // Remove committed filters, keep fuente
-  activeFilters = activeFilters.filter(f => f.owner === FUENTE_OWNER || f.type === "fuenteSet");
+  activeFilters = [];
   groupOrder = [];
   groupCounter = 0;
   currentSessionId = id;
+  selectedFuentes = newSession.fuentes;
+  displayOffset = 0;
+  sortKeys = [];
+  sortScope = "all";
+  tableViewMode = "rows";
+  expandedComments.clear();
+  expandedLemmas.clear();
 
   renderSessionBar();
-  applyFilters();
+  renderFuenteList();
+  updateSortIndicators();
+  updateSortScopeIndicators();
+  updateViewToggleButtons();
+  applyFuenteFilters();
+
+  const scroller = getTableScrollElement();
+  if (scroller) scroller.scrollTop = 0;
 }
 
 function closeSession(sessionId) {
@@ -969,12 +1007,27 @@ function closeSession(sessionId) {
     const card = document.querySelector(".filter-card[data-owner='f1']");
     if (card) card.querySelectorAll(".filter-input").forEach(i => (i.value = ""));
 
-    activeFilters = activeFilters.filter(f => f.owner === FUENTE_OWNER || f.type === "fuenteSet");
+    activeFilters = [];
     currentSessionId = nextSession.id;
-    activeFilters = [...activeFilters, ...nextSession.filters];
+    activeFilters = nextSession.filters.slice();
     groupOrder = nextSession.order.slice();
     groupCounter = nextSession.groupCounter;
-    applyFilters();
+    selectedFuentes = nextSession.fuentes;
+    displayOffset = nextSession.displayOffset ?? 0;
+    sortKeys = (nextSession.sortKeys ?? []).slice();
+    sortScope = nextSession.sortScope ?? "all";
+    tableViewMode = nextSession.viewMode ?? "rows";
+    expandedComments.clear();
+    (nextSession.expandedComments ?? []).forEach(eid => expandedComments.add(eid));
+    expandedLemmas.clear();
+    (nextSession.expandedLemmas ?? []).forEach(eid => expandedLemmas.add(eid));
+    renderFuenteList();
+    updateSortIndicators();
+    updateSortScopeIndicators();
+    updateViewToggleButtons();
+    applyFuenteFilters({ keepOffset: true });
+    const scroller = getTableScrollElement();
+    if (scroller) scroller.scrollTop = nextSession.scrollTop ?? 0;
   }
 
   renderSessionBar();
@@ -1477,6 +1530,8 @@ function applyFilters(initial = false, options = {}) {
 function renderTable(rows, totalCount) {
   const tbody = document.querySelector("#dataTable tbody");
   if (!tbody) return;
+  const scroller = getTableScrollElement();
+  const savedScroll = scroller ? scroller.scrollTop : 0;
   tbody.innerHTML = "";
   expandableComments.clear();
 
@@ -1488,6 +1543,7 @@ function renderTable(rows, totalCount) {
     updatePaginationControls(totalCount);
     updateComentarioToggleButton([]);
     updateLemmaToggleButton();
+    if (scroller) scroller.scrollTop = savedScroll;
     return;
   }
 
@@ -1514,6 +1570,8 @@ function renderTable(rows, totalCount) {
   updatePaginationControls(totalCount);
   updateComentarioToggleButton(rows);
   updateLemmaToggleButton();
+
+  if (scroller) scroller.scrollTop = savedScroll;
 }
 
 function buildDataRow(row) {
@@ -2809,24 +2867,51 @@ function extractContainsBothParts(text) {
 }
 
 // =============== Fuentes =================
+function splitFuenteLabel(name) {
+  const m = name.match(/^(\S+)\s+(.+)$/);
+  if (m && /\d/.test(m[1])) return { year: m[1], title: m[2] };
+  return { year: "", title: name };
+}
+
+function updateFuenteCount() {
+  const el = document.getElementById("fuenteCount");
+  if (!el) return;
+  const n = selectedFuentes.size;
+  const total = FUENTE_OPTIONS.length;
+  el.textContent = `${n}/${total}`;
+  el.classList.toggle("fuente-count--full", n === total);
+  el.classList.toggle("fuente-count--empty", n === 0);
+}
+
 function renderFuenteList() {
   const container = document.getElementById("fuenteList");
   if (!container) return;
   container.innerHTML = "";
   FUENTE_OPTIONS.forEach(name => {
-    const label = document.createElement("label");
-    label.className = "fuente-option";
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.value = name;
-    checkbox.checked = selectedFuentes.has(name);
-    checkbox.addEventListener("change", () => toggleFuente(name, checkbox.checked));
-    const text = document.createElement("span");
-    text.textContent = name;
-    label.appendChild(checkbox);
-    label.appendChild(text);
-    container.appendChild(label);
+    const { year, title } = splitFuenteLabel(name);
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "fuente-chip";
+    chip.dataset.fuente = name;
+    chip.setAttribute("aria-pressed", String(selectedFuentes.has(name)));
+    if (year) {
+      const yearEl = document.createElement("span");
+      yearEl.className = "fuente-chip-year";
+      yearEl.textContent = year;
+      chip.appendChild(yearEl);
+    }
+    const titleEl = document.createElement("span");
+    titleEl.className = "fuente-chip-title";
+    titleEl.textContent = title;
+    chip.appendChild(titleEl);
+    chip.addEventListener("click", () => {
+      const next = chip.getAttribute("aria-pressed") !== "true";
+      chip.setAttribute("aria-pressed", String(next));
+      toggleFuente(name, next);
+    });
+    container.appendChild(chip);
   });
+  updateFuenteCount();
 }
 
 function toggleFuente(name, isChecked) {
@@ -2835,6 +2920,7 @@ function toggleFuente(name, isChecked) {
   } else {
     selectedFuentes.delete(name);
   }
+  updateFuenteCount();
   applyFuenteFilters();
 }
 
@@ -2857,7 +2943,7 @@ function setupFuenteActions() {
   }
 }
 
-function applyFuenteFilters() {
+function applyFuenteFilters(options = {}) {
   removeOwnerFilters(FUENTE_OWNER);
   resetComentarioState();
   const totalOptions = FUENTE_OPTIONS.length;
@@ -2872,14 +2958,14 @@ function applyFuenteFilters() {
     return;
   }
   if (selectedCount === totalOptions) {
-    applyFilters();
+    applyFilters(false, options);
     return;
   }
   appendFilter("Fuente", "exact", new Set(selectedFuentes), "AND", false, "whole", {
     owner: FUENTE_OWNER,
     type: "fuenteSet"
   });
-  applyFilters();
+  applyFilters(false, options);
 }
 
 function getFieldI18nKey(fieldKey) {

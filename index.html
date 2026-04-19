@@ -14,7 +14,6 @@
       <nav class="panel-tabs">
         <button type="button" class="tab-btn active" data-tab="filtersPanel" data-i18n="tab.filters">Filtros</button>
         <button type="button" class="tab-btn" data-tab="reversePanel" data-i18n="tab.reverse">Reverso</button>
-        <button type="button" class="tab-btn" data-tab="sourcesPanel" data-i18n="tab.sources">Fuentes</button>
         <button type="button" class="tab-btn" data-tab="regexPanel" data-i18n="tab.regex">Regex</button>
         <button type="button" class="tab-btn" data-tab="pairsPanel" data-i18n="tab.pairs">Pares a/i</button>
       </nav>
@@ -93,6 +92,20 @@
             <button type="button" class="btn ghost clear-btn" data-i18n="action.clear">Vaciar</button>
           </div>
         </div>
+        <div class="fuente-section">
+          <div class="fuente-head">
+            <div class="fuente-title-wrap">
+              <h4 class="fuente-title"><span data-i18n="sources.title">Fuentes</span></h4>
+              <span class="fuente-count" id="fuenteCount" aria-live="polite">0</span>
+            </div>
+            <div class="fuente-actions">
+              <button type="button" class="fuente-act" id="fuenteFill" data-i18n="sources.fill">Todas</button>
+              <span class="fuente-act-sep" aria-hidden="true">·</span>
+              <button type="button" class="fuente-act" id="fuenteClear" data-i18n="sources.clear">Ninguna</button>
+            </div>
+          </div>
+          <div id="fuenteList" class="fuente-list" role="group" aria-label="Fuentes"></div>
+        </div>
       </div>
     </section>
 
@@ -113,20 +126,6 @@
             <button type="button" class="btn ghost" id="reverseClear" data-i18n="action.clear">Vaciar</button>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- ── Panel: Fuentes ── -->
-    <section class="tab-panel" id="sourcesPanel">
-      <div class="sources-card">
-        <div class="sources-head">
-          <h3 data-i18n="sources.title">Fuentes</h3>
-          <div class="sources-actions">
-            <button type="button" class="btn ghost" id="fuenteClear" data-i18n="action.clear">Vaciar</button>
-            <button type="button" class="btn primary" id="fuenteFill" data-i18n="sources.fill">Llenar</button>
-          </div>
-        </div>
-        <div id="fuenteList" class="fuente-list"></div>
       </div>
     </section>
 
