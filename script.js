@@ -950,7 +950,7 @@ function loadSession(sessionId) {
   updateSortIndicators();
   updateSortScopeIndicators();
   updateViewToggleButtons();
-  applyFuenteFilters({ keepOffset: true });
+  applyFuenteFilters({ keepOffset: true, preserveExpandState: true });
 
   const scroller = getTableScrollElement();
   if (scroller && session) scroller.scrollTop = session.scrollTop ?? 0;
@@ -1025,7 +1025,7 @@ function closeSession(sessionId) {
     updateSortIndicators();
     updateSortScopeIndicators();
     updateViewToggleButtons();
-    applyFuenteFilters({ keepOffset: true });
+    applyFuenteFilters({ keepOffset: true, preserveExpandState: true });
     const scroller = getTableScrollElement();
     if (scroller) scroller.scrollTop = nextSession.scrollTop ?? 0;
   }
@@ -2945,7 +2945,12 @@ function setupFuenteActions() {
 
 function applyFuenteFilters(options = {}) {
   removeOwnerFilters(FUENTE_OWNER);
-  resetComentarioState();
+  if (options.preserveExpandState) {
+    expandableComments.clear();
+    commentAnchors.clear();
+  } else {
+    resetComentarioState();
+  }
   const totalOptions = FUENTE_OPTIONS.length;
   const selectedCount = selectedFuentes.size;
   // Si no hay selección, se filtra todo afuera (sin coincidencias).

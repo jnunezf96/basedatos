@@ -287,16 +287,25 @@ div.table-toolbar {
   border-radius: 0 0 12px 12px;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
+  scrollbar-color: #c7cffa transparent;
 }
 .table-scroll::-webkit-scrollbar {
   width: 10px;
   height: 10px;
   background: transparent;
 }
-.table-scroll::-webkit-scrollbar-thumb,
 .table-scroll::-webkit-scrollbar-track {
   background: transparent;
+}
+.table-scroll::-webkit-scrollbar-thumb {
+  background: #c7cffa;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  border-radius: 10px;
+}
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a8b3f5;
+  background-clip: padding-box;
 }
 
 #dataTable thead th {
@@ -771,7 +780,7 @@ td:nth-child(5) {
 
 .comentario-cell {
   position: relative;
-  padding-right: 38px;
+  padding-right: 44px;
 }
 
 .traduccion-text,
@@ -794,20 +803,22 @@ td:nth-child(5) {
 .comentario-toggle {
   position: absolute;
   top: 0;
-  right: 4px;
+  right: 9px;
   height: 100%;
-  min-height: 24px;
-  width: 26px;
+  min-width: 28px;
+  padding: 0 10px;
   border: 1px solid #c7cffa;
   border-radius: 999px;
   background: transparent;
   color: #4c6ef5;
+  font-size: 12px;
   font-weight: 600;
-  display: flex;
+  line-height: 1;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.14s ease, border-color 0.14s ease;
+  transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
 }
 
 .comentario-toggle:hover {
