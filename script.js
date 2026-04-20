@@ -177,6 +177,7 @@ const I18N = {
     "field.grafia": "Edición",
     "field.traduccion": "Traducción",
     "field.comentario": "Comentario",
+    "field.fuente": "Fuente",
     "nav.left": "Mover a la izquierda",
     "nav.right": "Mover a la derecha",
     "action.add": "Añadir",
@@ -372,6 +373,7 @@ const I18N = {
     "field.grafia": "Edition",
     "field.traduccion": "Translation",
     "field.comentario": "Comment",
+    "field.fuente": "Source",
     "nav.left": "Move left",
     "nav.right": "Move right",
     "action.add": "Add filter",
@@ -1119,6 +1121,11 @@ function setupTabs() {
   });
 }
 
+function syncFuenteMode(card) {
+  const active = card.querySelector(".field-btn.active");
+  card.classList.toggle("fuente-mode", active?.dataset.field === "Fuente");
+}
+
 function updateFilterPlaceholders(card) {
   const fieldBtn = card.querySelector(".field-btn.active");
   const campo = (fieldBtn?.dataset.placeholderLabel || fieldBtn?.textContent.trim() || "").toLowerCase();
@@ -1146,9 +1153,11 @@ function setupFilterCard(owner) {
     btn.addEventListener("click", () => {
       fieldButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
+      syncFuenteMode(card);
       updateFilterPlaceholders(card);
     });
   });
+  syncFuenteMode(card);
   updateFilterPlaceholders(card);
 
   const scopeButtons = card.querySelectorAll(".scope-btn");
@@ -1210,6 +1219,7 @@ function commitFilterCard() {
   const field = card.querySelector(".field-btn.active")?.dataset.field;
   const scope = card.querySelector(".scope-btn.active")?.dataset.scope || "whole";
   if (!field) return;
+  if (field === "Fuente") return;
 
   const inputs = [];
   card.querySelectorAll(".filter-input").forEach(input => {
@@ -1313,6 +1323,7 @@ function loadGroupForEditing(groupId) {
   card.querySelectorAll(".field-btn").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.field === field);
   });
+  syncFuenteMode(card);
 
   // Set scope pill
   card.querySelectorAll(".scope-btn").forEach(btn => {

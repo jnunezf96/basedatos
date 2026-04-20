@@ -1180,11 +1180,19 @@ td:nth-child(5) {
 }
 
 .fuente-section {
-  padding-top: 12px;
-  border-top: 1px solid #eef0fc;
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 10px;
+}
+
+.filter-card.fuente-mode .fuente-section {
+  display: flex;
+}
+
+.filter-card.fuente-mode .filter-row.scopes,
+.filter-card.fuente-mode .filter-grid,
+.filter-card.fuente-mode .filter-actions {
+  display: none;
 }
 
 .fuente-head {
