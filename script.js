@@ -465,6 +465,7 @@ let lastRenderRows = [];
 let lastRenderTotal = 0;
 let lastFilteredRows = [];
 let displayOffset = 0;
+const pageScrollByOffset = new Map();
 let sortKeys = []; // [{field, dir}]
 let sortScope = "all"; // "all" | "page"
 const hiddenColumns = new Set();
@@ -943,6 +944,7 @@ function loadSession(sessionId) {
     (session.expandedComments ?? []).forEach(id => expandedComments.add(id));
     expandedLemmas.clear();
     (session.expandedLemmas ?? []).forEach(id => expandedLemmas.add(id));
+    pageScrollByOffset.clear();
   }
 
   renderSessionBar();
@@ -979,6 +981,7 @@ function addSession() {
   tableViewMode = "rows";
   expandedComments.clear();
   expandedLemmas.clear();
+  pageScrollByOffset.clear();
 
   renderSessionBar();
   renderFuenteList();
@@ -1021,6 +1024,7 @@ function closeSession(sessionId) {
     (nextSession.expandedComments ?? []).forEach(eid => expandedComments.add(eid));
     expandedLemmas.clear();
     (nextSession.expandedLemmas ?? []).forEach(eid => expandedLemmas.add(eid));
+    pageScrollByOffset.clear();
     renderFuenteList();
     updateSortIndicators();
     updateSortScopeIndicators();
@@ -1463,6 +1467,7 @@ function applyFilters(initial = false, options = {}) {
   if (!dataRows.length) return;
   if (!options.keepOffset) {
     displayOffset = 0;
+    pageScrollByOffset.clear();
   }
   let matches = [];
   if (!activeFilters.length) {
@@ -1737,11 +1742,17 @@ function getTableRestoreOptions() {
 }
 
 function getTableScrollTop() {
-  return window.scrollY;
+  const scroller = getTableScrollElement();
+  return scroller ? scroller.scrollTop : window.scrollY;
 }
 
 function setTableScroll(y, behavior = "auto") {
-  window.scrollTo({ top: y, behavior });
+  const scroller = getTableScrollElement();
+  if (scroller) {
+    scroller.scrollTo({ top: y, behavior });
+  } else {
+    window.scrollTo({ top: y, behavior });
+  }
 }
 
 function getColumnWidth(fieldKey) {
@@ -2044,6 +2055,19 @@ function resetComentarioState() {
   commentAnchors.clear();
 }
 
+function paginateTo(mutateOffset) {
+  const prev = displayOffset;
+  pageScrollByOffset.set(prev, getTableScrollTop());
+  const ok = mutateOffset();
+  if (ok === false || displayOffset === prev) return;
+  const restoreY = pageScrollByOffset.get(displayOffset) ?? 0;
+  applyFilters(false, {
+    keepOffset: true,
+    keepCurrent: true,
+    restoreScroll: restoreY,
+  });
+}
+
 function setupPaginationControls() {
   const prevs = [document.getElementById("pagePrev")];
   const nexts = [document.getElementById("pageNext")];
@@ -2054,52 +2078,54 @@ function setupPaginationControls() {
     if (!btn) return;
     btn.addEventListener("click", () => {
       if (displayOffset <= 0) return;
-      if (tableViewMode === "lemmas") {
-        const pageIdx = findLemmaPageIndex(displayOffset);
-        if (pageIdx <= 0) return;
-        displayOffset = lastLemmaPageOffsets[pageIdx - 1] || 0;
-      } else {
-        displayOffset = Math.max(0, displayOffset - maxDisplayRows);
-      }
-      applyFilters(false, getTableRestoreOptions(btn));
+      paginateTo(() => {
+        if (tableViewMode === "lemmas") {
+          const pageIdx = findLemmaPageIndex(displayOffset);
+          if (pageIdx <= 0) return false;
+          displayOffset = lastLemmaPageOffsets[pageIdx - 1] || 0;
+        } else {
+          displayOffset = Math.max(0, displayOffset - maxDisplayRows);
+        }
+      });
     });
   };
   const hookNext = btn => {
     if (!btn) return;
     btn.addEventListener("click", () => {
-      if (tableViewMode === "lemmas") {
-        const pageIdx = findLemmaPageIndex(displayOffset);
-        const next = lastLemmaPageOffsets[pageIdx + 1];
-        if (next == null) return;
-        displayOffset = next;
-      } else {
-        displayOffset += maxDisplayRows;
-      }
-      applyFilters(false, getTableRestoreOptions(btn));
+      paginateTo(() => {
+        if (tableViewMode === "lemmas") {
+          const pageIdx = findLemmaPageIndex(displayOffset);
+          const next = lastLemmaPageOffsets[pageIdx + 1];
+          if (next == null) return false;
+          displayOffset = next;
+        } else {
+          displayOffset += maxDisplayRows;
+        }
+      });
     });
   };
   const hookFirst = btn => {
     if (!btn) return;
     btn.addEventListener("click", () => {
       if (displayOffset === 0) return;
-      displayOffset = 0;
-      applyFilters(false, getTableRestoreOptions(btn));
+      paginateTo(() => { displayOffset = 0; });
     });
   };
   const hookLast = btn => {
     if (!btn) return;
     btn.addEventListener("click", () => {
       if (!lastRenderTotal) return;
-      let maxOffset;
-      if (tableViewMode === "lemmas") {
-        maxOffset = lastLemmaPageOffsets[lastLemmaPageOffsets.length - 1] || 0;
-      } else {
-        const total = lastRenderTotal;
-        maxOffset = Math.max(0, total - maxDisplayRows);
-      }
-      if (displayOffset === maxOffset) return;
-      displayOffset = maxOffset;
-      applyFilters(false, getTableRestoreOptions(btn));
+      paginateTo(() => {
+        let maxOffset;
+        if (tableViewMode === "lemmas") {
+          maxOffset = lastLemmaPageOffsets[lastLemmaPageOffsets.length - 1] || 0;
+        } else {
+          const total = lastRenderTotal;
+          maxOffset = Math.max(0, total - maxDisplayRows);
+        }
+        if (displayOffset === maxOffset) return false;
+        displayOffset = maxOffset;
+      });
     });
   };
 
@@ -2127,8 +2153,7 @@ function setupPaginationControls() {
         newOffset = (page - 1) * maxDisplayRows;
       }
       if (newOffset === displayOffset) return;
-      displayOffset = newOffset;
-      applyFilters(false, getTableRestoreOptions(input));
+      paginateTo(() => { displayOffset = newOffset; });
     };
     input.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); commit(); input.blur(); } });
     input.addEventListener("blur", commit);
