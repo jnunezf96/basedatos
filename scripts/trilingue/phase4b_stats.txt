@@ -1,0 +1,6 @@
+total proposals: 736
+  with 'note' (model flagged uncertainty): 62
+errors (request failed or unparseable JSON): 90
+
+→ phase4b_proposals.jsonl
+→ phase4b_errors.jsonl

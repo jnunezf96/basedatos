@@ -1,0 +1,35 @@
+single-token pairs: 8690
+hits: 6195 (71.3%)
+misses: 2495 (28.7%)
+
+top 30 miss clusters (pred → gold slice):
+    264  y → i
+    235  i → y
+    161  u → o
+    122  tla → ∅
+    109  z → c
+     92  te → ∅
+     82  ∅ → i
+     76  ∅ → hu
+     67  h → ∅
+     65  ∅ → h
+     46  lat → ∅
+     37  ∅ → n
+     37  uh → hu
+     31  no → ∅
+     25  ∅ → y
+     24  n → ∅
+     22  hu → uh
+     21  et → ∅
+     21  hu → o
+     19  yo → ihu
+     19  a → yan
+     16  ne → ∅
+     14  s → z
+     13  c → ∅
+     11  o → hu
+     10  a → o
+     10  iu → yo
+      9  tlai → y
+      9  l → ∅
+      8  etlat → ∅

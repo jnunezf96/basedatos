@@ -1,0 +1,7 @@
+partials processed: 826
+  high  (all non-stub tokens seen in gold): 283 (34.3%)
+  medium (rules clean, some unseen tokens):  543 (65.7%)
+  low    (residual ç/^/v or accents — LLM):  0 (0.0%)
+
+LLM queue written: phase4a_llm_queue.jsonl (0 rows)
+full proposals:    phase4a_proposals.jsonl

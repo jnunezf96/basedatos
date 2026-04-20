@@ -1,0 +1,4 @@
+single_token      n= 8690  exact=6195 (71.3%)  soft(i=y, u=o)=6916 (79.6%)
+aligned_multi     n=  641  exact=369 (57.6%)  soft(i=y, u=o)=439 (68.5%)
+
+TOTAL (single + aligned)  n=9331  exact=6564 (70.3%)  soft=7355 (78.8%)

@@ -1,0 +1,13 @@
+Fuente: 153? Trilingüe
+total rows: 12166
+skipped (empty EO or TE): 85
+partials (+): 826 → partials.jsonl
+gold pairs: 11255 → pairs.jsonl
+  by category:
+    single_token: 8690
+    mismatched: 1924
+    aligned_multi: 641
+
+single-token pairs: 8690
+  identical after NFD-strip + lowercase: 3925 (45.2%)
+  pairs where EO != TE: 7548 (86.9%)

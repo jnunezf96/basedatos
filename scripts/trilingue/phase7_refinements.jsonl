@@ -1,0 +1,643 @@
+{"record_id": "153-trilingue:eid:1341732", "old_te": "8", "new_te": "8", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341777", "old_te": "castillan acalli", "new_te": "castillan acalli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341778", "old_te": "otlahuacaacalli", "new_te": "otlahuacaacalli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341779", "old_te": "castillan acalli", "new_te": "castillan acalli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341790", "old_te": "castillan acalpiyaztli", "new_te": "castillan acalpiyaztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341791", "old_te": "castillan acalpiyaztli", "new_te": "castillan acalpiyaztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341802", "old_te": "cuauhacaltontli", "new_te": "cuauhacaltontli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341815", "old_te": "tepozacatl", "new_te": "tepozacatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341886", "old_te": "tlaiztlacaachtopaittani", "new_te": "tlaiztlacaachtopaittani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342007", "old_te": "teahui itechpa yei teci", "new_te": "teahui itechpa yei teci", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342064", "old_te": "castillan ayecotla", "new_te": "castillan ayecotla", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342065", "old_te": "castillan ayecotli", "new_te": "castillan ayecotli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342067", "old_te": "castillan tochomitl aihuiyo", "new_te": "castillan tochomitl aihuiyo", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342085", "old_te": "tlanexotlaliztli", "new_te": "tlanexotlaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342103", "old_te": "tlacenelaltepetl", "new_te": "tlacenelaltepetl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342117", "old_te": "ameyaltontli", "new_te": "ameyaltontli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342132", "old_te": "macehualcuicaamatl", "new_te": "macehualcuicaamatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342153", "old_te": "mazaamiliztli", "new_te": "mazaamiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342224", "old_te": "tepozamomoxtli", "new_te": "tepozamomoxtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342226", "old_te": "tepozamomozo", "new_te": "tepozamomozo", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342265", "old_te": "ichcatl amo tlaatecuitl", "new_te": "ichcatl amo tlaatecuitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342267", "old_te": "cahuallo amo tlaatecuitl", "new_te": "cahuallo amo tlaatecuitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342306", "old_te": "cuauhtlaamoxotepetl", "new_te": "cuauhtlaamoxotepetl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342320", "old_te": "otzonquiz in amoxtli", "new_te": "otzonquiz in amoxtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342329", "old_te": "cenca moana", "new_te": "cenca moana", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342330", "old_te": "tehuan moana", "new_te": "tehuan moana", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342374", "old_te": "itah anozo inan quimictiani", "new_te": "itah anozo inan quimictiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342389", "old_te": "tepotzapazoicoltontli", "new_te": "tepozapazoicoltontli", "changed": true, "note": "EO 'tepoz' → tepoz- (not tepotz-) in compound; corrected to tepozapazoicoltontli"}
+{"record_id": "153-trilingue:eid:1342425", "old_te": "neaquiloni", "new_te": "neaquiloni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342429", "old_te": "ontlaaquini", "new_te": "ontlaaquini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342461", "old_te": "tepozatililiztli", "new_te": "tepozatililiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342468", "old_te": "pitzotlatlaatecuitl", "new_te": "pitzotl atlaatecuitl", "changed": true, "note": "pitzotl and atlaatecuitl are two separate words; they should not be merged into one compound."}
+{"record_id": "153-trilingue:eid:1342475", "old_te": "atlatuini atlacqui", "new_te": "atlatuini atlacqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342525", "old_te": "teatliticini", "new_te": "teatliticini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342542", "old_te": "nahuilhuitl atonahuiztli", "new_te": "nahuilhuitl atonahuiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342544", "old_te": "huiptlayoatonahuiztli", "new_te": "huiptlayoatonahuiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342546", "old_te": "cemilhuitonahuiztli", "new_te": "cemilhuiatonahuiztli", "changed": true, "note": "TE_ACTUAL drops the initial a- of atonahuiztli; the compound must preserve it: cemilhui + atonahuiztli = cemilhuiatonahuiztli."}
+{"record_id": "153-trilingue:eid:1342623", "old_te": "castillan ayacochtli", "new_te": "castillan ayacochtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342629", "old_te": "vino ayamotlachichihualli", "new_te": "vino ayamotlachichihualli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342633", "old_te": "castillan ayapopoli", "new_te": "castillan ayapopoli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342635", "old_te": "castillan ayapopolli", "new_te": "castillan ayapopolli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342654", "old_te": "castillan ayotetl", "new_te": "castillan ayotetl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342655", "old_te": "caxtillan ayotextli", "new_te": "caxtillan ayotextli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342656", "old_te": "vino ayotia", "new_te": "vino ayotia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342662", "old_te": "castillan ayotli", "new_te": "castillan ayotli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342714", "old_te": "occepa cacatztza", "new_te": "occepa cacatztza", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342769", "old_te": "tlaixmancahuiliztli", "new_te": "tlaixmancahuiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342801", "old_te": "tetlayeyecalhuiliztli", "new_te": "tetlayeyecacalhuiliztli", "changed": true, "note": "ieie = yeyeca; reuniting tetlayeyeca + calhuiliztli gives tetlayeyecacalhuiliztli (TE_ACTUAL omitted the -ca- segment)."}
+{"record_id": "153-trilingue:eid:1342804", "old_te": "nezcaliliztli", "new_te": "nezcaliliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342832", "old_te": "tlacopepetzcalli", "new_te": "tlacopepetzcalli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342834", "old_te": "tecpancalli", "new_te": "tecpancalli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342846", "old_te": "tlanechcalolli", "new_te": "tlanechcalolli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342863", "old_te": "xamixcaltontli", "new_te": "xamixcaltontli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342913", "old_te": "pixcani", "new_te": "pixcani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342923", "old_te": "cuauhtlacapolli", "new_te": "cuauhtlacapolli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342941", "old_te": "ce castillan mazatl", "new_te": "ce castillan mazatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342987", "old_te": "centlamantli castillan tlaolli", "new_te": "centlamantli castillan tlaolli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343011", "old_te": "moquetz catemahuahuiztilia", "new_te": "moquetz catemahuahuiztilia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343014", "old_te": "neyaoquizcatlaliliztli", "new_te": "neyaoquizcatlaliliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343017", "old_te": "inin omentin catlehuatl", "new_te": "inin omentin catlehuatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343077", "old_te": "tehuan netoccayotiliztli", "new_te": "tehuan netochcayotiliztli", "changed": true, "note": "«netoch» conserva la h final: netochcayotiliztli, no netoccayotiliztli"}
+{"record_id": "153-trilingue:eid:1343079", "old_te": "chicoxiuhcayotl", "new_te": "chicoxiuhcayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343081", "old_te": "tlanitzquimiliuhcayotl", "new_te": "tlanitzquimiliuhcayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343083", "old_te": "yecual cayotl", "new_te": "yecualcayotl", "changed": true, "note": "iequal+cáiotl form a single compound; joined as yecualcayotl following standard compounding pattern."}
+{"record_id": "153-trilingue:eid:1343084", "old_te": "xopancayotl", "new_te": "xopancayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343442", "old_te": "in mach chau in cocohua", "new_te": "in mach chau in cocohua", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343480", "old_te": "citlamani chichi", "new_te": "citlamani chichi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343634", "old_te": "tlatzomocchihualiztli", "new_te": "tlatzomocchihualiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343635", "old_te": "tlahuehcachihualiztli", "new_te": "tlahuehcachihualiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343636", "old_te": "tlateochihualli", "new_te": "tlateochihualli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343655", "old_te": "tlatepozchimaltzacuillili", "new_te": "tlatepozchimaltzacuillili", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343658", "old_te": "cuauhchinamitl", "new_te": "cuauhchinamitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343718", "old_te": "temecayochiuhqui", "new_te": "temecayochiuhqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343737", "old_te": "tenepatla oncholoa", "new_te": "tenepatla oncholoa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343754", "old_te": "tonatiuhcualiztli", "new_te": "tonatiuhchualiztli", "changed": true, "note": "STUB impone 'chualiztli', no 'cualiztli'; TE_ACTUAL usaba la forma incorrecta 'cualiztli'."}
+{"record_id": "153-trilingue:eid:1343824", "old_te": "oxcahua cihuatl", "new_te": "oxcahua cihuatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343825", "old_te": "oquixtli cihuatl temecauh", "new_te": "oquichtli cihuatl temecauh", "changed": true, "note": "oquixtli normalizado a oquichtli (variante escribal x→ch en esta raíz)."}
+{"record_id": "153-trilingue:eid:1343900", "old_te": "yolmocihuiliztli", "new_te": "yolmocihuiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343904", "old_te": "netlacacihuitiliztli", "new_te": "netlacacihuitiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343939", "old_te": "xillan coacihuiztli", "new_te": "xilan coacihuiztli", "changed": true, "note": "EO has single 'l' in 'xilan'; no basis for doubling to 'xillan'."}
+{"record_id": "153-trilingue:eid:1343954", "old_te": "tehuān nocochcayotia", "new_te": "tehuān mocochcayotia", "changed": true, "note": "nino- → mo- (reflexive citation form), matching pattern from parallel examples like ninotemachía→motemachia."}
+{"record_id": "153-trilingue:eid:1343976", "old_te": "zanentepal cochini", "new_te": "zanentepal cochini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343988", "old_te": "cuauhtlan cochtli", "new_te": "cuauhtlan cochtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343989", "old_te": "cuauhtla cochtli", "new_te": "cuauhtlacochtli", "changed": true, "note": "quauhtlâ cochtli forms a single compound noun 'cuauhtlacochtli' (projecting wooden beam)"}
+{"record_id": "153-trilingue:eid:1344005", "old_te": "mazacocoliztli", "new_te": "mazacocoliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344030", "old_te": "cuitlaxcolloyotl", "new_te": "cuitlaxcolloyotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344043", "old_te": "cuitlaxcoltomactli", "new_te": "cuitlaxcoltomactli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344044", "old_te": "tliltic comaqui ani in ipapan miqui", "new_te": "tliltic comaqui ani in ipapan miqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344045", "old_te": "Ostiario comatl", "new_te": "ostiatecomatl", "changed": true, "note": "EO 'ostiate' is a Nahuatl loanword form (not 'Ostiario'); the two nouns form a compound as in similar entries."}
+{"record_id": "153-trilingue:eid:1344047", "old_te": "tlatomachinalcomitl", "new_te": "tlatomachinalcomitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344050", "old_te": "vino itlacciuhca comitl", "new_te": "vino itlacciuhca comitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344051", "old_te": "vinocomitl", "new_te": "vinocomitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344066", "old_te": "mazaconetl", "new_te": "mazaconetl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344067", "old_te": "quilpapatlacconetl", "new_te": "quilpapatlacconetl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344068", "old_te": "ichtacaconetl", "new_te": "ichtacaconetl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344069", "old_te": "cuacuauhtentzoconetl", "new_te": "cuacuauhtentzoconetl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344072", "old_te": "totolconetl", "new_te": "totolconetl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344124", "old_te": "teacuicacozcatl", "new_te": "teacuicacozcatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344152", "old_te": "ichcapixcacuacuachicolli", "new_te": "ichcapixcacuacuachicolli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344154", "old_te": "ocuilincuacuahue", "new_te": "ocuilincuacuahue", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344170", "old_te": "icemaniyan in cuacuahueque", "new_te": "icemaniyan in cuacuahueque", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344190", "old_te": "mazacuacuauhtentzoneyotl", "new_te": "mazacuacuauhtentzoneyotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344219", "old_te": "mazaxococuahuitl", "new_te": "mazaxococuahuitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344227", "old_te": "tepozicuauhxomatli", "new_te": "tepozicuauhxomatli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344267", "old_te": "tlahuelcualanini", "new_te": "tlahuelcualanini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344298", "old_te": "tlaxacualoloni", "new_te": "tlaxacualoloni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344346", "old_te": "miquizcuauhcalli", "new_te": "miquizcuauhcalli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344494", "old_te": "millicuaxochtli", "new_te": "millicuaxochtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344505", "old_te": "tlachicuacuecahuillapechtli", "new_te": "tlachicuacuecahuillapechtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344518", "old_te": "yollocuecuepqui", "new_te": "yollocuecuepqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344529", "old_te": "occepa tlacuelpachoa", "new_te": "occepa cuelpachoa", "changed": true, "note": "El stub es 'cuelpachoa' (sin tla-); se elimina el prefijo tla- de tlacuelpachoa para respetar el stub inamovible."}
+{"record_id": "153-trilingue:eid:1344537", "old_te": "tetlatolicuepaliztli", "new_te": "tetlatolicuepaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344620", "old_te": "tetecuiniliztli", "new_te": "tetecuiniliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344621", "old_te": "tocuilcuiotl", "new_te": "tocuilcuiotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344660", "old_te": "pitzocuitlaxcoli tlanacatectli", "new_te": "pitzocuitlaxcoli tlanacatectli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344679", "old_te": "tlatepozcupinaliztli", "new_te": "tlatepozcupinaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344680", "old_te": "tlatemantepuzcupinaloni", "new_te": "tlatemantepuzcupinaloni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344689", "old_te": "Ángel in dioz", "new_te": "in angel in dioz", "changed": true, "note": "yangel expandido como 'in angel' (cf. yqualli → in cualli); acento eliminado; stub dioz respetado."}
+{"record_id": "153-trilingue:eid:1344705", "old_te": "tehuan eceni", "new_te": "tehuan eceni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344707", "old_te": "tehuan ecoc", "new_te": "tehuan ecoc", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344737", "old_te": "tenetechehuani", "new_te": "tenetechehuani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344767", "old_te": "tlatoltica teeleltia", "new_te": "tlatoltica teeleltia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344824", "old_te": "tehuaneuhcayotl", "new_te": "tehuaneuhcayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344940", "old_te": "ompa huallauh", "new_te": "ompa huallauh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344960", "old_te": "cahuallo ipan hualtemo", "new_te": "cahuallo ipan hualtemo", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345081", "old_te": "yehuecauh huehuetque", "new_te": "yehuecauh huehuetque", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345127", "old_te": "yequentel huelmati", "new_te": "yequentel mohuelmati", "changed": true, "note": "Reflexive prefix mo- restored (nino- → mo- after stripping ni-); cf. pattern in correction examples."}
+{"record_id": "153-trilingue:eid:1345148", "old_te": "tencahuetzca", "new_te": "tencahuetzca", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345251", "old_te": "otlachiquihui huicolli", "new_te": "otlachiquihui huicolli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345270", "old_te": "tlanenehuililiztli", "new_te": "tlanenehuililiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345271", "old_te": "itlacahuiliztli", "new_te": "itlacahuiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345272", "old_te": "tlatzetzelhuazhuiloni", "new_te": "tlatzetzelhuazhuiloni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345345", "old_te": "obispoical", "new_te": "obispoical", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345353", "old_te": "tequiticauhca", "new_te": "tequiticauhca", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345411", "old_te": "oquichichcanacatl", "new_te": "oquich ichcanacatl", "changed": true, "note": "oquich and ichcanacatl appear to function as a two-word phrase (modifier + noun) rather than a single compound; kept separate following the EO spacing."}
+{"record_id": "153-trilingue:eid:1345488", "old_te": "teopayoichtequiliztli", "new_te": "teopayoichtequiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345489", "old_te": "tecemaxcaichtequiliztli", "new_te": "tecemaxcaichtequiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345492", "old_te": "tecemaxcaichtequini", "new_te": "tecemaxcaichtequini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345493", "old_te": "mazaichtequini", "new_te": "mazaichtequini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345557", "old_te": "teicniuhtla", "new_te": "teicniuhtla", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345565", "old_te": "teicnocihuatilia", "new_te": "teicnocihuatilia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345652", "old_te": "tlamelahucaicuiloani", "new_te": "tlamelahucaicuiloani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345653", "old_te": "teixiptlayoicuiloani", "new_te": "teixiptlayoicuiloani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345658", "old_te": "tlotlicicxicpiloni", "new_te": "tlotliicxicpiloni", "changed": true, "note": "Removed spurious extra 'c'; correct compound is tlotli+icxicpiloni = tlotliicxicpiloni."}
+{"record_id": "153-trilingue:eid:1345667", "old_te": "tehuic ximotzoloa", "new_te": "tehuic ximotzoloa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345672", "old_te": "ixicxiotl", "new_te": "ixicxiotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345728", "old_te": "patlihuani", "new_te": "patlihuani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345742", "old_te": "ic ihuiyatica tecochitia", "new_te": "ic ihuiyatica tecochitia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345803", "old_te": "tlaeililiztli", "new_te": "tlaeililiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345832", "old_te": "tepetlacalli in oncamotoca imimiquiz", "new_te": "tepetlacalli in oncamotoca imimiquiz", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345897", "old_te": "tlocuahuitl inipancoctzi", "new_te": "tlocuahuitl inipancoctzi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345913", "old_te": "tlalli inopa hualquizatonatiuh", "new_te": "tlalli inopa hualquizatonatiuh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345952", "old_te": "itlacatiliz intotecuiyo Iesu Cristo", "new_te": "itlacatiliz intotecuiyo Iesu Cristo", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345958", "old_te": "patliioani", "new_te": "patliioani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345974", "old_te": "neihiiotiloni", "new_te": "neihiyotiloni", "changed": true, "note": "i intervocálica entre vocales en la unión neihi+iotiloni → y: neihiyotiloni"}
+{"record_id": "153-trilingue:eid:1346005", "old_te": "ixihuitl ipanticate", "new_te": "ixihuitl ipanticate", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346016", "old_te": "tonatiuh iquizayan", "new_te": "tonatiuh iquizayan", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346038", "old_te": "tecol iteachinachcauh", "new_te": "tecol iteachinachcauh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346107", "old_te": "nemilizitlacauhqui", "new_te": "nemilizitlacauhqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346108", "old_te": "vino itlacauhqui", "new_te": "vino itlacauhqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346111", "old_te": "dios ihuictlaitolli itlacoa", "new_te": "diosihuictlaitolli itlacoa", "changed": true, "note": "dios+ihuic+tlaitolli forman un compuesto nominal; se fusionan en una sola palabra."}
+{"record_id": "153-trilingue:eid:1346126", "old_te": "tepalmotlaitlaniani", "new_te": "tepalmotlaitlaniani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346127", "old_te": "tepal motlaitlanilia", "new_te": "tepal itlanilia", "changed": true, "note": "STUB es 'itlanilia'; se respeta el stub eliminando los prefijos mo-tla- que TE_ACTUAL añadió."}
+{"record_id": "153-trilingue:eid:1346129", "old_te": "tlacallaquillitlanini", "new_te": "tlacallaquillitlanini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346142", "old_te": "tlanahuaitoani", "new_te": "tlanahuaitoani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346148", "old_te": "tlahueitoani", "new_te": "tlahueitoani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346149", "old_te": "metztli itoca Januario", "new_te": "metztli itoca Januario", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346168", "old_te": "yaoquizcaittacatl", "new_te": "yaoquizcaittacatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346173", "old_te": "tlahuecapaittani", "new_te": "tlahuecapaittani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346180", "old_te": "miccaittualli", "new_te": "miccaittualli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346201", "old_te": "occepa itzmolini", "new_te": "occepa itzmolini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346214", "old_te": "tepozitztli", "new_te": "tepozitztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346269", "old_te": "hualixcuepa", "new_te": "hualixcuepa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346362", "old_te": "tlatocaixquetzaliztli", "new_te": "tlatocaixquetzaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346483", "old_te": "occepa izotla", "new_te": "occepa moizotla", "changed": true, "note": "nini- = ni(sujeto) + ni(reflexivo→mo-); se elimina el prefijo de sujeto y se restaura mo- ante la raíz."}
+{"record_id": "153-trilingue:eid:1346616", "old_te": "tecatzahua macia", "new_te": "tecatzahua macia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346630", "old_te": "tetepozmahuiani", "new_te": "tetepozmacu ahuiani", "changed": true, "note": "restored missing 'cu': tetepoz+macuahuiani"}
+{"record_id": "153-trilingue:eid:1346683", "old_te": "tepozmaiehoatl", "new_te": "tepozmaiehoatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346685", "old_te": "tepozmailpiloni", "new_te": "tepozmailpiloni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346688", "old_te": "tlaquenmaitl", "new_te": "tlaquenmaitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346692", "old_te": "teca momaiztlacoa", "new_te": "teca momaiztlacoa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346764", "old_te": "tetlacuepilicamaquiliztli", "new_te": "tetlacuepilicamaquiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346787", "old_te": "itech mati in tlatlacolli", "new_te": "itech momati in tlatlacolli", "changed": true, "note": "ni- dropped but reflexive mo- retained from ninomáti → momati; in separated from tlatlacolli"}
+{"record_id": "153-trilingue:eid:1346790", "old_te": "nicyolizmati", "new_te": "nicyolizmati", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346857", "old_te": "amatlatlactlonce", "new_te": "amatlatlactlonce", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346967", "old_te": "tlacamazatl", "new_te": "tlacamazatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346996", "old_te": "tlatepuzmecahuilliztli", "new_te": "tlatepuzmecahuilliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347005", "old_te": "tepanmecatl", "new_te": "tepanmecatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347013", "old_te": "tepozmecayotl", "new_te": "tepozmecayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347039", "old_te": "yahualtic metlapilli", "new_te": "yahualtic metlapilli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347169", "old_te": "tlatocmilli", "new_te": "tlatocmilli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347185", "old_te": "tepozminacachalli", "new_te": "tepozminacachalli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347188", "old_te": "tlatepozminaliztli", "new_te": "tlatepozminaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347189", "old_te": "tlatepozminoloni", "new_te": "tlatepozminaloni", "changed": true, "note": "STUB es minaloni (no minoloni); tlatepoz+minaloni compuesto sin espacio."}
+{"record_id": "153-trilingue:eid:1347312", "old_te": "ayeme momenti", "new_te": "ayeme momenti", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347331", "old_te": "oppa monamictiani", "new_te": "oppa monamictiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347401", "old_te": "vino motquitieni", "new_te": "vino motquitieni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347506", "old_te": "vino namacac", "new_te": "vino namacac", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347508", "old_te": "vino namacac oquichtli", "new_te": "vino namacac oquichtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347512", "old_te": "tlatquinamacani", "new_te": "tlatquinamacani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347513", "old_te": "vino namacani", "new_te": "vinonamacani", "changed": true, "note": "Spanish loanword + Nahuatl noun form a compound, written without space, following the pattern quesopatzcaloni, cahuayomachti, etc."}
+{"record_id": "153-trilingue:eid:1347515", "old_te": "tlacotlinamaconi", "new_te": "tlacotlinamaconi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347534", "old_te": "tececoc nanacatl", "new_te": "tecoco nanacatl", "changed": true, "note": "EO 'tecoco' normaliza a 'tecoco' (solo eliminación de acento); TE_ACTUAL 'tececoc' introduce reduplicación y -c final no justificadas."}
+{"record_id": "153-trilingue:eid:1347672", "old_te": "santotica necauhcayotl", "new_te": "santotica necauhcayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347706", "old_te": "za ye huelipan necihuitiliztli", "new_te": "za ye huelipan necihuitiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347791", "old_te": "totolocmecatlanelhuayo", "new_te": "totolocmecatlan nelhuayo", "changed": true, "note": "totolocmecatla needs final -n restored; the two words remain separate rather than compounded"}
+{"record_id": "153-trilingue:eid:1347845", "old_te": "nenemictiliznemactli", "new_te": "nenemictiliznemactli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347891", "old_te": "tehuannemiliztli", "new_te": "tehuannemiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347893", "old_te": "oc cecca nemiliztli", "new_te": "oc cecca nemiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347895", "old_te": "tenannemiliztli", "new_te": "tenannemiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347923", "old_te": "teoyotica nenamictiliztli", "new_te": "teoyotica nenamictiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347924", "old_te": "oppa nenamictiliztli", "new_te": "opa nenamictiliztli", "changed": true, "note": "EO tiene 'opa' con una sola p; TE_ACTUAL añade 'pp' sin justificación en el original."}
+{"record_id": "153-trilingue:eid:1347952", "old_te": "teohuan nenehuilia", "new_te": "tehuan tlanenehuilia", "changed": true, "note": "teoan→tehuan (intervocalic o=/w/→hu); ni- dropped but tla- object prefix restored: tlanenehuilia"}
+{"record_id": "153-trilingue:eid:1347999", "old_te": "teixpan nepechtecaliztli", "new_te": "teixpan nepechtecaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348078", "old_te": "tlatocanetitlaniztli", "new_te": "tlatocanetitlaniztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348112", "old_te": "occepa netlaloliztli", "new_te": "occepa netlaloliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348144", "old_te": "teoyotica netlazotlaliztli", "new_te": "teoyotica netlazotlaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348296", "old_te": "tepoztlahuahua noni", "new_te": "tepoztlahuahua noni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348321", "old_te": "tehuicpa noquia", "new_te": "tehuicpa noquia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348336", "old_te": "teixpan monotzalo", "new_te": "teixpan notzalo", "changed": true, "note": "El STUB es 'notzalo' (sin mo-); se respeta literalmente."}
+{"record_id": "153-trilingue:eid:1348439", "old_te": "xicocuitlaocochiuhqui", "new_te": "xicocuitlaocochiuhqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348600", "old_te": "tepan nonoc", "new_te": "tepan onoc", "changed": true, "note": "STUB es 'onoc' (^ indica eliminación del prefijo n-); 'nonoc' → 'onoc'"}
+{"record_id": "153-trilingue:eid:1348656.0", "old_te": "tlathuinahuac oquetza", "new_te": "tlathuinahuac oquetza", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348709", "old_te": "xiotl", "new_te": "xiotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348719", "old_te": "tepotzotlapallihuaztli", "new_te": "tepozotlapallihuaztli", "changed": true, "note": "tepoz compounds without -tz coda before vowel-initial stem, as in tepozcozcatl; corrected to tepozotlapallihuaztli"}
+{"record_id": "153-trilingue:eid:1348827", "old_te": "tlaticpa mopalti", "new_te": "tlaticpa mopalti", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348877", "old_te": "itech tepapaqui", "new_te": "itech papaqui", "changed": true, "note": "El stub 'papaqui' excluye el prefijo de objeto 'te-'; se elimina para concordar con el stub."}
+{"record_id": "153-trilingue:eid:1348900", "old_te": "occepa tlapapatzoa", "new_te": "occepa papatzoa", "changed": true, "note": "STUB is 'papatzoa' (tla- dropped in citation); TE_ACTUAL incorrectly retains tla-."}
+{"record_id": "153-trilingue:eid:1348933", "old_te": "anozo nopatla", "new_te": "anozo mopatla", "changed": true, "note": "ni- (1sg subj) dropped; reflexive no- → mo-; ç→z already correct"}
+{"record_id": "153-trilingue:eid:1348971", "old_te": "occepa patztia", "new_te": "occepa patztia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348996", "old_te": "tianquizpepetla", "new_te": "tianquizpepetla", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349107", "old_te": "tlatquipixquiteupa", "new_te": "tlatquipixquiteupa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349147", "old_te": "temolicpohuiliztli", "new_te": "temolicpohuiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349364", "old_te": "tlayolloquixtiliztli", "new_te": "tlayolloquixtiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349383", "old_te": "tomioquizaliztli", "new_te": "tomioquizaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349416", "old_te": "tapan tlatoani", "new_te": "tapan tlatoani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349514", "old_te": "tecaltzacualoyan", "new_te": "tecaltzacualoyan", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349971", "old_te": "totolteiztlacayotl", "new_te": "totolteiztlacayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1350074", "old_te": "hueca temayahui", "new_te": "hueca temayahui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1350116", "old_te": "iyeltica temoa", "new_te": "iyeltica temoa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1350128", "old_te": "teoyotica tena", "new_te": "teoyotica tena", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1350217", "old_te": "teteotocatenehuiliztli", "new_te": "teteohtocatenehuiliztli", "changed": true, "note": "teteu → teteoh (coda hu+t → uht) before toca; teteotoca → teteohtoca"}
+{"record_id": "153-trilingue:eid:1350806", "old_te": "tlacalaquiltica tetequipachoa", "new_te": "tlacalaquiltica tequipachoa", "changed": true, "note": "STUB tequipachoa (^) removes both ni- and te- prefixes; TE_ACTUAL incorrectly retained te-."}
+{"record_id": "153-trilingue:eid:1350944", "old_te": "tlahueliloca tetenamiquiliztli", "new_te": "tlahueliloca tetenamiquiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1351545", "old_te": "Viernes tica", "new_te": "Viernes tica", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1351845", "old_te": "tlatic ontlachia", "new_te": "tlatic ontlachia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1351868", "old_te": "yahuallihuca tlachiani", "new_te": "yahuallihuca tlachiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1352134", "old_te": "tlantlacuilolmachiyotiliztli", "new_te": "tlani tlacuilolmachiyotiliztli", "changed": true, "note": "tlani is a separate locative adverb ('below/at the bottom'), not a prefix to be fused with the stub; keep as two words."}
+{"record_id": "153-trilingue:eid:1352144", "old_te": "motlacuitlahuiani", "new_te": "motlacuitlahuiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1352218", "old_te": "tehuan tlahuelcaquilia", "new_te": "tehuan tlahuelcaquilia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1352551", "old_te": "pani tlalia", "new_te": "pani tlalia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1352553", "old_te": "tlatepotzo motlalia", "new_te": "tlatepotzo motlalia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1352727", "old_te": "ye matlactlonce tlamantli", "new_te": "ye matlactlonce tlamantli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353073", "old_te": "occepa tlaomelia", "new_te": "occepa tlaomelia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353286", "old_te": "yamanca tlaquemitl", "new_te": "yamanca tlaquemitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353509", "old_te": "tlaipantilia tlatilia", "new_te": "tlaipantilia tlatilia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353684", "old_te": "zanentlatlatoani", "new_te": "zannen tlatlatoani", "changed": true, "note": "çanen → zannen (double n restored as in other zannen entries); two words kept separate as in parallel examples."}
+{"record_id": "153-trilingue:eid:1353849", "old_te": "tlatol [--] tlatolpohualmelano", "new_te": "tlatol [--] tlatolpohualmelano", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353923", "old_te": "teca motlatzahuilia", "new_te": "teca motlatzahuilia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353969", "old_te": "cecca motlatzinehua", "new_te": "cenca motlatzinehua", "changed": true, "note": "cecca → cenca (standard normalization of the adverb)."}
+{"record_id": "153-trilingue:eid:1354060", "old_te": "teixpanmopechteca tetlauhtia", "new_te": "teixpanmopechteca tetlauhtia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1354168", "old_te": "totolnectli tlayacatiani", "new_te": "totolnectli tlayacatiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1354273", "old_te": "huinotlecopatl", "new_te": "huinotlecopatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1354359", "old_te": "tlani tocaicuiloa", "new_te": "tlani tocaicuiloa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1354608", "old_te": "asnome tototza", "new_te": "asnome quintototza", "changed": true, "note": "quin- (3pl object prefix) retained; only ni- (1sg subject) dropped per citation rule."}
+{"record_id": "153-trilingue:eid:1354828", "old_te": "tlaneuhtilia tzopelihua", "new_te": "tlaneuhtilia tzopelihua", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1355349", "old_te": "iyolic yauh", "new_te": "iyolic yauh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1355499", "old_te": "yohual yohualnepantla", "new_te": "yohualla yohualnepantla", "changed": true, "note": "iolla → yohualla (yohualli adverbial form); kept separate from stub yohualnepantla"}
+{"record_id": "153-trilingue:eid:1355543", "old_te": "occepa yolli", "new_te": "occepa yolli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341716", "old_te": "huei --iatli", "new_te": "huei --iatli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341725", "old_te": "tletex --uihuitecti", "new_te": "tletex --uihuitecti", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341780", "old_te": "nican acalli", "new_te": "nican acalli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341792", "old_te": "huel acaltecani", "new_te": "huel acaltecani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341826", "old_te": "cauitl acenneixcueyonilli", "new_te": "cauitl acenneixcueyonilli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341867", "old_te": "za achitonatiuh", "new_te": "za achitonatiuh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341896", "old_te": "coneaciztli", "new_te": "coneaciztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341912", "old_te": "tlotli acopatlanini", "new_te": "tlotli acopatlanini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341973", "old_te": "xihuitl anozo aaron", "new_te": "xihuitl anozo aaron", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341991", "old_te": "nenomanica ahualiztli", "new_te": "nenomanica ahualiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1341992", "old_te": "tenonotzca ahualiztli", "new_te": "tenonotzca ahualiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342033", "old_te": "tlacaahuiloa", "new_te": "tlacaahuiloa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342114", "old_te": "huei altepeyollotli", "new_te": "huei altepeyollotli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342126", "old_te": "tlaneltoquiliztli amantontli", "new_te": "tlaneltoquiliztli amantontli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342127", "old_te": "aocmo amapohua", "new_te": "aocmo amapohua", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342129", "old_te": "ce amatl", "new_te": "ce amatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342131", "old_te": "cexiquipilli amatl", "new_te": "cexiquipilli amatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342152", "old_te": "tecpillatoani amiecquimati", "new_te": "tecpillatoani amiecquimati", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342161", "old_te": "iztlaca amimyahuatl", "new_te": "iztlaca amimyahuatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342166", "old_te": "ocachi tepito amo ixquich", "new_te": "ocachi tepito amo ixquich", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342210", "old_te": "amo ixquich amo iuh", "new_te": "amo ixquich amo iuh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342225", "old_te": "ticitl amo mozcaliani", "new_te": "ticitl amo mozcaliani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342244", "old_te": "teoyotica amo ninotlamachitoca", "new_te": "teoyotica amo ninotlamachitoca", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342263", "old_te": "ichcatl amotla atecuitl", "new_te": "ichcatl amotla atecuitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342266", "old_te": "cuacuahue amo tlaatecuitl", "new_te": "cuacuahue amo tlaatecuitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342283", "old_te": "castilan ixcatl amo tlapactli", "new_te": "castilan ixcatl amo tlapactli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342298", "old_te": "teocuitlatl amo huel cenquizqui", "new_te": "teocuitlatl amo huel cenquizqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342312", "old_te": "aocmo amoxpohua", "new_te": "aocmo amoxpohua", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342325", "old_te": "nahuatilli itech ana", "new_te": "nahuatilli itech ana", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342328", "old_te": "occepa ana", "new_te": "occepa moana", "changed": true, "note": "ni- dropped but reflexive no- retained as mo- per ^ convention; accent removed from â."}
+{"record_id": "153-trilingue:eid:1342344", "old_te": "teyoaquizca anamaquiltiani", "new_te": "teyoaquizca anamaquiltiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342350", "old_te": "huecapateachcauh anazoteio", "new_te": "huecapateachcauh anazoteio", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342376", "old_te": "macuiltianquiztli", "new_te": "macuiltianquiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342377", "old_te": "iticpa antlanezqui", "new_te": "iticpa antlanezqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342385", "old_te": "huei apan ayotl", "new_te": "huei apan ayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342390", "old_te": "huei apazoniliztli", "new_te": "huei apazoniliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342404", "old_te": "iztlaca apipiiolli", "new_te": "iztlacaapipiiolli", "changed": true, "note": "iztlaca + apipiiolli forman compuesto nominal, como iztac+teocuitlatl → iztacteocuitlatl."}
+{"record_id": "153-trilingue:eid:1342415", "old_te": "aquen techihuani", "new_te": "aquen techihuani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342424", "old_te": "tlatzincoloa aquiliztli", "new_te": "tlatzincoloa aquiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342427", "old_te": "tepoztli temetzpa aquiloni", "new_te": "tepoztli temetzpa aquiloni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342444", "old_te": "huei atentli", "new_te": "huei atentli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342467", "old_te": "huecatlan atla", "new_te": "huecatlan atla", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342543", "old_te": "huiptlayo atonahuiztli", "new_te": "huiptlayo atonahuiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342545", "old_te": "momoztlaic atonahuiztli", "new_te": "momoztlaic atonahuiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342582", "old_te": "teoan axcatiloni", "new_te": "tehuan axcatiloni", "changed": true, "note": "o intervocálica /w/ en 'teoan' → 'tehuan'."}
+{"record_id": "153-trilingue:eid:1342585", "old_te": "tlatech axihualiztli", "new_te": "tlatech axihualiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342586", "old_te": "ixpoliuhca axiliztli", "new_te": "ixpoliuhca axiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342597", "old_te": "teoan axixa", "new_te": "tehuan moaxixa", "changed": true, "note": "ni- dropped, reflexive no- restored as mo-; teoan→tehuan"}
+{"record_id": "153-trilingue:eid:1342598", "old_te": "itla ipan axixa", "new_te": "itla ipan axixa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342687", "old_te": "campa ca", "new_te": "campa ca", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342691", "old_te": "itzalan caana", "new_te": "itzalan caana", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342748", "old_te": "cenca nocahua", "new_te": "cenca mocahua", "changed": true, "note": "ninocáua → mocahua (reflexive mo-, not possessive no-)"}
+{"record_id": "153-trilingue:eid:1342749", "old_te": "tetech cahua", "new_te": "tetech cahua", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342751", "old_te": "teuan nocahua", "new_te": "tehuan mocahua", "changed": true, "note": "teuan→tehuan (v→hu); ninocáua→mocahua (ni- dropped, no-→mo- per ^ marker)"}
+{"record_id": "153-trilingue:eid:1342758", "old_te": "tlatlatziuh cahualiztica tlatlacolli", "new_te": "tlatlatziuh cahualiztica tlatlacolli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342761", "old_te": "tlatzontequiliztica cahualtia", "new_te": "tlatzontequiliztica cahualtia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342771", "old_te": "quexquich cahuitl", "new_te": "quexquich cahuitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342772", "old_te": "cenneixcueyoniltica cahuitl", "new_te": "cenneixcueyoniltica cahuitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342776", "old_te": "izemania caimichti", "new_te": "izemania caimichti", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342777", "old_te": "manenenca caitla piltontli", "new_te": "manenenca caitla piltontli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342781", "old_te": "calancatlaxtlahuiliztli", "new_te": "calancatlaxtlahuiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342791", "old_te": "teopan calchaloliztli", "new_te": "teopan calchaloliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342814", "old_te": "tepapacaliztli", "new_te": "tepapacaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342815", "old_te": "icxitotocaliztli", "new_te": "icxitotocaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342845", "old_te": "huei calnepanolli", "new_te": "huei calnepanolli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342855", "old_te": "calquetzaliztli", "new_te": "calquetzaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342871", "old_te": "tlatlazo camatca tecuepilia", "new_te": "tlatlazo camatca tecuepilia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342878", "old_te": "tepan camonaloliztli", "new_te": "tepan camonaloliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342883", "old_te": "zazo campa", "new_te": "zazo campa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342929", "old_te": "tepan caquizti", "new_te": "tepan caquizti", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342933", "old_te": "nococ caquiztini", "new_te": "nococ caquiztini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1342938", "old_te": "ocotzotl castilla", "new_te": "ocotzotl castillan", "changed": true, "note": "castilla → castillan following the locative-n pattern seen in parallel entries (chapopohtli castillan, etc.)"}
+{"record_id": "153-trilingue:eid:1342939", "old_te": "ce castilla ichcatl", "new_te": "ce castilla ichcatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343052", "old_te": "teach cauh", "new_te": "teachcauh", "changed": true, "note": "teach+cauh forma un compuesto nominal sin espacio, como otros términos de parentesco del vocabulario."}
+{"record_id": "153-trilingue:eid:1343065", "old_te": "ic caxtolloce", "new_te": "ic caxtolloce", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343067", "old_te": "ic caxtollomome", "new_te": "ic caxtollomome", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343071", "old_te": "centzontli ipan caxtolpohualli", "new_te": "centzontli ipan caxtolpohualli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343078", "old_te": "tlatotoctlapachiuh cayotl", "new_te": "tlatotoctlapachiuhcayotl", "changed": true, "note": "Las dos palabras del EO forman un compuesto; se unen siguiendo el patrón de ejemplos como zoquitlachihualli."}
+{"record_id": "153-trilingue:eid:1343082", "old_te": "zanachitonatiuh cayotl", "new_te": "zanachitonatiuhcayotl", "changed": true, "note": "Compound noun: modifier zanachitonatiuh joins directly with cayotl, as per standard compounding patterns."}
+{"record_id": "153-trilingue:eid:1343102", "old_te": "ichca zacatl cecaiztac", "new_te": "ichca zacatl cecaiztac", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343112", "old_te": "teca cececniquixtiliztli", "new_te": "teca cececniquixtiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343161", "old_te": "ichcatomitl ceieni", "new_te": "ichcatomitl ceieni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343164", "old_te": "tlapacca celia", "new_te": "tlapacca celia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343200", "old_te": "ocnepa cemilhuitl", "new_te": "ocnepa cemilhuitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343211", "old_te": "cemmanca", "new_te": "cemmanca", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343377", "old_te": "cetlatoani", "new_te": "cetlatoani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343431", "old_te": "totolcone chamactontli", "new_te": "totolconetl chamactontli", "changed": true, "note": "totolcone → totolconetl: absolutive suffix -tl restored on the final element of the compound noun."}
+{"record_id": "153-trilingue:eid:1343433", "old_te": "cihuatl chane", "new_te": "cihuatl chane", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343435", "old_te": "ilhuicac chaneque", "new_te": "ilhuicac chaneque", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343436", "old_te": "ilhuicac chanequiz intlanex", "new_te": "ilhuicac chanequiz in tlanex", "changed": true, "note": "intlanex separado en 'in tlanex': partícula 'in' + sustantivo 'tlanex'."}
+{"record_id": "153-trilingue:eid:1343479", "old_te": "zimani chichi", "new_te": "zimani chichi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343529", "old_te": "huei chichihualli", "new_te": "huei chichihualli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343548", "old_te": "mazacuitlatepoz chichiquilli", "new_te": "mazacuitlatepozchichiquilli", "changed": true, "note": "Los dos elementos forman un compuesto nominal; se unen sin espacio."}
+{"record_id": "153-trilingue:eid:1343590", "old_te": "chicuaceppa chicuace", "new_te": "chicuaceppa chicuace", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343602", "old_te": "patoltontli chicuacuacanize", "new_te": "patoltontli chicuacuacanize", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343631", "old_te": "tecumoniliztli chihua", "new_te": "tecumoniliztli chihua", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343659", "old_te": "icopa chinamitl", "new_te": "icopa chinamitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343701", "old_te": "tlani chiqui", "new_te": "tlani chiqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343735", "old_te": "hueca choloa", "new_te": "hueca choloa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343736", "old_te": "tepan choloa", "new_te": "tepan choloa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343783", "old_te": "cuacuaque cihuaconetl", "new_te": "cuacuahueh cihuaconetl", "changed": true, "note": "quaquaque → cuacuahueh (qua→cua, -que→-hueh as in cuacuahueh 'cattle/cows')"}
+{"record_id": "153-trilingue:eid:1343791", "old_te": "oquichtli cihuaixtocani", "new_te": "oquichtli cihuaixtocani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343812", "old_te": "pipil cihuapiltontli", "new_te": "pipil cihuapiltontli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343823", "old_te": "teizacatl cihuatl", "new_te": "teizacatl cihuatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343826", "old_te": "icxicictlacatini cihuatl", "new_te": "icxicictlacatini cihuatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1343925", "old_te": "citlalpil to", "new_te": "citlalpilton", "changed": true, "note": "«citlalpil to» es la forma partida de citlalpilton (diminutivo -ton); se une en una sola palabra."}
+{"record_id": "153-trilingue:eid:1343981", "old_te": "icniuhyotica cochitiloni", "new_te": "icniuhyotica cochitiloni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344006", "old_te": "neyollo cocoltiliztli", "new_te": "neyollococoltiliztli", "changed": true, "note": "neiollo + cocoltiliztli forman un compuesto nominal; además i intervocálica → y en neiollo."}
+{"record_id": "153-trilingue:eid:1344025", "old_te": "colilihuia", "new_te": "colilihuia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344089", "old_te": "topile couheixiptlayotiliztli", "new_te": "topile couheixiptlayotiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344107", "old_te": "mieccan coyonqui", "new_te": "mieccan coyonqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344108", "old_te": "ocan coyonqui", "new_te": "ocan coyonqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344132", "old_te": "tepoztlatemacti cruzio", "new_te": "tepoztlatemacti cruzio", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344139", "old_te": "tlamach cuachcalli", "new_te": "tlamach cuachcalli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344151", "old_te": "tenen cuacuacatlatoliztli", "new_te": "tenen cuacuacatlatoliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344155", "old_te": "cuauhtla cuacuahue", "new_te": "cuauhtla cuacuahue", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344168", "old_te": "izemania cuacuahueque", "new_te": "izemania cuacuahueque", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344169", "old_te": "icemania in cuacuahueque", "new_te": "icemanyan in cuacuahueque", "changed": true, "note": "intervocalic i→y and locative -n added to icemania → icemanyan"}
+{"record_id": "153-trilingue:eid:1344195", "old_te": "maza cuacuauhtentzone tlaatecuitl", "new_te": "maza cuacuauhtentzone tlaatecuitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344197", "old_te": "maza cuacuauhtentzoneconatl", "new_te": "mazacuacuauhtentzoneconatl", "changed": true, "note": "maça+quaquahutentzónecónatl form a single compound; no space between maza and cuacuauhtentzoneconatl."}
+{"record_id": "153-trilingue:eid:1344203", "old_te": "occencatepito cuahuacaltontli", "new_te": "oc cenca tepito cuahuacaltontli", "changed": true, "note": "occencatepito split into oc cenca tepito (three adverbial elements)"}
+{"record_id": "153-trilingue:eid:1344263", "old_te": "huei cualaniliztli", "new_te": "huei cualaniliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344284", "old_te": "occeca cualli", "new_te": "occeca cualli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344349", "old_te": "pochquiahuatl tepoz cuauhchayahuac", "new_te": "pochquiahuatl tepozquauhchayahuac", "changed": true, "note": "tepoz and cuauhchayahuac compounded as a single modifier, per standard compound pattern."}
+{"record_id": "153-trilingue:eid:1344351", "old_te": "puchquicuahuatl cuauhchayahuacayo", "new_te": "puchquicuahuatl cuauhchayahuacayo", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344355", "old_te": "huei cuauhchiquihuitl", "new_te": "huei cuauhchiquihuitl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344356", "old_te": "quilto cuauhchochopitic", "new_te": "quilto cuauhchochopitic", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344408", "old_te": "nenten cuauhtiliztli", "new_te": "nenten cuauhtiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344412", "old_te": "huei cuauhtla", "new_te": "huei cuauhtla", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344447", "old_te": "tliltic cuauhtli", "new_te": "tliltic cuauhtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344458", "old_te": "tlatzintiliztli cuauhtzoyotl", "new_te": "tlatzintiliztli cuauhtzoyotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344499", "old_te": "cenca cuaztalihui", "new_te": "cenca cuaztalihui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344524", "old_te": "temaquiztica cuecueyoca", "new_te": "temaquiztica cuecueyoca", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344531", "old_te": "tlanahuilil cuelpacholli", "new_te": "tlanauhilil cuelpacholli", "changed": true, "note": "naui→nahui: h belongs within the stem (nahui 'four'), giving tlanauhilil, not tlanahuilil."}
+{"record_id": "153-trilingue:eid:1344545", "old_te": "tetlatzohuilica cuepililiztli", "new_te": "tetlatzohuilica cuepililiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344555", "old_te": "nopan cueponi", "new_te": "nopan cueponi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344586", "old_te": "patlahuac cuezcomatl", "new_te": "patlahuac cuezcomatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344627.0", "old_te": "tepan cuitlacoyoniliztli", "new_te": "tepan cuitlacoyoniliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344643", "old_te": "manemanca cuitlapilli", "new_te": "manemanca cuitlapilli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344648", "old_te": "teocuitlatecomatl", "new_te": "teocuitlatecomatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344688", "old_te": "teteutiliztli itechpatzinco in dioz", "new_te": "teteutiliztli itechpatzinco in dioz", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344697", "old_te": "e", "new_te": "e", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344716", "old_te": "mictlanpa ehecatl", "new_te": "mictlanpa ehecatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344721", "old_te": "mictlanpa ehecatl", "new_te": "mictlanpa ehecatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344722", "old_te": "tonatiuhicalaquia ehecatl", "new_te": "tonatiuhicalaquiaehecatl", "changed": true, "note": "Compound noun written as single word following the pattern of similar entries."}
+{"record_id": "153-trilingue:eid:1344724", "old_te": "tonatiuh icalaquianpa ehecatl", "new_te": "tonatiuh icalaquianpa ehecatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344735", "old_te": "tehuic ehualiztli", "new_te": "tehuic ehualiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344738", "old_te": "tepoz ehuatic", "new_te": "tepoz ehuatic", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344744", "old_te": "tepozehuatl", "new_te": "tepozehuatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344750", "old_te": "inic ei", "new_te": "inic ei", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344763", "old_te": "huelica elehuiani", "new_te": "huelica elehuiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344764", "old_te": "huelica elehuiliztli", "new_te": "huelica elehuiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344775", "old_te": "tlatoltica eleltiloni", "new_te": "tlatoltica eleltiloni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344779", "old_te": "ixtlahuatl elimiconi", "new_te": "ixtlahuatl elimiconi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344780", "old_te": "noppa elimiqui", "new_te": "noppa elimiqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344783", "old_te": "iztlaca tlachihualiz elizmatiliztli", "new_te": "iztlaca tlachihualiz elizmatiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344802", "old_te": "huei epiollotli", "new_te": "huei epiollotli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344803", "old_te": "osti teco eptla", "new_te": "ostitecoeptla", "changed": true, "note": "Three elements form a single compound locative; joined following the pattern of similar compound entries."}
+{"record_id": "153-trilingue:eid:1344818", "old_te": "on etlaittililiztli", "new_te": "on etlaittililiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344854", "old_te": "papaquiliztli haahuializtli", "new_te": "papaquiliztli haahuializtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1344888", "old_te": "teteuc huaca tlaquixtia", "new_te": "teteuh huaca tlaquixtia", "changed": true, "note": "teteuc word-final → teteuh (coda rule: final -uc → -uh)"}
+{"record_id": "153-trilingue:eid:1344895", "old_te": "zanilhuiz huahualtza", "new_te": "zanilhuiz tlahuahualtza", "changed": true, "note": "tla- object prefix retained after dropping ni-; tlahuahualtza (tla+hua+hualtza from nitlaoaoaltza)"}
+{"record_id": "153-trilingue:eid:1344932", "old_te": "ahuecatla huallaquixtia", "new_te": "ahuecatlan huallaquixtia", "changed": true, "note": "ahuecatla → ahuecatlan (locative -n restored, cf. 'amo huecatlan' example)"}
+{"record_id": "153-trilingue:eid:1344941", "old_te": "tepa huallauh", "new_te": "tepa huallauh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345145", "old_te": "tlapatzcaloni huepantli", "new_te": "tlapatzcaloni huepantli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345152", "old_te": "occeppa huetzi", "new_te": "occeppa huetzi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345154", "old_te": "tepanitzomoc huetzti huetzi", "new_te": "tepanitzomoc huetzti huetzi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345155", "old_te": "tepantzonoc huetzti huetzilitli", "new_te": "tepantzonoc huetzti huetzilitli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345158", "old_te": "itzocac huetzini", "new_te": "itzocac huetzini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345175", "old_te": "tlacamilchi huey", "new_te": "tlacamilchi huey", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345177", "old_te": "occeca huey", "new_te": "occeca huey", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345247", "old_te": "tlani huiauh", "new_te": "tlani huiauh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345277", "old_te": "occepa huinicuania", "new_te": "occepa huinicuania", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345278", "old_te": "tehuan huinicuania", "new_te": "tehuan huinicuania", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345304", "old_te": "tlacotica tehuitequi", "new_te": "tlacotica huitequi", "changed": true, "note": "STUB fixes the headword as 'huitequi' (without te-); TE_ACTUAL incorrectly retained the te- object prefix."}
+{"record_id": "153-trilingue:eid:1345337", "old_te": "tepan icac", "new_te": "tepan icac", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345344", "old_te": "tlaquemanti icahuia", "new_te": "tlaquemanti icahuia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345346", "old_te": "tonatiuh icalaquia", "new_te": "tonatiuh icalaquia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345380", "old_te": "oztomecamamaca icemania", "new_te": "oztomecamamaca icemania", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345450", "old_te": "ichpana", "new_te": "ichpana", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345451", "old_te": "izquiztica ichpana", "new_te": "izquiztica ichpana", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345482", "old_te": "dios itechtlatolli ichtequi", "new_te": "dios itechtlatolli ichtequi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345561", "old_te": "icniuhyotl", "new_te": "icniuhyotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345569", "old_te": "icnoittaca", "new_te": "icnoittaca", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345589", "old_te": "icnotl quimocuitlahuiani", "new_te": "icnotl quimocuitlahuiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345650", "old_te": "tocaicuiloa", "new_te": "tocaicuiloa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345654", "old_te": "tlani toca icuiloliztli", "new_te": "tlani tocaicuiloliztli", "changed": true, "note": "toca + icuiloliztli form a single compound noun (tocaicuiloliztli, 'name-writing/signing'); written as one word."}
+{"record_id": "153-trilingue:eid:1345668", "old_te": "tlani icximotzoloa", "new_te": "tlani icximotzoloa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345685", "old_te": "tlatamachihualoni icxitontli", "new_te": "tlatamachihualoni icxitontli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345726", "old_te": "patli ihualoni", "new_te": "patli ihualoni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345775", "old_te": "tlamamatla ilacatztli", "new_te": "tlamamatlailacatztli", "changed": true, "note": "Los dos elementos forman un compuesto nominal; se unen sin espacio."}
+{"record_id": "153-trilingue:eid:1345788", "old_te": "tlatzoco ilhuicatl", "new_te": "tlatzoco ilhuicatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345831", "old_te": "tozino imetz", "new_te": "tocino imetz", "changed": true, "note": "Loanword 'tozino' normalized to standard Spanish 'tocino'."}
+{"record_id": "153-trilingue:eid:1345833", "old_te": "ittayeni imiquiliztli", "new_te": "ittayeni imiquiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345837", "old_te": "tepapa impampa", "new_te": "tepapa impampa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345846", "old_te": "yeotzonquiz in tlacuilolli", "new_te": "yeotzonquiz in tlacuilolli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345850", "old_te": "ixca inaca ompaca", "new_te": "ixca inaca ompaca", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345853", "old_te": "itzin itzonca inamoxtli", "new_te": "itzin itzonca inamoxtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345863", "old_te": "palax incayotl", "new_te": "palax incayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345868", "old_te": "itechmonequi incuauhtlanemini", "new_te": "itechmonequi incuauhtlanemini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345869", "old_te": "itechpachihuini indioz", "new_te": "itechpachihuini indioz", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345873", "old_te": "padreme inecuaquimiloaya", "new_te": "padreme inecuaquimiloaya", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345889", "old_te": "zoquiaqui inichcame", "new_te": "zoquiaqui inichcame", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345898", "old_te": "tetla initechpa tepito", "new_te": "tetla initechpa tepito", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345905", "old_te": "izquich inizquinti", "new_te": "izquich inizquinti", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345916", "old_te": "ixquichca inopatica", "new_te": "ixquichca inopatica", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345917", "old_te": "ixiptla inopizpo", "new_te": "ixiptla inopizpo", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345929", "old_te": "tetla itechpa intecol", "new_te": "tetla itechpa intecol", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345930", "old_te": "itechponi intehuetlatocayotl", "new_te": "itechponi intehuetlatocayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345931", "old_te": "tetla itechpa intena", "new_te": "tetla itechpa intena", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345932", "old_te": "santome inteocuitlaicpac xochiuh", "new_te": "santome inteocuitlaicpac xochiuh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345936", "old_te": "ixquichica intetlanitza", "new_te": "ixquichica intetlanitza", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345944", "old_te": "pachihui intlalli", "new_te": "pachihui intlalli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345949", "old_te": "ixpanicac intlatoani", "new_te": "ixpanicac intlatoani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345950", "old_te": "itlanca intlatzacuctieni", "new_te": "itlanca intlatzacuctieni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345953", "old_te": "ixayoyo inuino", "new_te": "ixayoyo inuino", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345957", "old_te": "ioc ioa", "new_te": "ioc ioa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345961", "old_te": "totolcucue iochauhcayotl", "new_te": "totolcucue iochauhcayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345973", "old_te": "teci ioquichtiuh", "new_te": "teci ioquichtiuh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345980", "old_te": "ohontzontli ipa mamacuilpohualli", "new_te": "ohontzontli ipa mamacuilpohualli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345990", "old_te": "ontzontli ipan matlacpohualli", "new_te": "ontzontli ipan matlacpohualli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345991", "old_te": "ontzontli ipan matlacpohualli", "new_te": "ontzontli ipan matlacpohualli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1345995", "old_te": "itla ipan tleco", "new_te": "itla ipan tleco", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346018", "old_te": "quimochihuaz iquihualaz", "new_te": "quimochihuaz iquihualaz", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346036", "old_te": "tonatiuh italaquia pohui", "new_te": "tonatiuh italaquia pohui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346046", "old_te": "noyoma itech oquichtli", "new_te": "moyoma itech oquichtli", "changed": true, "note": "noyoma → moyoma por analogía con el ejemplo paralelo 'ytech ninoyoma çihuatl' → 'ytech moyoma cihuatl'"}
+{"record_id": "153-trilingue:eid:1346047", "old_te": "itla itech tlahuitequiliztli", "new_te": "itla itech tlahuitequiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346063", "old_te": "tetla itechpatena", "new_te": "tetla itechpatena", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346064", "old_te": "teahui itechpatena", "new_te": "teahui itechpatena", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346068", "old_te": "tlacamecayotl itechpohui", "new_te": "tlacamecayotl itechpohui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346079", "old_te": "macuiltecpantli itequihuacauh", "new_te": "macuiltecpantli itequihuacauh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346130", "old_te": "tlatencuauh itlanini", "new_te": "tlatencuauh itlanini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346140", "old_te": "mapiltetla itlitiloni", "new_te": "mapiltetla itlitiloni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346144", "old_te": "nelli itoa", "new_te": "nelli itoa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346147", "old_te": "tlaachtopa itoani", "new_te": "tlaachtopaitoani", "changed": true, "note": "tlaachtopa + itoani written as compound, following the pattern of similar modifier+noun forms."}
+{"record_id": "153-trilingue:eid:1346153", "old_te": "necuilictli itoca tototl", "new_te": "necuilictli itoca tototl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346171", "old_te": "tlaiztlacuachtopa ittaliztli", "new_te": "tlaiztlacuachtopa ittaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346245", "old_te": "teixco ixco", "new_te": "teixco ixco", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346298", "old_te": "topile ixiptla", "new_te": "topile ixiptla", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346363", "old_te": "teyacatica ixquetzaliztli", "new_te": "teyacatica ixquetzaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346367", "old_te": "ohopa ixquich", "new_te": "ohopa ixquich", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346369", "old_te": "ontzompa ixquich", "new_te": "ontzompa ixquich", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346477", "old_te": "ihua izhual", "new_te": "ihua izhual", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346563", "old_te": "tepiton lechuca", "new_te": "tepiton lechuca", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346573", "old_te": "xacalcuilotl llotl", "new_te": "xacalcuilotl llotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346578", "old_te": "tepozmacatl", "new_te": "tepozmacatl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346615", "old_te": "tlahuecapanilnamiquiliz macholoni", "new_te": "tlahuecapanilnamiquiliz macholoni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346639", "old_te": "macuilpa macuilli", "new_te": "macuilpa macuilli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346655", "old_te": "ontzompa ipan macuilpohualpa", "new_te": "ontzompa ipan macuilpohualpa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346662", "old_te": "nauhpa macuiltzontli", "new_te": "nauhpa macuiltzontli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346668", "old_te": "cenca tlamahuizoa", "new_te": "cenca mahuizoa", "changed": true, "note": "El stub es 'mahuizoa' sin prefijo tla-; la TE_ACTUAL añade 'tla-' en contra del stub inamovible."}
+{"record_id": "153-trilingue:eid:1346686", "old_te": "monecoc maimatini", "new_te": "monecoc maimatini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346788", "old_te": "tequitl itech mati", "new_te": "tequitl itech momati", "changed": true, "note": "ninomáti → ni- dropped, no- → mo-: momati (reflexive prefix preserved as mo-)"}
+{"record_id": "153-trilingue:eid:1346792", "old_te": "centequitl itech mati", "new_te": "centequitl itech mati", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346801", "old_te": "mocnelil matini", "new_te": "mocnelil matini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346851", "old_te": "mazapa matlaliani", "new_te": "mazapa matlaliani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346896", "old_te": "atlatica mayahui", "new_te": "atlatica tlamayahui", "changed": true, "note": "tla- object prefix must be retained; only ni- (subject 1sg) is dropped in citation."}
+{"record_id": "153-trilingue:eid:1346987", "old_te": "tlamamani mazotli", "new_te": "tlamamani mazotli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1346988", "old_te": "totoloc mecacueponiliztli", "new_te": "totoloc mecacueponiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347006", "old_te": "totoloc mecatl xochiohuani", "new_te": "totoloc mecatl xochiohuani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347018", "old_te": "tepan meiani", "new_te": "tepan meiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347055", "old_te": "tlachicuacemayutia metztli", "new_te": "tlachicuacemayutia metztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347057", "old_te": "onacitieni metztli", "new_te": "onacitieni metztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347058", "old_te": "ontetl metztli", "new_te": "ontetl metztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347059", "old_te": "yehome metztli", "new_te": "yehome metztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347060", "old_te": "ieze metztli", "new_te": "yeze metztli", "changed": true, "note": "ie- → ye- (i intervocálica/semivocálica inicial → y); acento eliminado en métztli ya cubierto por stub."}
+{"record_id": "153-trilingue:eid:1347061.0", "old_te": "iancuic metztli", "new_te": "yancuic metztli", "changed": true, "note": "iancuic → yancuic: i inicial ante vocal a → y (semivocal /y/)."}
+{"record_id": "153-trilingue:eid:1347086", "old_te": "huei michi", "new_te": "huei michi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347087", "old_te": "ce michi", "new_te": "ce michi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347121", "old_te": "inic miec", "new_te": "inic miec", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347125", "old_te": "occenca miecca", "new_te": "occenca miecca", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347170", "old_te": "totoloc milpa", "new_te": "totoloc milpa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347171", "old_te": "totoloc milpa", "new_te": "totoloc milpa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347187", "old_te": "netlatilica minaliztli", "new_te": "netlatilica minaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347191", "old_te": "teicxitepoz minaloni", "new_te": "teicxitepozminaloni", "changed": true, "note": "Compound noun written as one word, following the pattern of similar entries."}
+{"record_id": "153-trilingue:eid:1347192", "old_te": "teiztepoz minaloni", "new_te": "teiztepozeminaloni", "changed": true, "note": "teiztepoz + minaloni forman un compuesto nominal; se unen en una sola palabra siguiendo el patrón de los compuestos del vocabulario."}
+{"record_id": "153-trilingue:eid:1347210", "old_te": "chihua misa", "new_te": "chihua misa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347222", "old_te": "oquichtli mitotiani", "new_te": "oquichtli mitotiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347295", "old_te": "ehuatoc molotoc", "new_te": "ehuatoc molotoc", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347303", "old_te": "teca momaiztlacoani", "new_te": "teca momaiztlacoani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347309", "old_te": "oquichtli momecatiani", "new_te": "oquichtli momecatiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347345", "old_te": "netech monequi", "new_te": "netech monequi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347365", "old_te": "yohualtica motenex--", "new_te": "yohualtica motenex--", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347398", "old_te": "nacatl motquitica", "new_te": "nacatl motquitica", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347427", "old_te": "teuan naaqui", "new_te": "tehuan naaqui", "changed": true, "note": "teuan → tehuan (u semivocálica /w/ → hu)"}
+{"record_id": "153-trilingue:eid:1347493", "old_te": "occepa tenahuatia", "new_te": "occepa tenahuatia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347559", "old_te": "tepiton natquioani", "new_te": "tepiton natquioani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347569", "old_te": "tetlachiniani nahualli", "new_te": "tetlachiniani nahualli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347596", "old_te": "tlamatlactlon nauhcatitica", "new_te": "tlamatlactlon nauhcatitica", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347637", "old_te": "pahuetzca nazcayotl", "new_te": "pahuetzca nazcayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347653", "old_te": "occeppa nealahualiztli", "new_te": "occeppa nealahualiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347663", "old_te": "teca necacayahualiztli", "new_te": "teca necacayahualiztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347664", "old_te": "teca necacayahualoni", "new_te": "teca necacayahualoni", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347838", "old_te": "nemachtiloyan", "new_te": "nemachtiloyan", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347881", "old_te": "teoan nemi", "new_te": "tehuan monemi", "changed": true, "note": "teoan → tehuan (intervocalic o=/w/→hu); ni- dropped per citation rule, ^ signals reflexive mo- restored → monemi"}
+{"record_id": "153-trilingue:eid:1347883", "old_te": "tetlan nemi", "new_te": "tetlan nemi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347892", "old_te": "occeca nemiliztli", "new_te": "occeca nemiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347894", "old_te": "tetlalpa nemiliztli", "new_te": "tetlalpa nemiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347901", "old_te": "tletlalpa nemini", "new_te": "tletlalpa nemini", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1347904", "old_te": "tlotli zamaco nemini", "new_te": "tlotlizamaconemini", "changed": true, "note": "Las tres palabras forman un compuesto nominal agentivo; se unen sin espacios."}
+{"record_id": "153-trilingue:eid:1348009", "old_te": "tehuic nequetzaliztli", "new_te": "tehuic nequetzaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348010", "old_te": "occepa nequetzaliztli", "new_te": "occepa nequetzaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348014", "old_te": "cenca nequi", "new_te": "cenca nequi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348015", "old_te": "cenca nequi", "new_te": "cenca nequi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348018", "old_te": "notlatocaz nequi", "new_te": "notlatocaz nequi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348083", "old_te": "teoyotica netlacemitlahuiliztli", "new_te": "teoyotica netlacemitlahuiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348104", "old_te": "tehuan netlaliliztli", "new_te": "tehuan netlaliliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348197", "old_te": "yancuic nexotlalli", "new_te": "yancuic nexotlalli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348202", "old_te": "tla achtopa nextia", "new_te": "tla achtopa nextia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348298", "old_te": "tlani nonoc", "new_te": "tlani nonoc", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348305", "old_te": "tetlacuitlahuiltica nonotzaliztli", "new_te": "tetlacuitlahuiltica nonotzaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348306", "old_te": "tetlacuitlahuilitica nonotzaliztli", "new_te": "tetlacuitlahuiliticanonotzaliztli", "changed": true, "note": "Compuesto unido, siguiendo el patrón del ejemplo 'tetlacuitlahuilticanonotzaliztli'."}
+{"record_id": "153-trilingue:eid:1348307", "old_te": "tetlacuitlahuilitica nonotzaloni", "new_te": "tetlacuitlahuilticanonotzaloni", "changed": true, "note": "tetlacuitlauiltica → tetlacuitlahuiltica (v→hu, no extra i); compounded with nonotzaloni per parallel example."}
+{"record_id": "153-trilingue:eid:1348363", "old_te": "tetl oc an nemi", "new_te": "tetl oc an nemi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348382", "old_te": "tecomatl occeccanacace", "new_te": "tecomatl occeccanacace", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348461", "old_te": "xicucuitla ocupilli", "new_te": "xicocuitlaocupilli", "changed": true, "note": "xicucuitla = xicocuitla (u→o vowel alternation in xicotl-cuitlatl compound); the two words form a single compound noun written without space."}
+{"record_id": "153-trilingue:eid:1348534", "old_te": "cenca omitia", "new_te": "cenca omitia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348579", "old_te": "tepan oncholoa", "new_te": "tepan oncholoa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348585", "old_te": "tlaquiltica onehuani", "new_te": "tlacualtica onehuani", "changed": true, "note": "tlaq^ltica: quil→cual (tlaqualli→tlacualli pattern), giving tlacualtica."}
+{"record_id": "153-trilingue:eid:1348679", "old_te": "tetlachihuiani oquichtli", "new_te": "tetlachihuiani oquichtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348683", "old_te": "tlacpaconetl oquichtli", "new_te": "tlacpaconetl oquichtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348685", "old_te": "tenexiuh oquichtli", "new_te": "tenexiuh oquichtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348753", "old_te": "tehuan ozcoa", "new_te": "tehuan mozcoa", "changed": true, "note": "reflexive mo- retained from nino- (ni- dropped, no- → mo-); cf. tehuan mocahua, ytech moyoma"}
+{"record_id": "153-trilingue:eid:1348853", "old_te": "cuauhopantica pano", "new_te": "cuauhopantica pano", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1348958", "old_te": "tehuan patoa", "new_te": "tehuan patoa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349105", "old_te": "totoloc pixcaliztli", "new_te": "totoloc pixcaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349141", "old_te": "dios itech pohualtia", "new_te": "dios itech pohualtia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349215", "old_te": "tecentech pouhqui", "new_te": "tecentech pouhqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349298", "old_te": "yelchi quihumococoani", "new_te": "yelchi quihumococoani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349379", "old_te": "tlaticpa quiza", "new_te": "tlaticpa quiza", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349382", "old_te": "tlatzonquizaliztli", "new_te": "tlatzonquizaliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349385", "old_te": "tlatech quizcayotl", "new_te": "tlatech quizcayotl", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349432", "old_te": "teoyotica tecenpachoani tatli", "new_te": "teoyotica tecenpachoani tatli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349472", "old_te": "yaoquizca teanamaquiltiani", "new_te": "yaoquizca teanamaquiltiani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1349484", "old_te": "teca teaxcatiliztli", "new_te": "tecateaxcatiliztli", "changed": true, "note": "teca + teaxcatiliztli forman un compuesto nominal; se unen en una sola palabra siguiendo el patrón de otros compuestos con prefijo relacional."}
+{"record_id": "153-trilingue:eid:1349599", "old_te": "tepatiani tecitl xiuhiximatqui", "new_te": "tepatiani tecitl xiuhiximatqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1350115", "old_te": "tehuan temoa", "new_te": "tehuan temoa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1350166", "old_te": "tlatoca tenahuatilli", "new_te": "tlatocatenahuatilli", "changed": true, "note": "tlatoca- prefijo nominal se funde con el sustantivo, como en tlatocateoyoicuiloani; forma un compuesto."}
+{"record_id": "153-trilingue:eid:1350315", "old_te": "tepaztli teocuitlanezqui", "new_te": "tepaztli teocuitlanezqui", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1350608", "old_te": "tehuan tepotzahua", "new_te": "tehuan tepotzahua", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1350733", "old_te": "tetl tepoztentiloni", "new_te": "tetltepoztentiloni", "changed": true, "note": "tetl + tepoztentiloni compuesto en una sola palabra, siguiendo el patrón de otros compuestos nominales."}
+{"record_id": "153-trilingue:eid:1350791", "old_te": "tepoztzitziquiltica tequi", "new_te": "tepoztzitziquiltica tequi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1350812", "old_te": "texahualli tequiquitalh", "new_te": "texahualli tequiquitalh", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1350897", "old_te": "tetentzo tetech paquiz", "new_te": "tetentzo tetech paquiz", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1351546", "old_te": "lunes tica", "new_te": "lunes tica", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1351552", "old_te": "tlayahuallo tieliztli", "new_te": "tlayahuallotieliztli", "changed": true, "note": "Compound noun written as one word, following the pattern of modifier+headword compounds (cf. tlahuellatlahuelihuini)."}
+{"record_id": "153-trilingue:eid:1351645", "old_te": "xochiotl tlaatililli", "new_te": "xochiyotl tlaatililli", "changed": true, "note": "i intervocálica entre xochi- y -otl → xochiyotl (forma clásica normalizada)."}
+{"record_id": "153-trilingue:eid:1351675", "old_te": "occeppa tlacachihua", "new_te": "occeppa tlacachihua", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1351735", "old_te": "tlahuizcalli tlacanihuitia", "new_te": "tlahuizcalli tlacanihuitia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1351756", "old_te": "tlatic tlacati", "new_te": "tlatic tlacati", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1351760", "old_te": "tlaoppa tlacatililiztli", "new_te": "tlaocpa tlacatililiztli", "changed": true, "note": "'tlaoppa' normaliza a 'tlaocpa' (tla-oc-pa, 'otra vez'), con -pp- → -p-."}
+{"record_id": "153-trilingue:eid:1351844", "old_te": "tlachialonitica tlachia", "new_te": "tlachialonitica tlachia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1351846", "old_te": "tlatepotzo tlachia", "new_te": "tlatepotzo tlachia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1351934", "old_te": "tlani tlachiquiliztli", "new_te": "tlani tlachiquiliztli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1352011", "old_te": "tocino tlacotontli", "new_te": "tocino tlacotontli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1352234", "old_te": "yollo tlahueliloc", "new_te": "yollo tlahueliloc", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1352856", "old_te": "yehuatl tlanauhcayotia", "new_te": "yehuatl tlanauhcayotia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353507", "old_te": "tlatilia", "new_te": "tlatilia", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353685", "old_te": "zanen tlatlatoliztli", "new_te": "zannen tlatlatoliztli", "changed": true, "note": "çanen → zannen (doble n estándar del adverbio, cf. ejemplos zannen)"}
+{"record_id": "153-trilingue:eid:1353710", "old_te": "topan tlatlaza", "new_te": "topan tlatlaza", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353722", "old_te": "totolli tlatlazani", "new_te": "totolli tlatlazani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353764", "old_te": "tzopelica tlatoani", "new_te": "tzopelica tlatoani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353799", "old_te": "yacuican tlatoctli", "new_te": "yacuican tlatoctli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353844", "old_te": "occepa tlatolpohua", "new_te": "occepa tlatolpohua", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1353845", "old_te": "tlatolpohua", "new_te": "tlatolpohua", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1354188", "old_te": "tehuan tlayecoa", "new_te": "tehuan tlayecoa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1354244", "old_te": "yollotica tlazotla", "new_te": "yollotica tetlazotla", "changed": true, "note": "Object prefix te- must be retained: nitetlaçótla → tetlazotla, not tlazotla."}
+{"record_id": "153-trilingue:eid:1354354", "old_te": "tlani tocaicuiloa", "new_te": "tlani tocaicuiloa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1354408", "old_te": "quilnamiqui tolina", "new_te": "quilhnamiqui tolina", "changed": true, "note": "q^h expands to 'quih', giving quilhnamiqui (not quilnamiqui); stub tolina retained."}
+{"record_id": "153-trilingue:eid:1354502", "old_te": "itech topiloa", "new_te": "itech topiloa", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1354689", "old_te": "xonehuatl tzicuehuani", "new_te": "xonehuatl tzicuehuani", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1354752", "old_te": "tepan tzomochuetzi", "new_te": "tepan tzomochuetzi", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1354977", "old_te": "xonacaxinachtli", "new_te": "xonacaxinachtli", "changed": false, "note": ""}
+{"record_id": "153-trilingue:eid:1355503", "old_te": "yohuatzinco ninehua", "new_te": "yohuatzinco ninehua", "changed": false, "note": ""}

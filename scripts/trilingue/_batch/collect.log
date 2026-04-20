@@ -1,0 +1,11 @@
+status=in_progress  counts=MessageBatchRequestCounts(canceled=0, errored=0, expired=0, processing=826, succeeded=0)
+status=in_progress  counts=MessageBatchRequestCounts(canceled=0, errored=0, expired=0, processing=826, succeeded=0)
+status=in_progress  counts=MessageBatchRequestCounts(canceled=0, errored=0, expired=0, processing=826, succeeded=0)
+status=in_progress  counts=MessageBatchRequestCounts(canceled=0, errored=0, expired=0, processing=826, succeeded=0)
+status=ended  counts=MessageBatchRequestCounts(canceled=0, errored=0, expired=0, processing=0, succeeded=826)
+total proposals: 736
+  with 'note' (model flagged uncertainty): 62
+errors (request failed or unparseable JSON): 90
+
+→ phase4b_proposals.jsonl
+→ phase4b_errors.jsonl
