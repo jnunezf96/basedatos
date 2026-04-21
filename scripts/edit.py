@@ -3,7 +3,7 @@
 Usage:
     python3 scripts/edit.py <eid>                  # edit by eid
     python3 scripts/edit.py --find "palabra"       # list eids whose fields contain "palabra"
-    python3 scripts/edit.py --source-id <src_id>   # edit by source_record_id
+    python3 scripts/edit.py --record-id <rid>      # edit by record_id
 
 On save the gzip is rewritten and the previous file is kept as data.jsonl.bakN.gz.
 """
@@ -134,14 +134,14 @@ def main():
     ap = argparse.ArgumentParser(description="Edit a single record in data.jsonl.gz")
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("eid", nargs="?", help="entry eid, e.g. 1353814.0")
-    g.add_argument("--source-id", dest="source_id", help="source_record_id")
+    g.add_argument("--record-id", dest="record_id", help="record_id, e.g. 1765-cortes-y-zedeno:000001")
     g.add_argument("--find", dest="find", help="search all fields for a substring (read-only)")
     args = ap.parse_args()
 
     if args.find:
         do_find(args.find)
-    elif args.source_id:
-        do_edit("source_record_id", args.source_id)
+    elif args.record_id:
+        do_edit("record_id", args.record_id)
     else:
         do_edit("eid", args.eid)
 
