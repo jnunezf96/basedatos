@@ -35,8 +35,8 @@
             <button type="button" class="pill field-btn active" data-field="Texto estandarizado" data-i18n="field.grafia" data-i18n-placeholder-label="field.grafia.short" data-placeholder-label="edición">Edición</button>
             <button type="button" class="pill field-btn" data-field="Escritura original" data-i18n="field.paleografia" data-i18n-placeholder-label="field.paleografia.short" data-placeholder-label="original">Original</button>
             <button type="button" class="pill field-btn" data-field="Traducción" data-i18n="field.traduccion" data-i18n-placeholder-label="field.traduccion.short" data-placeholder-label="traducción">Traducción</button>
-            <button type="button" class="pill field-btn" data-field="Comentario" data-i18n="field.comentario" data-i18n-placeholder-label="field.comentario.short" data-placeholder-label="comentario">Comentario</button>
             <button type="button" class="pill field-btn" data-field="Fuente" data-i18n="field.fuente" data-placeholder-label="fuente">Fuente</button>
+            <button type="button" class="pill field-btn" data-field="Comentario" data-i18n="field.comentario" data-i18n-placeholder-label="field.comentario.short" data-placeholder-label="comentario">Comentario</button>
           </div>
         </div>
         <div class="filter-row scopes">
@@ -95,15 +95,11 @@
         </div>
         <div class="fuente-section">
           <div class="fuente-head">
-            <div class="fuente-title-wrap">
-              <h4 class="fuente-title"><span data-i18n="sources.title">Fuentes</span></h4>
-              <span class="fuente-count" id="fuenteCount" aria-live="polite">0</span>
-            </div>
             <div class="fuente-actions">
               <button type="button" class="fuente-act" id="fuenteFill" data-i18n="sources.fill">Todas</button>
-              <span class="fuente-act-sep" aria-hidden="true">·</span>
               <button type="button" class="fuente-act" id="fuenteClear" data-i18n="sources.clear">Ninguna</button>
             </div>
+            <span class="fuente-count" id="fuenteCount" aria-live="polite">0</span>
           </div>
           <div id="fuenteList" class="fuente-list" role="group" aria-label="Fuentes"></div>
         </div>
@@ -142,6 +138,8 @@
             <div class="rx-row"><code>*</code><span data-i18n="rx.star1">1 o más letras</span></div>
             <div class="rx-row"><code>**</code><span data-i18n="rx.star2">2 o más letras</span></div>
             <div class="rx-row"><code>?{2,4}</code><span data-i18n="rx.range">2 a 4 letras</span></div>
+            <div class="rx-row"><code>(i)?</code><span data-i18n="rx.optional.literal">cero o una i</span></div>
+            <div class="rx-row rx-note" data-i18n="rx.grapheme.note">En Edición, Original y Comentario, ? cuenta ch/tz/qu/etc. como un grafema</div>
           </div>
 
 
@@ -150,6 +148,9 @@
             <div class="rx-row"><code>pat(o|a)</code><span data-i18n-html="rx.alt.group">pato <em>o</em> pata</span></div>
             <div class="rx-row"><code>pato|pata</code><span data-i18n="rx.alt.pipe">equivalente (nivel superior)</span></div>
             <div class="rx-row"><code>\|</code><span data-i18n="rx.alt.escape">barra literal</span></div>
+            <div class="rx-row"><code>\? \* \(</code><span data-i18n="rx.escape.meta">signos literales</span></div>
+            <div class="rx-row"><code>(c|qu)*</code><span data-i18n="rx.alt.wildcard.after">c/qu + letras</span></div>
+            <div class="rx-row"><code>"in tla"</code><span data-i18n="rx.phrase.exact">frase exacta</span></div>
           </div>
 
           <div class="rx-block">
@@ -179,6 +180,8 @@
             <div class="rx-title" data-i18n="rx.reduplication">Reduplicación</div>
             <div class="rx-row"><code>+pech</code><span data-i18n-html="rx.redup.desc">→ <em>pe</em>pech… (hasta 1ª vocal)</span></div>
             <div class="rx-row"><code>+tlal</code><span data-i18n-html="rx.redup.ex2">→ <em>tla</em>tlal…</span></div>
+            <div class="rx-row"><code>(?)\1</code><span data-i18n="rx.repeat.same.grapheme">mismo grafema repetido</span></div>
+            <div class="rx-row"><code>({C}{V})\1</code><span data-i18n="rx.repeat.same.cv">misma sílaba CV repetida</span></div>
           </div>
 
           <div class="rx-block">
@@ -252,20 +255,15 @@
               </div>
             </div>
             <div class="toolbar-sep"></div>
-            <div class="view-actions">
-              <button type="button" class="arrow-btn active" id="wLangToggle" title="Idioma del comentario">ES</button>
-              <button type="button" class="arrow-btn lemma-toggle-all" id="lemmaExpandAll" title="Expandir/Colapsar lemas" hidden>+</button>
-              <button type="button" class="arrow-btn comentario-toggle-all" id="comentarioExpandAll" title="Expandir/Colapsar comentarios">+</button>
+            <div class="column-group">
+              <div class="column-menu-wrap">
+                <button type="button" class="arrow-btn column-menu-btn" id="columnMenuBtn" title="Columnas" data-i18n="table.columns">Cols ▾</button>
+              </div>
             </div>
             <div class="toolbar-sep"></div>
             <div class="export-group">
               <div class="export-menu-wrap">
                 <button type="button" class="arrow-btn export-btn" id="exportMenuBtn" title="Exportar" data-i18n="table.export.label">Exportar ▾</button>
-                <div id="exportMenuDropdown" class="export-menu-dropdown">
-                  <button type="button" class="export-menu-item" data-export="jpeg" data-i18n="table.export.jpeg">Imagen (JPG)</button>
-                  <button type="button" class="export-menu-item" data-export="png" data-i18n="table.export.png">Imagen (PNG)</button>
-                  <button type="button" class="export-menu-item" data-export="csv" data-i18n="table.export.csv">Hoja de cálculo (CSV)</button>
-                </div>
               </div>
             </div>
             <div class="toolbar-sep"></div>
@@ -300,6 +298,29 @@
                 <button type="button" class="arrow-btn page-skip" id="pageLast" title="Última página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3,1 6,5.5 3,10"/><polyline points="7,1 10,5.5 7,10"/></svg></button>
               </div>
             </div>
+          </div>
+          <div id="exportMenuDropdown" class="export-menu-dropdown" aria-label="Exportar">
+            <div class="export-menu-head">
+              <span data-i18n="table.export.label">Exportar ▾</span>
+            </div>
+            <div class="export-menu-list">
+              <button type="button" class="export-menu-item" data-export="jpeg" data-i18n="table.export.jpeg">Imagen (JPG)</button>
+              <button type="button" class="export-menu-item" data-export="png" data-i18n="table.export.png">Imagen (PNG)</button>
+              <button type="button" class="export-menu-item" data-export="csv" data-i18n="table.export.csv">Hoja de cálculo (CSV)</button>
+            </div>
+          </div>
+          <div id="columnMenuDropdown" class="column-menu-dropdown" aria-label="Columnas">
+            <div class="column-menu-head">
+              <span data-i18n="columns.title">Columnas</span>
+              <div class="column-menu-tools">
+                <div class="view-actions">
+                  <button type="button" class="arrow-btn active" id="wLangToggle" title="Idioma del comentario">ES</button>
+                  <button type="button" class="arrow-btn lemma-toggle-all" id="lemmaExpandAll" title="Expandir/Colapsar lemas" hidden>+</button>
+                </div>
+                <button type="button" class="column-reset-btn" id="columnResetBtn" data-i18n="columns.reset">Restablecer</button>
+              </div>
+            </div>
+            <div class="column-control-list" id="columnControlList"></div>
           </div>
         </div>
       </div><!-- /.sticky-band -->
@@ -341,6 +362,7 @@
                   <span data-i18n="table.header.comentario">Comentario</span>
                   <div class="header-actions">
                     <button type="button" class="arrow-btn sort-btn" data-sort-field="Comentario">⇅</button>
+                    <button type="button" class="arrow-btn comentario-toggle-all" id="comentarioExpandAll" title="Expandir/Colapsar comentarios">+</button>
                   </div>
                 </div>
               </th>

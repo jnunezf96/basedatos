@@ -5,6 +5,9 @@ const TABLE_FIELDS = [
   { key: "Fuente", label: "Fuente", defaultWidth: 120 },
   { key: "Comentario", label: "Comentario", defaultWidth: 260 }
 ];
+const DEFAULT_COLUMN_ORDER = TABLE_FIELDS.map(field => field.key);
+const COLUMN_CONTROL_ORDER = DEFAULT_COLUMN_ORDER.slice();
+const DEFAULT_COLUMN_WIDTHS = new Map(TABLE_FIELDS.map(field => [field.key, field.defaultWidth]));
 const TABLE_MIN_WIDTH = 908;
 
 const I18N = {
@@ -58,10 +61,15 @@ const I18N = {
     "rx.star1": "1 o más letras",
     "rx.star2": "2 o más letras",
     "rx.range": "2 a 4 letras",
+    "rx.optional.literal": "cero o una i",
+    "rx.grapheme.note": "En Edición, Original y Comentario, ? cuenta ch/tz/qu/etc. como un grafema",
     "rx.alternatives": "Alternativas",
     "rx.alt.group": "pato <em>o</em> pata",
     "rx.alt.pipe": "equivalente (nivel superior)",
     "rx.alt.escape": "barra literal",
+    "rx.escape.meta": "signos literales",
+    "rx.alt.wildcard.after": "c/qu + letras",
+    "rx.phrase.exact": "frase exacta",
     "rx.templates": "Plantillas C/V",
     "rx.cv.c": "consonante",
     "rx.cv.v": "vocal",
@@ -85,6 +93,8 @@ const I18N = {
     "rx.reduplication": "Reduplicación",
     "rx.redup.desc": "→ <em>pe</em>pech… (hasta 1ª vocal)",
     "rx.redup.ex2": "→ <em>tla</em>tlal…",
+    "rx.repeat.same.grapheme": "mismo grafema repetido",
+    "rx.repeat.same.cv": "misma sílaba CV repetida",
     "rx.literal": "Regex literal",
     "rx.lit.desc": "expresión completa entre <code>/</code>",
     "rx.lit.flags": "admite flags: i g m…",
@@ -198,6 +208,16 @@ const I18N = {
     "chips.zone.or": "O",
     "table.pagesize.label": "Filas:",
     "table.columns": "Cols ▾",
+    "columns.title": "Columnas",
+    "columns.reset": "Restablecer",
+    "columns.show": "Mostrar",
+    "columns.hide": "Ocultar",
+    "columns.visible": "Visible",
+    "columns.hidden": "Oculta",
+    "columns.moveLeft": "Mover a la izquierda",
+    "columns.moveRight": "Mover a la derecha",
+    "columns.narrower": "Más estrecha",
+    "columns.wider": "Más ancha",
     "view.rows": "Filas",
     "view.lemmas": "Lemas",
     "view.lemmas.summary": "Lemas: {{lemmas}} (de {{rows}} filas)",
@@ -254,10 +274,15 @@ const I18N = {
     "rx.star1": "1 or more letters",
     "rx.star2": "2 or more letters",
     "rx.range": "2 to 4 letters",
+    "rx.optional.literal": "zero or one i",
+    "rx.grapheme.note": "In Edición, Original, and Comment, ? counts ch/tz/qu/etc. as one grapheme",
     "rx.alternatives": "Alternatives",
     "rx.alt.group": "pato <em>or</em> pata",
     "rx.alt.pipe": "equivalent (top level)",
     "rx.alt.escape": "literal pipe",
+    "rx.escape.meta": "literal signs",
+    "rx.alt.wildcard.after": "c/qu + letters",
+    "rx.phrase.exact": "exact phrase",
     "rx.templates": "C/V Templates",
     "rx.cv.c": "consonant",
     "rx.cv.v": "vowel",
@@ -281,6 +306,8 @@ const I18N = {
     "rx.reduplication": "Reduplication",
     "rx.redup.desc": "→ <em>pe</em>pech… (up to first vowel)",
     "rx.redup.ex2": "→ <em>tla</em>tlal…",
+    "rx.repeat.same.grapheme": "same grapheme repeated",
+    "rx.repeat.same.cv": "same CV syllable repeated",
     "rx.literal": "Literal regex",
     "rx.lit.desc": "full expression between <code>/</code>",
     "rx.lit.flags": "supports flags: i g m…",
@@ -394,6 +421,16 @@ const I18N = {
     "chips.zone.or": "OR",
     "table.pagesize.label": "Rows:",
     "table.columns": "Cols ▾",
+    "columns.title": "Columns",
+    "columns.reset": "Reset",
+    "columns.show": "Show",
+    "columns.hide": "Hide",
+    "columns.visible": "Visible",
+    "columns.hidden": "Hidden",
+    "columns.moveLeft": "Move left",
+    "columns.moveRight": "Move right",
+    "columns.narrower": "Narrower",
+    "columns.wider": "Wider",
     "view.rows": "Rows",
     "view.lemmas": "Lemmas",
     "view.lemmas.summary": "Lemmas: {{lemmas}} (of {{rows}} rows)",
@@ -472,7 +509,7 @@ let sortKeys = []; // [{field, dir}]
 let sortScope = "all"; // "all" | "page"
 const hiddenColumns = new Set();
 const expandedLemmas = new Set();
-const columnWidths = new Map(TABLE_FIELDS.map(field => [field.key, field.defaultWidth]));
+const columnWidths = new Map(DEFAULT_COLUMN_WIDTHS);
 const alphaNumCollator = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
 const emptyBrowseSeed = (() => {
   try {
@@ -502,6 +539,8 @@ let lastLemmaPageOffsets = [0];
 
 document.addEventListener("DOMContentLoaded", () => {
   loadColumnState();
+  syncHeaderOrderToTableFields();
+  syncFieldPillOrder();
   setupLanguageToggle();
   setupOldSpanishToggle();
   setupAccentToggle();
@@ -532,7 +571,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSortIndicators();
   setupPaginationControls();
   setupPageSizeControls();
-  setupColumnZoneInteractions();
+  setupColumnControls();
   setupStickyHeaderTable();
   setupComentarioToggleAll();
   setupLemmaToggleAll();
@@ -608,6 +647,7 @@ function applyTranslations() {
 function refreshLanguageDependentUI() {
   const y = getTableScrollTop();
   updateAccentLabels();
+  renderColumnControls();
   if (!dataRows || !dataRows.length) {
     setStatus(t("table.status.loading"));
     return;
@@ -1824,6 +1864,241 @@ function loadColumnState() {
   }
 }
 
+function syncHeaderOrderToTableFields() {
+  const headerRow = document.querySelector("#dataTable thead.col-headers tr");
+  if (!headerRow) return;
+
+  const headerByKey = new Map(
+    Array.from(headerRow.querySelectorAll("th[data-field]")).map(th => [th.dataset.field, th])
+  );
+  TABLE_FIELDS.forEach(field => {
+    const th = headerByKey.get(field.key);
+    if (th) headerRow.appendChild(th);
+  });
+}
+
+function getColumnHeaderOrder() {
+  const headerFields = Array.from(document.querySelectorAll("#dataTable thead.col-headers th[data-field]"))
+    .map(th => th.dataset.field)
+    .filter(Boolean);
+  return headerFields.length ? headerFields : TABLE_FIELDS.map(field => field.key);
+}
+
+function syncFieldPillOrder() {
+  const order = new Map(getColumnHeaderOrder().map((fieldKey, idx) => [fieldKey, idx]));
+  document.querySelectorAll(".field-group").forEach(group => {
+    const buttons = Array.from(group.querySelectorAll(".field-btn"));
+    buttons
+      .sort((a, b) => {
+        const aIdx = order.has(a.dataset.field) ? order.get(a.dataset.field) : Number.MAX_SAFE_INTEGER;
+        const bIdx = order.has(b.dataset.field) ? order.get(b.dataset.field) : Number.MAX_SAFE_INTEGER;
+        return aIdx - bIdx;
+      })
+      .forEach(btn => group.appendChild(btn));
+  });
+}
+
+function ensureColumnHiddenStyles() {
+  if (document.getElementById("colHiddenStyleTag")) return;
+  const style = document.createElement("style");
+  style.id = "colHiddenStyleTag";
+  TABLE_FIELDS.forEach((_, idx) => {
+    style.textContent += `#dataTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
+      `#dataTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
+      `#dataTable.col-hidden-${idx} td:nth-child(${idx + 1}) { display: none; }\n`;
+  });
+  document.head.appendChild(style);
+}
+
+function setupColumnControls() {
+  ensureColumnHiddenStyles();
+
+  const btn = document.getElementById("columnMenuBtn");
+  const dropdown = document.getElementById("columnMenuDropdown");
+  const resetBtn = document.getElementById("columnResetBtn");
+  if (!btn || !dropdown) return;
+
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    document.getElementById("exportMenuDropdown")?.classList.remove("open");
+    dropdown.classList.toggle("open");
+    renderColumnControls();
+  });
+
+  dropdown.addEventListener("click", e => {
+    e.stopPropagation();
+  });
+
+  document.addEventListener("click", e => {
+    if (!dropdown.contains(e.target) && e.target !== btn) {
+      dropdown.classList.remove("open");
+    }
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") dropdown.classList.remove("open");
+  });
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => resetColumnControls());
+  }
+
+  renderColumnControls();
+}
+
+function renderColumnControls() {
+  const list = document.getElementById("columnControlList");
+  const btn = document.getElementById("columnMenuBtn");
+  const dropdown = document.getElementById("columnMenuDropdown");
+  const resetBtn = document.getElementById("columnResetBtn");
+
+  if (btn) btn.title = t("columns.title");
+  if (dropdown) dropdown.setAttribute("aria-label", t("columns.title"));
+  if (resetBtn) resetBtn.textContent = t("columns.reset");
+  if (!list) return;
+
+  list.innerHTML = "";
+  const visibleCount = TABLE_FIELDS.filter(field => !hiddenColumns.has(field.key)).length;
+  const controlFields = getColumnControlFields();
+
+  controlFields.forEach(field => {
+    const idx = TABLE_FIELDS.findIndex(entry => entry.key === field.key);
+    const row = document.createElement("div");
+    row.className = "column-control-row";
+    row.dataset.field = field.key;
+
+    const visible = !hiddenColumns.has(field.key);
+    const canHide = visibleCount > 1 && !(tableViewMode === "lemmas" && field.key === "Texto estandarizado");
+    const check = document.createElement("input");
+    check.type = "checkbox";
+    check.className = "column-visible-check";
+    check.checked = visible;
+    check.disabled = visible && !canHide;
+    check.setAttribute("aria-label", t("columns.visible"));
+    check.addEventListener("change", () => setColumnVisible(field.key, check.checked));
+    row.appendChild(check);
+
+    const label = document.createElement("label");
+    label.className = "column-control-label";
+    const labelKey = getFieldI18nKey(field.key);
+    label.textContent = labelKey ? t(labelKey) : field.label;
+    label.addEventListener("click", () => {
+      if (check.disabled) return;
+      check.checked = !check.checked;
+      setColumnVisible(field.key, check.checked);
+    });
+    row.appendChild(label);
+
+    const actions = document.createElement("div");
+    actions.className = "column-row-actions";
+
+    const orderGroup = document.createElement("div");
+    orderGroup.className = "column-action-set";
+    orderGroup.appendChild(buildColumnIconButton("←", "columns.moveLeft", idx === 0, () => {
+      moveColumnByStep(field.key, -1);
+    }));
+    orderGroup.appendChild(buildColumnIconButton("→", "columns.moveRight", idx === TABLE_FIELDS.length - 1, () => {
+      moveColumnByStep(field.key, 1);
+    }));
+    actions.appendChild(orderGroup);
+
+    const width = getColumnWidth(field.key);
+    const widthGroup = document.createElement("div");
+    widthGroup.className = "column-action-set";
+    widthGroup.appendChild(buildColumnIconButton("−", "columns.narrower", width <= 70, () => {
+      adjustColumnWidth(field.key, -20);
+    }));
+    widthGroup.appendChild(buildColumnIconButton("+", "columns.wider", width >= 520, () => {
+      adjustColumnWidth(field.key, 20);
+    }));
+    actions.appendChild(widthGroup);
+
+    row.appendChild(actions);
+
+    list.appendChild(row);
+  });
+}
+
+function getColumnControlFields() {
+  const byKey = new Map(TABLE_FIELDS.map(field => [field.key, field]));
+  const ordered = COLUMN_CONTROL_ORDER.map(key => byKey.get(key)).filter(Boolean);
+  TABLE_FIELDS.forEach(field => {
+    if (!ordered.includes(field)) ordered.push(field);
+  });
+  return ordered;
+}
+
+function buildColumnIconButton(text, labelKey, disabled, onClick) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "column-icon-btn";
+  btn.textContent = text;
+  btn.title = t(labelKey);
+  btn.setAttribute("aria-label", t(labelKey));
+  btn.disabled = disabled;
+  btn.addEventListener("click", onClick);
+  return btn;
+}
+
+function applyColumnControlStateChange({ renderRows = true } = {}) {
+  const y = getTableScrollTop();
+  syncHeaderOrderToTableFields();
+  syncFieldPillOrder();
+  syncColumnLayout();
+  if (renderRows) renderTable(lastRenderRows, lastRenderTotal);
+  updateSortIndicators();
+  renderColumnControls();
+  requestAnimationFrame(() => setTableScroll(y));
+  saveColumnState();
+}
+
+function setColumnVisible(fieldKey, nextVisible) {
+  if (!nextVisible) {
+    if (tableViewMode === "lemmas" && fieldKey === "Texto estandarizado") {
+      renderColumnControls();
+      return;
+    }
+    const visibleCount = TABLE_FIELDS.filter(field => !hiddenColumns.has(field.key)).length;
+    if (visibleCount <= 1) {
+      renderColumnControls();
+      return;
+    }
+    hiddenColumns.add(fieldKey);
+  } else {
+    hiddenColumns.delete(fieldKey);
+  }
+  sortKeys = sortKeys.filter(key => !hiddenColumns.has(key.field));
+  applyColumnControlStateChange();
+}
+
+function moveColumnByStep(fieldKey, step) {
+  const idx = TABLE_FIELDS.findIndex(field => field.key === fieldKey);
+  const nextIdx = idx + step;
+  if (idx < 0 || nextIdx < 0 || nextIdx >= TABLE_FIELDS.length) return;
+  moveColumn(fieldKey, TABLE_FIELDS[nextIdx].key);
+  renderColumnControls();
+}
+
+function adjustColumnWidth(fieldKey, delta) {
+  const next = Math.max(70, Math.min(520, getColumnWidth(fieldKey) + delta));
+  columnWidths.set(fieldKey, next);
+  applyColumnControlStateChange({ renderRows: false });
+}
+
+function resetColumnControls() {
+  const byKey = new Map(TABLE_FIELDS.map(field => [field.key, field]));
+  const ordered = COLUMN_CONTROL_ORDER.map(key => byKey.get(key)).filter(Boolean);
+  if (ordered.length === TABLE_FIELDS.length) {
+    TABLE_FIELDS.length = 0;
+    ordered.forEach(field => TABLE_FIELDS.push(field));
+  }
+  hiddenColumns.clear();
+  columnWidths.clear();
+  DEFAULT_COLUMN_WIDTHS.forEach((width, key) => columnWidths.set(key, width));
+  sortKeys = sortKeys.filter(key => TABLE_FIELDS.some(field => field.key === key.field));
+  applyColumnControlStateChange();
+}
+
 function syncColumnLayout() {
   const visibleWidth = TABLE_FIELDS.reduce((sum, field, idx) => {
     return hiddenColumns.has(field.key) ? sum : sum + getColumnWidth(field.key);
@@ -1848,7 +2123,6 @@ function syncColumnLayout() {
     table.style.width = "100%";
     table.style.minWidth = `${minWidth}px`;
   }
-  updateSideLitState();
 }
 
 function setupStickyHeaderTable() {
@@ -2210,35 +2484,40 @@ function setupSortControls() {
   const buttons = document.querySelectorAll("#dataTable .sort-btn");
   buttons.forEach(btn => {
     btn.addEventListener("click", e => {
+      e.stopPropagation();
       const field = btn.dataset.sortField;
       if (!field) return;
-      const y = getTableScrollTop();
-      if (e.shiftKey) {
-        // Shift+click: add/cycle/remove as secondary/tertiary key
-        const idx = sortKeys.findIndex(k => k.field === field);
-        if (idx === -1) {
-          sortKeys.push({ field, dir: "asc" });
-        } else if (sortKeys[idx].dir === "asc") {
-          sortKeys[idx].dir = "desc";
-        } else {
-          sortKeys.splice(idx, 1);
-        }
-      } else {
-        // Plain click: single-field sort, cycle asc→desc→off
-        if (sortKeys.length === 1 && sortKeys[0].field === field) {
-          if (sortKeys[0].dir === "asc") {
-            sortKeys = [{ field, dir: "desc" }];
-          } else {
-            sortKeys = [];
-          }
-        } else {
-          sortKeys = [{ field, dir: "asc" }];
-        }
-      }
-      applyFilters(false, { keepOffset: true, keepCurrent: true, restoreScroll: y });
-      updateSortIndicators();
+      cycleSortField(field, e.shiftKey);
     });
   });
+}
+
+function cycleSortField(field, additive = false) {
+  const y = getTableScrollTop();
+  if (additive) {
+    // Shift+click: add/cycle/remove as secondary/tertiary key
+    const idx = sortKeys.findIndex(k => k.field === field);
+    if (idx === -1) {
+      sortKeys.push({ field, dir: "asc" });
+    } else if (sortKeys[idx].dir === "asc") {
+      sortKeys[idx].dir = "desc";
+    } else {
+      sortKeys.splice(idx, 1);
+    }
+  } else {
+    // Plain click: single-field sort, cycle asc→desc→off
+    if (sortKeys.length === 1 && sortKeys[0].field === field) {
+      if (sortKeys[0].dir === "asc") {
+        sortKeys = [{ field, dir: "desc" }];
+      } else {
+        sortKeys = [];
+      }
+    } else {
+      sortKeys = [{ field, dir: "asc" }];
+    }
+  }
+  applyFilters(false, { keepOffset: true, keepCurrent: true, restoreScroll: y });
+  updateSortIndicators();
 }
 
 function applyManualSort(arr, keys) {
@@ -2378,7 +2657,12 @@ function setupExportButtons() {
 
   btn.addEventListener("click", e => {
     e.stopPropagation();
+    document.getElementById("columnMenuDropdown")?.classList.remove("open");
     dropdown.classList.toggle("open");
+  });
+
+  dropdown.addEventListener("click", e => {
+    e.stopPropagation();
   });
 
   document.addEventListener("click", e => {
@@ -2720,7 +3004,7 @@ function buildOsHighlightRegex(filters) {
     const rawVal = (filter.value ?? "").trim();
     if (/^\/(.+)\/([gimsuy]*)$/.test(rawVal)) return;
     if (rawVal.startsWith("(") && rawVal.includes("||")) return;
-    const parsed = parseFilterValue(rawVal, filter.mode);
+    const parsed = parseFilterValue(rawVal, filter.mode, { field: filter.field });
     if (!parsed || parsed.hasRegex || parsed.hasWildcards) return;
     const literal = parsed.strict || parsed.loose;
     if (!literal) return;
@@ -2782,12 +3066,12 @@ function buildHighlightRegex(filters) {
     if (andParts && andParts.length) {
       if (accentSensitiveMode) isAccentSensitive = true;
       andParts.forEach(p => {
-        const expanded = convertWildcardPatternAllowRegex(expandVCPlaceholders(p));
+        const expanded = convertWildcardPatternAllowRegex(expandVCPlaceholders(p), { field: filter.field });
         if (expanded) sources.push(accentSensitiveMode ? expanded : normalizePatternSource(expanded));
       });
       return;
     }
-    const parsed = parseFilterValue(filter.value ?? "", filter.mode);
+    const parsed = parseFilterValue(filter.value ?? "", filter.mode, { field: filter.field });
     if (parsed.accentSensitive) isAccentSensitive = true;
     let rx = parsed.strictRegex || parsed.looseRegex;
     if (!rx) {
@@ -3195,6 +3479,7 @@ function setViewMode(next) {
     syncColumnLayout();
   }
   updateViewToggleButtons();
+  renderColumnControls();
   applyFilters();
 }
 
@@ -3737,231 +4022,9 @@ function moveColumn(srcKey, dstKey) {
   }
 
   const y = getTableScrollTop();
+  syncFieldPillOrder();
   syncColumnLayout();
   renderTable(lastRenderRows, lastRenderTotal);
   requestAnimationFrame(() => setTableScroll(y));
   saveColumnState();
 }
-
-// ── Zone-based header interactions ──────────────────────────────
-// Left/right edges: drag=resize, click=show adjacent hidden run.
-// Top/bottom bands: drag=reorder, click=hide (circular: last hide restores all).
-const ZONE_EDGE_PX = 6;
-const ZONE_BAND_PX = 8;
-const DRAG_THRESHOLD_PX = 4;
-
-function computeZone(th, clientX, clientY) {
-  const rect = th.getBoundingClientRect();
-  const x = clientX - rect.left;
-  const y = clientY - rect.top;
-  if (x < ZONE_EDGE_PX) return "left";
-  if (x > rect.width - ZONE_EDGE_PX) return "right";
-  if (y < ZONE_BAND_PX) return "top";
-  if (y > rect.height - ZONE_BAND_PX) return "bottom";
-  return "body";
-}
-
-function getHiddenRun(key, side) {
-  const idx = TABLE_FIELDS.findIndex(f => f.key === key);
-  if (idx < 0) return [];
-  const step = side === "left" ? -1 : 1;
-  const run = [];
-  for (let i = idx + step; i >= 0 && i < TABLE_FIELDS.length; i += step) {
-    const k = TABLE_FIELDS[i].key;
-    if (!hiddenColumns.has(k)) break;
-    run.push(k);
-  }
-  return run;
-}
-
-function hideColumnCircular(key) {
-  if (tableViewMode === "lemmas" && key === "Texto estandarizado") return;
-  const total = TABLE_FIELDS.length;
-  const willBeHidden = hiddenColumns.size + (hiddenColumns.has(key) ? 0 : 1);
-  const y = getTableScrollTop();
-  if (willBeHidden >= total) {
-    hiddenColumns.clear();
-  } else {
-    hiddenColumns.add(key);
-  }
-  sortKeys = sortKeys.filter(k => !hiddenColumns.has(k.field));
-  syncColumnLayout();
-  renderTable(lastRenderRows, lastRenderTotal);
-  requestAnimationFrame(() => setTableScroll(y));
-  saveColumnState();
-}
-
-function showHiddenRun(key, side) {
-  const run = getHiddenRun(key, side);
-  if (!run.length) return;
-  run.forEach(k => hiddenColumns.delete(k));
-  const y = getTableScrollTop();
-  saveColumnState();
-  syncColumnLayout();
-  renderTable(lastRenderRows, lastRenderTotal);
-  requestAnimationFrame(() => setTableScroll(y));
-}
-
-function updateSideLitState() {
-  const headerRow = document.querySelector("#dataTable thead tr");
-  if (!headerRow) return;
-  const visible = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key));
-  const firstVisibleKey = visible.length ? visible[0].key : null;
-  const lastVisibleKey = visible.length ? visible[visible.length - 1].key : null;
-  TABLE_FIELDS.forEach(field => {
-    const th = headerRow.querySelector(`th[data-field="${CSS.escape(field.key)}"]`);
-    if (!th) return;
-    if (hiddenColumns.has(field.key)) {
-      th.classList.remove("th-left-lit", "th-right-lit", "th-edge-outer-left", "th-edge-outer-right");
-      return;
-    }
-    th.classList.toggle("th-left-lit", getHiddenRun(field.key, "left").length > 0);
-    th.classList.toggle("th-right-lit", getHiddenRun(field.key, "right").length > 0);
-    th.classList.toggle("th-edge-outer-left", field.key === firstVisibleKey);
-    th.classList.toggle("th-edge-outer-right", field.key === lastVisibleKey);
-  });
-}
-
-function setupColumnZoneInteractions() {
-  if (!document.getElementById("colHiddenStyleTag")) {
-    const style = document.createElement("style");
-    style.id = "colHiddenStyleTag";
-    TABLE_FIELDS.forEach((_, idx) => {
-      style.textContent += `#dataTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
-        `#dataTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
-        `#dataTable.col-hidden-${idx} td:nth-child(${idx + 1}) { display: none; }\n`;
-    });
-    document.head.appendChild(style);
-  }
-
-  const headerTable = getHeaderTable();
-  if (!headerTable) return;
-  const ths = headerTable.querySelectorAll("thead th[data-field]");
-
-  ths.forEach(th => {
-    th.addEventListener("mousemove", e => {
-      if (e.buttons) return;
-      if (e.target.closest("button, input, a")) {
-        th.classList.remove("th-hover-left", "th-hover-right", "th-hover-top", "th-hover-bottom", "th-hover-body");
-        return;
-      }
-      const zone = computeZone(th, e.clientX, e.clientY);
-      th.classList.remove("th-hover-left", "th-hover-right", "th-hover-top", "th-hover-bottom", "th-hover-body");
-      th.classList.add(`th-hover-${zone}`);
-    });
-    th.addEventListener("mouseleave", () => {
-      th.classList.remove("th-hover-left", "th-hover-right", "th-hover-top", "th-hover-bottom", "th-hover-body");
-    });
-
-    th.addEventListener("mousedown", e => {
-      if (e.button !== 0) return;
-      if (e.target.closest("button, input, a")) return;
-      const zone = computeZone(th, e.clientX, e.clientY);
-      if (zone === "body") return;
-      e.preventDefault();
-
-      const startX = e.clientX;
-      const startY = e.clientY;
-      const srcKey = th.dataset.field;
-      let dragStarted = false;
-
-      // Split-pane resize: dragging a border shrinks one neighbor and grows the
-      // other by the same amount; outer edges of the table stay fixed, so table
-      // total width is invariant. Both neighbors must be visible; otherwise no-op.
-      let leftKey = null;
-      let rightKey = null;
-      let startLeftWidth = 0;
-      let startRightWidth = 0;
-      const idx = TABLE_FIELDS.findIndex(f => f.key === srcKey);
-      if (zone === "left" || zone === "right") {
-        if (zone === "right") {
-          leftKey = srcKey;
-          let nextIdx = idx + 1;
-          while (nextIdx < TABLE_FIELDS.length && hiddenColumns.has(TABLE_FIELDS[nextIdx].key)) nextIdx++;
-          if (nextIdx < TABLE_FIELDS.length) rightKey = TABLE_FIELDS[nextIdx].key;
-        } else {
-          rightKey = srcKey;
-          let prevIdx = idx - 1;
-          while (prevIdx >= 0 && hiddenColumns.has(TABLE_FIELDS[prevIdx].key)) prevIdx--;
-          if (prevIdx >= 0) leftKey = TABLE_FIELDS[prevIdx].key;
-        }
-        if (leftKey && rightKey) {
-          startLeftWidth = getColumnWidth(leftKey);
-          startRightWidth = getColumnWidth(rightKey);
-        } else {
-          leftKey = null;
-          rightKey = null;
-        }
-      }
-
-      function clearDropTargets() {
-        headerTable.querySelectorAll(".col-drop-target")
-          .forEach(el => el.classList.remove("col-drop-target"));
-      }
-
-      function onMove(ev) {
-        const dx = ev.clientX - startX;
-        const dy = ev.clientY - startY;
-        const moved = Math.hypot(dx, dy) > DRAG_THRESHOLD_PX;
-
-        if (zone === "left" || zone === "right") {
-          if (!moved) return;
-          dragStarted = true;
-          if (!leftKey || !rightKey) return; // outer edges: no-op
-          const MIN = 50;
-          const totalPair = startLeftWidth + startRightWidth;
-          let newLeft = startLeftWidth + dx;
-          if (newLeft < MIN) newLeft = MIN;
-          if (newLeft > totalPair - MIN) newLeft = totalPair - MIN;
-          const newRight = totalPair - newLeft;
-          columnWidths.set(leftKey, newLeft);
-          columnWidths.set(rightKey, newRight);
-          syncColumnLayout();
-          return;
-        }
-
-        if (zone === "top" || zone === "bottom") {
-          if (!moved) return;
-          dragStarted = true;
-          clearDropTargets();
-          const under = document.elementFromPoint(ev.clientX, ev.clientY);
-          const dstTh = under && under.closest("#dataTable thead th");
-          if (dstTh && dstTh.dataset.field && dstTh.dataset.field !== srcKey) {
-            dstTh.classList.add("col-drop-target");
-          }
-        }
-      }
-
-      function onUp(ev) {
-        window.removeEventListener("mousemove", onMove);
-        window.removeEventListener("mouseup", onUp);
-
-        if (!dragStarted) {
-          if (zone === "top" || zone === "bottom") {
-            hideColumnCircular(srcKey);
-          } else if (zone === "left" || zone === "right") {
-            showHiddenRun(srcKey, zone);
-          }
-          return;
-        }
-
-        if (zone === "top" || zone === "bottom") {
-          const under = document.elementFromPoint(ev.clientX, ev.clientY);
-          const dstTh = under && under.closest("#dataTable thead th");
-          clearDropTargets();
-          if (dstTh && dstTh.dataset.field && dstTh.dataset.field !== srcKey) {
-            moveColumn(srcKey, dstTh.dataset.field);
-          }
-        } else if (zone === "left" || zone === "right") {
-          saveColumnState();
-        }
-      }
-
-      window.addEventListener("mousemove", onMove);
-      window.addEventListener("mouseup", onUp);
-    });
-  });
-
-  syncColumnLayout();
-}
-

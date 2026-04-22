@@ -119,8 +119,17 @@ function getNormalizedValue(row, field) {
   return getNormalizedEntry(row, field).normalized;
 }
 
+const LETTER_WILDCARD_PATTERN = "[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]";
+const NAHUATL_GRAPHEME_DIGRAPHS = "ch|tz|hu|uh|qu|cu|uc|ll|rr|gu";
+const NAHUATL_GRAPHEME_PATTERN = `(?:${NAHUATL_GRAPHEME_DIGRAPHS}|(?!${NAHUATL_GRAPHEME_DIGRAPHS})[A-Za-z\u00C0-\u024F\u1E00-\u1EFF])`;
+const NAHUATL_GRAPHEME_FIELDS = new Set(["Texto estandarizado", "Escritura original", "Comentario"]);
+
+function getWildcardUnit(options = {}) {
+  return NAHUATL_GRAPHEME_FIELDS.has(options.field) ? NAHUATL_GRAPHEME_PATTERN : LETTER_WILDCARD_PATTERN;
+}
+
 function buildFilterQuery(filter) {
-  const query = parseFilterValue(filter.value ?? "", filter.mode);
+  const query = parseFilterValue(filter.value ?? "", filter.mode, { field: filter?.field });
   if (filter && filter.strictCompare) {
     query.allowLoose = false;
   }
@@ -153,7 +162,7 @@ function expandVCPlaceholders(value) {
     const ch = value[i];
     if (ch === "\\") {
       if (i + 1 < value.length) {
-        out += value[i + 1];
+        out += ch + value[i + 1];
         i += 2;
       } else {
         out += ch;
@@ -169,9 +178,9 @@ function expandVCPlaceholders(value) {
         continue;
       }
       const inner = value.slice(i + 1, end);
-      // Pass numeric quantifiers like {2}, {2,4}, {2,} straight through
-      if (/^\d+(,\d*)?$/.test(inner)) {
-        out += `{${inner}}`;
+      // Pass numeric quantifiers like {2}, {2,4}, {2,}; accept ":" as ",".
+      if (/^\d+([,:]\d*)?$/.test(inner)) {
+        out += `{${inner.replace(":", ",")}}`;
         i = end + 1;
         continue;
       }
@@ -183,7 +192,7 @@ function expandVCPlaceholders(value) {
         if (!expansion) return m;
         return optional ? `${expansion}?` : expansion;
       });
-      out += `(${expanded})`;
+      out += `(?:${expanded})`;
       i = end + 1;
       continue;
     }
@@ -193,7 +202,7 @@ function expandVCPlaceholders(value) {
   return out;
 }
 
-function expandReduplication(value) {
+function expandReduplication(value, options = {}) {
   if (!value) return null;
   const trimmed = value.replace(/^-+/, "").replace(/-+$/, "");
   if (!trimmed || !trimmed.startsWith("+")) return null;
@@ -212,11 +221,11 @@ function expandReduplication(value) {
   if (!prefix) prefix = base.slice(0, 1);
   const rest = base.slice(prefix.length);
   const escPrefix = escapeRegexCharacter(prefix);
-  const restBody = convertWildcardPatternAllowRegex(expandVCPlaceholders(rest));
+  const restBody = convertWildcardPatternAllowRegex(expandVCPlaceholders(rest), options);
   return `(?:${escPrefix}){2}${restBody}`;
 }
 
-function parseFilterValue(rawValue, mode) {
+function parseFilterValue(rawValue, mode, options = {}) {
   const cleaned = rawValue == null ? "" : String(rawValue);
   const literalRegex = cleaned.match(/^\/(.+)\/([gimsuy]*)$/);
   if (literalRegex) {
@@ -260,7 +269,7 @@ function parseFilterValue(rawValue, mode) {
     let m = mode;
     let text = part;
     const leading = text.startsWith("-");
-    const trailing = text.endsWith("-");
+    const trailing = text.endsWith("-") && !isEscapedAt(text, text.length - 1);
     if (m === "exact") {
       if (leading && trailing && text.length > 2) {
         m = "any";
@@ -284,22 +293,28 @@ function parseFilterValue(rawValue, mode) {
       text = queryHasAccents ? text.normalize("NFC").toLowerCase() : normalizeString(text);
     }
 
+    const phraseBody = buildQuotedPhrase(text);
+    if (phraseBody) {
+      bodies.push({ body: phraseBody, mode: m });
+      return;
+    }
+
     const expandedVC = expandVCPlaceholders(text);
-    const containsBoth = buildContainsBoth(expandedVC);
+    const containsBoth = buildContainsBoth(expandedVC, options);
     if (containsBoth) {
       bodies.push({ body: containsBoth, mode: m });
       return;
     }
-    const redup = expandReduplication(expandedVC);
+    const redup = expandReduplication(expandedVC, options);
     if (redup) {
       bodies.push({ body: redup, mode: m });
       return;
     }
     if (/[()[\]|]/.test(expandedVC)) {
-      bodies.push({ body: convertWildcardPatternAllowRegex(expandedVC), mode: m });
+      bodies.push({ body: convertWildcardPatternAllowRegex(expandedVC, options), mode: m });
       return;
     }
-    bodies.push({ body: convertWildcardPattern(expandedVC), mode: m });
+    bodies.push({ body: convertWildcardPattern(expandedVC, options), mode: m });
   });
 
   if (bodies.length) {
@@ -337,8 +352,8 @@ function parseFilterValue(rawValue, mode) {
   const loose = collapseWhitespace(stripPunctuationCharacters(withoutTags));
   const hasWildcards = /[*?]/.test(val);
   const allowLoose = !hasFormattingCharacters(val);
-  const strictRegex = hasWildcards ? createWildcardRegex(strict, mode) : null;
-  const looseRegex = hasWildcards ? createWildcardRegex(loose, mode) : null;
+  const strictRegex = hasWildcards ? createWildcardRegex(strict, mode, options) : null;
+  const looseRegex = hasWildcards ? createWildcardRegex(loose, mode, options) : null;
 
   return {
     strict,
@@ -353,70 +368,61 @@ function parseFilterValue(rawValue, mode) {
 }
 
 function splitAlternatives(str) {
-  const parts = [];
-  let buf = "";
-  let depth = 0;
-  let escape = false;
-  for (let i = 0; i < str.length; i++) {
-    const ch = str[i];
-    if (escape) {
-      buf += ch;
-      escape = false;
-      continue;
-    }
-    if (ch === "\\") {
-      buf += ch;
-      escape = true;
-      continue;
-    }
-    if (ch === "(") {
-      depth++;
-      buf += ch;
-      continue;
-    }
-    if (ch === ")" && depth > 0) {
-      depth--;
-      buf += ch;
-      continue;
-    }
-    if (ch === "|" && depth === 0) {
-      if (buf.trim()) parts.push(buf.replace(/\\\|/g, "|").trim());
-      buf = "";
-      continue;
-    }
-    buf += ch;
-  }
-  if (buf.trim()) parts.push(buf.replace(/\\\|/g, "|").trim());
-  return parts;
+  return splitTopLevel(str, "|");
 }
 
-function convertWildcardPattern(value) {
-  const letter = "[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]";
+function buildQuotedPhrase(value) {
+  if (!isQuoted(value)) return null;
+  const phrase = unquote(value);
+  if (!phrase) return null;
+  return escapeRegexCharacter(phrase).replace(/\s+/g, "\\s+");
+}
+
+function isQuoted(value) {
+  return value.length >= 2 && value[0] === "\"" && value[value.length - 1] === "\"" && !isEscapedAt(value, value.length - 1);
+}
+
+function unquote(value) {
+  return value.slice(1, -1).replace(/\\(["\\])/g, "$1");
+}
+
+function convertWildcardPattern(value, options = {}) {
+  const unit = getWildcardUnit(options);
   let out = "";
   for (let i = 0; i < value.length; ) {
     const ch = value[i];
+    if (ch === "\\") {
+      if (i + 1 < value.length) {
+        out += escapeRegexCharacter(value[i + 1]);
+        i += 2;
+      } else {
+        out += "\\\\";
+        i++;
+      }
+      continue;
+    }
     if (ch === "?") {
-      const rangeMatch = value.slice(i + 1).match(/^\{(\d+(?:,\d*)?)\}/);
-      if (rangeMatch) {
-        out += `${letter}{${rangeMatch[1]}}`;
-        i += 1 + rangeMatch[0].length;
+      const range = readWildcardRange(value, i + 1);
+      if (range) {
+        out += `${unit}{${range.quantifier}}`;
+        i += 1 + range.raw.length;
         continue;
       }
       let run = 1;
       while (i + run < value.length && value[i + run] === "?") {
         run++;
       }
-      out += `${letter}{${run}}`;
+      out += `${unit}{${run}}`;
       i += run;
       continue;
     }
     if (ch === "*") {
       const nextIsStar = i + 1 < value.length && value[i + 1] === "*";
       if (nextIsStar) {
-        out += `${letter}{2,}`;
+        out += `${unit}{2,}`;
         i += 2;
       } else {
-        out += `${letter}+`;
+        out += `${unit}+`;
         i += 1;
       }
       continue;
@@ -427,31 +433,97 @@ function convertWildcardPattern(value) {
   return out;
 }
 
-function convertWildcardPatternAllowRegex(value) {
-  const letter = "[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]";
+function convertWildcardPatternAllowRegex(value, options = {}) {
+  const unit = getWildcardUnit(options);
   let out = "";
+  let inClass = false;
   for (let i = 0; i < value.length; ) {
     const ch = value[i];
+    if (inClass) {
+      if (ch === "\\") {
+        out += ch;
+        if (i + 1 < value.length) {
+          out += value[i + 1];
+          i += 2;
+        } else {
+          i++;
+        }
+        continue;
+      }
+      out += ch;
+      if (ch === "]") inClass = false;
+      i++;
+      continue;
+    }
+    if (ch === "\\") {
+      if (i + 1 < value.length) {
+        if (/\d/.test(value[i + 1])) {
+          out += `\\${value[i + 1]}`;
+        } else {
+          out += escapeRegexCharacter(value[i + 1]);
+        }
+        i += 2;
+      } else {
+        out += "\\\\";
+        i++;
+      }
+      continue;
+    }
+    if (ch === "[") {
+      inClass = true;
+      out += ch;
+      i++;
+      continue;
+    }
     if (ch === "?") {
+      if (i > 0 && value[i - 1] === ")" && precedingGroupHasAlternatives(value, i - 1)) {
+        const range = readWildcardRange(value, i + 1);
+        if (range) {
+          out += `${unit}{${range.quantifier}}`;
+          i += 1 + range.raw.length;
+          continue;
+        }
+        let run = 1;
+        while (i + run < value.length && value[i + run] === "?") run++;
+        out += `${unit}{${run}}`;
+        i += run;
+        continue;
+      }
       // Regex quantifier context: after ( for (?:...), after ) or ] for optional group/class
-      if (i > 0 && "()[]".includes(value[i - 1])) {
+      if (i > 0 && value[i - 1] === "(" && /[:=!<]/.test(value[i + 1] || "")) {
         out += ch;
         i++;
         continue;
       }
-      const rangeMatch = value.slice(i + 1).match(/^\{(\d+(?:,\d*)?)\}/);
-      if (rangeMatch) {
-        out += `${letter}{${rangeMatch[1]}}`;
-        i += 1 + rangeMatch[0].length;
+      if (i > 0 && ")]".includes(value[i - 1])) {
+        out += ch;
+        i++;
+        continue;
+      }
+      const range = readWildcardRange(value, i + 1);
+      if (range) {
+        out += `${unit}{${range.quantifier}}`;
+        i += 1 + range.raw.length;
         continue;
       }
       let run = 1;
       while (i + run < value.length && value[i + run] === "?") run++;
-      out += `${letter}{${run}}`;
+      out += `${unit}{${run}}`;
       i += run;
       continue;
     }
     if (ch === "*") {
+      if (i > 0 && value[i - 1] === ")" && precedingGroupHasAlternatives(value, i - 1)) {
+        const nextIsStar = i + 1 < value.length && value[i + 1] === "*";
+        if (nextIsStar) {
+          out += `${unit}{2,}`;
+          i += 2;
+        } else {
+          out += `${unit}+`;
+          i += 1;
+        }
+        continue;
+      }
       // Regex quantifier after a group or class — pass through
       if (i > 0 && ")]}".includes(value[i - 1])) {
         out += ch;
@@ -460,10 +532,10 @@ function convertWildcardPatternAllowRegex(value) {
       }
       const nextIsStar = i + 1 < value.length && value[i + 1] === "*";
       if (nextIsStar) {
-        out += `${letter}{2,}`;
+        out += `${unit}{2,}`;
         i += 2;
       } else {
-        out += `${letter}+`;
+        out += `${unit}+`;
         i += 1;
       }
       continue;
@@ -480,13 +552,7 @@ function convertWildcardPatternAllowRegex(value) {
       continue;
     }
     // No escapamos metacaracteres de regex para respetar {}()[]| ya presentes
-    if ("[](){}|".includes(ch)) {
-      out += ch;
-      i++;
-      continue;
-    }
-    // ^ as negation inside a character class [^...]
-    if (ch === "^" && i > 0 && value[i - 1] === "[") {
+    if ("](){}|".includes(ch)) {
       out += ch;
       i++;
       continue;
@@ -497,10 +563,69 @@ function convertWildcardPatternAllowRegex(value) {
   return out;
 }
 
+function isEscapedAt(value, idx) {
+  let slashCount = 0;
+  for (let i = idx - 1; i >= 0 && value[i] === "\\"; i--) {
+    slashCount++;
+  }
+  return slashCount % 2 === 1;
+}
+
+function readWildcardRange(value, startIdx) {
+  const match = value.slice(startIdx).match(/^\{(\d+(?:[,:]\d*)?)\}/);
+  if (!match) return null;
+  return {
+    raw: match[0],
+    quantifier: match[1].replace(":", ",")
+  };
+}
+
+function precedingGroupHasAlternatives(value, closeIdx) {
+  const openIdx = findMatchingGroupOpen(value, closeIdx);
+  if (openIdx === -1) return false;
+  return splitTopLevel(value.slice(openIdx + 1, closeIdx), "|").length > 1;
+}
+
+function findMatchingGroupOpen(value, closeIdx) {
+  const stack = [];
+  let inClass = false;
+  let escape = false;
+  for (let i = 0; i <= closeIdx; i++) {
+    const ch = value[i];
+    if (escape) {
+      escape = false;
+      continue;
+    }
+    if (ch === "\\") {
+      escape = true;
+      continue;
+    }
+    if (inClass) {
+      if (ch === "]") inClass = false;
+      continue;
+    }
+    if (ch === "[") {
+      inClass = true;
+      continue;
+    }
+    if (ch === "(") {
+      stack.push(i);
+      continue;
+    }
+    if (ch === ")") {
+      const openIdx = stack.pop();
+      if (i === closeIdx) return openIdx ?? -1;
+    }
+  }
+  return -1;
+}
+
 function splitTopLevel(str, delimiter) {
   const parts = [];
   let buf = "";
   let depth = 0;
+  let inClass = false;
+  let inQuote = false;
   let escape = false;
   for (let i = 0; i < str.length; i++) {
     const ch = str[i];
@@ -512,6 +637,25 @@ function splitTopLevel(str, delimiter) {
     if (ch === "\\") {
       buf += ch;
       escape = true;
+      continue;
+    }
+    if (ch === "\"") {
+      inQuote = !inQuote;
+      buf += ch;
+      continue;
+    }
+    if (inQuote) {
+      buf += ch;
+      continue;
+    }
+    if (inClass) {
+      if (ch === "]") inClass = false;
+      buf += ch;
+      continue;
+    }
+    if (ch === "[") {
+      inClass = true;
+      buf += ch;
       continue;
     }
     if (ch === "(") {
@@ -533,25 +677,25 @@ function splitTopLevel(str, delimiter) {
     buf += ch;
   }
   parts.push(buf);
-  return parts.map(p => p.replace(/\\\|/g, "|").trim()).filter(Boolean);
+  return parts.map(p => p.trim()).filter(Boolean);
 }
 
-function buildContainsBoth(text) {
+function buildContainsBoth(text, options = {}) {
   if (!text.startsWith("(") || !text.endsWith(")")) return null;
   const inner = text.slice(1, -1);
   if (!inner.includes("||")) return null;
   const parts = splitTopLevel(inner, "||");
   if (parts.length < 2) return null;
   const lookaheads = parts.map(p => {
-    const body = convertWildcardPatternAllowRegex(expandVCPlaceholders(p));
+    const body = convertWildcardPatternAllowRegex(expandVCPlaceholders(p), options);
     return `(?=.*${body})`;
   });
   return `${lookaheads.join("")}.*`;
 }
 
-function createWildcardRegex(value, mode) {
+function createWildcardRegex(value, mode, options = {}) {
   if (!value) return null;
-  const body = convertWildcardPattern(value);
+  const body = convertWildcardPattern(value, options);
   let pattern = body;
   if (mode === "exact") {
     pattern = `^${body}$`;
