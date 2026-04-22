@@ -597,7 +597,15 @@ document.addEventListener("DOMContentLoaded", () => {
         row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
       });
       dataRows = rows;
-      applyFuenteFilters();
+      buildSourceSlugMaps();
+      const initialState = parseHashRoute(location.hash);
+      if (initialState) {
+        applyParsedState(initialState);
+      } else {
+        applyFuenteFilters();
+      }
+      hashRouteApplied = true;
+      window.addEventListener("hashchange", handleHashChange);
     });
 });
 
@@ -684,6 +692,7 @@ function setupOldSpanishToggle() {
       btns.forEach(b => b.classList.toggle("active", oldSpanishMode));
       normalizationCache = new Map();
       if (activeFilters.length) applyFilters();
+      else updateUrlHash();
     });
   });
 }
@@ -704,6 +713,7 @@ function setupAccentToggle() {
       accentSensitiveMode = nextMode;
       updateAccentLabels();
       if (activeFilters.length) applyFilters();
+      else updateUrlHash();
     });
   });
   updateAccentLabels();
@@ -1546,6 +1556,7 @@ function applyFilters(initial = false, options = {}) {
     updateSortIndicators();
     restoreScroll(options);
     renderActiveFilterChips();
+    updateUrlHash();
     return;
   }
 
@@ -1581,6 +1592,7 @@ function applyFilters(initial = false, options = {}) {
   updateSortIndicators();
   restoreScroll(options);
   renderActiveFilterChips();
+  updateUrlHash();
 }
 
 function renderTable(rows, totalCount) {
@@ -3280,6 +3292,7 @@ function applyFuenteFilters(options = {}) {
     lastRenderTotal = 0;
     lastLemmaItems = [];
     renderTable([], 0);
+    updateUrlHash();
     return;
   }
   if (selectedCount === totalOptions) {
@@ -4027,4 +4040,287 @@ function moveColumn(srcKey, dstKey) {
   renderTable(lastRenderRows, lastRenderTotal);
   requestAnimationFrame(() => setTableScroll(y));
   saveColumnState();
+}
+
+// ── URL hash routing (shareable filter state) ──────────────────────
+
+const FIELD_CODE_OUT = {
+  "Texto estandarizado": "te",
+  "Escritura original": "eo",
+  "Traducción": "tr",
+  "Comentario": "co",
+  "Fuente": "fu",
+};
+const FIELD_CODE_IN = Object.fromEntries(
+  Object.entries(FIELD_CODE_OUT).map(([k, v]) => [v, k])
+);
+const SCOPE_CODE_OUT = { whole: "t", word: "w" };
+const SCOPE_CODE_IN = { t: "whole", w: "word" };
+const MODE_CODE_OUT = { exact: "e", starts: "s", any: "a", ends: "d" };
+const MODE_CODE_IN = { e: "exact", s: "starts", a: "any", d: "ends" };
+
+const sourceToSlug = new Map();
+const slugToSource = new Map();
+let hashRouteApplied = false;
+let suppressHashUpdate = false;
+
+function buildSourceSlugMaps() {
+  sourceToSlug.clear();
+  slugToSource.clear();
+  for (const row of dataRows) {
+    const rid = row.record_id;
+    if (!rid) continue;
+    const sep = rid.indexOf(":");
+    if (sep < 0) continue;
+    const slug = rid.slice(0, sep);
+    const fuente = row.Fuente;
+    if (!slug || !fuente) continue;
+    if (!sourceToSlug.has(fuente)) sourceToSlug.set(fuente, slug);
+    if (!slugToSource.has(slug)) slugToSource.set(slug, fuente);
+  }
+}
+
+function getCommittedGroups() {
+  return groupOrder
+    .map(g => ({
+      id: g.id,
+      logic: g.logic,
+      filters: activeFilters.filter(
+        f => f.owner === g.id && f.type !== "fuenteSet"
+      ),
+    }))
+    .filter(g => g.filters.length > 0);
+}
+
+function tryCanonicalLemma(groups) {
+  if (groups.length !== 1) return null;
+  const filters = groups[0].filters;
+  if (filters.length !== 1) return null;
+  const f = filters[0];
+  if (f.field !== "Texto estandarizado") return null;
+  if (f.mode !== "exact") return null;
+  if (normalizeScope(f.scope) !== "whole") return null;
+  if (f.negate) return null;
+  if (typeof f.value !== "string" || !f.value) return null;
+  return f.value;
+}
+
+function buildHash() {
+  if (oldSpanishMode || accentSensitiveMode) return serializeQueryHash();
+  const groups = getCommittedGroups();
+  const total = FUENTE_OPTIONS.length;
+  const sel = selectedFuentes.size;
+  const lema = tryCanonicalLemma(groups);
+
+  if (lema && sel === total) {
+    return `#/lema/${encodeURIComponent(lema)}`;
+  }
+  if (lema && sel === 1) {
+    const only = [...selectedFuentes][0];
+    const slug = sourceToSlug.get(only);
+    if (slug) return `#/lema/${encodeURIComponent(lema)}/${encodeURIComponent(slug)}`;
+  }
+  if (!groups.length && sel === 1) {
+    const only = [...selectedFuentes][0];
+    const slug = sourceToSlug.get(only);
+    if (slug) return `#/fuente/${encodeURIComponent(slug)}`;
+  }
+  if (!groups.length && sel === total) return "";
+  return serializeQueryHash();
+}
+
+function serializeQueryHash() {
+  const groups = getCommittedGroups();
+  const groupSpecs = groups.map(g => {
+    const f0 = g.filters[0];
+    const fieldCode = FIELD_CODE_OUT[f0.field];
+    if (!fieldCode) return "";
+    const scopeCode = SCOPE_CODE_OUT[normalizeScope(f0.scope)] || "t";
+    const logicCode = g.logic === "OR" ? "O" : "A";
+    const inputs = g.filters.map(f => {
+      const m = MODE_CODE_OUT[f.mode] || "a";
+      const n = f.negate ? "1" : "0";
+      const raw = typeof f.value === "string" ? f.value : "";
+      return `${m}:${n}:${encodeURIComponent(raw)}`;
+    }).join("|");
+    return `${logicCode}:${fieldCode}:${scopeCode}:${inputs}`;
+  }).filter(Boolean);
+
+  const params = [];
+  if (groupSpecs.length) params.push(`g=${groupSpecs.join(";")}`);
+  if (selectedFuentes.size !== FUENTE_OPTIONS.length) {
+    const slugs = [...selectedFuentes]
+      .map(name => sourceToSlug.get(name))
+      .filter(Boolean);
+    params.push(`f=${slugs.join(",")}`);
+  }
+  if (oldSpanishMode) params.push("o=1");
+  if (accentSensitiveMode) params.push("a=s");
+  return params.length ? `#/q?${params.join("&")}` : "";
+}
+
+function updateUrlHash() {
+  if (!hashRouteApplied || suppressHashUpdate) return;
+  const next = buildHash();
+  const current = location.hash;
+  if (next === current) return;
+  if (!next && !current) return;
+  if (next) {
+    history.replaceState(null, "", next);
+  } else {
+    history.replaceState(null, "", location.pathname + location.search);
+  }
+}
+
+function parseHashRoute(hash) {
+  if (!hash || !hash.startsWith("#/")) return null;
+  const body = hash.slice(2);
+  if (body.startsWith("q?") || body === "q") {
+    const qIdx = body.indexOf("?");
+    return parseQueryHash(qIdx >= 0 ? body.slice(qIdx + 1) : "");
+  }
+  const parts = body.split("/").filter(Boolean);
+  if (!parts.length) return null;
+  const head = parts[0];
+  if (head === "lema" && parts.length >= 2) {
+    let lema;
+    try { lema = decodeURIComponent(parts[1]); } catch { return null; }
+    if (!lema) return null;
+    let fuentes = null;
+    if (parts[2]) {
+      let slug;
+      try { slug = decodeURIComponent(parts[2]); } catch { return null; }
+      const name = slugToSource.get(slug);
+      if (name) fuentes = [name];
+    }
+    return {
+      groups: [{
+        logic: "AND",
+        field: "Texto estandarizado",
+        scope: "whole",
+        inputs: [{ mode: "exact", negate: false, value: lema }],
+      }],
+      fuentes,
+      oldSpanish: false,
+      accent: false,
+    };
+  }
+  if (head === "fuente" && parts.length >= 2) {
+    let slug;
+    try { slug = decodeURIComponent(parts[1]); } catch { return null; }
+    const name = slugToSource.get(slug);
+    if (!name) return null;
+    return { groups: [], fuentes: [name], oldSpanish: false, accent: false };
+  }
+  return null;
+}
+
+function parseQueryHash(qs) {
+  const state = { groups: [], fuentes: null, oldSpanish: false, accent: false };
+  if (!qs) return state;
+  const params = new Map();
+  for (const part of qs.split("&")) {
+    if (!part) continue;
+    const eq = part.indexOf("=");
+    if (eq < 0) params.set(part, "");
+    else params.set(part.slice(0, eq), part.slice(eq + 1));
+  }
+  const gs = params.get("g") || "";
+  if (gs) {
+    for (const spec of gs.split(";")) {
+      const g = parseGroupSpec(spec);
+      if (g) state.groups.push(g);
+    }
+  }
+  if (params.has("f")) {
+    const slugs = (params.get("f") || "").split(",").filter(Boolean);
+    state.fuentes = slugs.map(s => slugToSource.get(s)).filter(Boolean);
+  }
+  state.oldSpanish = params.get("o") === "1";
+  state.accent = params.get("a") === "s";
+  return state;
+}
+
+function parseGroupSpec(spec) {
+  if (!spec) return null;
+  const parts = spec.split(":");
+  if (parts.length < 4) return null;
+  const logic = parts[0] === "O" ? "OR" : "AND";
+  const field = FIELD_CODE_IN[parts[1]];
+  const scope = SCOPE_CODE_IN[parts[2]] || "whole";
+  if (!field) return null;
+  const inputsStr = parts.slice(3).join(":");
+  const inputs = inputsStr.split("|").map(parseInputSpec).filter(Boolean);
+  if (!inputs.length) return null;
+  return { logic, field, scope, inputs };
+}
+
+function parseInputSpec(spec) {
+  if (!spec) return null;
+  const parts = spec.split(":");
+  if (parts.length < 3) return null;
+  const mode = MODE_CODE_IN[parts[0]];
+  if (!mode) return null;
+  const negate = parts[1] === "1";
+  let value;
+  try { value = decodeURIComponent(parts.slice(2).join(":")); } catch { return null; }
+  if (!value) return null;
+  return { mode, negate, value };
+}
+
+function applyParsedState(state) {
+  if (!state) return false;
+  suppressHashUpdate = true;
+  try {
+    if (editingGroupId) editingGroupId = null;
+    activeFilters = [];
+    groupOrder = [];
+    groupCounter = 0;
+
+    state.groups.forEach(g => {
+      const groupId = `group_${++groupCounter}`;
+      const wordGroupId = (g.scope === "word" && g.logic === "AND") ? groupId : null;
+      g.inputs.forEach(inp => {
+        const extras = wordGroupId
+          ? { owner: groupId, wordGroupId }
+          : { owner: groupId };
+        appendFilter(g.field, inp.mode, inp.value, g.logic, inp.negate, g.scope, extras);
+      });
+      groupOrder.push({ id: groupId, logic: g.logic });
+    });
+
+    selectedFuentes.clear();
+    if (state.fuentes && state.fuentes.length) {
+      state.fuentes.forEach(name => selectedFuentes.add(name));
+    } else if (!state.fuentes) {
+      FUENTE_OPTIONS.forEach(name => selectedFuentes.add(name));
+    }
+
+    const desiredOldSpanish = !!state.oldSpanish;
+    if (oldSpanishMode !== desiredOldSpanish) {
+      oldSpanishMode = desiredOldSpanish;
+      normalizationCache = new Map();
+      document.querySelectorAll(".old-spanish-btn").forEach(b =>
+        b.classList.toggle("active", oldSpanishMode)
+      );
+    }
+    const desiredAccent = !!state.accent;
+    if (accentSensitiveMode !== desiredAccent) {
+      accentSensitiveMode = desiredAccent;
+      updateAccentLabels();
+    }
+
+    renderFuenteList();
+    renderActiveFilterChips();
+    applyFuenteFilters();
+  } finally {
+    suppressHashUpdate = false;
+  }
+  return true;
+}
+
+function handleHashChange() {
+  if (!hashRouteApplied) return;
+  const state = parseHashRoute(location.hash);
+  if (state) applyParsedState(state);
 }
