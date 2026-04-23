@@ -43,12 +43,12 @@ body {
 
 .panel-tab-row {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 12px;
   min-width: 0;
   padding: 0 18px;
-  margin: 0 0 12px;
+  margin: 0;
   position: relative;
   z-index: 3;
 }
@@ -58,11 +58,17 @@ body {
   align-items: center;
   gap: 6px;
   padding: 0;
-  margin: 0;
+  margin: 0 0 12px;
   overflow-x: auto;
   scrollbar-width: none;
   flex: 0 1 auto;
   min-width: 0;
+}
+
+/* Session-bar simulates tabs sitting on top of the filter card. The 1px
+   overlap merges its bottom border with the card edge. */
+.session-bar {
+  margin-bottom: -1px;
 }
 
 .panel-tabs::-webkit-scrollbar,
@@ -2113,13 +2119,21 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     justify-content: flex-start;
     gap: 6px;
     flex-wrap: wrap;
+    margin: 0 0 10px;
+    order: 1;
   }
 
   .panel-tab-row {
     flex-wrap: wrap;
     padding: 0 12px;
     gap: 8px;
-    margin: 0 0 10px;
+    margin: 0;
+  }
+
+  /* On phone, session-bar wraps below the pills so its tabs hug the card edge. */
+  .session-bar {
+    order: 2;
+    flex: 1 1 100%;
   }
 
   .tab-btn {
