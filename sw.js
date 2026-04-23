@@ -1,6 +1,6 @@
 // Service worker for Base de datos náhuatl.
 // Bump CACHE_VERSION whenever shipped HTML/CSS/JS changes.
-const CACHE_VERSION = "v3";
+const CACHE_VERSION = "v4";
 const CACHE_NAME = `nahuatl-db-${CACHE_VERSION}`;
 
 // Note: data/data.jsonl.gz is intentionally NOT precached. It's large and
@@ -61,6 +61,10 @@ function networkFirst(request) {
   );
 }
 
+// Code assets must stay in lock-step with HTML — if the user gets new HTML
+// but stale JS/CSS the page breaks. Treat them like navigations.
+const CODE_ASSET_RE = /\.(?:js|css|html)$/i;
+
 self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET") return;
@@ -68,11 +72,11 @@ self.addEventListener("fetch", event => {
   // Same-origin only; skip cross-origin (CDNs etc.).
   if (url.origin !== self.location.origin) return;
 
-  // Navigation requests → network-first so users get fresh HTML when online.
-  if (request.mode === "navigate") {
+  // Navigation + code → network-first so updates apply on first reload.
+  if (request.mode === "navigate" || CODE_ASSET_RE.test(url.pathname)) {
     event.respondWith(networkFirst(request));
     return;
   }
-  // Everything else (CSS, JS, data, icon, manifest) → stale-while-revalidate.
+  // Data, icons, manifest → stale-while-revalidate.
   event.respondWith(staleWhileRevalidate(request));
 });
