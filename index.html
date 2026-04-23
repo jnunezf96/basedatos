@@ -259,6 +259,10 @@
     <!-- ── Data table ── -->
     <section class="data-panel">
       <div id="tableHeaderAnchor" class="scroll-anchor" aria-hidden="true"></div>
+      <div class="filter-actions-btns results-actions-btns">
+        <button type="button" class="btn primary" id="addBtnResults" data-i18n="action.add">Añadir</button>
+        <button type="button" class="btn ghost" id="clearBtnResults" data-i18n="action.clear">Vaciar</button>
+      </div>
       <div class="sticky-band">
         <div class="table-toolbar">
           <div id="tableStatus" class="result-info" data-i18n="table.status.loading">Cargando datos…</div>
@@ -388,6 +392,11 @@
       </div>
     </section>
 
+    <!-- ── Sticky bottom nav: jump between filter and results (phone only) ── -->
+    <nav class="scroll-nav" aria-label="Navegación rápida">
+      <button type="button" class="scroll-nav-btn active" data-scroll="filters" data-i18n="nav.search">Buscar</button>
+      <button type="button" class="scroll-nav-btn" data-scroll="results" data-i18n="nav.results">Resultados</button>
+    </nav>
   </div> <!-- .app-shell -->
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>

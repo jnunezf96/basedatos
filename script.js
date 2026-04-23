@@ -43,6 +43,8 @@ const I18N = {
     "grid.ends": "Termina",
     "action.run": "Ejecutar",
     "action.clear": "Vaciar",
+    "nav.search": "Buscar",
+    "nav.results": "Resultados",
     "placeholder.exact.incl": "{casilla} de {campo} es exactamente...",
     "placeholder.exact.excl": "{casilla} de {campo} no es exactamente...",
     "placeholder.starts.incl": "{casilla} de {campo} empieza con...",
@@ -278,6 +280,8 @@ const I18N = {
     "grid.ends": "Ends with",
     "action.run": "Run",
     "action.clear": "Clear",
+    "nav.search": "Search",
+    "nav.results": "Results",
     "placeholder.exact.incl": "{casilla} in {campo} is exactly...",
     "placeholder.exact.excl": "{casilla} in {campo} is not exactly...",
     "placeholder.starts.incl": "{casilla} in {campo} starts with...",
@@ -633,6 +637,8 @@ document.addEventListener("DOMContentLoaded", () => {
   setupLongPressCopy();
   setupSwipeTabs();
   setupKeyboardAvoidance();
+  setupResultsActions();
+  setupScrollNav();
   fetch("data/data.jsonl.gz")
     .then(r => {
       const ds = new DecompressionStream("gzip");
@@ -660,6 +666,51 @@ document.addEventListener("DOMContentLoaded", () => {
       window.addEventListener("hashchange", handleHashChange);
     });
 });
+
+// Mirrors the filter card's Añadir/Vaciar pair inside the results card so
+// users can add/clear filters without scrolling back up.
+function setupResultsActions() {
+  const addBtn = document.getElementById("addBtnResults");
+  const clearBtn = document.getElementById("clearBtnResults");
+  if (addBtn) addBtn.addEventListener("click", () => commitFilterCard());
+  if (clearBtn) clearBtn.addEventListener("click", () => clearFilterCard("f1"));
+}
+
+// Sticky bottom nav on phones: tap Buscar → jump to the filter card,
+// tap Resultados → jump to the results table. Active state tracks which
+// section is currently in view.
+function setupScrollNav() {
+  const nav = document.querySelector(".scroll-nav");
+  if (!nav) return;
+  const btns = Array.from(nav.querySelectorAll(".scroll-nav-btn"));
+  const targets = {
+    filters: () => document.querySelector(".panel-shell"),
+    results: () => document.querySelector(".data-panel"),
+  };
+  btns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = targets[btn.dataset.scroll]?.();
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  const setActive = key => {
+    btns.forEach(b => b.classList.toggle("active", b.dataset.scroll === key));
+  };
+
+  const filtersEl = targets.filters();
+  const resultsEl = targets.results();
+  if (!filtersEl || !resultsEl || typeof IntersectionObserver === "undefined") return;
+
+  // When the results panel takes up most of the viewport, treat it as active.
+  const io = new IntersectionObserver(entries => {
+    const results = entries.find(e => e.target === resultsEl);
+    if (!results) return;
+    setActive(results.intersectionRatio > 0.5 ? "results" : "filters");
+  }, { threshold: [0, 0.5, 1] });
+  io.observe(resultsEl);
+}
 
 function t(key, vars = {}) {
   const dict = I18N[currentLang] || I18N.es;
