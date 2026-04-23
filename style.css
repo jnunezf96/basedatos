@@ -146,7 +146,7 @@ body {
   border-style: dashed;
   padding: 5px 11px 7px;
   font-size: 15px;
-  color: #7b85b8;
+  color: #5d6797;
   min-width: 34px;
   justify-content: center;
 }
@@ -476,7 +476,7 @@ td:nth-child(5) {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #6b75a8;
+  color: #525c8d;
 }
 
 .column-menu-tools {
@@ -577,7 +577,7 @@ td:nth-child(5) {
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: #6b75a8;
+  color: #525c8d;
   font-size: 13px;
   font-weight: 700;
   line-height: 1;
@@ -686,7 +686,7 @@ td:nth-child(5) {
   padding: 4px 12px;
   font-size: 11px;
   font-weight: 600;
-  color: #7b85b8;
+  color: #5d6797;
   cursor: pointer;
   border-radius: 999px;
   transition: background 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
@@ -1104,7 +1104,7 @@ td:nth-child(5) {
 .pill {
   border: none;
   background: #eaeefc;
-  color: #7b85b8;
+  color: #5d6797;
   padding: 4px 12px;
   border-radius: 999px;
   cursor: pointer;
@@ -1397,7 +1397,7 @@ td:nth-child(5) {
   padding: 2px 7px;
   border-radius: 999px;
   background: #eef2ff;
-  color: #6b75a8;
+  color: #525c8d;
   transition: background 0.18s ease, color 0.18s ease;
 }
 
@@ -1423,7 +1423,7 @@ td:nth-child(5) {
 .fuente-act {
   border: none;
   background: transparent;
-  color: #7b85b8;
+  color: #5d6797;
   font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0.4px;
@@ -1460,7 +1460,7 @@ td:nth-child(5) {
   border-radius: 999px;
   border: 1px solid #dde2f6;
   background: #f3f5ff;
-  color: #8a93b8;
+  color: #5d6797;
   font-size: 12.5px;
   font-weight: 500;
   line-height: 1.1;
@@ -2282,7 +2282,7 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #6f78a8;
+    color: #525c8d;
   }
 
   .pill-group {
@@ -2322,7 +2322,7 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #6f78a8;
+    color: #525c8d;
     padding-top: 2px;
   }
 
@@ -2501,7 +2501,7 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   font-size: 12px;
   font-weight: 600;
   line-height: 1;
-  color: #7b85b8;
+  color: #5d6797;
   cursor: pointer;
   border-radius: 999px;
   transition: background 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;

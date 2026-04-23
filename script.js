@@ -177,6 +177,7 @@ const I18N = {
     "table.status.detail.auto": "{{exact}} lemas exactos · {{phrase}} frases",
     "table.status.detail.manual": "{{exact}} lemas exactos · {{phrase}} frases · Manual",
     "table.empty": "No hay datos disponibles.",
+    "table.empty.filtered": "Ningún resultado coincide con los filtros activos. Prueba a quitar un filtro, ampliar las fuentes o usar acento libre.",
     "table.export.filename": "tabla.jpg",
     "table.export.png.filename": "tabla.png",
     "table.export.label": "Exportar ▾",
@@ -200,6 +201,13 @@ const I18N = {
     "share.copied": "Enlace copiado",
     "share.failed": "No se pudo compartir",
     "copy.cell": "Texto copiado",
+    "page.first": "Primera página",
+    "page.prev": "Página anterior",
+    "page.next": "Página siguiente",
+    "page.last": "Última página",
+    "sort.by": "Ordenar por",
+    "sort.asc": "ascendente",
+    "sort.desc": "descendente",
     "oldspanish.toggle": "Esp. antiguo",
     "label.oldspanish": "Ortografía",
     "label.accent": "Acento",
@@ -396,6 +404,7 @@ const I18N = {
     "table.status.detail.auto": "{{exact}} exact lemmas · {{phrase}} phrases",
     "table.status.detail.manual": "{{exact}} exact lemmas · {{phrase}} phrases · Manual",
     "table.empty": "No data available.",
+    "table.empty.filtered": "No rows match the current filters. Try removing a filter, broadening sources, or using free-accent matching.",
     "table.export.filename": "table.jpg",
     "table.export.png.filename": "table.png",
     "table.export.label": "Export ▾",
@@ -419,6 +428,13 @@ const I18N = {
     "share.copied": "Link copied",
     "share.failed": "Couldn't share",
     "copy.cell": "Text copied",
+    "page.first": "First page",
+    "page.prev": "Previous page",
+    "page.next": "Next page",
+    "page.last": "Last page",
+    "sort.by": "Sort by",
+    "sort.asc": "ascending",
+    "sort.desc": "descending",
     "oldspanish.toggle": "Old Spanish",
     "label.oldspanish": "Spelling",
     "label.accent": "Accent",
@@ -1627,6 +1643,7 @@ function getRankingComparator(context, options = {}) {
 
 function applyFilters(initial = false, options = {}) {
   if (!dataRows.length) return;
+  bumpHighlightCache();
   if (!options.keepOffset) {
     displayOffset = 0;
     pageScrollByOffset.clear();
@@ -1721,7 +1738,8 @@ function renderTable(rows, totalCount) {
     const td = document.createElement("td");
     td.colSpan = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key)).length;
     td.className = "table-empty";
-    td.textContent = t("table.empty");
+    const filtered = activeFilters.length > 0 || selectedFuentes.size < FUENTE_OPTIONS.length;
+    td.textContent = t(filtered ? "table.empty.filtered" : "table.empty");
     tr.appendChild(td);
     tbody.appendChild(tr);
   } else {
@@ -2776,17 +2794,22 @@ function cycleSortField(field, additive = false) {
 
 function applyManualSort(arr, keys) {
   if (!keys || !keys.length) return;
-  arr.sort((a, b) => {
-    for (const { field, dir } of keys) {
-      const vaRaw = String(getSortFieldValue(a, field));
-      const vbRaw = String(getSortFieldValue(b, field));
-      const va = buildSortKey(vaRaw);
-      const vb = buildSortKey(vbRaw);
-      const cmp = alphaNumCollator.compare(va, vb);
-      if (cmp !== 0) return dir === "asc" ? cmp : -cmp;
-    }
-    return compareRecordId(a, b);
+  // Decorate-sort-undecorate: precompute keys once per row to avoid
+  // recomputing them ~2N·log N times inside the comparator.
+  const decorated = arr.map(row => {
+    const ks = keys.map(({ field }) =>
+      buildSortKey(String(getSortFieldValue(row, field)))
+    );
+    return { row, ks };
   });
+  decorated.sort((a, b) => {
+    for (let i = 0; i < keys.length; i += 1) {
+      const cmp = alphaNumCollator.compare(a.ks[i], b.ks[i]);
+      if (cmp !== 0) return keys[i].dir === "asc" ? cmp : -cmp;
+    }
+    return compareRecordId(a.row, b.row);
+  });
+  for (let i = 0; i < arr.length; i += 1) arr[i] = decorated[i].row;
 }
 
 function getSortFieldValue(row, field) {
@@ -2860,11 +2883,17 @@ function updateSortIndicators() {
   buttons.forEach(btn => {
     const field = btn.dataset.sortField;
     const idx = sortKeys.findIndex(k => k.field === field);
+    const headerSpan = btn.closest(".header-bar")?.querySelector("span");
+    const fieldLabel = headerSpan?.textContent.trim() || field;
     btn.textContent = "";
     btn.classList.remove("sort-child");
     if (idx !== -1) {
-      const arrow = sortKeys[idx].dir === "asc" ? "↑" : "↓";
+      const dir = sortKeys[idx].dir;
+      const arrow = dir === "asc" ? "↑" : "↓";
       btn.textContent = arrow;
+      const dirLabel = dir === "asc" ? t("sort.asc") : t("sort.desc");
+      btn.setAttribute("aria-label", `${t("sort.by")} ${fieldLabel}, ${dirLabel}`);
+      btn.setAttribute("aria-pressed", "true");
       if (inLemmasView && field !== "Texto estandarizado") {
         btn.classList.add("sort-child");
         btn.title = "Orden dentro de cada lema";
@@ -2880,6 +2909,8 @@ function updateSortIndicators() {
     } else {
       btn.textContent = "⇅";
       btn.title = "";
+      btn.setAttribute("aria-label", `${t("sort.by")} ${fieldLabel}`);
+      btn.setAttribute("aria-pressed", "false");
     }
   });
 }
@@ -3197,6 +3228,25 @@ function sanitizeInput(value) {
 
 
 // =============== Highlight ===============
+// Compiled-regex cache: keyed by fieldKey, invalidated on filter/mode change.
+let highlightCacheVersion = 0;
+const highlightRegexCache = new Map();
+function bumpHighlightCache() {
+  highlightCacheVersion += 1;
+  highlightRegexCache.clear();
+}
+function getHighlightRegexes(fieldKey, cellFilters) {
+  const cached = highlightRegexCache.get(fieldKey);
+  if (cached && cached.version === highlightCacheVersion) return cached;
+  const entry = {
+    version: highlightCacheVersion,
+    regex: buildHighlightRegex(cellFilters),
+    osRegex: oldSpanishMode ? buildOsHighlightRegex(cellFilters) : null,
+  };
+  highlightRegexCache.set(fieldKey, entry);
+  return entry;
+}
+
 function applyHighlights(rawValue, fieldKey) {
   if (fieldKey === "Fuente") {
     return rawValue == null ? "" : String(rawValue);
@@ -3224,8 +3274,7 @@ function applyHighlights(rawValue, fieldKey) {
   }
 
   if (cellFilters.length) {
-    const regex = buildHighlightRegex(cellFilters);
-    const osRegex = oldSpanishMode ? buildOsHighlightRegex(cellFilters) : null;
+    const { regex, osRegex } = getHighlightRegexes(fieldKey, cellFilters);
     if (regex || osRegex) {
       const parts = rendered.split(/(<[^>]+>)/g);
       rendered = parts
