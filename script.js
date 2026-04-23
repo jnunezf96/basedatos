@@ -711,12 +711,34 @@ function t(key, vars = {}) {
   return text;
 }
 
+function setTranslatedText(el, key) {
+  if (!el || !key) return;
+  const label = el.matches(".btn-label") ? el : el.querySelector(":scope > .btn-label");
+  const target = label || el;
+  if (target.dataset) target.dataset.i18n = key;
+  target.textContent = t(key);
+}
+
+function setButtonState(btn, key, iconId) {
+  if (!btn || !key) return;
+  setTranslatedText(btn, key);
+  if ("i18nAriaLabel" in btn.dataset) btn.dataset.i18nAriaLabel = key;
+  if ("i18nTitle" in btn.dataset) btn.dataset.i18nTitle = key;
+  btn.setAttribute("aria-label", t(key));
+  btn.setAttribute("title", t(key));
+  if (!iconId) return;
+  const use = btn.querySelector(".mobile-icon use");
+  if (!use) return;
+  use.setAttribute("href", `#${iconId}`);
+  use.setAttribute("xlink:href", `#${iconId}`);
+}
+
 function applyTranslations() {
   document.documentElement.lang = currentLang;
 
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.dataset.i18n;
-    if (key) el.textContent = t(key);
+    if (key) setTranslatedText(el, key);
   });
 
   document.querySelectorAll("[data-i18n-html]").forEach(el => {
@@ -1481,7 +1503,7 @@ function commitFilterCard() {
   // Reset edit state and card
   editingGroupId = null;
   const addBtn = card.querySelector(".add-btn");
-  if (addBtn) addBtn.textContent = t("action.add");
+  if (addBtn) setButtonState(addBtn, "action.add", "icon-plus");
   card.querySelectorAll(".filter-input").forEach(i => (i.value = ""));
   applyFilters();
   refreshSessionLabel();
@@ -1532,7 +1554,7 @@ function cancelEdit() {
   const card = document.querySelector(".filter-card[data-owner='f1']");
   if (card) {
     const addBtn = card.querySelector(".add-btn");
-    if (addBtn) addBtn.textContent = t("action.add");
+    if (addBtn) setButtonState(addBtn, "action.add", "icon-plus");
   }
   // Remove any chip-editing class (chips will re-render on applyFilters)
 }
@@ -1576,7 +1598,7 @@ function loadGroupForEditing(groupId) {
   // Set editing state
   editingGroupId = groupId;
   const addBtn = card.querySelector(".add-btn");
-  if (addBtn) addBtn.textContent = t("action.update");
+  if (addBtn) setButtonState(addBtn, "action.update", "icon-check");
 
   // Re-render chips to show editing highlight
   renderActiveFilterChips();

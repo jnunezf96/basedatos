@@ -14,26 +14,108 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-lang" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3c-2.5 2.6-4 5.6-4 9s1.5 6.4 4 9c2.5-2.6 4-5.6 4-9s-1.5-6.4-4-9Z" />
+      <path d="M6.2 6.8c1.9 1.1 3.9 1.7 5.8 1.7s3.9-.6 5.8-1.7" />
+      <path d="M6.2 17.2c1.9-1.1 3.9-1.7 5.8-1.7s3.9.6 5.8 1.7" />
+    </symbol>
+    <symbol id="icon-filter" viewBox="0 0 24 24">
+      <path d="M4 5h16l-6 7v6l-4 2v-8Z" />
+    </symbol>
+    <symbol id="icon-reverse" viewBox="0 0 24 24">
+      <path d="M7 8h8a4 4 0 1 1 0 8H8" />
+      <path d="M9 5 6 8l3 3" />
+      <path d="M15 19l3-3-3-3" />
+    </symbol>
+    <symbol id="icon-regex" viewBox="0 0 24 24">
+      <path d="M6 6 3 12l3 6" />
+      <path d="M18 6l3 6-3 6" />
+      <path d="M11 4 9 20" />
+    </symbol>
+    <symbol id="icon-pairs" viewBox="0 0 24 24">
+      <circle cx="9" cy="12" r="4" />
+      <circle cx="15" cy="12" r="4" />
+      <path d="M12 8.5v7" />
+    </symbol>
+    <symbol id="icon-rows" viewBox="0 0 24 24">
+      <path d="M6 7h12" />
+      <path d="M6 12h12" />
+      <path d="M6 17h12" />
+    </symbol>
+    <symbol id="icon-lemmas" viewBox="0 0 24 24">
+      <path d="M6 8.5 12 4l6 4.5V20l-6-2.5L6 20Z" />
+      <path d="M9.5 8.5h5" />
+    </symbol>
+    <symbol id="icon-columns" viewBox="0 0 24 24">
+      <rect x="4" y="5" width="4" height="14" rx="1" />
+      <rect x="10" y="5" width="4" height="14" rx="1" />
+      <rect x="16" y="5" width="4" height="14" rx="1" />
+    </symbol>
+    <symbol id="icon-export" viewBox="0 0 24 24">
+      <path d="M12 4v10" />
+      <path d="m8 10 4 4 4-4" />
+      <path d="M5 19h14" />
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="6" />
+      <path d="m16 16 4 4" />
+    </symbol>
+    <symbol id="icon-results" viewBox="0 0 24 24">
+      <rect x="4" y="5" width="6" height="6" rx="1" />
+      <rect x="14" y="5" width="6" height="6" rx="1" />
+      <rect x="4" y="13" width="6" height="6" rx="1" />
+      <rect x="14" y="13" width="6" height="6" rx="1" />
+    </symbol>
+    <symbol id="icon-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </symbol>
+    <symbol id="icon-clear" viewBox="0 0 24 24">
+      <path d="M6 6l12 12" />
+      <path d="M18 6 6 18" />
+    </symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24">
+      <path d="M5 12.5 10 17l9-11" />
+    </symbol>
+  </svg>
   <div class="app-shell">
-
-    <!-- ── Top bar: session tabs left, panel tabs right ── -->
-    <div class="top-bar">
-      <button type="button" class="btn action share-btn" id="shareBtn" data-i18n-aria-label="action.share" aria-label="Compartir enlace" title="Compartir">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
-        <span data-i18n="action.share">Compartir</span>
-      </button>
-      <button type="button" class="btn action lang-toggle" id="langToggle" data-i18n="lang.toggle">English</button>
-    </div>
 
     <div class="panel-shell">
       <div class="panel-tab-row">
         <div class="session-bar" id="sessionBar"></div>
-        <nav class="panel-tabs" role="tablist" aria-label="Paneles">
-          <button type="button" role="tab" id="tab-filtersPanel" class="tab-btn active" data-tab="filtersPanel" aria-selected="true" aria-controls="filtersPanel" tabindex="0" data-i18n="tab.filters">Filtros</button>
-          <button type="button" role="tab" id="tab-reversePanel" class="tab-btn" data-tab="reversePanel" aria-selected="false" aria-controls="reversePanel" tabindex="-1" data-i18n="tab.reverse">Reverso</button>
-          <button type="button" role="tab" id="tab-regexPanel" class="tab-btn" data-tab="regexPanel" aria-selected="false" aria-controls="regexPanel" tabindex="-1" data-i18n="tab.regex">Regex</button>
-          <button type="button" role="tab" id="tab-pairsPanel" class="tab-btn" data-tab="pairsPanel" aria-selected="false" aria-controls="pairsPanel" tabindex="-1" data-i18n="tab.pairs">Pares a/i</button>
-        </nav>
+        <div class="panel-controls">
+          <div class="top-bar">
+            <button type="button" class="btn action share-btn mobile-icon-btn" id="shareBtn" data-i18n-aria-label="action.share" data-i18n-title="action.share" aria-label="Compartir enlace" title="Compartir">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
+              <span class="btn-label mobile-icon-label" data-i18n="action.share">Compartir</span>
+            </button>
+            <button type="button" class="btn action lang-toggle mobile-icon-btn" id="langToggle" data-i18n-aria-label="lang.toggle" data-i18n-title="lang.toggle" aria-label="English" title="English">
+              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-lang"></use></svg>
+              <span class="btn-label mobile-icon-label" data-i18n="lang.toggle">English</span>
+            </button>
+          </div>
+          <nav class="panel-tabs" role="tablist" aria-label="Paneles">
+            <button type="button" role="tab" id="tab-filtersPanel" class="tab-btn active mobile-icon-btn" data-tab="filtersPanel" aria-selected="true" aria-controls="filtersPanel" tabindex="0" data-i18n-aria-label="tab.filters" data-i18n-title="tab.filters">
+              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-filter"></use></svg>
+              <span class="btn-label mobile-icon-label" data-i18n="tab.filters">Filtros</span>
+            </button>
+            <button type="button" role="tab" id="tab-reversePanel" class="tab-btn mobile-icon-btn" data-tab="reversePanel" aria-selected="false" aria-controls="reversePanel" tabindex="-1" data-i18n-aria-label="tab.reverse" data-i18n-title="tab.reverse">
+              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-reverse"></use></svg>
+              <span class="btn-label mobile-icon-label" data-i18n="tab.reverse">Reverso</span>
+            </button>
+            <button type="button" role="tab" id="tab-regexPanel" class="tab-btn mobile-icon-btn" data-tab="regexPanel" aria-selected="false" aria-controls="regexPanel" tabindex="-1" data-i18n-aria-label="tab.regex" data-i18n-title="tab.regex">
+              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-regex"></use></svg>
+              <span class="btn-label mobile-icon-label" data-i18n="tab.regex">Regex</span>
+            </button>
+            <button type="button" role="tab" id="tab-pairsPanel" class="tab-btn mobile-icon-btn" data-tab="pairsPanel" aria-selected="false" aria-controls="pairsPanel" tabindex="-1" data-i18n-aria-label="tab.pairs" data-i18n-title="tab.pairs">
+              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-pairs"></use></svg>
+              <span class="btn-label mobile-icon-label" data-i18n="tab.pairs">Pares a/i</span>
+            </button>
+          </nav>
+        </div>
       </div>
 
       <!-- ── Panel: Filtros ── -->
@@ -103,15 +185,27 @@
             </div>
           </div>
           <div class="filter-actions-btns">
-            <button type="button" class="btn primary add-btn" data-i18n="action.add">Añadir</button>
-            <button type="button" class="btn ghost clear-btn" data-i18n="action.clear">Vaciar</button>
+            <button type="button" class="btn primary add-btn mobile-icon-btn" data-i18n-aria-label="action.add" data-i18n-title="action.add">
+              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-plus"></use></svg>
+              <span class="btn-label mobile-icon-label" data-i18n="action.add">Añadir</span>
+            </button>
+            <button type="button" class="btn ghost clear-btn mobile-icon-btn" data-i18n-aria-label="action.clear" data-i18n-title="action.clear">
+              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-clear"></use></svg>
+              <span class="btn-label mobile-icon-label" data-i18n="action.clear">Vaciar</span>
+            </button>
           </div>
         </div>
         <div class="fuente-section">
           <div class="fuente-head">
             <div class="fuente-actions">
-              <button type="button" class="fuente-act" id="fuenteFill" data-i18n="sources.fill">Todas</button>
-              <button type="button" class="fuente-act" id="fuenteClear" data-i18n="sources.clear">Ninguna</button>
+              <button type="button" class="fuente-act mobile-icon-btn" id="fuenteFill" data-i18n-aria-label="sources.fill" data-i18n-title="sources.fill">
+                <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-check"></use></svg>
+                <span class="btn-label mobile-icon-label" data-i18n="sources.fill">Todas</span>
+              </button>
+              <button type="button" class="fuente-act mobile-icon-btn" id="fuenteClear" data-i18n-aria-label="sources.clear" data-i18n-title="sources.clear">
+                <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-clear"></use></svg>
+                <span class="btn-label mobile-icon-label" data-i18n="sources.clear">Ninguna</span>
+              </button>
             </div>
             <span class="fuente-count" id="fuenteCount" aria-live="polite">0</span>
           </div>
@@ -265,20 +359,32 @@
           <div class="toolbar-controls">
             <div class="view-group">
               <div class="view-toggle" role="group" aria-label="Vista">
-                <button type="button" class="view-btn active" data-view="rows" data-i18n="view.rows">Filas</button>
-                <button type="button" class="view-btn" data-view="lemmas" data-i18n="view.lemmas">Lemas</button>
+                <button type="button" class="view-btn active mobile-icon-btn" data-view="rows" data-i18n-aria-label="view.rows" data-i18n-title="view.rows">
+                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-rows"></use></svg>
+                  <span class="btn-label mobile-icon-label" data-i18n="view.rows">Filas</span>
+                </button>
+                <button type="button" class="view-btn mobile-icon-btn" data-view="lemmas" data-i18n-aria-label="view.lemmas" data-i18n-title="view.lemmas">
+                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-lemmas"></use></svg>
+                  <span class="btn-label mobile-icon-label" data-i18n="view.lemmas">Lemas</span>
+                </button>
               </div>
             </div>
             <div class="toolbar-sep"></div>
             <div class="column-group">
               <div class="column-menu-wrap">
-                <button type="button" class="arrow-btn column-menu-btn" id="columnMenuBtn" title="Columnas" data-i18n="table.columns">Cols ▾</button>
+                <button type="button" class="arrow-btn column-menu-btn mobile-icon-btn" id="columnMenuBtn" title="Columnas" data-i18n-aria-label="table.columns" data-i18n-title="table.columns">
+                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-columns"></use></svg>
+                  <span class="btn-label mobile-icon-label" data-i18n="table.columns">Cols ▾</span>
+                </button>
               </div>
             </div>
             <div class="toolbar-sep"></div>
             <div class="export-group">
               <div class="export-menu-wrap">
-                <button type="button" class="arrow-btn export-btn" id="exportMenuBtn" title="Exportar" data-i18n="table.export.label">Exportar ▾</button>
+                <button type="button" class="arrow-btn export-btn mobile-icon-btn" id="exportMenuBtn" title="Exportar" data-i18n-aria-label="table.export.label" data-i18n-title="table.export.label">
+                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-export"></use></svg>
+                  <span class="btn-label mobile-icon-label" data-i18n="table.export.label">Exportar ▾</span>
+                </button>
               </div>
             </div>
             <div class="toolbar-sep"></div>
@@ -390,8 +496,14 @@
 
     <!-- ── Sticky bottom nav: jump between filter and results (phone only) ── -->
     <nav class="scroll-nav" aria-label="Navegación rápida">
-      <button type="button" class="scroll-nav-btn active" data-scroll="filters" data-i18n="nav.search">Buscar</button>
-      <button type="button" class="scroll-nav-btn" data-scroll="results" data-i18n="nav.results">Resultados</button>
+      <button type="button" class="scroll-nav-btn active mobile-icon-btn" data-scroll="filters" data-i18n-aria-label="nav.search" data-i18n-title="nav.search">
+        <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-search"></use></svg>
+        <span class="btn-label mobile-icon-label" data-i18n="nav.search">Buscar</span>
+      </button>
+      <button type="button" class="scroll-nav-btn mobile-icon-btn" data-scroll="results" data-i18n-aria-label="nav.results" data-i18n-title="nav.results">
+        <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-results"></use></svg>
+        <span class="btn-label mobile-icon-label" data-i18n="nav.results">Resultados</span>
+      </button>
     </nav>
   </div> <!-- .app-shell -->
 
