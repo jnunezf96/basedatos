@@ -43,20 +43,20 @@ body {
 
 .panel-tab-row {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 12px;
   min-width: 0;
   padding: 0 18px;
-  margin: 0 0 -1px;
+  margin: 0 0 12px;
   position: relative;
   z-index: 3;
 }
 
 .panel-tabs {
   display: flex;
-  align-items: flex-end;
-  gap: 3px;
+  align-items: center;
+  gap: 6px;
   padding: 0;
   margin: 0;
   overflow-x: auto;
@@ -151,12 +151,30 @@ body {
   justify-content: center;
 }
 
+/* Panel tabs: pill shape, fully detached from the filter card below.
+   Overrides the shape from the combined .tab-btn/.session-tab rule. */
+.tab-btn {
+  border: 1px solid #d2dafd;
+  border-bottom-color: #d2dafd;
+  background: #eef2ff;
+  color: #4c6ef5;
+  border-radius: 999px;
+  padding: 7px 14px;
+}
+
+.tab-btn:not(.active):hover {
+  background: #dde4ff;
+  color: #3b56d6;
+  border-color: #b9c4f8;
+}
+
 .tab-btn.active {
-  background: #fff;
-  border-color: #e5e9ff;
-  border-bottom-color: #fff;
-  color: #2c345b;
+  background: #4c6ef5;
+  border-color: #4c6ef5;
+  border-bottom-color: #4c6ef5;
+  color: #fff;
   z-index: 4;
+  box-shadow: 0 2px 6px rgba(76, 110, 245, 0.25);
 }
 
 .data-panel {
@@ -2093,16 +2111,20 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   .panel-tabs {
     flex: 1 1 100%;
     justify-content: flex-start;
+    gap: 6px;
+    flex-wrap: wrap;
   }
 
   .panel-tab-row {
     flex-wrap: wrap;
     padding: 0 12px;
-    gap: 4px;
+    gap: 8px;
+    margin: 0 0 10px;
   }
 
   .tab-btn {
-    padding: 7px 11px 8px;
+    padding: 8px 14px;
+    min-height: 34px;
   }
 
   .excel-header {
