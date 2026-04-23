@@ -2500,6 +2500,16 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     border-radius: 8px;
   }
 
+  /* Dissolve .page-group so .page-size sits beside .sort-scope and
+     .pager wraps to its own row. */
+  .page-group {
+    display: contents;
+  }
+  .pager {
+    flex-basis: 100%;
+    justify-content: flex-start;
+  }
+
   .view-btn {
     padding: 9px 14px;
     min-height: 36px;
