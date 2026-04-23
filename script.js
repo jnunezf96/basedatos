@@ -196,6 +196,10 @@ const I18N = {
     "action.update": "Actualizar",
     "filter.title": "Filtro",
     "lang.toggle": "English",
+    "action.share": "Compartir",
+    "share.copied": "Enlace copiado",
+    "share.failed": "No se pudo compartir",
+    "copy.cell": "Texto copiado",
     "oldspanish.toggle": "Esp. antiguo",
     "label.oldspanish": "Ortografía",
     "label.accent": "Acento",
@@ -411,6 +415,10 @@ const I18N = {
     "action.update": "Update",
     "filter.title": "Filter",
     "lang.toggle": "Español",
+    "action.share": "Share",
+    "share.copied": "Link copied",
+    "share.failed": "Couldn't share",
+    "copy.cell": "Text copied",
     "oldspanish.toggle": "Old Spanish",
     "label.oldspanish": "Spelling",
     "label.accent": "Accent",
@@ -589,6 +597,10 @@ document.addEventListener("DOMContentLoaded", () => {
   setupViewToggle();
   setupEdicionCellClick();
   setupReverseLookup();
+  setupShareButton();
+  setupLongPressCopy();
+  setupSwipeTabs();
+  setupKeyboardAvoidance();
   fetch("data/data.jsonl.gz")
     .then(r => {
       const ds = new DecompressionStream("gzip");
@@ -1185,6 +1197,60 @@ function setupTabs() {
   });
 }
 
+// Tiny haptic helper — silently no-ops where unsupported.
+function vibe(ms) {
+  try { if (navigator.vibrate) navigator.vibrate(ms); } catch {}
+}
+
+// Horizontal swipes on the panel shell cycle through Filtros / Reverso / Regex / Pares.
+function setupSwipeTabs() {
+  const shell = document.querySelector(".panel-shell");
+  if (!shell) return;
+  if (typeof window === "undefined" || !window.matchMedia) return;
+  const mql = window.matchMedia("(max-width: 640px) and (pointer: coarse)");
+  let enabled = mql.matches;
+  const onChange = () => { enabled = mql.matches; };
+  if (mql.addEventListener) mql.addEventListener("change", onChange);
+  else if (mql.addListener) mql.addListener(onChange);
+
+  const IGNORE_SEL = "input, textarea, select, button, .pill-group, .fuente-list, .session-bar, .panel-tabs";
+  let startX = 0, startY = 0, startT = 0, tracking = false;
+
+  shell.addEventListener("touchstart", e => {
+    if (!enabled || e.touches.length !== 1) { tracking = false; return; }
+    if (e.target.closest && e.target.closest(IGNORE_SEL)) { tracking = false; return; }
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    startT = Date.now();
+    tracking = true;
+  }, { passive: true });
+
+  shell.addEventListener("touchmove", e => {
+    if (!tracking) return;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 12) tracking = false;
+  }, { passive: true });
+
+  shell.addEventListener("touchend", e => {
+    if (!tracking) return;
+    tracking = false;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+    if (Date.now() - startT > 600) return;
+    if (Math.abs(dx) < 60) return;
+    if (Math.abs(dy) > Math.abs(dx) * 0.7) return;
+    const buttons = Array.from(document.querySelectorAll(".panel-tabs .tab-btn"));
+    const idx = buttons.findIndex(b => b.classList.contains("active"));
+    if (idx < 0) return;
+    const next = dx < 0 ? idx + 1 : idx - 1;
+    if (next < 0 || next >= buttons.length) return;
+    buttons[next].click();
+    vibe(8);
+  });
+}
+
 function syncFuenteMode(card) {
   const active = card.querySelector(".field-btn.active");
   card.classList.toggle("fuente-mode", active?.dataset.field === "Fuente");
@@ -1322,6 +1388,7 @@ function commitFilterCard() {
   card.querySelectorAll(".filter-input").forEach(i => (i.value = ""));
   applyFilters();
   refreshSessionLabel();
+  vibe(8);
 }
 
 function applyFilterCard(owner) {
@@ -1360,6 +1427,7 @@ function clearFilterCard(owner) {
   removeOwnerFilters(owner);
   resetComentarioState();
   applyFilters();
+  vibe(8);
 }
 
 function cancelEdit() {
@@ -1976,14 +2044,22 @@ function saveColumnState() {
   } catch {}
 }
 
+function applyMobileColumnDefaults() {
+  if (typeof window === "undefined" || !window.matchMedia) return;
+  if (!window.matchMedia("(max-width: 640px)").matches) return;
+  // Comentario is the widest column and rarely needed on first glance — the
+  // +/- detail row still surfaces it. Users can re-enable via the column menu.
+  hiddenColumns.add("Comentario");
+}
+
 function loadColumnState() {
   let payload;
   try {
     const raw = localStorage.getItem(COLUMN_STATE_KEY);
-    if (!raw) return;
+    if (!raw) { applyMobileColumnDefaults(); return; }
     payload = JSON.parse(raw);
-  } catch { return; }
-  if (!payload || typeof payload !== "object") return;
+  } catch { applyMobileColumnDefaults(); return; }
+  if (!payload || typeof payload !== "object") { applyMobileColumnDefaults(); return; }
 
   if (Array.isArray(payload.order)) {
     const byKey = new Map(TABLE_FIELDS.map(f => [f.key, f]));
@@ -2256,7 +2332,9 @@ function syncColumnLayout() {
   const visibleWidth = TABLE_FIELDS.reduce((sum, field, idx) => {
     return hiddenColumns.has(field.key) ? sum : sum + getColumnWidth(field.key);
   }, 0);
-  const minWidth = Math.max(TABLE_MIN_WIDTH, visibleWidth);
+  const isPhone = typeof window !== "undefined" && window.matchMedia
+    && window.matchMedia("(max-width: 640px)").matches;
+  const minWidth = isPhone ? visibleWidth : Math.max(TABLE_MIN_WIDTH, visibleWidth);
   const table = getBodyTable();
   if (table) {
     let colgroup = table.querySelector("colgroup");
@@ -4480,4 +4558,168 @@ function handleHashChange() {
   if (!hashRouteApplied) return;
   const state = parseHashRoute(location.hash);
   if (state) applyParsedState(state);
+}
+
+// ── Service worker (PWA install + offline cache) ────────────────────
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+
+// ── Toast (transient feedback) ──────────────────────────────────────
+let toastEl = null;
+let toastTimer = null;
+function showToast(message) {
+  if (!toastEl) {
+    toastEl = document.createElement("div");
+    toastEl.className = "toast";
+    toastEl.setAttribute("role", "status");
+    toastEl.setAttribute("aria-live", "polite");
+    document.body.appendChild(toastEl);
+  }
+  toastEl.textContent = message;
+  toastEl.classList.add("toast--visible");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toastEl.classList.remove("toast--visible");
+  }, 1800);
+}
+
+async function copyText(text) {
+  if (!text) return false;
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {}
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch {
+    return false;
+  }
+}
+
+// ── Web Share button ────────────────────────────────────────────────
+function setupShareButton() {
+  const btn = document.getElementById("shareBtn");
+  if (!btn) return;
+  btn.addEventListener("click", async () => {
+    const url = location.href;
+    const title = document.title;
+    const shareData = { title, url };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (err) {
+        // User cancelled — silent. Other errors fall through to copy.
+        if (err && err.name === "AbortError") return;
+      }
+    }
+    const ok = await copyText(url);
+    showToast(t(ok ? "share.copied" : "share.failed"));
+  });
+}
+
+// ── Long-press to copy cell text ────────────────────────────────────
+function setupLongPressCopy() {
+  const tbody = document.querySelector("#dataTable tbody");
+  if (!tbody) return;
+  let pressTimer = null;
+  let pressStart = null;
+  let pressTarget = null;
+  let firedCopy = false;
+
+  function reset() {
+    if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+    pressStart = null;
+    pressTarget = null;
+  }
+
+  tbody.addEventListener("pointerdown", e => {
+    if (e.pointerType === "mouse") return;
+    const cell = e.target.closest("td");
+    if (!cell) return;
+    if (e.target.closest(".mobile-row-toggle, button, a, input, select, textarea")) return;
+    firedCopy = false;
+    pressStart = { x: e.clientX, y: e.clientY };
+    pressTarget = cell;
+    pressTimer = setTimeout(async () => {
+      pressTimer = null;
+      if (!pressTarget) return;
+      const clone = pressTarget.cloneNode(true);
+      clone.querySelectorAll(".mobile-row-toggle").forEach(el => el.remove());
+      const text = (clone.innerText || clone.textContent || "").replace(/\s+/g, " ").trim();
+      if (!text) return;
+      const ok = await copyText(text);
+      if (ok) {
+        firedCopy = true;
+        showToast(t("copy.cell"));
+        if (navigator.vibrate) navigator.vibrate(12);
+      }
+    }, 450);
+  });
+
+  tbody.addEventListener("pointermove", e => {
+    if (!pressStart) return;
+    const dx = e.clientX - pressStart.x;
+    const dy = e.clientY - pressStart.y;
+    if (Math.hypot(dx, dy) > 10) reset();
+  });
+
+  ["pointerup", "pointercancel", "pointerleave"].forEach(ev =>
+    tbody.addEventListener(ev, () => reset())
+  );
+
+  // Suppress the click that follows a long-press.
+  tbody.addEventListener("click", e => {
+    if (firedCopy) {
+      firedCopy = false;
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  }, true);
+}
+
+// On phones with the soft keyboard open, scroll the focused input into view
+// above the keyboard. Uses visualViewport when available; harmless otherwise.
+function setupKeyboardAvoidance() {
+  if (typeof window === "undefined") return;
+  const vv = window.visualViewport;
+  if (!vv) return;
+  if (!window.matchMedia || !window.matchMedia("(pointer: coarse)").matches) return;
+
+  let raf = 0;
+  function ensureFocusedVisible() {
+    const el = document.activeElement;
+    if (!el || !el.matches) return;
+    if (!el.matches("input, textarea, select")) return;
+    const rect = el.getBoundingClientRect();
+    const top = vv.offsetTop;
+    const bottom = top + vv.height;
+    // 12px breathing room above the keyboard / below the URL bar.
+    if (rect.bottom > bottom - 12) {
+      el.scrollIntoView({ block: "center", behavior: "smooth" });
+    } else if (rect.top < top + 12) {
+      el.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+  }
+  function onChange() {
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(ensureFocusedVisible);
+  }
+  vv.addEventListener("resize", onChange);
+  vv.addEventListener("scroll", onChange);
+  document.addEventListener("focusin", onChange);
 }

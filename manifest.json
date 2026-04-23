@@ -1,0 +1,20 @@
+{
+  "name": "Base de datos náhuatl",
+  "short_name": "Náhuatl DB",
+  "description": "Busca y filtra cientos de miles de entradas de diccionarios históricos de náhuatl.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#4c6ef5",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}

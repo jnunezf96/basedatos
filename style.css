@@ -1274,6 +1274,44 @@ td:nth-child(5) {
   padding: 4px 10px;
 }
 
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  padding: 4px 10px;
+}
+
+.share-btn svg {
+  flex-shrink: 0;
+}
+
+/* ── Transient toast ────────────────────────────────────── */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  transform: translate(-50%, 16px);
+  background: #1f2c64;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 6px 24px rgba(20, 42, 120, 0.28);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.22s ease;
+  z-index: 1000;
+  max-width: calc(100vw - 32px);
+  text-align: center;
+}
+
+.toast--visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
 .sources-card {
   background: #fff;
   border-radius: 12px;
@@ -2182,6 +2220,237 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   .browse-pager,
   .browse-page-size {
     flex-wrap: wrap;
+  }
+
+  /* ── Touch-friendly form inputs (≥16px font prevents iOS auto-zoom) ── */
+  .filter-input,
+  .reverse-input,
+  .compare-input,
+  .pair-input,
+  .page-input,
+  .sort-scope select,
+  .page-size select,
+  .browse-page-size select {
+    font-size: 16px;
+  }
+
+  .filter-input {
+    padding: 10px 12px;
+    border-radius: 9px;
+  }
+
+  /* ── Filter card: stack labels above pill rows on phones ── */
+  .filter-card {
+    padding: 12px 12px;
+    gap: 12px;
+  }
+
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .filter-row .label {
+    min-width: 0;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6f78a8;
+  }
+
+  .pill-group {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 3px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .pill-group::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pill {
+    flex-shrink: 0;
+    padding: 9px 14px;
+    font-size: 13px;
+    min-height: 36px;
+  }
+
+  .filter-grid {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .grid-row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  /* On phones the "Incluye / Excluye" header row hid above; show inline labels
+     instead so each input is identifiable. */
+  .grid-row > span {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6f78a8;
+    padding-top: 2px;
+  }
+
+  /* Filter actions: stack toggles + buttons */
+  .filter-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .filter-options {
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+
+  .filter-actions-btns {
+    width: 100%;
+    gap: 10px;
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+    padding: 10px 0 calc(8px + env(safe-area-inset-bottom));
+    margin-bottom: calc(-1 * env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: saturate(140%) blur(8px);
+    -webkit-backdrop-filter: saturate(140%) blur(8px);
+    border-top: 1px solid #e5e9ff;
+    box-shadow: 0 -6px 14px -12px rgba(31, 44, 100, 0.3);
+  }
+
+  .filter-actions-btns .btn {
+    flex: 1 1 50%;
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .accent-toggle .accent-btn,
+  .logic-toggle .logic-btn {
+    min-height: 36px;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .pill.old-spanish-btn {
+    min-height: 36px;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  /* ── Source chips: thumb-friendly ── */
+  .fuente-list {
+    gap: 8px;
+  }
+
+  .fuente-chip {
+    padding: 9px 13px;
+    font-size: 13.5px;
+    min-height: 36px;
+  }
+
+  .fuente-chip-year {
+    font-size: 12px;
+  }
+
+  .fuente-act {
+    min-height: 36px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  /* ── Active filter chips: bigger remove targets ── */
+  .filter-chip {
+    padding: 6px 6px 6px 12px;
+    font-size: 13px;
+    max-width: 100%;
+  }
+
+  .chip-remove {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .chip-clear-all {
+    min-height: 32px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* ── Toolbar: bigger arrows, dropdowns; drop tiny separators ── */
+  .table-toolbar .toolbar-sep {
+    display: none;
+  }
+
+  .toolbar-controls {
+    column-gap: 10px;
+    row-gap: 10px;
+  }
+
+  .arrow-btn {
+    padding: 8px 12px;
+    min-height: 36px;
+    min-width: 36px;
+    font-size: 13px;
+  }
+
+  .arrow-btn.page-skip {
+    min-width: 36px;
+    padding: 8px 8px;
+  }
+
+  .page-input {
+    width: 48px;
+    padding: 8px 6px;
+    border-radius: 8px;
+  }
+
+  .page-size select,
+  .sort-scope select,
+  .browse-page-size select {
+    padding: 7px 8px;
+    border-radius: 8px;
+  }
+
+  .view-btn {
+    padding: 9px 14px;
+    min-height: 36px;
+    font-size: 13px;
+  }
+
+  /* ── Pin first visible cell so the +/- toggle stays in view while
+        the table scrolls horizontally ── */
+  #dataTable td.mobile-row-anchor-cell {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: #fff;
+    box-shadow: 1px 0 0 #e5e9ff;
+  }
+
+  #dataTable tbody tr.stripe-alt > td.mobile-row-anchor-cell {
+    background: #f6f8ff;
+  }
+
+  /* Slightly larger toggle for thumbs */
+  .mobile-row-toggle {
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
+  }
+
+  #dataTable td.mobile-row-anchor-cell {
+    padding-left: 50px;
   }
 }
 
