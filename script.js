@@ -1874,8 +1874,15 @@ function getMobileRowId(row) {
 }
 
 function getMobilePreviewFields() {
-  const visible = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key));
-  return visible.slice(0, 2).map(f => f.key);
+  const visible = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key)).map(f => f.key);
+  if (!visible.length) return [];
+  const primary = visible[0];
+  // Subtitle is always Traducción when available — it's the most informative
+  // differentiator, regardless of column order. Fall back to the next visible.
+  const secondary = visible.includes("Traducción") && primary !== "Traducción"
+    ? "Traducción"
+    : (visible[1] || null);
+  return secondary ? [primary, secondary] : [primary];
 }
 
 function addMobileRowToggle(td, row) {
