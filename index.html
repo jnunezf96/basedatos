@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title data-i18n="title">Base de datos náhuatl</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -10,25 +11,27 @@
 
     <!-- ── Top bar: session tabs left, panel tabs right ── -->
     <div class="top-bar">
-      <div class="session-bar" id="sessionBar"></div>
-      <nav class="panel-tabs">
-        <button type="button" class="tab-btn active" data-tab="filtersPanel" data-i18n="tab.filters">Filtros</button>
-        <button type="button" class="tab-btn" data-tab="reversePanel" data-i18n="tab.reverse">Reverso</button>
-        <button type="button" class="tab-btn" data-tab="regexPanel" data-i18n="tab.regex">Regex</button>
-        <button type="button" class="tab-btn" data-tab="pairsPanel" data-i18n="tab.pairs">Pares a/i</button>
-      </nav>
       <button type="button" class="btn action lang-toggle" id="langToggle" data-i18n="lang.toggle">English</button>
     </div>
 
-    <!-- ── Site tagline ── -->
-    <p class="site-tagline" data-i18n="site.tagline">Busca y filtra cientos de miles de entradas de diccionarios históricos de náhuatl. Usa los filtros para encontrar palabras por escritura, traducción o fuente; los resultados aparecen en la tabla de abajo.</p>
+    <div class="panel-shell">
+      <div class="panel-tab-row">
+        <div class="session-bar" id="sessionBar"></div>
+        <nav class="panel-tabs" aria-label="Paneles">
+          <button type="button" class="tab-btn active" data-tab="filtersPanel" data-i18n="tab.filters">Filtros</button>
+          <button type="button" class="tab-btn" data-tab="reversePanel" data-i18n="tab.reverse">Reverso</button>
+          <button type="button" class="tab-btn" data-tab="regexPanel" data-i18n="tab.regex">Regex</button>
+          <button type="button" class="tab-btn" data-tab="pairsPanel" data-i18n="tab.pairs">Pares a/i</button>
+        </nav>
+      </div>
 
-    <!-- ── Panel: Filtros ── -->
-    <section class="tab-panel active" id="filtersPanel">
-      <div class="filter-card" data-owner="f1">
-        <div class="filter-card-head">
-          <h3 data-i18n="filter.title">Filtro</h3>
-        </div>
+      <!-- ── Panel: Filtros ── -->
+      <section class="tab-panel active" id="filtersPanel">
+        <div class="filter-card" data-owner="f1">
+          <div class="filter-card-head">
+            <h3 data-i18n="filter.title">Filtro</h3>
+          </div>
+          <p class="site-tagline" data-i18n="site.tagline">Usa los filtros para encontrar palabras por escritura, traducción o fuente; los resultados aparecen en la tabla de abajo.</p>
         <div class="filter-row fields">
           <span class="label" data-i18n="label.column">Columna</span>
           <div class="pill-group field-group">
@@ -103,11 +106,11 @@
           </div>
           <div id="fuenteList" class="fuente-list" role="group" aria-label="Fuentes"></div>
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
 
-    <!-- ── Panel: Reverso ── -->
-    <section class="tab-panel" id="reversePanel">
+      <!-- ── Panel: Reverso ── -->
+      <section class="tab-panel" id="reversePanel">
       <div class="sources-card reverse-card">
         <div class="sources-head">
           <h3 data-i18n="reverse.title">Búsqueda inversa</h3>
@@ -124,10 +127,10 @@
           </div>
         </div>
       </div>
-    </section>
+      </section>
 
-    <!-- ── Panel: Regex ── -->
-    <section class="tab-panel" id="regexPanel">
+      <!-- ── Panel: Regex ── -->
+      <section class="tab-panel" id="regexPanel">
       <div class="sources-card rx-card">
         <div class="rx-grid">
 
@@ -198,10 +201,10 @@
 
         </div>
       </div>
-    </section>
+      </section>
 
-    <!-- ── Panel: Pares ── -->
-    <section class="tab-panel" id="pairsPanel">
+      <!-- ── Panel: Pares ── -->
+      <section class="tab-panel" id="pairsPanel">
       <div class="sources-card pair-card">
         <div class="sources-head">
           <h3 data-i18n="pairs.title">Pares a/i</h3>
@@ -236,7 +239,8 @@
         </div>
         <div id="pairResults" class="pair-results" aria-live="polite"></div>
       </div>
-    </section>
+      </section>
+    </div>
 
     <!-- ── Active filter chips ── -->
     <div id="activeFiltersBar" class="active-filters-bar" style="display:none"></div>

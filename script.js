@@ -160,12 +160,14 @@ const I18N = {
     "browse.compare": "Aislar",
     "browse.pagesize.label": "Filas",
     "browse.page": "Pág. {{page}} de {{total}}",
-    "site.tagline": "Busca y filtra cientos de miles de entradas de diccionarios históricos de náhuatl. Usa los filtros para encontrar palabras por escritura, traducción o fuente; los resultados aparecen en la tabla de abajo.",
+    "site.tagline": "Usa los filtros para encontrar palabras por escritura, traducción o fuente; los resultados aparecen en la tabla de abajo.",
     "table.header.paleografia": "Original",
     "table.header.grafia": "Edición",
     "table.header.traduccion": "Traducción",
     "table.header.fuente": "Fuente",
     "table.header.comentario": "Comentario",
+    "table.rowDetail.open": "Mostrar registro",
+    "table.rowDetail.close": "Ocultar registro",
     "table.sort.label": "Orden:",
     "table.sort.all": "Todos",
     "table.sort.page": "Página",
@@ -373,12 +375,14 @@ const I18N = {
     "browse.compare": "Isolate",
     "browse.pagesize.label": "Rows",
     "browse.page": "Page {{page}} of {{total}}",
-    "site.tagline": "Search and filter hundreds of thousands of entries from historical Nahuatl dictionaries. Use the filters to find words by spelling, translation, or source; results appear in the table below.",
+    "site.tagline": "Use the filters to find words by spelling, translation, or source; results appear in the table below.",
     "table.header.paleografia": "Original",
     "table.header.grafia": "Edition",
     "table.header.traduccion": "Translation",
     "table.header.fuente": "Source",
     "table.header.comentario": "Comment",
+    "table.rowDetail.open": "Show record",
+    "table.rowDetail.close": "Hide record",
     "table.sort.label": "Sort:",
     "table.sort.all": "All",
     "table.sort.page": "Page",
@@ -509,6 +513,8 @@ let sortKeys = []; // [{field, dir}]
 let sortScope = "all"; // "all" | "page"
 const hiddenColumns = new Set();
 const expandedLemmas = new Set();
+const expandedMobileRows = new Set();
+const mobileRowById = new Map();
 const columnWidths = new Map(DEFAULT_COLUMN_WIDTHS);
 const alphaNumCollator = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
 const emptyBrowseSeed = (() => {
@@ -597,6 +603,8 @@ document.addEventListener("DOMContentLoaded", () => {
         row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
       });
       dataRows = rows;
+      mobileRowById.clear();
+      rows.forEach(row => mobileRowById.set(getMobileRowId(row), row));
       buildSourceSlugMaps();
       const initialState = parseHashRoute(location.hash);
       if (initialState) {
@@ -962,6 +970,7 @@ function saveCurrentSession() {
   session.viewMode = tableViewMode;
   session.expandedComments = Array.from(expandedComments);
   session.expandedLemmas = Array.from(expandedLemmas);
+  session.expandedMobileRows = Array.from(expandedMobileRows);
   const scroller = getTableScrollElement();
   session.scrollTop = scroller ? scroller.scrollTop : 0;
 }
@@ -996,6 +1005,8 @@ function loadSession(sessionId) {
     (session.expandedComments ?? []).forEach(id => expandedComments.add(id));
     expandedLemmas.clear();
     (session.expandedLemmas ?? []).forEach(id => expandedLemmas.add(id));
+    expandedMobileRows.clear();
+    (session.expandedMobileRows ?? []).forEach(id => expandedMobileRows.add(id));
     pageScrollByOffset.clear();
   }
 
@@ -1033,6 +1044,7 @@ function addSession() {
   tableViewMode = "rows";
   expandedComments.clear();
   expandedLemmas.clear();
+  expandedMobileRows.clear();
   pageScrollByOffset.clear();
 
   renderSessionBar();
@@ -1076,6 +1088,8 @@ function closeSession(sessionId) {
     (nextSession.expandedComments ?? []).forEach(eid => expandedComments.add(eid));
     expandedLemmas.clear();
     (nextSession.expandedLemmas ?? []).forEach(eid => expandedLemmas.add(eid));
+    expandedMobileRows.clear();
+    (nextSession.expandedMobileRows ?? []).forEach(eid => expandedMobileRows.add(eid));
     pageScrollByOffset.clear();
     renderFuenteList();
     updateSortIndicators();
@@ -1630,6 +1644,7 @@ function renderTable(rows, totalCount) {
       if (stripeIdx % 2 === 0) tr.classList.add("stripe-alt");
       stripeIdx++;
       tbody.appendChild(tr);
+      appendMobileDetailRowAfter(tr, row);
       if (comentarioMeta) syncComentarioCell(comentarioMeta, translationMeasureEl);
     });
   }
@@ -1644,12 +1659,16 @@ function renderTable(rows, totalCount) {
 
 function buildDataRow(row) {
   const tr = document.createElement("tr");
+  const rowId = getMobileRowId(row);
   if (row.record_id) tr.dataset.recordId = row.record_id;
+  if (rowId) tr.dataset.mobileRowId = rowId;
   let translationMeasureEl = null;
   let comentarioMeta = null;
+  let mobileToggleAttached = false;
 
   TABLE_FIELDS.forEach(field => {
     const td = document.createElement("td");
+    td.dataset.field = field.key;
     if (field.key === "Comentario") {
       const raw = getDisplayValue(row, field.key);
       const safe = raw == null ? "" : String(raw);
@@ -1713,10 +1732,132 @@ function buildDataRow(row) {
         td.innerHTML = applyHighlights(raw, field.key);
       }
     }
+    if (!mobileToggleAttached && !hiddenColumns.has(field.key)) {
+      addMobileRowToggle(td, row);
+      mobileToggleAttached = true;
+    }
     tr.appendChild(td);
   });
 
   return { tr, comentarioMeta, translationMeasureEl };
+}
+
+function getMobileRowId(row) {
+  const rawId = row?._rid ?? row?.record_id;
+  return rawId === undefined || rawId === null ? "" : String(rawId);
+}
+
+function addMobileRowToggle(td, row) {
+  const rowId = getMobileRowId(row);
+  if (!rowId) return;
+  const expanded = expandedMobileRows.has(rowId);
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "mobile-row-toggle";
+  btn.dataset.mobileRowToggle = rowId;
+  btn.textContent = expanded ? "−" : "+";
+  btn.setAttribute("aria-expanded", expanded ? "true" : "false");
+  btn.setAttribute("aria-label", t(expanded ? "table.rowDetail.close" : "table.rowDetail.open"));
+  td.classList.add("mobile-row-anchor-cell");
+  td.prepend(btn);
+}
+
+function setMobileRowToggleState(rowTr, expanded) {
+  if (!rowTr) return;
+  rowTr.classList.toggle("mobile-row-expanded", expanded);
+  const btn = rowTr.querySelector(".mobile-row-toggle");
+  if (!btn) return;
+  btn.textContent = expanded ? "−" : "+";
+  btn.setAttribute("aria-expanded", expanded ? "true" : "false");
+  btn.setAttribute("aria-label", t(expanded ? "table.rowDetail.close" : "table.rowDetail.open"));
+}
+
+function buildMobileDetailRow(row) {
+  const tr = document.createElement("tr");
+  tr.className = "mobile-row-detail-row";
+  const rowId = getMobileRowId(row);
+  if (rowId) tr.dataset.mobileRowId = rowId;
+
+  const td = document.createElement("td");
+  td.className = "mobile-row-detail-cell";
+  td.colSpan = Math.max(1, TABLE_FIELDS.length);
+
+  const detail = document.createElement("div");
+  detail.className = "mobile-row-detail";
+
+  TABLE_FIELDS.forEach(field => {
+    const raw = getDisplayValue(row, field.key);
+    const safe = raw == null ? "" : String(raw);
+    if (!safe.trim()) return;
+
+    const item = document.createElement("div");
+    item.className = "mobile-detail-field";
+    item.dataset.field = field.key;
+
+    const label = document.createElement("div");
+    label.className = "mobile-detail-label";
+    const labelKey = getFieldI18nKey(field.key);
+    label.textContent = labelKey ? t(labelKey) : field.label;
+
+    const value = document.createElement("div");
+    value.className = "mobile-detail-value";
+    value.innerHTML = applyHighlights(safe, field.key);
+
+    item.appendChild(label);
+    item.appendChild(value);
+    detail.appendChild(item);
+  });
+
+  if (!detail.children.length) {
+    const item = document.createElement("div");
+    item.className = "mobile-detail-field mobile-detail-field--empty";
+    item.textContent = t("table.empty");
+    detail.appendChild(item);
+  }
+
+  td.appendChild(detail);
+  tr.appendChild(td);
+  return tr;
+}
+
+function appendMobileDetailRowAfter(anchorRow, row) {
+  const rowId = getMobileRowId(row);
+  if (!anchorRow || !rowId || !expandedMobileRows.has(rowId)) return anchorRow;
+  const detailRow = buildMobileDetailRow(row);
+  if (anchorRow.classList.contains("lemma-detail-row")) {
+    detailRow.classList.add("lemma-detail-row");
+    if (anchorRow.dataset.lemma) detailRow.dataset.lemma = anchorRow.dataset.lemma;
+  }
+  anchorRow.after(detailRow);
+  setMobileRowToggleState(anchorRow, true);
+  return detailRow;
+}
+
+function toggleMobileRowDetail(rowTr) {
+  if (!rowTr || rowTr.classList.contains("mobile-row-detail-row")) return;
+  const rowId = rowTr.dataset.mobileRowId;
+  if (!rowId) return;
+  const row = mobileRowById.get(rowId);
+  if (!row) return;
+  const next = rowTr.nextElementSibling;
+  const existingDetail = next?.classList.contains("mobile-row-detail-row") && next.dataset.mobileRowId === rowId
+    ? next : null;
+
+  if (existingDetail) {
+    existingDetail.remove();
+    expandedMobileRows.delete(rowId);
+    setMobileRowToggleState(rowTr, false);
+    return;
+  }
+
+  expandedMobileRows.add(rowId);
+  const detailRow = buildMobileDetailRow(row);
+  if (rowTr.classList.contains("lemma-detail-row")) {
+    detailRow.classList.add("lemma-detail-row");
+    if (rowTr.dataset.lemma) detailRow.dataset.lemma = rowTr.dataset.lemma;
+  }
+  rowTr.after(detailRow);
+  setMobileRowToggleState(rowTr, true);
 }
 
 function setTableStatusMessage(baseText, detailText = "") {
@@ -1917,7 +2058,7 @@ function ensureColumnHiddenStyles() {
   TABLE_FIELDS.forEach((_, idx) => {
     style.textContent += `#dataTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
       `#dataTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
-      `#dataTable.col-hidden-${idx} td:nth-child(${idx + 1}) { display: none; }\n`;
+      `#dataTable.col-hidden-${idx} tbody tr:not(.mobile-row-detail-row) td:nth-child(${idx + 1}) { display: none; }\n`;
   });
   document.head.appendChild(style);
 }
@@ -2763,10 +2904,15 @@ function exportTableAsImage(format = "jpeg") {
     );
   }
   Array.from(table.tBodies[0]?.rows || []).forEach(tr => {
+    if (tr.classList.contains("mobile-row-detail-row")) return;
     rows.push(
       Array.from(tr.cells)
         .filter((_, idx) => idx !== 4)
-        .map(td => td.innerText.replace(/\s+/g, " ").trim())
+        .map(td => {
+          const clone = td.cloneNode(true);
+          clone.querySelectorAll(".mobile-row-toggle").forEach(el => el.remove());
+          return (clone.innerText || clone.textContent || "").replace(/\s+/g, " ").trim();
+        })
     );
   });
   if (!rows.length) return;
@@ -3616,6 +3762,12 @@ function setupEdicionCellClick() {
       setCompareChip(cmpBtn.dataset.browseCompare || "");
       return;
     }
+    const mobileToggle = e.target.closest(".mobile-row-toggle");
+    if (mobileToggle) {
+      e.stopPropagation();
+      toggleMobileRowDetail(mobileToggle.closest("tr"));
+      return;
+    }
     const cell = e.target.closest("td");
     if (!cell) return;
     const tr = cell.closest("tr");
@@ -3719,9 +3871,14 @@ function appendLemmaDetailRowsAfter(anchorRow, item, stripe) {
     tr.dataset.lemma = item.lemma;
     if (stripe) tr.classList.add("stripe-alt");
     const edicionCell = tr.querySelector('td[data-field="Texto estandarizado"]');
-    if (edicionCell) edicionCell.textContent = "";
+    if (edicionCell) {
+      const mobileToggle = edicionCell.querySelector(".mobile-row-toggle");
+      edicionCell.replaceChildren();
+      if (mobileToggle) edicionCell.appendChild(mobileToggle);
+    }
     anchor.after(tr);
     anchor = tr;
+    anchor = appendMobileDetailRowAfter(anchor, row);
     if (comentarioMeta) syncComentarioCell(comentarioMeta, translationMeasureEl);
   });
 }
