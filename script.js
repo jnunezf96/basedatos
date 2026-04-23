@@ -1873,6 +1873,11 @@ function getMobileRowId(row) {
   return rawId === undefined || rawId === null ? "" : String(rawId);
 }
 
+function getMobilePreviewFields() {
+  const visible = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key));
+  return visible.slice(0, 2).map(f => f.key);
+}
+
 function addMobileRowToggle(td, row) {
   const rowId = getMobileRowId(row);
   if (!rowId) return;
@@ -1885,6 +1890,20 @@ function addMobileRowToggle(td, row) {
   btn.setAttribute("aria-expanded", expanded ? "true" : "false");
   btn.setAttribute("aria-label", t(expanded ? "table.rowDetail.close" : "table.rowDetail.open"));
   td.classList.add("mobile-row-anchor-cell");
+  // Add a secondary line so rows with identical primary values stay distinguishable.
+  const previewFields = getMobilePreviewFields();
+  const secondaryKey = previewFields[1];
+  if (secondaryKey && secondaryKey !== td.dataset.field) {
+    const raw = getDisplayValue(row, secondaryKey);
+    const safe = raw == null ? "" : String(raw);
+    if (safe.trim()) {
+      const sub = document.createElement("div");
+      sub.className = "mobile-row-subtitle";
+      sub.dataset.field = secondaryKey;
+      sub.innerHTML = applyHighlights(safe, secondaryKey);
+      td.appendChild(sub);
+    }
+  }
   td.prepend(btn);
 }
 
@@ -1911,11 +1930,11 @@ function buildMobileDetailRow(row) {
   const detail = document.createElement("div");
   detail.className = "mobile-row-detail";
 
-  // Skip hidden columns and the anchor field (already visible in the row).
-  const anchorField = TABLE_FIELDS.find(f => !hiddenColumns.has(f.key))?.key;
+  // Skip hidden columns and the preview fields (already shown in the row).
+  const previewFields = new Set(getMobilePreviewFields());
   TABLE_FIELDS.forEach(field => {
     if (hiddenColumns.has(field.key)) return;
-    if (field.key === anchorField) return;
+    if (previewFields.has(field.key)) return;
     const raw = getDisplayValue(row, field.key);
     const safe = raw == null ? "" : String(raw);
     if (!safe.trim()) return;

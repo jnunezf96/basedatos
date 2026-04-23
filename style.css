@@ -2120,13 +2120,22 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   #dataTable td.mobile-row-anchor-cell {
     position: relative;
-    padding: 14px 56px 14px 14px;
+    padding: 12px 56px 12px 14px;
     font-size: 15px;
     font-weight: 600;
     color: #1b2589;
     line-height: 1.35;
     cursor: pointer;
     min-height: 56px;
+  }
+
+  .mobile-row-subtitle {
+    margin-top: 4px;
+    font-size: 12.5px;
+    font-weight: 400;
+    color: #525c8d;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
   }
 
   .mobile-row-toggle {
