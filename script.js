@@ -637,7 +637,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupLongPressCopy();
   setupSwipeTabs();
   setupKeyboardAvoidance();
-  setupResultsActions();
   setupScrollNav();
   fetch("data/data.jsonl.gz")
     .then(r => {
@@ -666,15 +665,6 @@ document.addEventListener("DOMContentLoaded", () => {
       window.addEventListener("hashchange", handleHashChange);
     });
 });
-
-// Mirrors the filter card's Añadir/Vaciar pair inside the results card so
-// users can add/clear filters without scrolling back up.
-function setupResultsActions() {
-  const addBtn = document.getElementById("addBtnResults");
-  const clearBtn = document.getElementById("clearBtnResults");
-  if (addBtn) addBtn.addEventListener("click", () => commitFilterCard());
-  if (clearBtn) clearBtn.addEventListener("click", () => clearFilterCard("f1"));
-}
 
 // Sticky bottom nav on phones: tap Buscar → jump to the filter card,
 // tap Resultados → jump to the results table. Active state tracks which

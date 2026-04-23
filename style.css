@@ -1227,21 +1227,6 @@ td:nth-child(5) {
   align-items: center;
 }
 
-/* Duplicate Añadir/Vaciar at the top of the data-panel so you can add
-   or clear filters without scrolling back to the filter card. */
-.results-actions-btns {
-  flex-shrink: 0;
-  padding: 2px 0 10px;
-  border-bottom: 1px solid #eef0fc;
-  margin-bottom: 8px;
-  gap: 8px;
-}
-
-.results-actions-btns .btn {
-  flex: 1 1 0;
-  min-width: 0;
-}
-
 /* Sticky bottom nav: two pills to jump between filter card and results
    card on phones. Hidden on desktop (both cards fit). */
 .scroll-nav {
@@ -2176,16 +2161,6 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   .scroll-nav-btn:active {
     transform: scale(0.97);
-  }
-
-  .results-actions-btns {
-    padding: 0 0 10px;
-    margin-bottom: 8px;
-  }
-
-  .results-actions-btns .btn {
-    min-height: 40px;
-    font-size: 13px;
   }
 
   /* Leave room at the bottom of the data-panel for the sticky scroll-nav. */
