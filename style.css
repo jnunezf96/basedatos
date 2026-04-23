@@ -29,7 +29,8 @@ body {
 .top-bar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  order: 2;
+  justify-content: flex-start;
   gap: 6px;
   padding: 0;
   margin: 0;
@@ -55,9 +56,8 @@ body {
 
 .panel-controls {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
+  align-items: center;
+  gap: 10px;
   flex: 0 0 auto;
   min-width: 0;
 }
@@ -65,7 +65,8 @@ body {
 .panel-tabs {
   display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
+  order: 1;
+  justify-content: flex-start;
   gap: 6px;
   padding: 0;
   margin: 0;
@@ -2145,28 +2146,50 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     padding: 12px 12px calc(58px + env(safe-area-inset-bottom));
   }
 
+  .panel-shell {
+    height: calc(100dvh - 58px - env(safe-area-inset-bottom) - 12px);
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .tab-panel {
+    min-height: 0;
+  }
+
+  .tab-panel.active {
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .tab-panel.active > .filter-card,
+  .tab-panel.active > .sources-card {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .panel-controls {
     flex: 1 1 100%;
-    flex-direction: column;
-    align-items: stretch;
     gap: 6px;
   }
 
   .top-bar {
     flex: 0 0 auto;
     justify-content: flex-start;
-    gap: 6px;
+    gap: 4px;
     padding: 0;
-    order: 1;
   }
 
   .mobile-icon-btn {
     gap: 0;
     justify-content: center;
-    min-width: 42px;
-    min-height: 38px;
-    padding-left: 10px;
-    padding-right: 10px;
+    min-width: 36px;
+    min-height: 36px;
+    padding-left: 8px;
+    padding-right: 8px;
     background: #fff;
     border-color: #d2dafd;
     box-shadow: 0 1px 2px rgba(26, 36, 104, 0.08);
@@ -2174,8 +2197,8 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   .mobile-icon {
     display: inline-block;
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
   }
 
   .mobile-icon-label {
@@ -2189,9 +2212,9 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .panel-tabs {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     justify-content: flex-start;
-    gap: 8px;
+    gap: 6px;
     padding: 0;
     margin: 0;
   }
@@ -2289,10 +2312,6 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     font-size: 18px;
   }
 
-  .panel-tabs {
-    order: 2;
-  }
-
   .panel-tab-row {
     flex-wrap: wrap;
     padding: 0;
@@ -2306,9 +2325,9 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .tab-btn {
-    min-width: 42px;
-    min-height: 38px;
-    padding: 0 10px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0 8px;
   }
 
   .excel-header {

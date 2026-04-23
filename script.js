@@ -669,19 +669,85 @@ document.addEventListener("DOMContentLoaded", () => {
 // Sticky bottom nav on phones: tap Buscar → jump to the filter card,
 // tap Resultados → jump to the results table. Active state tracks which
 // section is currently in view.
+function scrollToNavTarget(target, align = "start") {
+  if (!target) return;
+
+  const getViewportHeight = () =>
+    Math.round(window.visualViewport?.height || window.innerHeight || 0);
+  const getBottomInset = () => {
+    const nav = document.querySelector(".scroll-nav");
+    if (!nav) return 0;
+    const styles = window.getComputedStyle(nav);
+    const marginBottom = parseFloat(styles.bottom) || 0;
+    return Math.round(nav.getBoundingClientRect().height + marginBottom);
+  };
+
+  const getTop = () => {
+    const rect = target.getBoundingClientRect();
+    const absoluteTop = rect.top + window.scrollY;
+    if (align === "end") {
+      const availableHeight = Math.max(0, getViewportHeight() - getBottomInset());
+      return Math.max(0, Math.round(absoluteTop - (availableHeight - rect.height)));
+    }
+    return Math.max(0, Math.round(absoluteTop));
+  };
+
+  const jump = behavior => {
+    window.scrollTo({ top: getTop(), behavior });
+  };
+
+  jump("smooth");
+
+  const viewport = window.visualViewport;
+  if (!viewport) return;
+
+  let settled = false;
+  let timeoutId = 0;
+
+  const cleanup = () => {
+    viewport.removeEventListener("resize", correctAfterViewportShift);
+    if ("onscrollend" in viewport) {
+      viewport.removeEventListener("scrollend", correctAfterViewportShift);
+    }
+    if (timeoutId) {
+      window.clearTimeout(timeoutId);
+      timeoutId = 0;
+    }
+  };
+
+  const correctAfterViewportShift = () => {
+    if (settled) return;
+    settled = true;
+    cleanup();
+    requestAnimationFrame(() => jump("auto"));
+  };
+
+  viewport.addEventListener("resize", correctAfterViewportShift);
+  if ("onscrollend" in viewport) {
+    viewport.addEventListener("scrollend", correctAfterViewportShift);
+  }
+  timeoutId = window.setTimeout(correctAfterViewportShift, 280);
+}
+
 function setupScrollNav() {
   const nav = document.querySelector(".scroll-nav");
   if (!nav) return;
   const btns = Array.from(nav.querySelectorAll(".scroll-nav-btn"));
   const targets = {
-    filters: () => document.querySelector(".panel-shell"),
-    results: () => document.querySelector(".data-panel"),
+    filters: () => ({
+      node: document.getElementById("filtersTopAnchor"),
+      align: "start",
+    }),
+    results: () => ({
+      node: document.getElementById("tableHeaderAnchor"),
+      align: "end",
+    }),
   };
   btns.forEach(btn => {
     btn.addEventListener("click", () => {
       const target = targets[btn.dataset.scroll]?.();
-      if (!target) return;
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (!target?.node) return;
+      scrollToNavTarget(target.node, target.align);
     });
   });
 
@@ -689,8 +755,8 @@ function setupScrollNav() {
     btns.forEach(b => b.classList.toggle("active", b.dataset.scroll === key));
   };
 
-  const filtersEl = targets.filters();
-  const resultsEl = targets.results();
+  const filtersEl = document.querySelector(".panel-shell");
+  const resultsEl = document.querySelector(".data-panel");
   if (!filtersEl || !resultsEl || typeof IntersectionObserver === "undefined") return;
 
   // When the results panel takes up most of the viewport, treat it as active.
