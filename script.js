@@ -766,6 +766,32 @@ function setupScrollNav() {
     setActive(results.intersectionRatio > 0.5 ? "results" : "filters");
   }, { threshold: [0, 0.5, 1] });
   io.observe(resultsEl);
+
+  // Hide on scroll-down, show on scroll-up — cooperates with the browser's
+  // URL bar (which hides on down, shows on up) instead of fighting it, and
+  // frees a bar's worth of vertical space while the user is reading.
+  let lastY = window.scrollY;
+  let ticking = false;
+  const HIDE_THRESHOLD = 6;    // ignore jitter smaller than this
+  const TOP_LOCK = 40;         // near the top, always show
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      const delta = y - lastY;
+      if (y < TOP_LOCK) {
+        nav.classList.remove("scroll-nav--hidden");
+      } else if (delta > HIDE_THRESHOLD) {
+        nav.classList.add("scroll-nav--hidden");
+      } else if (delta < -HIDE_THRESHOLD) {
+        nav.classList.remove("scroll-nav--hidden");
+      }
+      lastY = y;
+      ticking = false;
+    });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
 }
 
 function t(key, vars = {}) {

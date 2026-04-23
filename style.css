@@ -2232,7 +2232,9 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     box-shadow: 0 2px 6px rgba(76, 110, 245, 0.25);
   }
 
-  /* Sticky bottom nav on phones only. */
+  /* Sticky bottom nav on phones only. Slides out of view on scroll-down
+     (matching the browser URL bar behavior) and slides back on scroll-up
+     so the two bars never fight each other for screen space. */
   .scroll-nav {
     display: flex;
     position: fixed;
@@ -2247,6 +2249,14 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     -webkit-backdrop-filter: saturate(140%) blur(10px);
     border-top: 1px solid #e5e9ff;
     box-shadow: 0 -4px 16px -8px rgba(20, 35, 100, 0.18);
+    transform: translateY(0);
+    transition: transform 0.25s ease;
+    will-change: transform;
+  }
+
+  .scroll-nav--hidden {
+    transform: translateY(110%);
+    box-shadow: none;
   }
 
   .scroll-nav-btn {
@@ -2275,9 +2285,11 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     transform: scale(0.97);
   }
 
-  /* Leave room at the bottom of the data-panel for the sticky scroll-nav. */
+  /* Leave room at the bottom of the data-panel for the sticky scroll-nav.
+     Use 100dvh so the panel tracks the browser's URL bar expand/collapse
+     instead of being sized to the largest-possible viewport. */
   .data-panel {
-    height: calc(100vh - 58px - env(safe-area-inset-bottom));
+    height: calc(100dvh - 58px - env(safe-area-inset-bottom));
   }
 
   /* Bigger session tabs with breathing room between label and × so
