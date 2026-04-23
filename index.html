@@ -306,7 +306,7 @@
                 <button type="button" class="arrow-btn page-skip" id="pageFirst" title="Primera página" data-i18n-aria-label="page.first" aria-label="Primera página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9,1 6,5.5 9,10"/><polyline points="5,1 2,5.5 5,10"/></svg></button>
                 <button type="button" class="arrow-btn" id="pagePrev" title="Página anterior" data-i18n-aria-label="page.prev" aria-label="Página anterior"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5,1 1,5.5 5,10"/></svg></button>
                 <span class="page-indicator">
-                  <input type="text" id="pageInput" class="page-input" value="1" aria-label="Página actual">
+                  <input type="text" id="pageInput" class="page-input" value="1" data-i18n-aria-label="page.current" aria-label="Página actual">
                   <span class="page-total" id="pageTotal">de — pág.</span>
                 </span>
                 <button type="button" class="arrow-btn" id="pageNext" title="Página siguiente" data-i18n-aria-label="page.next" aria-label="Página siguiente"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2,1 6,5.5 2,10"/></svg></button>
@@ -329,8 +329,8 @@
               <span data-i18n="columns.title">Columnas</span>
               <div class="column-menu-tools">
                 <div class="view-actions">
-                  <button type="button" class="arrow-btn active" id="wLangToggle" title="Idioma del comentario">ES</button>
-                  <button type="button" class="arrow-btn lemma-toggle-all" id="lemmaExpandAll" title="Expandir/Colapsar lemas" hidden>+</button>
+                  <button type="button" class="arrow-btn active" id="wLangToggle" data-i18n-title="comentario.lang" data-i18n-aria-label="comentario.lang" title="Idioma del comentario" aria-label="Idioma del comentario">ES</button>
+                  <button type="button" class="arrow-btn lemma-toggle-all" id="lemmaExpandAll" data-i18n-title="lemma.expandAll" data-i18n-aria-label="lemma.expandAll" title="Expandir/Colapsar lemas" aria-label="Expandir/Colapsar lemas" hidden>+</button>
                 </div>
                 <button type="button" class="column-reset-btn" id="columnResetBtn" data-i18n="columns.reset">Restablecer</button>
               </div>
@@ -377,7 +377,7 @@
                   <span data-i18n="table.header.comentario">Comentario</span>
                   <div class="header-actions">
                     <button type="button" class="arrow-btn sort-btn" data-sort-field="Comentario">⇅</button>
-                    <button type="button" class="arrow-btn comentario-toggle-all" id="comentarioExpandAll" title="Expandir/Colapsar comentarios">+</button>
+                    <button type="button" class="arrow-btn comentario-toggle-all" id="comentarioExpandAll" data-i18n-title="comentario.expandAll" data-i18n-aria-label="comentario.expandAll" title="Expandir/Colapsar comentarios" aria-label="Expandir/Colapsar comentarios">+</button>
                   </div>
                 </div>
               </th>

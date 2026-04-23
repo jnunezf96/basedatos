@@ -220,6 +220,14 @@ const I18N = {
     "logic.or": "O",
     "chips.zone.and": "Y",
     "chips.zone.or": "O",
+    "chips.clearAll": "× limpiar todo",
+    "chips.removeFilter": "Quitar filtro",
+    "sort.childHint": "Orden dentro de cada lema",
+    "toggle.expandCollapse": "Expandir/Colapsar",
+    "page.current": "Página actual",
+    "comentario.lang": "Idioma del comentario",
+    "lemma.expandAll": "Expandir/Colapsar lemas",
+    "comentario.expandAll": "Expandir/Colapsar comentarios",
     "table.pagesize.label": "Filas:",
     "table.columns": "Cols ▾",
     "columns.title": "Columnas",
@@ -447,6 +455,14 @@ const I18N = {
     "logic.or": "OR",
     "chips.zone.and": "AND",
     "chips.zone.or": "OR",
+    "chips.clearAll": "× clear all",
+    "chips.removeFilter": "Remove filter",
+    "sort.childHint": "Order within each lemma",
+    "toggle.expandCollapse": "Expand/Collapse",
+    "page.current": "Current page",
+    "comentario.lang": "Comment language",
+    "lemma.expandAll": "Expand/Collapse lemmas",
+    "comentario.expandAll": "Expand/Collapse comments",
     "table.pagesize.label": "Rows:",
     "table.columns": "Cols ▾",
     "columns.title": "Columns",
@@ -685,6 +701,11 @@ function applyTranslations() {
     if (key) el.setAttribute("aria-label", t(key));
   });
 
+  document.querySelectorAll("[data-i18n-title]").forEach(el => {
+    const key = el.dataset.i18nTitle;
+    if (key) el.setAttribute("title", t(key));
+  });
+
   document.title = t("title");
 }
 
@@ -866,7 +887,7 @@ function renderActiveFilterChips() {
     const display = val.length > 20 ? val.slice(0, 18) + "…" : val;
     chip.innerHTML =
       `<span class="chip-label"><span class="chip-field">${escapeHtml(t("compare.chipLabel"))}</span> "${escapeHtml(display)}"</span>` +
-      `<button type="button" class="chip-remove" aria-label="Quitar filtro">×</button>`;
+      `<button type="button" class="chip-remove" aria-label="${escapeHtml(t("chips.removeFilter"))}">×</button>`;
     zone.appendChild(chip);
     bar.appendChild(zone);
   }
@@ -883,7 +904,7 @@ function renderActiveFilterChips() {
     const fieldsBadge = Array.isArray(reverseFilter.fields) && reverseFilter.fields.includes("Comentario") ? " +C" : "";
     chip.innerHTML =
       `<span class="chip-label"><span class="chip-field">${escapeHtml(t("reverse.chipLabel") + fieldsBadge)}</span> "${escapeHtml(display)}"</span>` +
-      `<button type="button" class="chip-remove" aria-label="Quitar filtro">×</button>`;
+      `<button type="button" class="chip-remove" aria-label="${escapeHtml(t("chips.removeFilter"))}">×</button>`;
     zone.appendChild(chip);
     bar.appendChild(zone);
   }
@@ -917,7 +938,7 @@ function renderActiveFilterChips() {
     if (groupId === editingGroupId) chip.classList.add("chip-editing");
     chip.innerHTML =
       `<span class="chip-label"><span class="chip-field">${escapeHtml(fieldLabel + scopeBadge)}</span> ${parts}</span>` +
-      `<button type="button" class="chip-remove" aria-label="Quitar filtro">×</button>`;
+      `<button type="button" class="chip-remove" aria-label="${escapeHtml(t("chips.removeFilter"))}">×</button>`;
 
     return chip;
   }
@@ -964,7 +985,7 @@ function renderActiveFilterChips() {
     const clearAll = document.createElement("button");
     clearAll.type = "button";
     clearAll.className = "chip-clear-all";
-    clearAll.textContent = "× limpiar todo";
+    clearAll.textContent = t("chips.clearAll");
     bar.appendChild(clearAll);
   }
 
@@ -2896,7 +2917,7 @@ function updateSortIndicators() {
       btn.setAttribute("aria-pressed", "true");
       if (inLemmasView && field !== "Texto estandarizado") {
         btn.classList.add("sort-child");
-        btn.title = "Orden dentro de cada lema";
+        btn.title = t("sort.childHint");
       } else {
         btn.title = "";
       }
@@ -3691,7 +3712,7 @@ function buildLemmaGroupRow(item) {
       const toggle = document.createElement("button");
       toggle.type = "button";
       toggle.className = "lemma-toggle";
-      toggle.setAttribute("aria-label", "Expandir/Colapsar");
+      toggle.setAttribute("aria-label", t("toggle.expandCollapse"));
       toggle.textContent = expandedLemmas.has(item.lemma) ? "−" : "+";
       wrap.appendChild(toggle);
 
