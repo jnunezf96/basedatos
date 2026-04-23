@@ -1873,21 +1873,57 @@ function getMobileRowId(row) {
   return rawId === undefined || rawId === null ? "" : String(rawId);
 }
 
+// Phone preview: short fields show inline under the primary so each row
+// stands on its own. Comentario is the only one we keep behind the +/-
+// toggle because it's often a long paragraph.
+const MOBILE_PREVIEW_ORDER = [
+  "Texto estandarizado",
+  "Escritura original",
+  "Traducción",
+  "Fuente",
+];
 function getMobilePreviewFields() {
-  const visible = TABLE_FIELDS.filter(f => !hiddenColumns.has(f.key)).map(f => f.key);
-  if (!visible.length) return [];
-  const primary = visible[0];
-  // Subtitle is always Traducción when available — it's the most informative
-  // differentiator, regardless of column order. Fall back to the next visible.
-  const secondary = visible.includes("Traducción") && primary !== "Traducción"
-    ? "Traducción"
-    : (visible[1] || null);
-  return secondary ? [primary, secondary] : [primary];
+  return MOBILE_PREVIEW_ORDER.filter(k =>
+    TABLE_FIELDS.some(f => f.key === k) && !hiddenColumns.has(k)
+  );
+}
+
+function rowHasDetailContent(row) {
+  const previewFields = new Set(getMobilePreviewFields());
+  for (const field of TABLE_FIELDS) {
+    if (hiddenColumns.has(field.key)) continue;
+    if (previewFields.has(field.key)) continue;
+    const raw = getDisplayValue(row, field.key);
+    if (raw != null && String(raw).trim()) return true;
+  }
+  return false;
 }
 
 function addMobileRowToggle(td, row) {
   const rowId = getMobileRowId(row);
   if (!rowId) return;
+  td.classList.add("mobile-row-anchor-cell");
+
+  // Inline the rest of the preview fields under the primary so each row
+  // is self-describing without tapping +.
+  const previewFields = getMobilePreviewFields();
+  previewFields.slice(1).forEach(key => {
+    if (key === td.dataset.field) return;
+    const raw = getDisplayValue(row, key);
+    const safe = raw == null ? "" : String(raw);
+    if (!safe.trim()) return;
+    const sub = document.createElement("div");
+    const slug = key.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "-").toLowerCase();
+    sub.className = `mobile-row-subtitle mobile-row-sub--${slug}`;
+    sub.dataset.field = key;
+    sub.innerHTML = applyHighlights(safe, key);
+    td.appendChild(sub);
+  });
+
+  // Only show the +/- toggle if there's actually something behind it.
+  if (!rowHasDetailContent(row)) return;
+
   const expanded = expandedMobileRows.has(rowId);
   const btn = document.createElement("button");
   btn.type = "button";
@@ -1896,21 +1932,6 @@ function addMobileRowToggle(td, row) {
   btn.textContent = expanded ? "−" : "+";
   btn.setAttribute("aria-expanded", expanded ? "true" : "false");
   btn.setAttribute("aria-label", t(expanded ? "table.rowDetail.close" : "table.rowDetail.open"));
-  td.classList.add("mobile-row-anchor-cell");
-  // Add a secondary line so rows with identical primary values stay distinguishable.
-  const previewFields = getMobilePreviewFields();
-  const secondaryKey = previewFields[1];
-  if (secondaryKey && secondaryKey !== td.dataset.field) {
-    const raw = getDisplayValue(row, secondaryKey);
-    const safe = raw == null ? "" : String(raw);
-    if (safe.trim()) {
-      const sub = document.createElement("div");
-      sub.className = "mobile-row-subtitle";
-      sub.dataset.field = secondaryKey;
-      sub.innerHTML = applyHighlights(safe, secondaryKey);
-      td.appendChild(sub);
-    }
-  }
   td.prepend(btn);
 }
 

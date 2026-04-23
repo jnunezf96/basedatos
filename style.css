@@ -2131,11 +2131,29 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   .mobile-row-subtitle {
     margin-top: 4px;
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 400;
-    color: #525c8d;
+    color: #2c345b;
     line-height: 1.35;
     overflow-wrap: anywhere;
+  }
+
+  .mobile-row-sub--escritura-original {
+    color: #525c8d;
+    font-style: italic;
+  }
+
+  .mobile-row-sub--traduccion {
+    color: #1b2589;
+  }
+
+  .mobile-row-sub--fuente {
+    margin-top: 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #6570a5;
   }
 
   .mobile-row-toggle {
