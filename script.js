@@ -2392,7 +2392,8 @@ function syncColumnLayout() {
   }, 0);
   const isPhone = typeof window !== "undefined" && window.matchMedia
     && window.matchMedia("(max-width: 640px)").matches;
-  const minWidth = isPhone ? visibleWidth : Math.max(TABLE_MIN_WIDTH, visibleWidth);
+  const minWidth = isPhone ? 0 : Math.max(TABLE_MIN_WIDTH, visibleWidth);
+  const firstVisibleIdx = TABLE_FIELDS.findIndex(f => !hiddenColumns.has(f.key));
   const table = getBodyTable();
   if (table) {
     let colgroup = table.querySelector("colgroup");
@@ -2410,7 +2411,13 @@ function syncColumnLayout() {
       table.classList.toggle(`col-hidden-${idx}`, hiddenColumns.has(field.key));
     });
     table.style.width = "100%";
-    table.style.minWidth = `${minWidth}px`;
+    table.style.minWidth = isPhone ? "" : `${minWidth}px`;
+    table.querySelectorAll("thead th.mobile-th-anchor")
+      .forEach(th => th.classList.remove("mobile-th-anchor"));
+    if (firstVisibleIdx >= 0) {
+      const th = table.querySelector(`thead th:nth-child(${firstVisibleIdx + 1})`);
+      if (th) th.classList.add("mobile-th-anchor");
+    }
   }
 }
 
@@ -3946,6 +3953,13 @@ function setupEdicionCellClick() {
     if (tr.classList.contains("lemma-group-row")) {
       toggleLemmaExpansion(tr, tr.dataset.lemma || "");
       return;
+    }
+    // Phone-only: tapping anywhere on the anchor cell expands the row.
+    if (cell.classList.contains("mobile-row-anchor-cell")
+        && window.matchMedia
+        && window.matchMedia("(max-width: 640px)").matches
+        && !e.target.closest("button, a, input, select, textarea, mark")) {
+      toggleMobileRowDetail(tr);
     }
   });
 }

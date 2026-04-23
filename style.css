@@ -2120,13 +2120,20 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   #dataTable td.mobile-row-anchor-cell {
     position: relative;
-    padding-left: 48px;
+    padding: 14px 56px 14px 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1b2589;
+    line-height: 1.35;
+    cursor: pointer;
+    min-height: 56px;
   }
 
   .mobile-row-toggle {
     position: absolute;
-    top: 7px;
-    left: 8px;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
     z-index: 2;
     display: inline-flex;
     align-items: center;
@@ -2150,8 +2157,22 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     border-color: #a8b3f5;
   }
 
+  .mobile-row-toggle:active {
+    transform: translateY(-50%) scale(0.94);
+  }
+
   #dataTable tbody tr.mobile-row-expanded > td {
     border-bottom-color: #dfe4fb;
+  }
+
+  #dataTable tbody tr.mobile-row-expanded > td.mobile-row-anchor-cell {
+    background: #eef2ff;
+  }
+
+  #dataTable tbody tr.mobile-row-expanded .mobile-row-toggle {
+    background: #4c6ef5;
+    color: #fff;
+    border-color: #4c6ef5;
   }
 
   #dataTable tbody tr.mobile-row-detail-row {
@@ -2341,6 +2362,7 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   .filter-actions-btns {
     width: 100%;
+    box-sizing: border-box;
     gap: 10px;
     position: sticky;
     bottom: 0;
@@ -2355,7 +2377,8 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .filter-actions-btns .btn {
-    flex: 1 1 50%;
+    flex: 1 1 0;
+    min-width: 0;
     min-height: 44px;
     font-size: 14px;
   }
@@ -2454,14 +2477,22 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     font-size: 13px;
   }
 
-  /* ── Pin first visible cell so the +/- toggle stays in view while
-        the table scrolls horizontally ── */
+  /* ── Responsive table: only the anchor cell shows in each row.
+        The +/- toggle reveals the rest in the detail row, so no
+        horizontal scroll and no duplicated content. ── */
+  #dataTable thead th { display: none; }
+  #dataTable thead th.mobile-th-anchor { display: table-cell; width: auto; }
+
+  #dataTable tbody tr:not(.mobile-row-detail-row):not(.lemma-group-row) > td { display: none; }
+  #dataTable tbody tr:not(.mobile-row-detail-row):not(.lemma-group-row) > td.mobile-row-anchor-cell,
+  #dataTable tbody tr:not(.mobile-row-detail-row):not(.lemma-group-row) > td.table-empty {
+    display: table-cell;
+    width: auto;
+  }
+  #dataTable tbody tr.lemma-group-row > td { display: table-cell; }
+
   #dataTable td.mobile-row-anchor-cell {
-    position: sticky;
-    left: 0;
-    z-index: 3;
     background: #fff;
-    box-shadow: 1px 0 0 #e5e9ff;
   }
 
   #dataTable tbody tr.stripe-alt > td.mobile-row-anchor-cell {
@@ -2476,7 +2507,7 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   #dataTable td.mobile-row-anchor-cell {
-    padding-left: 50px;
+    padding-right: 60px;
   }
 }
 
