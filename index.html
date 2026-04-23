@@ -28,16 +28,16 @@
     <div class="panel-shell">
       <div class="panel-tab-row">
         <div class="session-bar" id="sessionBar"></div>
-        <nav class="panel-tabs" aria-label="Paneles">
-          <button type="button" class="tab-btn active" data-tab="filtersPanel" data-i18n="tab.filters">Filtros</button>
-          <button type="button" class="tab-btn" data-tab="reversePanel" data-i18n="tab.reverse">Reverso</button>
-          <button type="button" class="tab-btn" data-tab="regexPanel" data-i18n="tab.regex">Regex</button>
-          <button type="button" class="tab-btn" data-tab="pairsPanel" data-i18n="tab.pairs">Pares a/i</button>
+        <nav class="panel-tabs" role="tablist" aria-label="Paneles">
+          <button type="button" role="tab" id="tab-filtersPanel" class="tab-btn active" data-tab="filtersPanel" aria-selected="true" aria-controls="filtersPanel" tabindex="0" data-i18n="tab.filters">Filtros</button>
+          <button type="button" role="tab" id="tab-reversePanel" class="tab-btn" data-tab="reversePanel" aria-selected="false" aria-controls="reversePanel" tabindex="-1" data-i18n="tab.reverse">Reverso</button>
+          <button type="button" role="tab" id="tab-regexPanel" class="tab-btn" data-tab="regexPanel" aria-selected="false" aria-controls="regexPanel" tabindex="-1" data-i18n="tab.regex">Regex</button>
+          <button type="button" role="tab" id="tab-pairsPanel" class="tab-btn" data-tab="pairsPanel" aria-selected="false" aria-controls="pairsPanel" tabindex="-1" data-i18n="tab.pairs">Pares a/i</button>
         </nav>
       </div>
 
       <!-- ── Panel: Filtros ── -->
-      <section class="tab-panel active" id="filtersPanel">
+      <section class="tab-panel active" id="filtersPanel" role="tabpanel" aria-labelledby="tab-filtersPanel">
         <div class="filter-card" data-owner="f1">
           <div class="filter-card-head">
             <h3 data-i18n="filter.title">Filtro</h3>
@@ -121,14 +121,14 @@
       </section>
 
       <!-- ── Panel: Reverso ── -->
-      <section class="tab-panel" id="reversePanel">
+      <section class="tab-panel" id="reversePanel" role="tabpanel" aria-labelledby="tab-reversePanel">
       <div class="sources-card reverse-card">
         <div class="sources-head">
           <h3 data-i18n="reverse.title">Búsqueda inversa</h3>
         </div>
         <p class="reverse-hint" data-i18n="reverse.hint">Escribe una palabra en español o francés para encontrar lemas en náhuatl cuya traducción la contenga. Los resultados se muestran agrupados por lema, ordenados por cantidad de fuentes que los respaldan.</p>
         <div class="reverse-controls">
-          <input type="text" id="reverseInput" class="reverse-input" autocomplete="off" spellcheck="false" />
+          <input type="text" id="reverseInput" class="reverse-input" autocomplete="off" spellcheck="false" data-i18n-aria-label="reverse.title" aria-label="Búsqueda inversa" />
           <div class="reverse-field-toggle">
             <label class="reverse-field-opt"><input type="checkbox" id="reverseIncludeComment" /><span data-i18n="reverse.includeComment">Incluir Comentario</span></label>
           </div>
@@ -141,7 +141,7 @@
       </section>
 
       <!-- ── Panel: Regex ── -->
-      <section class="tab-panel" id="regexPanel">
+      <section class="tab-panel" id="regexPanel" role="tabpanel" aria-labelledby="tab-regexPanel">
       <div class="sources-card rx-card">
         <div class="rx-grid">
 
@@ -215,7 +215,7 @@
       </section>
 
       <!-- ── Panel: Pares ── -->
-      <section class="tab-panel" id="pairsPanel">
+      <section class="tab-panel" id="pairsPanel" role="tabpanel" aria-labelledby="tab-pairsPanel">
       <div class="sources-card pair-card">
         <div class="sources-head">
           <h3 data-i18n="pairs.title">Pares a/i</h3>
@@ -231,13 +231,13 @@
           </label>
           <label class="pair-control">
             <span data-i18n="pairs.suffixes">Sufijos</span>
-            <input type="text" id="pairSuffixFirst" inputmode="text" autocapitalize="off" spellcheck="false" value="i" />
+            <input type="text" id="pairSuffixFirst" inputmode="text" autocapitalize="off" spellcheck="false" value="i" aria-label="Sufijo 1" />
             <span class="pair-separator">/</span>
-            <input type="text" id="pairSuffixSecond" inputmode="text" autocapitalize="off" spellcheck="false" value="a" />
+            <input type="text" id="pairSuffixSecond" inputmode="text" autocapitalize="off" spellcheck="false" value="a" aria-label="Sufijo 2" />
             <span class="pair-separator">/</span>
-            <input type="text" id="pairSuffixThird" inputmode="text" autocapitalize="off" spellcheck="false" value="" />
+            <input type="text" id="pairSuffixThird" inputmode="text" autocapitalize="off" spellcheck="false" value="" aria-label="Sufijo 3" />
             <span class="pair-separator">/</span>
-            <input type="text" id="pairSuffixFourth" inputmode="text" autocapitalize="off" spellcheck="false" value="" />
+            <input type="text" id="pairSuffixFourth" inputmode="text" autocapitalize="off" spellcheck="false" value="" aria-label="Sufijo 4" />
           </label>
           <label class="pair-control">
             <input type="checkbox" id="pairUseFilters" checked />

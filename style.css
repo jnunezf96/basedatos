@@ -1126,6 +1126,17 @@ td:nth-child(5) {
   box-shadow: 0 1px 2px rgba(26, 36, 104, 0.12);
 }
 
+.pill:focus-visible,
+.btn:focus-visible,
+.tab-btn:focus-visible,
+.fuente-chip:focus-visible,
+.view-btn:focus-visible,
+.arrow-btn:focus-visible,
+.fuente-act:focus-visible {
+  outline: 2px solid #4c6ef5;
+  outline-offset: 2px;
+}
+
 .filter-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -1301,10 +1312,26 @@ td:nth-child(5) {
   box-shadow: 0 6px 24px rgba(20, 42, 120, 0.28);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.18s ease, transform 0.22s ease;
   z-index: 1000;
   max-width: calc(100vw - 32px);
   text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .toast {
+    transition: opacity 0.18s ease, transform 0.22s ease;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 .toast--visible {
@@ -2226,7 +2253,6 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   .filter-input,
   .reverse-input,
   .compare-input,
-  .pair-input,
   .page-input,
   .sort-scope select,
   .page-size select,
@@ -2576,7 +2602,7 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   flex: 1 1 260px;
   min-width: 180px;
   padding: 8px 12px;
-  font-size: 14px;
+  font-size: 16px;
   border: 1px solid #c8cff0;
   border-radius: 6px;
   background: #fff;

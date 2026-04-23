@@ -1184,15 +1184,32 @@ function refreshSessionLabel() {
 }
 
 function setupTabs() {
-  const buttons = document.querySelectorAll(".panel-tabs .tab-btn");
-  buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      buttons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      const tabId = btn.dataset.tab;
-      document.querySelectorAll(".tab-panel").forEach(panel => {
-        panel.classList.toggle("active", panel.id === tabId);
-      });
+  const buttons = Array.from(document.querySelectorAll(".panel-tabs .tab-btn"));
+  function activate(btn, focus = false) {
+    buttons.forEach(b => {
+      const on = b === btn;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-selected", on ? "true" : "false");
+      b.setAttribute("tabindex", on ? "0" : "-1");
+    });
+    const tabId = btn.dataset.tab;
+    document.querySelectorAll(".tab-panel").forEach(panel => {
+      panel.classList.toggle("active", panel.id === tabId);
+    });
+    if (focus) btn.focus();
+  }
+  buttons.forEach((btn, idx) => {
+    btn.addEventListener("click", () => activate(btn));
+    btn.addEventListener("keydown", e => {
+      let nextIdx = -1;
+      if (e.key === "ArrowRight") nextIdx = (idx + 1) % buttons.length;
+      else if (e.key === "ArrowLeft") nextIdx = (idx - 1 + buttons.length) % buttons.length;
+      else if (e.key === "Home") nextIdx = 0;
+      else if (e.key === "End") nextIdx = buttons.length - 1;
+      if (nextIdx >= 0) {
+        e.preventDefault();
+        activate(buttons[nextIdx], true);
+      }
     });
   });
 }
@@ -1265,7 +1282,9 @@ function updateFilterPlaceholders(card) {
     const mode = input.dataset.mode;
     const negate = input.dataset.negate === "true";
     const key = `placeholder.${mode}.${negate ? "excl" : "incl"}`;
-    input.placeholder = t(key).replace("{campo}", campo).replace("{casilla}", casilla);
+    const label = t(key).replace("{campo}", campo).replace("{casilla}", casilla);
+    input.placeholder = label;
+    input.setAttribute("aria-label", label);
   });
 }
 
@@ -2357,7 +2376,11 @@ function syncColumnLayout() {
 }
 
 function setupStickyHeaderTable() {
-  window.addEventListener("resize", syncColumnLayout);
+  let raf = 0;
+  window.addEventListener("resize", () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => { raf = 0; syncColumnLayout(); });
+  });
   syncColumnLayout();
 }
 
@@ -4302,6 +4325,7 @@ let suppressHashUpdate = false;
 function buildSourceSlugMaps() {
   sourceToSlug.clear();
   slugToSource.clear();
+  const collisions = new Set();
   for (const row of dataRows) {
     const rid = row.record_id;
     if (!rid) continue;
@@ -4311,7 +4335,15 @@ function buildSourceSlugMaps() {
     const fuente = row.Fuente;
     if (!slug || !fuente) continue;
     if (!sourceToSlug.has(fuente)) sourceToSlug.set(fuente, slug);
-    if (!slugToSource.has(slug)) slugToSource.set(slug, fuente);
+    if (!slugToSource.has(slug)) {
+      slugToSource.set(slug, fuente);
+    } else if (slugToSource.get(slug) !== fuente) {
+      collisions.add(`${slug} ⇒ ${slugToSource.get(slug)} | ${fuente}`);
+    }
+  }
+  if (collisions.size && typeof console !== "undefined") {
+    console.warn("Source-slug collisions detected (share URLs may route to first source only):",
+      [...collisions]);
   }
 }
 
@@ -4666,7 +4698,7 @@ function setupLongPressCopy() {
       if (ok) {
         firedCopy = true;
         showToast(t("copy.cell"));
-        if (navigator.vibrate) navigator.vibrate(12);
+        vibe(12);
       }
     }, 450);
   });
@@ -4709,10 +4741,12 @@ function setupKeyboardAvoidance() {
     const top = vv.offsetTop;
     const bottom = top + vv.height;
     // 12px breathing room above the keyboard / below the URL bar.
+    const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const behavior = reduced ? "auto" : "smooth";
     if (rect.bottom > bottom - 12) {
-      el.scrollIntoView({ block: "center", behavior: "smooth" });
+      el.scrollIntoView({ block: "center", behavior });
     } else if (rect.top < top + 12) {
-      el.scrollIntoView({ block: "center", behavior: "smooth" });
+      el.scrollIntoView({ block: "center", behavior });
     }
   }
   function onChange() {

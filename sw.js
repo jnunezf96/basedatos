@@ -1,8 +1,11 @@
 // Service worker for Base de datos náhuatl.
-// Bump CACHE_VERSION whenever shipped HTML/CSS/JS or the data file changes.
-const CACHE_VERSION = "v1";
+// Bump CACHE_VERSION whenever shipped HTML/CSS/JS changes.
+const CACHE_VERSION = "v2";
 const CACHE_NAME = `nahuatl-db-${CACHE_VERSION}`;
 
+// Note: data/data.jsonl.gz is intentionally NOT precached. It's large and
+// schema-coupled to the JS — letting it lazy-cache via stale-while-revalidate
+// keeps the install lean and avoids serving stale data with new code.
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -12,7 +15,6 @@ const CORE_ASSETS = [
   "./filters.js",
   "./manifest.json",
   "./icon.svg",
-  "./data/data.jsonl.gz",
 ];
 
 self.addEventListener("install", event => {
