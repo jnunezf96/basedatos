@@ -1889,9 +1889,10 @@ function getMobilePreviewFields() {
 }
 
 function rowHasDetailContent(row) {
+  // Don't filter by hiddenColumns — on mobile, the detail row is exactly where
+  // hidden fields (e.g. Comentario, hidden by applyMobileColumnDefaults) surface.
   const previewFields = new Set(getMobilePreviewFields());
   for (const field of TABLE_FIELDS) {
-    if (hiddenColumns.has(field.key)) continue;
     if (previewFields.has(field.key)) continue;
     const raw = getDisplayValue(row, field.key);
     if (raw != null && String(raw).trim()) return true;
@@ -1958,10 +1959,11 @@ function buildMobileDetailRow(row) {
   const detail = document.createElement("div");
   detail.className = "mobile-row-detail";
 
-  // Skip hidden columns and the preview fields (already shown in the row).
+  // Skip the preview fields (already shown in the anchor cell). Do NOT skip
+  // hiddenColumns — Comentario is auto-hidden on mobile precisely so that the
+  // detail row is its only surface; filtering it out here would erase it.
   const previewFields = new Set(getMobilePreviewFields());
   TABLE_FIELDS.forEach(field => {
-    if (hiddenColumns.has(field.key)) return;
     if (previewFields.has(field.key)) return;
     const raw = getDisplayValue(row, field.key);
     const safe = raw == null ? "" : String(raw);
