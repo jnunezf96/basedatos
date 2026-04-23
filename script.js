@@ -1911,7 +1911,11 @@ function buildMobileDetailRow(row) {
   const detail = document.createElement("div");
   detail.className = "mobile-row-detail";
 
+  // Skip hidden columns and the anchor field (already visible in the row).
+  const anchorField = TABLE_FIELDS.find(f => !hiddenColumns.has(f.key))?.key;
   TABLE_FIELDS.forEach(field => {
+    if (hiddenColumns.has(field.key)) return;
+    if (field.key === anchorField) return;
     const raw = getDisplayValue(row, field.key);
     const safe = raw == null ? "" : String(raw);
     if (!safe.trim()) return;

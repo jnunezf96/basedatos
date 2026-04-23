@@ -2480,16 +2480,23 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   /* ── Responsive table: only the anchor cell shows in each row.
         The +/- toggle reveals the rest in the detail row, so no
         horizontal scroll and no duplicated content. ── */
-  #dataTable thead th { display: none; }
-  #dataTable thead th.mobile-th-anchor { display: table-cell; width: auto; }
+  #dataTable {
+    min-width: 0 !important;
+    table-layout: auto;
+  }
+  #dataTable colgroup { display: none; }
+  .table-scroll { overflow-x: hidden; }
 
-  #dataTable tbody tr:not(.mobile-row-detail-row):not(.lemma-group-row) > td { display: none; }
+  #dataTable thead th { display: none !important; }
+  #dataTable thead th.mobile-th-anchor { display: table-cell !important; width: auto; }
+
+  #dataTable tbody tr:not(.mobile-row-detail-row):not(.lemma-group-row) > td { display: none !important; }
   #dataTable tbody tr:not(.mobile-row-detail-row):not(.lemma-group-row) > td.mobile-row-anchor-cell,
   #dataTable tbody tr:not(.mobile-row-detail-row):not(.lemma-group-row) > td.table-empty {
-    display: table-cell;
+    display: table-cell !important;
     width: auto;
   }
-  #dataTable tbody tr.lemma-group-row > td { display: table-cell; }
+  #dataTable tbody tr.lemma-group-row > td { display: table-cell !important; }
 
   #dataTable td.mobile-row-anchor-cell {
     background: #fff;
