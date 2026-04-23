@@ -400,7 +400,8 @@ td:nth-child(5) {
 }
 
 .mobile-row-toggle,
-.mobile-row-detail-row {
+.mobile-row-detail-row,
+.mobile-row-subtitle {
   display: none;
 }
 
