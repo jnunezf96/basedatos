@@ -2173,8 +2173,10 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   .session-tab {
     gap: 12px;
     min-height: 40px;
+    min-width: 40px;
     padding: 8px 10px 9px 14px;
     max-width: 200px;
+    justify-content: center;
   }
 
   .session-tab-label {
