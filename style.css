@@ -757,6 +757,18 @@ td:nth-child(5) {
   padding: 0;
 }
 
+.active-filters-bar--empty {
+  display: none;
+}
+
+.active-filters-empty {
+  flex: 1 1 auto;
+  padding: 18px 6px;
+  color: #8a93b0;
+  font-size: 14px;
+  text-align: center;
+}
+
 .chips-zone {
   display: flex;
   flex-wrap: wrap;
@@ -2146,6 +2158,28 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     padding: 12px 12px calc(58px + env(safe-area-inset-bottom));
   }
 
+  /* Three full-viewport screens toggled by the scroll-nav. Only the
+     section matching data-screen renders; the other two are fully hidden
+     (not just off-screen) so touch events and focus can't leak in. */
+  .app-shell[data-screen="filters"] .active-filters-bar,
+  .app-shell[data-screen="filters"] .data-panel,
+  .app-shell[data-screen="chips"] .panel-shell,
+  .app-shell[data-screen="chips"] .data-panel,
+  .app-shell[data-screen="results"] .panel-shell,
+  .app-shell[data-screen="results"] .active-filters-bar {
+    display: none !important;
+  }
+
+  /* On the chips screen, force the bar to show even when empty
+     (the empty-state message sits inside). */
+  .app-shell[data-screen="chips"] .active-filters-bar {
+    display: flex !important;
+    height: calc(100dvh - 58px - env(safe-area-inset-bottom) - 12px);
+    overflow: auto;
+    align-content: flex-start;
+    padding: 8px 4px;
+  }
+
   .panel-shell {
     height: calc(100dvh - 58px - env(safe-area-inset-bottom) - 12px);
     min-height: 0;
@@ -2232,9 +2266,8 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     box-shadow: 0 2px 6px rgba(76, 110, 245, 0.25);
   }
 
-  /* Sticky bottom nav on phones only. Slides out of view on scroll-down
-     (matching the browser URL bar behavior) and slides back on scroll-up
-     so the two bars never fight each other for screen space. */
+  /* Sticky bottom nav on phones. Always visible; buttons toggle
+     data-screen on .app-shell to swap between filters/chips/results. */
   .scroll-nav {
     display: flex;
     position: fixed;
@@ -2249,14 +2282,6 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     -webkit-backdrop-filter: saturate(140%) blur(10px);
     border-top: 1px solid #e5e9ff;
     box-shadow: 0 -4px 16px -8px rgba(20, 35, 100, 0.18);
-    transform: translateY(0);
-    transition: transform 0.25s ease;
-    will-change: transform;
-  }
-
-  .scroll-nav--hidden {
-    transform: translateY(110%);
-    box-shadow: none;
   }
 
   .scroll-nav-btn {

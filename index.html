@@ -80,8 +80,12 @@
     <symbol id="icon-check" viewBox="0 0 24 24">
       <path d="M5 12.5 10 17l9-11" />
     </symbol>
+    <symbol id="icon-chips" viewBox="0 0 24 24">
+      <path d="M13 4H5a1 1 0 0 0-1 1v8l8 8a1 1 0 0 0 1.4 0l6.6-6.6a1 1 0 0 0 0-1.4L13 4.6A2 2 0 0 0 13 4Z" />
+      <circle cx="8" cy="9" r="1.2" />
+    </symbol>
   </svg>
-  <div class="app-shell">
+  <div class="app-shell" data-screen="filters">
     <div id="filtersTopAnchor" class="scroll-anchor" aria-hidden="true"></div>
 
     <div class="panel-shell">
@@ -349,7 +353,7 @@
     </div>
 
     <!-- ── Active filter chips ── -->
-    <div id="activeFiltersBar" class="active-filters-bar" style="display:none"></div>
+    <div id="activeFiltersBar" class="active-filters-bar active-filters-bar--empty"></div>
 
     <!-- ── Data table ── -->
     <section class="data-panel">
@@ -495,11 +499,15 @@
       </div>
     </section>
 
-    <!-- ── Sticky bottom nav: jump between filter and results (phone only) ── -->
+    <!-- ── Sticky bottom nav: switch between filter/chips/results screens (phone only) ── -->
     <nav class="scroll-nav" aria-label="Navegación rápida">
       <button type="button" class="scroll-nav-btn active mobile-icon-btn" data-scroll="filters" data-i18n-aria-label="nav.search" data-i18n-title="nav.search">
         <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-search"></use></svg>
         <span class="btn-label mobile-icon-label" data-i18n="nav.search">Buscar</span>
+      </button>
+      <button type="button" class="scroll-nav-btn mobile-icon-btn" data-scroll="chips" data-i18n-aria-label="nav.chips" data-i18n-title="nav.chips">
+        <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-chips"></use></svg>
+        <span class="btn-label mobile-icon-label" data-i18n="nav.chips">Aplicados</span>
       </button>
       <button type="button" class="scroll-nav-btn mobile-icon-btn" data-scroll="results" data-i18n-aria-label="nav.results" data-i18n-title="nav.results">
         <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-results"></use></svg>

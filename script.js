@@ -44,7 +44,9 @@ const I18N = {
     "action.run": "Ejecutar",
     "action.clear": "Vaciar",
     "nav.search": "Buscar",
+    "nav.chips": "Aplicados",
     "nav.results": "Resultados",
+    "chips.empty": "Ningún filtro aplicado todavía.",
     "placeholder.exact.incl": "{casilla} de {campo} es exactamente...",
     "placeholder.exact.excl": "{casilla} de {campo} no es exactamente...",
     "placeholder.starts.incl": "{casilla} de {campo} empieza con...",
@@ -281,7 +283,9 @@ const I18N = {
     "action.run": "Run",
     "action.clear": "Clear",
     "nav.search": "Search",
+    "nav.chips": "Applied",
     "nav.results": "Results",
+    "chips.empty": "No filters applied yet.",
     "placeholder.exact.incl": "{casilla} in {campo} is exactly...",
     "placeholder.exact.excl": "{casilla} in {campo} is not exactly...",
     "placeholder.starts.incl": "{casilla} in {campo} starts with...",
@@ -666,132 +670,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// Sticky bottom nav on phones: tap Buscar → jump to the filter card,
-// tap Resultados → jump to the results table. Active state tracks which
-// section is currently in view.
-function scrollToNavTarget(target, align = "start") {
-  if (!target) return;
-
-  const getViewportHeight = () =>
-    Math.round(window.visualViewport?.height || window.innerHeight || 0);
-  const getBottomInset = () => {
-    const nav = document.querySelector(".scroll-nav");
-    if (!nav) return 0;
-    const styles = window.getComputedStyle(nav);
-    const marginBottom = parseFloat(styles.bottom) || 0;
-    return Math.round(nav.getBoundingClientRect().height + marginBottom);
-  };
-
-  const getTop = () => {
-    const rect = target.getBoundingClientRect();
-    const absoluteTop = rect.top + window.scrollY;
-    if (align === "end") {
-      const availableHeight = Math.max(0, getViewportHeight() - getBottomInset());
-      return Math.max(0, Math.round(absoluteTop - (availableHeight - rect.height)));
-    }
-    return Math.max(0, Math.round(absoluteTop));
-  };
-
-  const jump = behavior => {
-    window.scrollTo({ top: getTop(), behavior });
-  };
-
-  jump("smooth");
-
-  const viewport = window.visualViewport;
-  if (!viewport) return;
-
-  let settled = false;
-  let timeoutId = 0;
-
-  const cleanup = () => {
-    viewport.removeEventListener("resize", correctAfterViewportShift);
-    if ("onscrollend" in viewport) {
-      viewport.removeEventListener("scrollend", correctAfterViewportShift);
-    }
-    if (timeoutId) {
-      window.clearTimeout(timeoutId);
-      timeoutId = 0;
-    }
-  };
-
-  const correctAfterViewportShift = () => {
-    if (settled) return;
-    settled = true;
-    cleanup();
-    requestAnimationFrame(() => jump("auto"));
-  };
-
-  viewport.addEventListener("resize", correctAfterViewportShift);
-  if ("onscrollend" in viewport) {
-    viewport.addEventListener("scrollend", correctAfterViewportShift);
-  }
-  timeoutId = window.setTimeout(correctAfterViewportShift, 280);
-}
-
+// Phone-only: scroll-nav buttons switch the app between three full-viewport
+// screens (filters / chips / results). Desktop ignores data-screen entirely —
+// all three sections are visible at once in the CSS layout.
 function setupScrollNav() {
-  const nav = document.querySelector(".scroll-nav");
-  if (!nav) return;
-  const btns = Array.from(nav.querySelectorAll(".scroll-nav-btn"));
-  const targets = {
-    filters: () => ({
-      node: document.getElementById("filtersTopAnchor"),
-      align: "start",
-    }),
-    results: () => ({
-      node: document.getElementById("tableHeaderAnchor"),
-      align: "end",
-    }),
-  };
-  btns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const target = targets[btn.dataset.scroll]?.();
-      if (!target?.node) return;
-      scrollToNavTarget(target.node, target.align);
-    });
+  document.querySelectorAll(".scroll-nav-btn").forEach(btn => {
+    btn.addEventListener("click", () => showScreen(btn.dataset.scroll));
   });
-
-  const setActive = key => {
-    btns.forEach(b => b.classList.toggle("active", b.dataset.scroll === key));
-  };
-
-  const filtersEl = document.querySelector(".panel-shell");
-  const resultsEl = document.querySelector(".data-panel");
-  if (!filtersEl || !resultsEl || typeof IntersectionObserver === "undefined") return;
-
-  // When the results panel takes up most of the viewport, treat it as active.
-  const io = new IntersectionObserver(entries => {
-    const results = entries.find(e => e.target === resultsEl);
-    if (!results) return;
-    setActive(results.intersectionRatio > 0.5 ? "results" : "filters");
-  }, { threshold: [0, 0.5, 1] });
-  io.observe(resultsEl);
-
-  // Hide on scroll-down, show on scroll-up — cooperates with the browser's
-  // URL bar (which hides on down, shows on up) instead of fighting it, and
-  // frees a bar's worth of vertical space while the user is reading.
-  let lastY = window.scrollY;
-  let ticking = false;
-  const HIDE_THRESHOLD = 6;    // ignore jitter smaller than this
-  const TOP_LOCK = 40;         // near the top, always show
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      const y = window.scrollY;
-      const delta = y - lastY;
-      if (y < TOP_LOCK) {
-        nav.classList.remove("scroll-nav--hidden");
-      } else if (delta > HIDE_THRESHOLD) {
-        nav.classList.add("scroll-nav--hidden");
-      } else if (delta < -HIDE_THRESHOLD) {
-        nav.classList.remove("scroll-nav--hidden");
-      }
-      lastY = y;
-      ticking = false;
-    });
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
 }
 
 function t(key, vars = {}) {
@@ -983,8 +868,22 @@ function setupChipsBarDelegation() {
       if (chip.dataset.groupId === COMPARE_OWNER) return;
       if (chip.dataset.groupId === REVERSE_OWNER) return;
       loadGroupForEditing(chip.dataset.groupId);
+      showScreen("filters");
     }
   });
+}
+
+// Phone-only screen switcher. Safe to call on desktop — the attribute
+// is simply ignored there (no CSS rules reference it outside the mobile
+// media query).
+function showScreen(key) {
+  const shell = document.querySelector(".app-shell");
+  if (!shell) return;
+  shell.dataset.screen = key;
+  document.querySelectorAll(".scroll-nav-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.scroll === key);
+  });
+  window.scrollTo({ top: 0, behavior: "auto" });
 }
 
 function setupLiveSearch() {
@@ -1024,11 +923,11 @@ function renderActiveFilterChips() {
   const reverseFilter = activeFilters.find(f => f.owner === REVERSE_OWNER) || null;
 
   if (!groups.size && !compareFilter && !reverseFilter) {
-    bar.style.display = "none";
-    bar.innerHTML = "";
+    bar.classList.add("active-filters-bar--empty");
+    bar.innerHTML = `<div class="active-filters-empty" data-i18n="chips.empty">${t("chips.empty")}</div>`;
     return;
   }
-  bar.style.display = "";
+  bar.classList.remove("active-filters-bar--empty");
   bar.innerHTML = "";
 
   // Compare chip (rendered first, visually distinct)
