@@ -27,9 +27,10 @@ const I18N = {
     "tab.compare": "Comparar lema",
     "tab.browse": "Relaciones",
     "filter.title": "Filtro",
+    "filter.help": "Ayuda de filtros",
     "label.column": "Columna",
     "label.scope": "Casilla",
-    "scope.whole": "Todo",
+    "scope.whole": "Toda",
     "scope.word": "Palabra",
     "field.grafia.short": "edición",
     "field.paleografia.short": "original",
@@ -37,6 +38,7 @@ const I18N = {
     "field.comentario.short": "comentario",
     "grid.include": "Incluye",
     "grid.exclude": "Excluye",
+    "grid.side.toggle": "Cambiar entre incluye y excluye",
     "grid.exact": "Exacto",
     "grid.starts": "Empieza",
     "grid.contains": "Contiene",
@@ -47,14 +49,14 @@ const I18N = {
     "nav.chips": "Aplicados",
     "nav.results": "Resultados",
     "chips.empty": "Ningún filtro aplicado todavía.",
-    "placeholder.exact.incl": "{casilla} de {campo} es exactamente...",
-    "placeholder.exact.excl": "{casilla} de {campo} no es exactamente...",
-    "placeholder.starts.incl": "{casilla} de {campo} empieza con...",
-    "placeholder.starts.excl": "{casilla} de {campo} no empieza con...",
-    "placeholder.any.incl": "{casilla} de {campo} contiene...",
-    "placeholder.any.excl": "{casilla} de {campo} no contiene...",
-    "placeholder.ends.incl": "{casilla} de {campo} termina con...",
-    "placeholder.ends.excl": "{casilla} de {campo} no termina con...",
+    "placeholder.exact.incl": "es exactamente...",
+    "placeholder.exact.excl": "no es exactamente...",
+    "placeholder.starts.incl": "empieza con...",
+    "placeholder.starts.excl": "no empieza con...",
+    "placeholder.any.incl": "contiene...",
+    "placeholder.any.excl": "no contiene...",
+    "placeholder.ends.incl": "termina con...",
+    "placeholder.ends.excl": "no termina con...",
     "sources.title": "Fuentes",
     "sources.fill": "Todas",
     "sources.clear": "Ninguna",
@@ -224,7 +226,7 @@ const I18N = {
     "logic.or": "O",
     "chips.zone.and": "Y",
     "chips.zone.or": "O",
-    "chips.clearAll": "× limpiar todo",
+    "chips.clearAll": "Limpiar todo",
     "chips.removeFilter": "Quitar filtro",
     "sort.childHint": "Orden dentro de cada lema",
     "toggle.expandCollapse": "Expandir/Colapsar",
@@ -266,6 +268,7 @@ const I18N = {
     "tab.compare": "Compare lemma",
     "tab.browse": "Browse",
     "filter.title": "Filter",
+    "filter.help": "Filter help",
     "label.column": "Column",
     "label.scope": "Search in",
     "scope.whole": "All",
@@ -276,6 +279,7 @@ const I18N = {
     "field.comentario.short": "comment",
     "grid.include": "Include",
     "grid.exclude": "Exclude",
+    "grid.side.toggle": "Switch include/exclude",
     "grid.exact": "Exact",
     "grid.starts": "Starts with",
     "grid.contains": "Contains",
@@ -286,14 +290,14 @@ const I18N = {
     "nav.chips": "Applied",
     "nav.results": "Results",
     "chips.empty": "No filters applied yet.",
-    "placeholder.exact.incl": "{casilla} in {campo} is exactly...",
-    "placeholder.exact.excl": "{casilla} in {campo} is not exactly...",
-    "placeholder.starts.incl": "{casilla} in {campo} starts with...",
-    "placeholder.starts.excl": "{casilla} in {campo} does not start with...",
-    "placeholder.any.incl": "{casilla} in {campo} contains...",
-    "placeholder.any.excl": "{casilla} in {campo} does not contain...",
-    "placeholder.ends.incl": "{casilla} in {campo} ends with...",
-    "placeholder.ends.excl": "{casilla} in {campo} does not end with...",
+    "placeholder.exact.incl": "is exactly...",
+    "placeholder.exact.excl": "is not exactly...",
+    "placeholder.starts.incl": "starts with...",
+    "placeholder.starts.excl": "does not start with...",
+    "placeholder.any.incl": "contains...",
+    "placeholder.any.excl": "does not contain...",
+    "placeholder.ends.incl": "ends with...",
+    "placeholder.ends.excl": "does not end with...",
     "sources.title": "Sources",
     "sources.fill": "All",
     "sources.clear": "None",
@@ -463,7 +467,7 @@ const I18N = {
     "logic.or": "OR",
     "chips.zone.and": "AND",
     "chips.zone.or": "OR",
-    "chips.clearAll": "× clear all",
+    "chips.clearAll": "Clear all",
     "chips.removeFilter": "Remove filter",
     "sort.childHint": "Order within each lemma",
     "toggle.expandCollapse": "Expand/Collapse",
@@ -596,6 +600,7 @@ document.addEventListener("DOMContentLoaded", () => {
   syncHeaderOrderToTableFields();
   syncFieldPillOrder();
   setupLanguageToggle();
+  setupFilterHelpToggle();
   setupOldSpanishToggle();
   setupAccentToggle();
   setupLogicToggle();
@@ -696,6 +701,18 @@ function setTranslatedText(el, key) {
   target.textContent = t(key);
 }
 
+function setInlineLabelText(el, text) {
+  if (!el) return;
+  const label = el.querySelector(":scope > .btn-label");
+  if (label) label.textContent = text;
+  else el.textContent = text;
+}
+
+function mobileIconMarkup(iconId, extraClass = "") {
+  const className = extraClass ? `mobile-icon ${extraClass}` : "mobile-icon";
+  return `<svg class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#${iconId}"></use></svg>`;
+}
+
 function setButtonState(btn, key, iconId) {
   if (!btn || !key) return;
   setTranslatedText(btn, key);
@@ -781,6 +798,17 @@ function setupLanguageToggle() {
   });
 }
 
+function setupFilterHelpToggle() {
+  const btn = document.querySelector("[data-filter-help-toggle]");
+  const help = document.getElementById("filterHelpText");
+  if (!btn || !help) return;
+  btn.addEventListener("click", () => {
+    const expanded = btn.getAttribute("aria-expanded") === "true";
+    btn.setAttribute("aria-expanded", expanded ? "false" : "true");
+    help.classList.toggle("site-tagline--open", !expanded);
+  });
+}
+
 function setupOldSpanishToggle() {
   const btns = document.querySelectorAll(".old-spanish-btn");
   btns.forEach(btn => {
@@ -797,7 +825,7 @@ function setupOldSpanishToggle() {
 function updateAccentLabels() {
   document.querySelectorAll(".accent-btn").forEach(btn => {
     const mode = btn.dataset.accent;
-    btn.textContent = t(mode === "strict" ? "accent.strict" : "accent.loose");
+    setTranslatedText(btn, mode === "strict" ? "accent.strict" : "accent.loose");
     btn.classList.toggle("active", (mode === "strict") === accentSensitiveMode);
   });
 }
@@ -1038,8 +1066,11 @@ function renderActiveFilterChips() {
   if (totalGroups > 1) {
     const clearAll = document.createElement("button");
     clearAll.type = "button";
-    clearAll.className = "chip-clear-all";
-    clearAll.textContent = t("chips.clearAll");
+    clearAll.className = "chip-clear-all mobile-icon-btn";
+    clearAll.innerHTML =
+      `${mobileIconMarkup("icon-clear")}<span class="btn-label mobile-icon-label">${escapeHtml(t("chips.clearAll"))}</span>`;
+    clearAll.setAttribute("aria-label", t("chips.clearAll"));
+    clearAll.setAttribute("title", t("chips.clearAll"));
     bar.appendChild(clearAll);
   }
 
@@ -1379,6 +1410,30 @@ function updateFilterPlaceholders(card) {
   });
 }
 
+function setFilterGridSide(card, side, options = {}) {
+  if (!card) return;
+  const nextSide = side === "exclude" ? "exclude" : "include";
+  card.dataset.filterSide = nextSide;
+
+  const label = card.querySelector("[data-filter-side-label]");
+  const labelKey = nextSide === "exclude" ? "grid.exclude" : "grid.include";
+  if (label) setTranslatedText(label, labelKey);
+
+  const toggle = card.querySelector("[data-filter-side-toggle]");
+  if (toggle) {
+    toggle.classList.toggle("is-exclude", nextSide === "exclude");
+    toggle.setAttribute("aria-pressed", nextSide === "exclude" ? "true" : "false");
+  }
+
+  if (!options.preserveFocus) return;
+  const active = document.activeElement;
+  if (!active?.matches?.(".filter-input") || !card.contains(active)) return;
+  const target = card.querySelector(
+    `.filter-input[data-mode="${active.dataset.mode}"][data-negate="${nextSide === "exclude" ? "true" : "false"}"]`
+  );
+  if (target) target.focus();
+}
+
 function setupFilterCards() {
   FILTER_OWNERS.forEach(owner => setupFilterCard(owner));
 }
@@ -1399,6 +1454,15 @@ function setupFilterCard(owner) {
   });
   syncFuenteMode(card);
   updateFilterPlaceholders(card);
+  setFilterGridSide(card, card.dataset.filterSide || "include");
+
+  const sideToggle = card.querySelector("[data-filter-side-toggle]");
+  if (sideToggle) {
+    sideToggle.addEventListener("click", () => {
+      const current = card.dataset.filterSide === "exclude" ? "exclude" : "include";
+      setFilterGridSide(card, current === "exclude" ? "include" : "exclude", { preserveFocus: true });
+    });
+  }
 
   const scopeButtons = card.querySelectorAll(".scope-btn");
   scopeButtons.forEach(btn => {
@@ -1496,6 +1560,7 @@ function commitFilterCard() {
   const addBtn = card.querySelector(".add-btn");
   if (addBtn) setButtonState(addBtn, "action.add", "icon-plus");
   card.querySelectorAll(".filter-input").forEach(i => (i.value = ""));
+  setFilterGridSide(card, "include");
   applyFilters();
   refreshSessionLabel();
   vibe(8);
@@ -1532,6 +1597,7 @@ function clearFilterCard(owner) {
   const card = document.querySelector(`.filter-card[data-owner="${owner}"]`);
   if (card) {
     card.querySelectorAll(".filter-input").forEach(input => (input.value = ""));
+    setFilterGridSide(card, "include");
   }
   if (editingGroupId) cancelEdit();
   removeOwnerFilters(owner);
@@ -1546,6 +1612,7 @@ function cancelEdit() {
   if (card) {
     const addBtn = card.querySelector(".add-btn");
     if (addBtn) setButtonState(addBtn, "action.add", "icon-plus");
+    setFilterGridSide(card, "include");
   }
   // Remove any chip-editing class (chips will re-render on applyFilters)
 }
@@ -1585,6 +1652,8 @@ function loadGroupForEditing(groupId) {
     );
     if (match) match.value = f.value;
   });
+  const preferredSideFilter = filters.find(f => !f.negate) || filters.find(f => f.negate);
+  setFilterGridSide(card, preferredSideFilter?.negate ? "exclude" : "include");
 
   // Set editing state
   editingGroupId = groupId;
@@ -1621,11 +1690,13 @@ function getActiveRegexTarget(card, originBtn) {
   if (originBtn) {
     const row = originBtn.closest(".grid-row");
     if (row) {
-      const preferred = row.querySelector('.filter-input[data-negate="false"]') || row.querySelector(".filter-input");
+      const sideNegate = card.dataset.filterSide === "exclude" ? "true" : "false";
+      const preferred = row.querySelector(`.filter-input[data-negate="${sideNegate}"]`) || row.querySelector(".filter-input");
       if (preferred) return preferred;
     }
   }
-  return card.querySelector('.filter-input[data-negate="false"]') || card.querySelector(".filter-input");
+  const sideNegate = card.dataset.filterSide === "exclude" ? "true" : "false";
+  return card.querySelector(`.filter-input[data-negate="${sideNegate}"]`) || card.querySelector(".filter-input");
 }
 
 function initCardNavigation() {
@@ -1943,10 +2014,9 @@ function getMobilePreviewFields() {
 }
 
 function rowHasDetailContent(row) {
-  // Don't filter by hiddenColumns — on mobile, the detail row is exactly where
-  // hidden fields (e.g. Comentario, hidden by applyMobileColumnDefaults) surface.
   const previewFields = new Set(getMobilePreviewFields());
   for (const field of TABLE_FIELDS) {
+    if (hiddenColumns.has(field.key)) continue;
     if (previewFields.has(field.key)) continue;
     const raw = getDisplayValue(row, field.key);
     if (raw != null && String(raw).trim()) return true;
@@ -2013,11 +2083,11 @@ function buildMobileDetailRow(row) {
   const detail = document.createElement("div");
   detail.className = "mobile-row-detail";
 
-  // Skip the preview fields (already shown in the anchor cell). Do NOT skip
-  // hiddenColumns — Comentario is auto-hidden on mobile precisely so that the
-  // detail row is its only surface; filtering it out here would erase it.
+  // Skip preview fields already shown in the anchor cell. User-hidden columns
+  // stay hidden here too so column controls behave like desktop.
   const previewFields = new Set(getMobilePreviewFields());
   TABLE_FIELDS.forEach(field => {
+    if (hiddenColumns.has(field.key)) return;
     if (previewFields.has(field.key)) return;
     const raw = getDisplayValue(row, field.key);
     const safe = raw == null ? "" : String(raw);
@@ -2196,6 +2266,11 @@ function getColumnWidth(fieldKey) {
   return columnWidths.get(fieldKey) || TABLE_FIELDS.find(field => field.key === fieldKey)?.defaultWidth || 140;
 }
 
+function isPhoneViewport() {
+  return typeof window !== "undefined" && window.matchMedia
+    && window.matchMedia("(max-width: 640px)").matches;
+}
+
 const COLUMN_STATE_KEY = "nawat-columns-v1";
 
 function saveColumnState() {
@@ -2210,11 +2285,9 @@ function saveColumnState() {
 }
 
 function applyMobileColumnDefaults() {
-  if (typeof window === "undefined" || !window.matchMedia) return;
-  if (!window.matchMedia("(max-width: 640px)").matches) return;
-  // Comentario is the widest column and rarely needed on first glance — the
-  // +/- detail row still surfaces it. Users can re-enable via the column menu.
-  hiddenColumns.add("Comentario");
+  if (!isPhoneViewport()) return;
+  // Mobile renders non-preview fields in the expandable detail row, so column
+  // visibility should mean the same thing on every viewport.
 }
 
 function loadColumnState() {
@@ -2348,7 +2421,7 @@ function renderColumnControls() {
 
   if (btn) btn.title = t("columns.title");
   if (dropdown) dropdown.setAttribute("aria-label", t("columns.title"));
-  if (resetBtn) resetBtn.textContent = t("columns.reset");
+  if (resetBtn) setTranslatedText(resetBtn, "columns.reset");
   if (!list) return;
 
   list.innerHTML = "";
@@ -2398,11 +2471,11 @@ function renderColumnControls() {
 
     const width = getColumnWidth(field.key);
     const widthGroup = document.createElement("div");
-    widthGroup.className = "column-action-set";
-    widthGroup.appendChild(buildColumnIconButton("−", "columns.narrower", width <= 70, () => {
+    widthGroup.className = "column-action-set column-action-set--width";
+    widthGroup.appendChild(buildColumnIconButton("−", "columns.narrower", isPhoneViewport() || width <= 70, () => {
       adjustColumnWidth(field.key, -20);
     }));
-    widthGroup.appendChild(buildColumnIconButton("+", "columns.wider", width >= 520, () => {
+    widthGroup.appendChild(buildColumnIconButton("+", "columns.wider", isPhoneViewport() || width >= 520, () => {
       adjustColumnWidth(field.key, 20);
     }));
     actions.appendChild(widthGroup);
@@ -2474,6 +2547,7 @@ function moveColumnByStep(fieldKey, step) {
 }
 
 function adjustColumnWidth(fieldKey, delta) {
+  if (isPhoneViewport()) return;
   const next = Math.max(70, Math.min(520, getColumnWidth(fieldKey) + delta));
   columnWidths.set(fieldKey, next);
   applyColumnControlStateChange({ renderRows: false });
@@ -2497,8 +2571,7 @@ function syncColumnLayout() {
   const visibleWidth = TABLE_FIELDS.reduce((sum, field, idx) => {
     return hiddenColumns.has(field.key) ? sum : sum + getColumnWidth(field.key);
   }, 0);
-  const isPhone = typeof window !== "undefined" && window.matchMedia
-    && window.matchMedia("(max-width: 640px)").matches;
+  const isPhone = isPhoneViewport();
   const minWidth = isPhone ? 0 : Math.max(TABLE_MIN_WIDTH, visibleWidth);
   const firstVisibleIdx = TABLE_FIELDS.findIndex(f => !hiddenColumns.has(f.key));
   const table = getBodyTable();
@@ -3344,11 +3417,11 @@ function getDisplayValue(row, fieldKey) {
 function setupWimmerTranslate() {
   const langToggle = document.getElementById("wLangToggle");
   if (langToggle) {
-    langToggle.textContent = wimmerShowEs ? "ES" : "FR";
+    setInlineLabelText(langToggle, wimmerShowEs ? "ES" : "FR");
     langToggle.classList.toggle("active", wimmerShowEs);
     langToggle.addEventListener("click", () => {
       wimmerShowEs = !wimmerShowEs;
-      langToggle.textContent = wimmerShowEs ? "ES" : "FR";
+      setInlineLabelText(langToggle, wimmerShowEs ? "ES" : "FR");
       langToggle.classList.toggle("active", wimmerShowEs);
       normalizationCache = new Map();
       applyFilters(false, getTableRestoreOptions());
@@ -4167,12 +4240,35 @@ function appendLemmaDetailRowsAfter(anchorRow, item, stripe) {
       const mobileToggle = edicionCell.querySelector(".mobile-row-toggle");
       edicionCell.replaceChildren();
       if (mobileToggle) edicionCell.appendChild(mobileToggle);
+      edicionCell.appendChild(buildLemmaMobileDetailPreview(row));
     }
     anchor.after(tr);
     anchor = tr;
     anchor = appendMobileDetailRowAfter(anchor, row);
     if (comentarioMeta) syncComentarioCell(comentarioMeta, translationMeasureEl);
   });
+}
+
+function buildLemmaMobileDetailPreview(row) {
+  const preview = document.createElement("div");
+  preview.className = "lemma-mobile-detail-preview";
+
+  const addLine = (className, fieldKey) => {
+    const raw = getDisplayValue(row, fieldKey);
+    const safe = raw == null ? "" : String(raw).trim();
+    if (!safe) return;
+    const line = document.createElement("div");
+    line.className = className;
+    line.dataset.field = fieldKey;
+    line.innerHTML = applyHighlights(safe, fieldKey);
+    preview.appendChild(line);
+  };
+
+  addLine("lemma-mobile-detail-primary", "Escritura original");
+  addLine("mobile-row-subtitle mobile-row-sub--traduccion", "Traducción");
+  addLine("mobile-row-subtitle mobile-row-sub--fuente", "Fuente");
+
+  return preview;
 }
 
 function removeLemmaDetailRows(tbody, lemma) {
