@@ -1,0 +1,282 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Button timing audit</title>
+<style>
+  body { font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; margin: 16px; }
+  iframe { width: 390px; height: 844px; border: 1px solid #bbb; display: block; margin-bottom: 12px; }
+  pre { white-space: pre-wrap; }
+</style>
+<iframe id="app" title="timing target"></iframe>
+<pre id="status">starting...</pre>
+<pre id="results"></pre>
+<script>
+(async () => {
+  const status = document.getElementById("status");
+  const resultsEl = document.getElementById("results");
+  const previousLang = localStorage.getItem("nahuatl-ui-lang");
+  localStorage.setItem("nahuatl-ui-lang", "es");
+
+  const iframe = document.getElementById("app");
+  iframe.src = "/?v=timing-harness-3";
+  await new Promise(resolve => iframe.addEventListener("load", resolve, { once: true }));
+
+  const w = iframe.contentWindow;
+  const d = w.document;
+  const rows = [];
+  const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+  const raf = () => new Promise(resolve => w.requestAnimationFrame(() => resolve()));
+  const q = selector => d.querySelector(selector);
+  const qa = selector => Array.from(d.querySelectorAll(selector));
+  const text = selector => (q(selector)?.textContent || "").trim();
+  const cls = selector => q(selector)?.classList;
+  const attr = (selector, name) => q(selector)?.getAttribute(name);
+  const value = selector => q(selector)?.value;
+
+  async function until(done, timeoutMs = 5000) {
+    const deadline = performance.now() + timeoutMs;
+    while (performance.now() < deadline) {
+      if (done()) return true;
+      await wait(1);
+    }
+    return false;
+  }
+
+  async function waitForReady() {
+    await until(() => qa("#fuenteList button").length > 0 && q("#dataTable tbody"), 10000);
+    await raf();
+    await raf();
+  }
+
+  function setInput(selector, nextValue) {
+    const input = q(selector);
+    if (!input) throw new Error(`missing setup input: ${selector}`);
+    input.value = nextValue;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  async function measure({ name, type, selector, action, done, setup, timeoutMs = 5000, note = "" }) {
+    try {
+      if (setup) await setup();
+      await raf();
+      const target = selector ? q(selector) : null;
+      if (selector && !target) throw new Error(`missing target: ${selector}`);
+      const t0 = w.performance.now();
+      if (action) action();
+      else target.click();
+      const handlerReturnMs = w.performance.now() - t0;
+      const ok = await until(done, timeoutMs);
+      await raf();
+      rows.push({
+        name,
+        type,
+        handler_return_ms: Number(handlerReturnMs.toFixed(2)),
+        observable_done_ms: Number((w.performance.now() - t0).toFixed(2)),
+        status: ok ? "ok" : "timeout",
+        note
+      });
+    } catch (err) {
+      rows.push({
+        name,
+        type,
+        handler_return_ms: null,
+        observable_done_ms: null,
+        status: "error",
+        note,
+        error: err.message
+      });
+    }
+    status.textContent = `ran ${rows.length} tests...`;
+  }
+
+  await waitForReady();
+
+  await measure({
+    name: "filter help open",
+    type: "help toggle",
+    selector: "[data-filter-help-toggle]",
+    done: () => attr("[data-filter-help-toggle]", "aria-expanded") === "true"
+  });
+  await measure({
+    name: "panel tab to Reverso",
+    type: "panel tab",
+    selector: "#tab-reversePanel",
+    done: () => attr("#tab-reversePanel", "aria-selected") === "true"
+  });
+  await measure({
+    name: "panel tab back to Filtros",
+    type: "panel tab",
+    selector: "#tab-filtersPanel",
+    done: () => attr("#tab-filtersPanel", "aria-selected") === "true"
+  });
+  await measure({
+    name: "field pill to Traducción",
+    type: "filter pill",
+    selector: '.field-btn[data-field="Traducción"]',
+    done: () => cls('.field-btn[data-field="Traducción"]')?.contains("active")
+  });
+  await measure({
+    name: "scope pill to Toda",
+    type: "filter pill",
+    selector: '.scope-btn[data-scope="whole"]',
+    done: () => cls('.scope-btn[data-scope="whole"]')?.contains("active")
+  });
+  await measure({
+    name: "include/exclude toggle",
+    type: "filter side toggle",
+    selector: "[data-filter-side-toggle]",
+    done: () => attr('.filter-card[data-owner="f1"]', "data-filter-side") === "exclude"
+  });
+  await measure({
+    name: "old Spanish on",
+    type: "filter option toggle",
+    selector: ".old-spanish-btn",
+    done: () => cls(".old-spanish-btn")?.contains("active")
+  });
+  await measure({
+    name: "accent strict",
+    type: "segmented toggle",
+    selector: '.accent-btn[data-accent="strict"]',
+    done: () => cls('.accent-btn[data-accent="strict"]')?.contains("active")
+  });
+  await measure({
+    name: "logic OR",
+    type: "segmented toggle",
+    selector: '.logic-btn[data-logic="OR"]',
+    done: () => cls('.logic-btn[data-logic="OR"]')?.contains("active")
+  });
+  await measure({
+    name: "add filter",
+    type: "primary action",
+    selector: ".add-btn",
+    setup: () => setInput('.filter-input[data-mode="any"][data-negate="false"]', "ti"),
+    done: () => qa("#activeFiltersBar .filter-chip").length > 0,
+    note: "contains=ti"
+  });
+  await measure({
+    name: "clear filter card",
+    type: "secondary action",
+    selector: ".clear-btn",
+    done: () => value('.filter-input[data-mode="any"][data-negate="false"]') === ""
+  });
+  await measure({
+    name: "fuente clear all",
+    type: "bulk source button",
+    selector: "#fuenteClear",
+    done: () => qa('#fuenteList button[aria-pressed="true"]').length === 0
+  });
+  await measure({
+    name: "fuente fill all",
+    type: "bulk source button",
+    selector: "#fuenteFill",
+    done: () => qa('#fuenteList button[aria-pressed="true"]').length === qa("#fuenteList button").length
+  });
+  await measure({
+    name: "single fuente chip off",
+    type: "source chip toggle",
+    action: () => qa("#fuenteList button")[0].click(),
+    done: () => qa("#fuenteList button")[0]?.getAttribute("aria-pressed") === "false",
+    note: "first source"
+  });
+  await measure({
+    name: "bottom nav to Results",
+    type: "screen nav button",
+    selector: '.scroll-nav-btn[data-scroll="results"]',
+    done: () => attr(".app-shell", "data-screen") === "results"
+  });
+  await measure({
+    name: "view toggle to Lemas",
+    type: "table mode toggle",
+    selector: '.view-btn[data-view="lemmas"]',
+    done: () => attr(".data-panel", "data-view-mode") === "lemmas"
+  });
+  await measure({
+    name: "view toggle to Filas",
+    type: "table mode toggle",
+    selector: '.view-btn[data-view="rows"]',
+    done: () => attr(".data-panel", "data-view-mode") === "rows"
+  });
+  await measure({
+    name: "row toggle-all open",
+    type: "table toggle-all",
+    selector: "#tableExpandAllMobile",
+    done: () => qa("#dataTable tbody tr.mobile-row-detail-row").length > 0
+  });
+  await measure({
+    name: "row toggle-all close",
+    type: "table toggle-all",
+    selector: "#tableExpandAllMobile",
+    done: () => qa("#dataTable tbody tr.mobile-row-detail-row").length === 0
+  });
+  await measure({
+    name: "single row expand",
+    type: "row detail toggle",
+    action: () => q(".mobile-row-toggle")?.click(),
+    done: () => qa("#dataTable tbody tr.mobile-row-detail-row").length > 0
+  });
+  await measure({
+    name: "header sort",
+    type: "sort button",
+    selector: "#dataTable thead th.mobile-th-anchor .sort-btn",
+    done: () => attr("#dataTable thead th.mobile-th-anchor .sort-btn", "aria-pressed") === "true"
+  });
+  await measure({
+    name: "pagination next",
+    type: "pager button",
+    selector: "#pageNext",
+    done: () => value("#pageInput") === "2"
+  });
+  await measure({
+    name: "pagination prev",
+    type: "pager button",
+    selector: "#pagePrev",
+    done: () => value("#pageInput") === "1"
+  });
+  await measure({
+    name: "column menu open",
+    type: "toolbar menu button",
+    selector: "#columnMenuBtn",
+    done: () => cls("#columnMenuDropdown")?.contains("open")
+  });
+  await measure({
+    name: "comment language toggle",
+    type: "toolbar toggle",
+    selector: "#wLangToggle",
+    done: () => text("#wLangToggle").includes("FR")
+  });
+  await measure({
+    name: "export menu open",
+    type: "toolbar menu button",
+    selector: "#exportMenuBtn",
+    done: () => cls("#exportMenuDropdown")?.contains("open")
+  });
+  await measure({
+    name: "view toggle to Lemas again",
+    type: "table mode toggle",
+    selector: '.view-btn[data-view="lemmas"]',
+    done: () => attr(".data-panel", "data-view-mode") === "lemmas"
+  });
+  await measure({
+    name: "lemma toggle-all open",
+    type: "table toggle-all",
+    selector: "#tableExpandAllMobile",
+    done: () => qa("#dataTable tbody tr.lemma-group-row.expanded").length > 0
+  });
+  await measure({
+    name: "lemma toggle-all close",
+    type: "table toggle-all",
+    selector: "#tableExpandAllMobile",
+    done: () => qa("#dataTable tbody tr.lemma-group-row.expanded").length === 0
+  });
+  await measure({
+    name: "language ES to EN",
+    type: "top-bar toggle",
+    selector: "#langToggle",
+    done: () => d.documentElement.lang === "en"
+  });
+
+  if (previousLang == null) localStorage.removeItem("nahuatl-ui-lang");
+  else localStorage.setItem("nahuatl-ui-lang", previousLang);
+  status.textContent = `done: ${rows.length} tests`;
+  resultsEl.textContent = JSON.stringify(rows, null, 2);
+})();
+</script>

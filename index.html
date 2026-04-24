@@ -11,7 +11,7 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=hotspots-6" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -540,14 +540,14 @@
                 </select>
               </div>
               <div class="pager">
-                <button type="button" class="arrow-btn page-skip" id="pageFirst" title="Primera página" data-i18n-aria-label="page.first" aria-label="Primera página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9,1 6,5.5 9,10"/><polyline points="5,1 2,5.5 5,10"/></svg></button>
+                <button type="button" class="arrow-btn page-skip" id="pageFirst" title="Primera página" data-i18n-aria-label="page.first" aria-label="Primera página"><svg class="page-skip-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="12,4 8,8 12,12"/><polyline points="8,4 4,8 8,12"/></svg></button>
                 <button type="button" class="arrow-btn" id="pagePrev" title="Página anterior" data-i18n-aria-label="page.prev" aria-label="Página anterior"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5,1 1,5.5 5,10"/></svg></button>
                 <span class="page-indicator">
                   <input type="text" id="pageInput" class="page-input" value="1" data-i18n-aria-label="page.current" aria-label="Página actual">
                   <span class="page-total" id="pageTotal">de — pág.</span>
                 </span>
                 <button type="button" class="arrow-btn" id="pageNext" title="Página siguiente" data-i18n-aria-label="page.next" aria-label="Página siguiente"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2,1 6,5.5 2,10"/></svg></button>
-                <button type="button" class="arrow-btn page-skip" id="pageLast" title="Última página" data-i18n-aria-label="page.last" aria-label="Última página"><svg width="12" height="11" viewBox="0 0 12 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3,1 6,5.5 3,10"/><polyline points="7,1 10,5.5 7,10"/></svg></button>
+                <button type="button" class="arrow-btn page-skip" id="pageLast" title="Última página" data-i18n-aria-label="page.last" aria-label="Última página"><svg class="page-skip-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4,4 8,8 4,12"/><polyline points="8,4 12,8 8,12"/></svg></button>
               </div>
             </div>
           </div>
@@ -567,7 +567,7 @@
               <div class="column-menu-tools">
                 <div class="view-actions">
                   <button type="button" class="arrow-btn active w-lang-toggle" id="wLangToggle" data-i18n-title="comentario.lang" data-i18n-aria-label="comentario.lang" title="Idioma del comentario" aria-label="Idioma del comentario"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-lang"></use></svg><span class="btn-label">ES</span></button>
-                  <button type="button" class="arrow-btn lemma-toggle-all" id="lemmaExpandAll" data-i18n-title="lemma.expandAll" data-i18n-aria-label="lemma.expandAll" title="Expandir/Colapsar lemas" aria-label="Expandir/Colapsar lemas" hidden>+</button>
+                  <button type="button" class="arrow-btn lemma-toggle-all table-control-desktop-only" id="lemmaExpandAll" data-i18n-title="lemma.expandAll" data-i18n-aria-label="lemma.expandAll" title="Expandir/Colapsar lemas" aria-label="Expandir/Colapsar lemas" hidden>+</button>
                 </div>
                 <button type="button" class="column-reset-btn mobile-icon-btn" id="columnResetBtn" data-i18n="columns.reset" data-i18n-aria-label="columns.reset" data-i18n-title="columns.reset"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-reset"></use></svg><span class="btn-label mobile-icon-label">Restablecer</span></button>
               </div>
@@ -586,19 +586,24 @@
                   <span data-i18n="table.header.grafia">Edición</span>
                   <div class="header-actions">
                     <button type="button" class="arrow-btn sort-btn" data-sort-field="Texto estandarizado">⇅</button>
+                    <button type="button" class="arrow-btn table-toggle-all table-control-mobile-only" id="tableExpandAllMobile" data-i18n-title="list.expandAll" data-i18n-aria-label="list.expandAll" title="Expandir/Colapsar registros" aria-label="Expandir/Colapsar registros" hidden>+</button>
                   </div>
                 </div>
               </th>
               <th data-field="Escritura original">
                 <div class="header-bar">
                   <span data-i18n="table.header.paleografia">Original</span>
-                  <button type="button" class="arrow-btn sort-btn" data-sort-field="Escritura original">⇅</button>
+                  <div class="header-actions">
+                    <button type="button" class="arrow-btn sort-btn" data-sort-field="Escritura original">⇅</button>
+                  </div>
                 </div>
               </th>
               <th data-field="Traducción">
                 <div class="header-bar">
                   <span data-i18n="table.header.traduccion">Traducción</span>
-                  <button type="button" class="arrow-btn sort-btn" data-sort-field="Traducción">⇅</button>
+                  <div class="header-actions">
+                    <button type="button" class="arrow-btn sort-btn" data-sort-field="Traducción">⇅</button>
+                  </div>
                 </div>
               </th>
               <th data-field="Fuente">
@@ -614,7 +619,7 @@
                   <span data-i18n="table.header.comentario">Comentario</span>
                   <div class="header-actions">
                     <button type="button" class="arrow-btn sort-btn" data-sort-field="Comentario">⇅</button>
-                    <button type="button" class="arrow-btn comentario-toggle-all" id="comentarioExpandAll" data-i18n-title="comentario.expandAll" data-i18n-aria-label="comentario.expandAll" title="Expandir/Colapsar comentarios" aria-label="Expandir/Colapsar comentarios">+</button>
+                    <button type="button" class="arrow-btn comentario-toggle-all table-control-desktop-only" id="comentarioExpandAll" data-i18n-title="comentario.expandAll" data-i18n-aria-label="comentario.expandAll" title="Expandir/Colapsar comentarios" aria-label="Expandir/Colapsar comentarios">+</button>
                   </div>
                 </div>
               </th>
@@ -643,8 +648,8 @@
   </div> <!-- .app-shell -->
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="data.js"></script>
-<script src="filters.js"></script>
-<script src="script.js"></script>
+<script src="data.js?v=hotspots-6"></script>
+<script src="filters.js?v=hotspots-6"></script>
+  <script src="script.js?v=hotspots-6"></script>
 </body>
 </html>

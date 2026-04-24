@@ -62,14 +62,72 @@ function hasFormattingCharacters(value) {
 // ==============================
 // Lazy normalization helpers
 // ==============================
-function getNormalizedEntry(row, field) {
+function getNormalizationCacheKey(row, field) {
+  const usesWimmerEs = typeof wimmerShowEs !== "undefined"
+    && wimmerShowEs
+    && row.Fuente === "2021 Wimmer";
+  return field + (usesWimmerEs ? "_es" : "");
+}
+
+function getRowNormalizationCache(row) {
   let rowCache = normalizationCache.get(row);
   if (!rowCache) {
     rowCache = {};
     normalizationCache.set(row, rowCache);
   }
+  return rowCache;
+}
 
-  const cacheKey = field + ((typeof wimmerShowEs !== "undefined" && wimmerShowEs && row.Fuente === "2021 Wimmer") ? "_es" : "");
+function getNormalizedTextVariant(row, field, options = {}) {
+  const rowCache = getRowNormalizationCache(row);
+  const cacheKey = getNormalizationCacheKey(row, field) + "__text";
+  if (!rowCache[cacheKey]) {
+    rowCache[cacheKey] = {
+      raw: (typeof getDisplayValue === "function") ? getDisplayValue(row, field) : (row[field] ?? "")
+    };
+  }
+  const entry = rowCache[cacheKey];
+  const loose = !!options.loose;
+
+  if (options.accentSensitive) {
+    if (entry.withAccents === undefined) {
+      entry.withAccents = stripHtmlTags(entry.raw).normalize("NFC").toLowerCase();
+    }
+    if (!loose) return entry.withAccents;
+    if (entry.looseWithAccents === undefined) {
+      entry.looseWithAccents = collapseWhitespace(stripPunctuationCharacters(entry.withAccents));
+    }
+    return entry.looseWithAccents;
+  }
+
+  if (entry.normalized === undefined) {
+    entry.normalized = normalizeString(stripHtmlTags(entry.raw));
+  }
+  const useOldSpanish = options.oldSpanish !== false && oldSpanishMode;
+  if (useOldSpanish) {
+    if (entry.normalizedOS === undefined) {
+      entry.normalizedOS = normalizeOldSpanish(entry.normalized);
+    }
+    if (!loose) return entry.normalizedOS;
+    if (entry.looseTextOS === undefined) {
+      if (entry.looseText === undefined) {
+        entry.looseText = collapseWhitespace(stripPunctuationCharacters(entry.normalized));
+      }
+      entry.looseTextOS = normalizeOldSpanish(entry.looseText);
+    }
+    return entry.looseTextOS;
+  }
+
+  if (!loose) return entry.normalized;
+  if (entry.looseText === undefined) {
+    entry.looseText = collapseWhitespace(stripPunctuationCharacters(entry.normalized));
+  }
+  return entry.looseText;
+}
+
+function getNormalizedEntry(row, field) {
+  const rowCache = getRowNormalizationCache(row);
+  const cacheKey = getNormalizationCacheKey(row, field);
   if (!rowCache[cacheKey]) {
     const raw = (typeof getDisplayValue === "function") ? getDisplayValue(row, field) : (row[field] ?? "");
     const normalized = normalizeString(stripHtmlTags(raw));
@@ -262,6 +320,9 @@ function parseFilterValue(rawValue, mode, options = {}) {
     };
   }
 
+  const simpleLiteral = parseSimpleLiteralFilterValue(val, mode, queryHasAccents);
+  if (simpleLiteral) return simpleLiteral;
+
   const altParts = splitAlternatives(val);
 
   const bodies = [];
@@ -364,6 +425,53 @@ function parseFilterValue(rawValue, mode, options = {}) {
     hasWildcards,
     strictRegex,
     looseRegex
+  };
+}
+
+function parseSimpleLiteralFilterValue(val, mode, queryHasAccents) {
+  if (mode === "regex") return null;
+  if (!val || val.startsWith("+")) return null;
+  if (/[\\*?"()[\]{}|]/.test(val)) return null;
+
+  let effectiveMode = mode;
+  let text = val;
+  const leading = text.startsWith("-");
+  const trailing = text.endsWith("-") && !isEscapedAt(text, text.length - 1);
+  if (mode === "exact") {
+    if (leading && trailing && text.length > 2) {
+      effectiveMode = "any";
+      text = text.slice(1, -1);
+    } else if (trailing) {
+      effectiveMode = "starts";
+      text = text.slice(0, -1);
+    } else if (leading) {
+      effectiveMode = "ends";
+      text = text.slice(1);
+    }
+  }
+
+  text = text.replace(/\\-/g, "-").trim();
+  if (!text) return null;
+
+  let strict = queryHasAccents
+    ? text.normalize("NFC").toLowerCase()
+    : normalizeString(text);
+  if (!queryHasAccents && oldSpanishMode) {
+    strict = normalizeOldSpanish(strict);
+  }
+  const loose = collapseWhitespace(stripPunctuationCharacters(stripHtmlTags(strict)));
+  const allowLoose = !hasFormattingCharacters(val);
+
+  return {
+    strict,
+    loose,
+    hasRegex: false,
+    allowLoose,
+    accentSensitive: queryHasAccents,
+    hasWildcards: false,
+    strictRegex: null,
+    looseRegex: null,
+    effectiveMode
   };
 }
 

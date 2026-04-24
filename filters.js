@@ -43,7 +43,8 @@ function normalizeScope(scope) {
 
 function candidateMatchesQuery(candidate, query, mode, useLoose) {
   if (!candidate) return false;
-  if (mode === "regex" && query.hasRegex === false) {
+  const matchMode = query.effectiveMode || mode;
+  if (matchMode === "regex" && query.hasRegex === false) {
     return false;
   }
   if (query.hasRegex && query.strictRegex) {
@@ -55,7 +56,7 @@ function candidateMatchesQuery(candidate, query, mode, useLoose) {
   }
   const queryValue = useLoose ? query.loose : query.strict;
   if (!queryValue) return false;
-  return wordMatchesCondition(candidate, queryValue, mode);
+  return wordMatchesCondition(candidate, queryValue, matchMode);
 }
 
 function wordMatchesCondition(word, filterValue, mode) {
@@ -220,16 +221,11 @@ function matchCompiledFilter(row, cf) {
 }
 
 function matchWholeScopeCompiled(row, filter, query) {
-  const entry = getNormalizedEntry(row, filter.field);
   const useLoose = query.allowLoose;
-  let candidateText;
-  if (query.accentSensitive) {
-    candidateText = useLoose ? entry.looseWithAccents : entry.withAccents;
-  } else if (oldSpanishMode && entry.normalizedOS) {
-    candidateText = useLoose ? entry.looseTextOS : entry.normalizedOS;
-  } else {
-    candidateText = useLoose ? entry.looseText : entry.normalized;
-  }
+  const candidateText = getNormalizedTextVariant(row, filter.field, {
+    accentSensitive: query.accentSensitive,
+    loose: useLoose
+  });
   const result = candidateMatchesQuery(candidateText, query, filter.mode, useLoose);
   return filter.negate ? !result : result;
 }
@@ -322,4 +318,3 @@ function compiledQueryMatchesWordEntry(wordEntry, filter, query) {
   const source = useLoose ? wordEntry.loose : wordEntry.raw;
   return candidateMatchesQuery(source, query, filter.mode, useLoose);
 }
-

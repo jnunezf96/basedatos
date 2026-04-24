@@ -232,6 +232,7 @@ const I18N = {
     "toggle.expandCollapse": "Expandir/Colapsar",
     "page.current": "Página actual",
     "comentario.lang": "Idioma del comentario",
+    "list.expandAll": "Expandir/Colapsar registros",
     "lemma.expandAll": "Expandir/Colapsar lemas",
     "comentario.expandAll": "Expandir/Colapsar comentarios",
     "table.pagesize.label": "Filas:",
@@ -473,6 +474,7 @@ const I18N = {
     "toggle.expandCollapse": "Expand/Collapse",
     "page.current": "Current page",
     "comentario.lang": "Comment language",
+    "list.expandAll": "Expand/Collapse records",
     "lemma.expandAll": "Expand/Collapse lemmas",
     "comentario.expandAll": "Expand/Collapse comments",
     "table.pagesize.label": "Rows:",
@@ -594,6 +596,7 @@ let lastRankingSummary = null;
 let tableViewMode = "rows"; // "rows" | "lemmas"
 let lastLemmaItems = [];
 let lastLemmaPageOffsets = [0];
+const prioritySortCache = new WeakMap();
 
 document.addEventListener("DOMContentLoaded", () => {
   loadColumnState();
@@ -633,6 +636,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupColumnControls();
   setupStickyHeaderTable();
   setupComentarioToggleAll();
+  setupTableToggleAll();
   setupLemmaToggleAll();
   setupExportButtons();
   renderFuenteList();
@@ -1787,6 +1791,60 @@ function getRankingComparator(context, options = {}) {
   return comparePriorityOrder;
 }
 
+function getRankedPage(rows, comparator, offset, pageSize) {
+  if (!rows.length || pageSize <= 0) return [];
+  const limit = Math.min(rows.length, Math.max(0, offset) + pageSize);
+  if (limit <= 0) return [];
+  // For the common first-page case, avoid sorting the entire result set.
+  // Once the requested prefix is large, native full sort is faster and simpler.
+  if (limit > rows.length / 2) {
+    return rows.slice().sort(comparator).slice(offset, offset + pageSize);
+  }
+
+  const heap = [];
+  rows.forEach(row => {
+    if (heap.length < limit) {
+      heapPushWorstFirst(heap, row, comparator);
+      return;
+    }
+    if (comparator(row, heap[0]) < 0) {
+      heap[0] = row;
+      heapSiftDownWorstFirst(heap, 0, comparator);
+    }
+  });
+  heap.sort(comparator);
+  return heap.slice(offset, offset + pageSize);
+}
+
+function heapIsWorse(a, b, comparator) {
+  return comparator(a, b) > 0;
+}
+
+function heapPushWorstFirst(heap, row, comparator) {
+  heap.push(row);
+  let idx = heap.length - 1;
+  while (idx > 0) {
+    const parent = (idx - 1) >> 1;
+    if (!heapIsWorse(heap[idx], heap[parent], comparator)) break;
+    [heap[idx], heap[parent]] = [heap[parent], heap[idx]];
+    idx = parent;
+  }
+}
+
+function heapSiftDownWorstFirst(heap, idx, comparator) {
+  const len = heap.length;
+  while (true) {
+    const left = idx * 2 + 1;
+    const right = left + 1;
+    let worst = idx;
+    if (left < len && heapIsWorse(heap[left], heap[worst], comparator)) worst = left;
+    if (right < len && heapIsWorse(heap[right], heap[worst], comparator)) worst = right;
+    if (worst === idx) break;
+    [heap[idx], heap[worst]] = [heap[worst], heap[idx]];
+    idx = worst;
+  }
+}
+
 function applyFilters(initial = false, options = {}) {
   if (!dataRows.length) return;
   bumpHighlightCache();
@@ -1835,9 +1893,7 @@ function applyFilters(initial = false, options = {}) {
   let paged;
   if (sortKeys.length) {
     if (sortScope === "page") {
-      const baseRows = matches.slice();
-      baseRows.sort(rankingComparator);
-      paged = baseRows.slice(displayOffset, displayOffset + maxDisplayRows);
+      paged = getRankedPage(matches, rankingComparator, displayOffset, maxDisplayRows);
       applyManualSort(paged, sortKeys);
     } else {
       const sorted = matches.slice();
@@ -1845,9 +1901,7 @@ function applyFilters(initial = false, options = {}) {
       paged = sorted.slice(displayOffset, displayOffset + maxDisplayRows);
     }
   } else {
-    const sorted = matches.slice();
-    sorted.sort(rankingComparator);
-    paged = sorted.slice(displayOffset, displayOffset + maxDisplayRows);
+    paged = getRankedPage(matches, rankingComparator, displayOffset, maxDisplayRows);
   }
   lastRenderRows = paged.slice();
   lastRenderTotal = total;
@@ -1874,6 +1928,7 @@ function renderTable(rows, totalCount) {
     updateTableStatusForLemmas(totalCount);
     updatePaginationControls(totalCount);
     updateComentarioToggleButton([]);
+    updateTableToggleButton();
     updateLemmaToggleButton();
     if (scroller) scroller.scrollTop = savedScroll;
     return;
@@ -1903,6 +1958,7 @@ function renderTable(rows, totalCount) {
   updateTableStatus(rows.length, totalCount);
   updatePaginationControls(totalCount);
   updateComentarioToggleButton(rows);
+  updateTableToggleButton();
   updateLemmaToggleButton();
 
   if (scroller) scroller.scrollTop = savedScroll;
@@ -2150,6 +2206,7 @@ function toggleMobileRowDetail(rowTr) {
     existingDetail.remove();
     expandedMobileRows.delete(rowId);
     setMobileRowToggleState(rowTr, false);
+    updateTableToggleButton();
     return;
   }
 
@@ -2161,6 +2218,7 @@ function toggleMobileRowDetail(rowTr) {
   }
   rowTr.after(detailRow);
   setMobileRowToggleState(rowTr, true);
+  updateTableToggleButton();
 }
 
 function setTableStatusMessage(baseText, detailText = "") {
@@ -2594,18 +2652,37 @@ function syncColumnLayout() {
     table.style.minWidth = isPhone ? "" : `${minWidth}px`;
     table.querySelectorAll("thead th.mobile-th-anchor")
       .forEach(th => th.classList.remove("mobile-th-anchor"));
+    let mobileAnchorTh = null;
     if (firstVisibleIdx >= 0) {
       const th = table.querySelector(`thead th:nth-child(${firstVisibleIdx + 1})`);
-      if (th) th.classList.add("mobile-th-anchor");
+      if (th) {
+        mobileAnchorTh = th;
+        th.classList.add("mobile-th-anchor");
+      }
     }
+    positionTableToggleAllButton(table, mobileAnchorTh, isPhone);
   }
+}
+
+function positionTableToggleAllButton(table, mobileAnchorTh, isPhone) {
+  const btn = document.getElementById("tableExpandAllMobile");
+  if (!btn || !table || !isPhone || !mobileAnchorTh) return;
+  const sortBtn = mobileAnchorTh.querySelector(".sort-btn");
+  if (sortBtn && sortBtn.nextElementSibling !== btn) sortBtn.after(btn);
 }
 
 function setupStickyHeaderTable() {
   let raf = 0;
   window.addEventListener("resize", () => {
     if (raf) return;
-    raf = requestAnimationFrame(() => { raf = 0; syncColumnLayout(); });
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      syncColumnLayout();
+      syncDataPanelViewAttribute();
+      renderColumnControls();
+      updateTableToggleButton();
+      updateLemmaToggleButton();
+    });
   });
   syncColumnLayout();
 }
@@ -2703,14 +2780,36 @@ function areAllExpandableCommentsExpanded(rows = lastRenderRows) {
   return rows.length > 0 && rows.every(r => expandedComments.has(r._rid));
 }
 
-function getVisibleLemmas() {
-  if (tableViewMode !== "lemmas") return [];
+function getVisibleListRows(rows = lastRenderRows) {
+  if (tableViewMode !== "rows") return [];
+  return rows.filter(row => getMobileRowId(row) && rowHasDetailContent(row));
+}
+
+function areAllVisibleListRowsExpanded(rows = getVisibleListRows()) {
+  return rows.length > 0 && rows.every(row => expandedMobileRows.has(getMobileRowId(row)));
+}
+
+function getRenderedLemmaNames() {
+  const tbody = document.querySelector("#dataTable tbody");
+  if (!tbody) return [];
+  return Array.from(tbody.querySelectorAll("tr.lemma-group-row[data-lemma]"))
+    .map(row => row.dataset.lemma)
+    .filter(Boolean);
+}
+
+function getPagedLemmaNames() {
   const offsets = lastLemmaPageOffsets && lastLemmaPageOffsets.length
     ? lastLemmaPageOffsets : [0];
   const pageIdx = findLemmaPageIndex(displayOffset);
   const startIdx = offsets[pageIdx] || 0;
   const endIdx = pageIdx + 1 < offsets.length ? offsets[pageIdx + 1] : lastLemmaItems.length;
   return lastLemmaItems.slice(startIdx, endIdx).map(item => item.lemma);
+}
+
+function getVisibleLemmas() {
+  if (tableViewMode !== "lemmas") return [];
+  const rendered = getRenderedLemmaNames();
+  return rendered.length ? rendered : getPagedLemmaNames();
 }
 
 function flushPendingSyncsInChunks(pendingList, chunkSize = 40) {
@@ -2727,59 +2826,121 @@ function flushPendingSyncsInChunks(pendingList, chunkSize = 40) {
   requestAnimationFrame(step);
 }
 
-function setupLemmaToggleAll() {
-  const btn = document.getElementById("lemmaExpandAll");
-  if (!btn) return;
-  btn.addEventListener("click", () => {
-    const lemmas = getVisibleLemmas();
-    if (!lemmas.length) return;
-    const allExpanded = lemmas.every(l => expandedLemmas.has(l));
-    const tbody = document.querySelector("#dataTable tbody");
-    if (!tbody) return;
+function toggleVisibleListRows() {
+  const rows = getVisibleListRows();
+  if (!rows.length) return;
+  const y = getTableScrollTop();
+  if (areAllVisibleListRowsExpanded(rows)) {
+    rows.forEach(row => expandedMobileRows.delete(getMobileRowId(row)));
+  } else {
+    rows.forEach(row => expandedMobileRows.add(getMobileRowId(row)));
+  }
+  renderTable(lastRenderRows, lastRenderTotal);
+  requestAnimationFrame(() => {
+    setTableScroll(y);
+  });
+}
 
-    lemmas.forEach(lemma => {
-      const groupRow = tbody.querySelector(`tr.lemma-group-row[data-lemma="${CSS.escape(lemma)}"]`);
-      if (!groupRow) return;
-      const toggleBtn = groupRow.querySelector(".lemma-toggle");
-      const isExpanded = expandedLemmas.has(lemma);
-      if (allExpanded && isExpanded) {
-        expandedLemmas.delete(lemma);
-        groupRow.classList.remove("expanded");
-        if (toggleBtn) toggleBtn.textContent = "+";
-        removeLemmaDetailRows(tbody, lemma);
-      } else if (!allExpanded && !isExpanded) {
-        expandedLemmas.add(lemma);
-        groupRow.classList.add("expanded");
-        if (toggleBtn) toggleBtn.textContent = "−";
-        const item = lastLemmaItems.find(it => it.lemma === lemma);
-        if (item) {
-          const stripe = groupRow.classList.contains("stripe-alt");
-          appendLemmaDetailRowsAfter(groupRow, item, stripe);
-        }
+function toggleVisibleLemmas() {
+  const lemmas = getVisibleLemmas();
+  if (!lemmas.length) return;
+  const allExpanded = lemmas.every(l => expandedLemmas.has(l));
+  const tbody = document.querySelector("#dataTable tbody");
+  if (!tbody) return;
+
+  lemmas.forEach(lemma => {
+    const groupRow = tbody.querySelector(`tr.lemma-group-row[data-lemma="${CSS.escape(lemma)}"]`);
+    if (!groupRow) return;
+    const toggleBtn = groupRow.querySelector(".lemma-toggle");
+    const isExpanded = expandedLemmas.has(lemma);
+    if (allExpanded && isExpanded) {
+      expandedLemmas.delete(lemma);
+      groupRow.classList.remove("expanded");
+      if (toggleBtn) toggleBtn.textContent = "+";
+      removeLemmaDetailRows(tbody, lemma);
+    } else if (!allExpanded && !isExpanded) {
+      expandedLemmas.add(lemma);
+      groupRow.classList.add("expanded");
+      if (toggleBtn) toggleBtn.textContent = "−";
+      const item = lastLemmaItems.find(it => it.lemma === lemma);
+      if (item) {
+        const stripe = groupRow.classList.contains("stripe-alt");
+        appendLemmaDetailRowsAfter(groupRow, item, stripe);
       }
+    }
+  });
+  lastLemmaPageOffsets = computeLemmaPageOffsets(lastLemmaItems, maxDisplayRows);
+  updatePaginationControls(lastLemmaItems.length);
+  updateTableToggleButton();
+  updateLemmaToggleButton();
+}
+
+function setupTableToggleAll() {
+  const buttons = Array.from(document.querySelectorAll(".table-toggle-all"));
+  if (!buttons.length) return;
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (tableViewMode === "lemmas") toggleVisibleLemmas();
+      else toggleVisibleListRows();
     });
-    lastLemmaPageOffsets = computeLemmaPageOffsets(lastLemmaItems, maxDisplayRows);
-    updatePaginationControls(lastLemmaItems.length);
-    updateLemmaToggleButton();
+  });
+}
+
+function setupLemmaToggleAll() {
+  const buttons = Array.from(document.querySelectorAll(".lemma-toggle-all"));
+  if (!buttons.length) return;
+  buttons.forEach(btn => btn.addEventListener("click", toggleVisibleLemmas));
+}
+
+function updateTableToggleButton() {
+  const buttons = Array.from(document.querySelectorAll(".table-toggle-all"));
+  if (!buttons.length) return;
+  const isLemmaMode = tableViewMode === "lemmas";
+  const items = isLemmaMode ? getVisibleLemmas() : getVisibleListRows();
+  const shouldShow = items.length > 0;
+  const allExpanded = shouldShow && (isLemmaMode
+    ? items.every(lemma => expandedLemmas.has(lemma))
+    : areAllVisibleListRowsExpanded(items));
+  const labelKey = isLemmaMode ? "lemma.expandAll" : "list.expandAll";
+  buttons.forEach(btn => {
+    btn.hidden = !shouldShow;
+    btn.disabled = !shouldShow;
+    btn.textContent = allExpanded ? "−" : "+";
+    btn.dataset.i18nTitle = labelKey;
+    btn.dataset.i18nAriaLabel = labelKey;
+    btn.title = t(labelKey);
+    btn.setAttribute("aria-label", t(labelKey));
+    btn.setAttribute("aria-pressed", allExpanded ? "true" : "false");
   });
 }
 
 function updateLemmaToggleButton() {
-  const btn = document.getElementById("lemmaExpandAll");
-  if (!btn) return;
+  const buttons = Array.from(document.querySelectorAll(".lemma-toggle-all"));
+  if (!buttons.length) return;
   if (tableViewMode !== "lemmas") {
-    btn.hidden = true;
+    buttons.forEach(btn => {
+      btn.hidden = true;
+      btn.setAttribute("aria-pressed", "false");
+    });
     return;
   }
   const lemmas = getVisibleLemmas();
-  btn.hidden = false;
   if (!lemmas.length) {
-    btn.textContent = "+";
-    btn.disabled = true;
+    buttons.forEach(btn => {
+      btn.hidden = false;
+      btn.textContent = "+";
+      btn.disabled = true;
+      btn.setAttribute("aria-pressed", "false");
+    });
     return;
   }
-  btn.disabled = false;
-  btn.textContent = lemmas.every(l => expandedLemmas.has(l)) ? "−" : "+";
+  const allExpanded = lemmas.every(l => expandedLemmas.has(l));
+  buttons.forEach(btn => {
+    btn.hidden = false;
+    btn.disabled = false;
+    btn.textContent = allExpanded ? "−" : "+";
+    btn.setAttribute("aria-pressed", allExpanded ? "true" : "false");
+  });
 }
 
 function setupComentarioToggleAll() {
@@ -3067,18 +3228,28 @@ function comparePriorityOrder(a, b) {
   const pb = Number.isFinite(b._prio) ? b._prio : Number.POSITIVE_INFINITY;
   if (pa !== pb) return pa - pb;
 
-  const headA = buildSortKey(getDisplayValue(a, "Texto estandarizado") || getDisplayValue(a, "Escritura original"));
-  const headB = buildSortKey(getDisplayValue(b, "Texto estandarizado") || getDisplayValue(b, "Escritura original"));
+  const sortA = getPrioritySortEntry(a);
+  const sortB = getPrioritySortEntry(b);
+  const headA = sortA.head;
+  const headB = sortB.head;
   const headCmp = alphaNumCollator.compare(headA, headB);
   if (headCmp !== 0) return headCmp;
 
-  const sourceCmp = alphaNumCollator.compare(
-    buildSortKey(getDisplayValue(a, "Fuente")),
-    buildSortKey(getDisplayValue(b, "Fuente"))
-  );
+  const sourceCmp = alphaNumCollator.compare(sortA.source, sortB.source);
   if (sourceCmp !== 0) return sourceCmp;
 
   return compareRecordId(a, b);
+}
+
+function getPrioritySortEntry(row) {
+  let entry = prioritySortCache.get(row);
+  if (entry) return entry;
+  entry = {
+    head: buildSortKey(getDisplayValue(row, "Texto estandarizado") || getDisplayValue(row, "Escritura original")),
+    source: buildSortKey(getDisplayValue(row, "Fuente"))
+  };
+  prioritySortCache.set(row, entry);
+  return entry;
 }
 
 function compareRecordId(a, b) {
@@ -3423,10 +3594,27 @@ function setupWimmerTranslate() {
       wimmerShowEs = !wimmerShowEs;
       setInlineLabelText(langToggle, wimmerShowEs ? "ES" : "FR");
       langToggle.classList.toggle("active", wimmerShowEs);
-      normalizationCache = new Map();
-      applyFilters(false, getTableRestoreOptions());
+      if (currentQueryUsesWimmerLanguage()) {
+        applyFilters(false, getTableRestoreOptions());
+      } else {
+        renderTable(lastRenderRows, lastRenderTotal);
+      }
     });
   }
+}
+
+const WIMMER_LANGUAGE_FIELDS = new Set(["Traducción", "Comentario"]);
+
+function currentQueryUsesWimmerLanguage() {
+  if (sortKeys.some(key => WIMMER_LANGUAGE_FIELDS.has(key.field))) return true;
+  return activeFilters.some(filter => {
+    if (WIMMER_LANGUAGE_FIELDS.has(filter.field)) return true;
+    if (filter.type === "reverse") {
+      const fields = Array.isArray(filter.fields) && filter.fields.length ? filter.fields : ["Traducción"];
+      return fields.some(field => WIMMER_LANGUAGE_FIELDS.has(field));
+    }
+    return false;
+  });
 }
 
 function sanitizeInput(value) {
@@ -3846,7 +4034,7 @@ function getBrowseDisplayedTranslation(row) {
 }
 
 function getBrowseNormalizedTranslation(row) {
-  return collapseWhitespace(normalizeString(stripHtmlTags(String(getDisplayValue(row, "Traducción") || "")))).trim();
+  return getNormalizedTextVariant(row, "Traducción", { loose: true, oldSpanish: false });
 }
 
 function collectBrowseTranslations(rows) {
@@ -3966,6 +4154,7 @@ function toggleLemmaExpansion(groupRow, lemma) {
   }
   lastLemmaPageOffsets = computeLemmaPageOffsets(lastLemmaItems, maxDisplayRows);
   updatePaginationControls(lastLemmaItems.length);
+  updateTableToggleButton();
   updateLemmaToggleButton();
 }
 
@@ -3973,7 +4162,11 @@ function toggleLemmaExpansion(groupRow, lemma) {
 
 function syncDataPanelViewAttribute() {
   const panel = document.querySelector(".data-panel");
-  if (panel) panel.dataset.viewMode = tableViewMode;
+  if (!panel) return;
+  const viewport = isPhoneViewport() ? "mobile" : "desktop";
+  panel.dataset.viewMode = tableViewMode;
+  panel.dataset.tableViewport = viewport;
+  panel.dataset.tableContext = `${viewport}-${tableViewMode}`;
 }
 
 function updateViewToggleButtons() {
