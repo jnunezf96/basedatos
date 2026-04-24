@@ -122,6 +122,17 @@ function compileSimpleFilter(filter) {
       : ["Traducción"];
     return { type: "reverse", filter, tokens, fields };
   }
+  if (filter.type === "reversePreset") {
+    const scope = normalizeScope(filter.scope);
+    const fields = Array.isArray(filter.fields) && filter.fields.length
+      ? filter.fields
+      : ["Traducción"];
+    const compiledFields = fields.map(field => ({
+      filter: { ...filter, field },
+      query: buildFilterQuery({ ...filter, field })
+    }));
+    return { type: "reversePreset", filter, scope, compiledFields };
+  }
   const query = buildFilterQuery(filter);
   const scope = normalizeScope(filter.scope);
   return { type: "simple", filter, query, scope };
@@ -212,6 +223,14 @@ function matchCompiledFilter(row, cf) {
           return src === tok || src.startsWith(tok);
         });
       });
+    });
+    return cf.filter.negate ? !ok : ok;
+  }
+  if (cf.type === "reversePreset") {
+    const ok = cf.compiledFields.some(({ filter, query }) => {
+      return cf.scope === "word"
+        ? matchWordScopeCompiled(row, filter, query)
+        : matchWholeScopeCompiled(row, filter, query);
     });
     return cf.filter.negate ? !ok : ok;
   }

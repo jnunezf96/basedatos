@@ -1,9 +1,9 @@
 const TABLE_FIELDS = [
-  { key: "Texto estandarizado", label: "Edición", defaultWidth: 120 },
-  { key: "Escritura original", label: "Original", defaultWidth: 120 },
-  { key: "Traducción", label: "Traducción", defaultWidth: 260 },
-  { key: "Fuente", label: "Fuente", defaultWidth: 120 },
-  { key: "Comentario", label: "Comentario", defaultWidth: 260 }
+  { key: "Texto estandarizado", label: "Edición", defaultWidth: 108 },
+  { key: "Escritura original", label: "Original", defaultWidth: 108 },
+  { key: "Traducción", label: "Traducción", defaultWidth: 220 },
+  { key: "Fuente", label: "Fuente", defaultWidth: 96 },
+  { key: "Comentario", label: "Comentario", defaultWidth: 220 }
 ];
 const DEFAULT_COLUMN_ORDER = TABLE_FIELDS.map(field => field.key);
 const COLUMN_CONTROL_ORDER = DEFAULT_COLUMN_ORDER.slice();
@@ -18,12 +18,144 @@ const I18N = {
     "tab.sources": "Fuentes",
     "tab.regex": "Regex",
     "tab.pairs": "Pares a/i",
-    "tab.reverse": "Reverso",
-    "reverse.title": "Búsqueda inversa",
-    "reverse.hint": "Escribe una palabra en español o francés para encontrar lemas en náhuatl cuya traducción la contenga. Los resultados se muestran agrupados por lema, ordenados por cantidad de fuentes que los respaldan.",
+    "tab.reverse": "Guiados",
+    "reverse.title": "Filtros guiados",
+    "reverse.hint": "Elige una relación: en qué columna buscas y qué columna quieres ver como resultado.",
     "reverse.submit": "Buscar",
+    "reverse.apply": "Aplicar filtro",
     "reverse.includeComment": "Incluir Comentario",
-    "reverse.chipLabel": "Significado",
+    "reverse.inputLabel": "Texto para el objetivo",
+    "reverse.presets": "Relaciones entre columnas:",
+    "reverse.preset.meaning": "Cómo se dice una idea",
+    "reverse.preset.meaningGoal": "Encuentra palabras cuya traducción expresa ese concepto.",
+    "reverse.preset.exactMeaning": "Qué entrada significa justo esto",
+    "reverse.preset.exactMeaningGoal": "Reduce a una coincidencia de significado más cerrada.",
+    "reverse.preset.phraseMeaning": "Qué expresa una frase",
+    "reverse.preset.phraseMeaningGoal": "Busca una definición o frase completa en traducciones.",
+    "reverse.preset.nahuatlExact": "Dónde aparece esta palabra náhuatl",
+    "reverse.preset.nahuatlExactGoal": "Confirma una forma normalizada exacta.",
+    "reverse.preset.nahuatlStarts": "Qué palabra estoy recordando",
+    "reverse.preset.nahuatlStartsGoal": "Recupera lemas cuando solo sabes el inicio.",
+    "reverse.preset.oldSpelling": "Qué es esta grafía antigua",
+    "reverse.preset.oldSpellingGoal": "Conecta escritura original con edición normalizada.",
+    "reverse.preset.notesMention": "Qué notas hablan de este tema",
+    "reverse.preset.notesMentionGoal": "Explora comentarios y observaciones editoriales.",
+    "reverse.preset.qAbbrev": "Abreviaturas q^",
+    "reverse.preset.qAbbrevGoal": "171 filas con abreviatura paleográfica.",
+    "reverse.preset.questionOriginal": "Lecturas con ?",
+    "reverse.preset.questionOriginalGoal": "482 filas con incertidumbre en la forma.",
+    "reverse.preset.bracedOriginal": "Lecturas { }",
+    "reverse.preset.bracedOriginalGoal": "408 filas con alternancias preservadas.",
+    "reverse.preset.bnfAdditions": "Añadidos BNF 361",
+    "reverse.preset.bnfAdditionsGoal": "61 filas de capas manuscritas.",
+    "reverse.preset.rareUse": "Usos raros C&Z",
+    "reverse.preset.rareUseGoal": "38 filas marcadas como raras.",
+    "reverse.preset.uncertainNotes": "Notas dudosas",
+    "reverse.preset.uncertainNotesGoal": "≈1.7k filas con probabilidad o duda.",
+    "reverse.preset.slashOriginal": "Con /",
+    "reverse.preset.slashOriginalGoal": "307 filas con variantes o segmentos editoriales.",
+    "reverse.preset.sectionSign": "Grafía §",
+    "reverse.preset.sectionSignGoal": "492 filas con transcripción paleográfica especial.",
+    "reverse.preset.phSpelling": "Grafía ph",
+    "reverse.preset.phSpellingGoal": "17 filas con grafía colonial o culta.",
+    "reverse.preset.jForms": "Formas con j",
+    "reverse.preset.jFormsGoal": "144 filas con préstamos, nombres o grafías modernas.",
+    "reverse.preset.v94Types": "Tipos V94",
+    "reverse.preset.v94TypesGoal": "12 filas con metadatos raros de tipo gramatical.",
+    "reverse.preset.greekLatinNotes": "Griego/latín",
+    "reverse.preset.greekLatinNotesGoal": "99 filas con notas de lengua clásica.",
+    "reverse.preset.editorialInterventions": "Intervenciones",
+    "reverse.preset.editorialInterventionsGoal": "782 filas con sic, tachado, borrado o interlineado.",
+    "reverse.preset.variantLabels": "Variantes",
+    "reverse.preset.variantLabelsGoal": "≈1.2k filas que nombran variantes explícitas.",
+    "reverse.preset.reduplicatedRoot": "Reduplicación",
+    "reverse.preset.reduplicatedRootGoal": "Busca una raíz con el patrón +raíz.",
+    "reverse.preset.sameWordPieces": "Dos piezas",
+    "reverse.preset.sameWordPiecesGoal": "Busca dos partes dentro de la misma palabra.",
+    "reverse.preset.translationToEdition": "Traducción → Edición",
+    "reverse.preset.translationToEditionGoal": "Busca en Traducción; muestra lemas de Edición.",
+    "reverse.preset.translationToOriginal": "Traducción → Original",
+    "reverse.preset.translationToOriginalGoal": "Busca en Traducción; muestra grafías originales.",
+    "reverse.preset.translationPhraseToEdition": "Frase → Edición",
+    "reverse.preset.translationPhraseToEditionGoal": "Busca una frase completa en Traducción.",
+    "reverse.preset.editionToTranslation": "Edición → Traducción",
+    "reverse.preset.editionToTranslationGoal": "Busca en Edición; muestra Traducción.",
+    "reverse.preset.editionToOriginal": "Edición → Original",
+    "reverse.preset.editionToOriginalGoal": "Busca en Edición; muestra Original.",
+    "reverse.preset.originalToEdition": "Original → Edición",
+    "reverse.preset.originalToEditionGoal": "Busca en Original; muestra lemas de Edición.",
+    "reverse.preset.originalToTranslation": "Original → Traducción",
+    "reverse.preset.originalToTranslationGoal": "Busca en Original; muestra Traducción.",
+    "reverse.preset.commentToEdition": "Comentario → Edición",
+    "reverse.preset.commentToEditionGoal": "Busca en Comentario; muestra lemas de Edición.",
+    "reverse.preset.editionToSources": "Edición → Fuentes",
+    "reverse.preset.editionToSourcesGoal": "Busca en Edición; muestra Fuente.",
+    "reverse.preset.translationToSources": "Traducción → Fuentes",
+    "reverse.preset.translationToSourcesGoal": "Busca en Traducción; muestra Fuente.",
+    "reverse.preset.sourceToEdition": "Fuente → Edición",
+    "reverse.preset.sourceToEditionGoal": "Busca en Fuente; muestra lemas de Edición.",
+    "reverse.preset.sourceToTranslation": "Fuente → Traducción",
+    "reverse.preset.sourceToTranslationGoal": "Busca en Fuente; muestra Traducción.",
+    "reverse.preset.commentToSources": "Comentario → Fuente",
+    "reverse.preset.commentToSourcesGoal": "Busca en Comentario; muestra Fuente.",
+    "reverse.objective.meaning": "Objetivo: partir de una idea en traducción y ver qué palabras náhuatl la cubren.",
+    "reverse.objective.exactMeaning": "Objetivo: aislar entradas donde el significado aparece como una coincidencia exacta.",
+    "reverse.objective.phraseMeaning": "Objetivo: encontrar entradas que expresan una frase, definición o explicación completa.",
+    "reverse.objective.nahuatlExact": "Objetivo: confirmar una forma náhuatl normalizada y revisar sus fuentes.",
+    "reverse.objective.nahuatlStarts": "Objetivo: recuperar posibles lemas cuando solo recuerdas el comienzo.",
+    "reverse.objective.oldSpelling": "Objetivo: identificar la edición normalizada detrás de una grafía original o antigua.",
+    "reverse.objective.notesMention": "Objetivo: encontrar comentarios, notas o fuentes que mencionan el tema.",
+    "reverse.objective.qAbbrev": "Objetivo: expandir abreviaturas q^ en escritura original y compararlas con la edición normalizada (171 filas).",
+    "reverse.objective.questionOriginal": "Objetivo: revisar lecturas con signo ? en la escritura original, normalmente incertidumbre paleográfica (482 filas).",
+    "reverse.objective.bracedOriginal": "Objetivo: revisar lecturas alternativas entre llaves en la escritura original (408 filas).",
+    "reverse.objective.bnfAdditions": "Objetivo: ver añadidos, interlineados o notas de mano en BNF 361; combina Fuente + Comentario (61 filas).",
+    "reverse.objective.rareUse": "Objetivo: aislar notas de uso raro en Cortés y Zedeño; combina Fuente + Comentario (38 filas).",
+    "reverse.objective.uncertainNotes": "Objetivo: encontrar comentarios donde el editor marca duda, probabilidad o incertidumbre (≈1.7k filas).",
+    "reverse.objective.slashOriginal": "Objetivo: revisar formas con / en escritura original, normalmente variantes, alternativas o segmentación editorial (307 filas).",
+    "reverse.objective.sectionSign": "Objetivo: revisar transcripciones con § en escritura original, una marca paleográfica especial (492 filas).",
+    "reverse.objective.phSpelling": "Objetivo: aislar grafías coloniales o cultas con ph en escritura original (17 filas).",
+    "reverse.objective.jForms": "Objetivo: encontrar formas normalizadas con j, útiles para préstamos, nombres y grafías modernas (144 filas).",
+    "reverse.objective.v94Types": "Objetivo: encontrar metadatos gramaticales raros en V94, como prefijo, sufijo, artículo o vocativo (12 filas).",
+    "reverse.objective.greekLatinNotes": "Objetivo: encontrar comentarios que citan griego o latín como estructura de nota lexicográfica (99 filas).",
+    "reverse.objective.editorialInterventions": "Objetivo: encontrar comentarios con intervenciones editoriales como sic, tachado, borrado, añadido o interlineado (782 filas).",
+    "reverse.objective.variantLabels": "Objetivo: revisar comentarios que etiquetan variantes explícitamente (≈1.2k filas).",
+    "reverse.objective.reduplicatedRoot": "Objetivo: buscar una raíz reduplicada usando el mini-lenguaje; escribe la raíz base y el filtro usará +raíz.",
+    "reverse.objective.sameWordPieces": "Objetivo: buscar palabras que contienen dos piezas a la vez; escribe algo como teo||tlatol.",
+    "reverse.objective.translationToEdition": "Relación: escribe una palabra que aparece en Traducción; la tabla presenta todos los lemas de Edición asociados.",
+    "reverse.objective.translationToOriginal": "Relación: escribe una palabra que aparece en Traducción; la tabla presenta las grafías de Original asociadas.",
+    "reverse.objective.translationPhraseToEdition": "Relación: busca una frase en Traducción y presenta los lemas de Edición vinculados a esa frase.",
+    "reverse.objective.editionToTranslation": "Relación: escribe un lema de Edición; la tabla presenta sus traducciones documentadas.",
+    "reverse.objective.editionToOriginal": "Relación: escribe un lema de Edición; la tabla presenta las grafías originales que lo registran.",
+    "reverse.objective.originalToEdition": "Relación: escribe una grafía de Original; la tabla presenta la Edición normalizada correspondiente.",
+    "reverse.objective.originalToTranslation": "Relación: escribe una grafía de Original; la tabla presenta las traducciones asociadas.",
+    "reverse.objective.commentToEdition": "Relación: escribe un tema en Comentario; la tabla presenta los lemas de Edición conectados con esa nota.",
+    "reverse.objective.editionToSources": "Relación: escribe un lema de Edición; la tabla presenta las fuentes que lo atestiguan.",
+    "reverse.objective.translationToSources": "Relación: escribe una palabra de Traducción; la tabla presenta las fuentes que contienen ese significado.",
+    "reverse.objective.sourceToEdition": "Relación: escribe una fuente o parte de su nombre; la tabla presenta los lemas de Edición en esa fuente.",
+    "reverse.objective.sourceToTranslation": "Relación: escribe una fuente o parte de su nombre; la tabla presenta traducciones y lemas de esa fuente.",
+    "reverse.objective.commentToSources": "Relación: escribe un tema en Comentario; la tabla presenta las fuentes donde aparece esa nota.",
+    "reverse.placeholder.meaning": "Escribe la idea, ej. agua",
+    "reverse.placeholder.exactMeaning": "Escribe el significado exacto",
+    "reverse.placeholder.phraseMeaning": "Escribe la frase o definición",
+    "reverse.placeholder.nahuatlExact": "Escribe la palabra náhuatl",
+    "reverse.placeholder.nahuatlStarts": "Escribe el inicio que recuerdas",
+    "reverse.placeholder.oldSpelling": "Escribe la grafía antigua",
+    "reverse.placeholder.notesMention": "Escribe el tema o palabra de la nota",
+    "reverse.placeholder.reduplicatedRoot": "Escribe la raíz, ej. tzitz",
+    "reverse.placeholder.sameWordPieces": "Escribe piezas, ej. teo||tlatol",
+    "reverse.placeholder.translationToEdition": "Palabra en traducción, ej. agua",
+    "reverse.placeholder.translationToOriginal": "Palabra en traducción, ej. agua",
+    "reverse.placeholder.translationPhraseToEdition": "Frase en traducción",
+    "reverse.placeholder.editionToTranslation": "Lema en edición, ej. atl",
+    "reverse.placeholder.editionToOriginal": "Lema en edición",
+    "reverse.placeholder.originalToEdition": "Grafía original",
+    "reverse.placeholder.originalToTranslation": "Grafía original",
+    "reverse.placeholder.commentToEdition": "Tema o palabra en comentario",
+    "reverse.placeholder.editionToSources": "Lema en edición",
+    "reverse.placeholder.translationToSources": "Palabra en traducción",
+    "reverse.placeholder.sourceToEdition": "Fuente o abreviatura, ej. Molina",
+    "reverse.placeholder.sourceToTranslation": "Fuente o abreviatura, ej. Molina",
+    "reverse.placeholder.commentToSources": "Tema o palabra en comentario",
     "tab.compare": "Comparar lema",
     "tab.browse": "Relaciones",
     "filter.title": "Filtro",
@@ -231,6 +363,7 @@ const I18N = {
     "sort.childHint": "Orden dentro de cada lema",
     "toggle.expandCollapse": "Expandir/Colapsar",
     "page.current": "Página actual",
+    "page.total": "de {{total}} pág.",
     "comentario.lang": "Idioma del comentario",
     "list.expandAll": "Expandir/Colapsar registros",
     "lemma.expandAll": "Expandir/Colapsar lemas",
@@ -260,12 +393,144 @@ const I18N = {
     "tab.sources": "Sources",
     "tab.regex": "Regex guide",
     "tab.pairs": "a/i pairs",
-    "tab.reverse": "Reverse",
-    "reverse.title": "Reverse lookup",
-    "reverse.hint": "Type a Spanish or French word to find Nahuatl lemmas whose translation contains it. Results are grouped by lemma, ranked by the number of sources that back each meaning.",
+    "tab.reverse": "Guided",
+    "reverse.title": "Guided filters",
+    "reverse.hint": "Choose a relationship: which column to search in, and which column to show as the result.",
     "reverse.submit": "Search",
+    "reverse.apply": "Apply filter",
     "reverse.includeComment": "Include Comment",
-    "reverse.chipLabel": "Meaning",
+    "reverse.inputLabel": "Text for the objective",
+    "reverse.presets": "Column relationships:",
+    "reverse.preset.meaning": "How to say an idea",
+    "reverse.preset.meaningGoal": "Find words whose translation expresses that concept.",
+    "reverse.preset.exactMeaning": "Which entry means exactly this",
+    "reverse.preset.exactMeaningGoal": "Narrow to a tighter meaning match.",
+    "reverse.preset.phraseMeaning": "What expresses a phrase",
+    "reverse.preset.phraseMeaningGoal": "Search for a full phrase or definition in translations.",
+    "reverse.preset.nahuatlExact": "Where this Nahuatl word appears",
+    "reverse.preset.nahuatlExactGoal": "Confirm an exact normalized form.",
+    "reverse.preset.nahuatlStarts": "Which word I am remembering",
+    "reverse.preset.nahuatlStartsGoal": "Recover lemmas when you only know the beginning.",
+    "reverse.preset.oldSpelling": "What this old spelling is",
+    "reverse.preset.oldSpellingGoal": "Connect original spelling to normalized edition.",
+    "reverse.preset.notesMention": "Which notes discuss this topic",
+    "reverse.preset.notesMentionGoal": "Explore comments and editorial observations.",
+    "reverse.preset.qAbbrev": "q^ abbreviations",
+    "reverse.preset.qAbbrevGoal": "171 paleographic-abbreviation rows.",
+    "reverse.preset.questionOriginal": "Readings with ?",
+    "reverse.preset.questionOriginalGoal": "482 uncertain-form rows.",
+    "reverse.preset.bracedOriginal": "Readings in { }",
+    "reverse.preset.bracedOriginalGoal": "408 preserved-alternate rows.",
+    "reverse.preset.bnfAdditions": "BNF 361 additions",
+    "reverse.preset.bnfAdditionsGoal": "61 manuscript-layer rows.",
+    "reverse.preset.rareUse": "Rare-use C&Z notes",
+    "reverse.preset.rareUseGoal": "38 rows marked as rare.",
+    "reverse.preset.uncertainNotes": "Uncertain notes",
+    "reverse.preset.uncertainNotesGoal": "≈1.7k doubt/probability rows.",
+    "reverse.preset.slashOriginal": "With /",
+    "reverse.preset.slashOriginalGoal": "307 rows with variants or editorial segments.",
+    "reverse.preset.sectionSign": "§ spelling",
+    "reverse.preset.sectionSignGoal": "492 rows with special paleographic transcription.",
+    "reverse.preset.phSpelling": "ph spelling",
+    "reverse.preset.phSpellingGoal": "17 colonial or learned-spelling rows.",
+    "reverse.preset.jForms": "Forms with j",
+    "reverse.preset.jFormsGoal": "144 loan, name, or modern-spelling rows.",
+    "reverse.preset.v94Types": "V94 types",
+    "reverse.preset.v94TypesGoal": "12 rows with rare grammatical-type metadata.",
+    "reverse.preset.greekLatinNotes": "Greek/Latin",
+    "reverse.preset.greekLatinNotesGoal": "99 rows with classical-language notes.",
+    "reverse.preset.editorialInterventions": "Interventions",
+    "reverse.preset.editorialInterventionsGoal": "782 rows with sic, deletion, addition, or interlinear notes.",
+    "reverse.preset.variantLabels": "Variants",
+    "reverse.preset.variantLabelsGoal": "≈1.2k rows explicitly labeling variants.",
+    "reverse.preset.reduplicatedRoot": "Reduplication",
+    "reverse.preset.reduplicatedRootGoal": "Search a root with the +root pattern.",
+    "reverse.preset.sameWordPieces": "Two pieces",
+    "reverse.preset.sameWordPiecesGoal": "Search two parts inside the same word.",
+    "reverse.preset.translationToEdition": "Translation → Edition",
+    "reverse.preset.translationToEditionGoal": "Search Translation; show Edition lemmas.",
+    "reverse.preset.translationToOriginal": "Translation → Original",
+    "reverse.preset.translationToOriginalGoal": "Search Translation; show original spellings.",
+    "reverse.preset.translationPhraseToEdition": "Phrase → Edition",
+    "reverse.preset.translationPhraseToEditionGoal": "Search a full phrase in Translation.",
+    "reverse.preset.editionToTranslation": "Edition → Translation",
+    "reverse.preset.editionToTranslationGoal": "Search Edition; show Translation.",
+    "reverse.preset.editionToOriginal": "Edition → Original",
+    "reverse.preset.editionToOriginalGoal": "Search Edition; show Original.",
+    "reverse.preset.originalToEdition": "Original → Edition",
+    "reverse.preset.originalToEditionGoal": "Search Original; show Edition lemmas.",
+    "reverse.preset.originalToTranslation": "Original → Translation",
+    "reverse.preset.originalToTranslationGoal": "Search Original; show Translation.",
+    "reverse.preset.commentToEdition": "Comment → Edition",
+    "reverse.preset.commentToEditionGoal": "Search Comment; show Edition lemmas.",
+    "reverse.preset.editionToSources": "Edition → Sources",
+    "reverse.preset.editionToSourcesGoal": "Search Edition; show Source.",
+    "reverse.preset.translationToSources": "Translation → Sources",
+    "reverse.preset.translationToSourcesGoal": "Search Translation; show Source.",
+    "reverse.preset.sourceToEdition": "Source → Edition",
+    "reverse.preset.sourceToEditionGoal": "Search Source; show Edition lemmas.",
+    "reverse.preset.sourceToTranslation": "Source → Translation",
+    "reverse.preset.sourceToTranslationGoal": "Search Source; show Translation.",
+    "reverse.preset.commentToSources": "Comment → Source",
+    "reverse.preset.commentToSourcesGoal": "Search Comment; show Source.",
+    "reverse.objective.meaning": "Objective: start from an idea in translation and see which Nahuatl words cover it.",
+    "reverse.objective.exactMeaning": "Objective: isolate entries where the meaning appears as an exact match.",
+    "reverse.objective.phraseMeaning": "Objective: find entries that express a full phrase, definition, or explanation.",
+    "reverse.objective.nahuatlExact": "Objective: confirm a normalized Nahuatl form and review its sources.",
+    "reverse.objective.nahuatlStarts": "Objective: recover possible lemmas when you only remember the beginning.",
+    "reverse.objective.oldSpelling": "Objective: identify the normalized edition behind an original or historical spelling.",
+    "reverse.objective.notesMention": "Objective: find comments, notes, or sources that mention the topic.",
+    "reverse.objective.qAbbrev": "Objective: expand q^ abbreviations in original spelling and compare them to normalized edition (171 rows).",
+    "reverse.objective.questionOriginal": "Objective: review ? marks in original spelling, usually paleographic uncertainty (482 rows).",
+    "reverse.objective.bracedOriginal": "Objective: review alternate readings preserved in braces in original spelling (408 rows).",
+    "reverse.objective.bnfAdditions": "Objective: see additions, interlinear text, or hand notes in BNF 361; combines Source + Comment (61 rows).",
+    "reverse.objective.rareUse": "Objective: isolate rare-use notes in Cortés y Zedeño; combines Source + Comment (38 rows).",
+    "reverse.objective.uncertainNotes": "Objective: find comments where editors mark doubt, probability, or uncertainty (≈1.7k rows).",
+    "reverse.objective.slashOriginal": "Objective: review forms with / in original spelling, usually variants, alternates, or editorial segmentation (307 rows).",
+    "reverse.objective.sectionSign": "Objective: review original spellings with §, a special paleographic transcription mark (492 rows).",
+    "reverse.objective.phSpelling": "Objective: isolate colonial or learned ph spellings in original spelling (17 rows).",
+    "reverse.objective.jForms": "Objective: find normalized forms with j, useful for loans, names, and modern spellings (144 rows).",
+    "reverse.objective.v94Types": "Objective: find rare V94 grammatical metadata such as prefix, suffix, article, or vocative (12 rows).",
+    "reverse.objective.greekLatinNotes": "Objective: find comments that cite Greek or Latin as a lexicographic-note structure (99 rows).",
+    "reverse.objective.editorialInterventions": "Objective: find comments with editorial interventions such as sic, crossed-out, deleted, added, or interlinear text (782 rows).",
+    "reverse.objective.variantLabels": "Objective: review comments that explicitly label variants (≈1.2k rows).",
+    "reverse.objective.reduplicatedRoot": "Objective: search for a reduplicated root with the mini-language; type the base root and the filter uses +root.",
+    "reverse.objective.sameWordPieces": "Objective: search words that contain two pieces at once; type something like teo||tlatol.",
+    "reverse.objective.translationToEdition": "Relationship: type a word that appears in Translation; the table shows every associated Edition lemma.",
+    "reverse.objective.translationToOriginal": "Relationship: type a word that appears in Translation; the table shows associated Original spellings.",
+    "reverse.objective.translationPhraseToEdition": "Relationship: search a phrase in Translation and show Edition lemmas linked to that phrase.",
+    "reverse.objective.editionToTranslation": "Relationship: type an Edition lemma; the table shows its documented translations.",
+    "reverse.objective.editionToOriginal": "Relationship: type an Edition lemma; the table shows original spellings that record it.",
+    "reverse.objective.originalToEdition": "Relationship: type an Original spelling; the table shows the corresponding normalized Edition.",
+    "reverse.objective.originalToTranslation": "Relationship: type an Original spelling; the table shows associated translations.",
+    "reverse.objective.commentToEdition": "Relationship: type a Comment topic; the table shows Edition lemmas connected to that note.",
+    "reverse.objective.editionToSources": "Relationship: type an Edition lemma; the table shows sources that attest it.",
+    "reverse.objective.translationToSources": "Relationship: type a Translation word; the table shows sources that contain that meaning.",
+    "reverse.objective.sourceToEdition": "Relationship: type a source or part of its name; the table shows Edition lemmas in that source.",
+    "reverse.objective.sourceToTranslation": "Relationship: type a source or part of its name; the table shows translations and lemmas from that source.",
+    "reverse.objective.commentToSources": "Relationship: type a Comment topic; the table shows sources where that note appears.",
+    "reverse.placeholder.meaning": "Type the idea, e.g. water",
+    "reverse.placeholder.exactMeaning": "Type the exact meaning",
+    "reverse.placeholder.phraseMeaning": "Type the phrase or definition",
+    "reverse.placeholder.nahuatlExact": "Type the Nahuatl word",
+    "reverse.placeholder.nahuatlStarts": "Type the beginning you remember",
+    "reverse.placeholder.oldSpelling": "Type the old spelling",
+    "reverse.placeholder.notesMention": "Type the note topic or word",
+    "reverse.placeholder.reduplicatedRoot": "Type the root, e.g. tzitz",
+    "reverse.placeholder.sameWordPieces": "Type pieces, e.g. teo||tlatol",
+    "reverse.placeholder.translationToEdition": "Word in translation, e.g. water",
+    "reverse.placeholder.translationToOriginal": "Word in translation, e.g. water",
+    "reverse.placeholder.translationPhraseToEdition": "Phrase in translation",
+    "reverse.placeholder.editionToTranslation": "Edition lemma, e.g. atl",
+    "reverse.placeholder.editionToOriginal": "Edition lemma",
+    "reverse.placeholder.originalToEdition": "Original spelling",
+    "reverse.placeholder.originalToTranslation": "Original spelling",
+    "reverse.placeholder.commentToEdition": "Topic or word in comment",
+    "reverse.placeholder.editionToSources": "Edition lemma",
+    "reverse.placeholder.translationToSources": "Word in translation",
+    "reverse.placeholder.sourceToEdition": "Source or abbreviation, e.g. Molina",
+    "reverse.placeholder.sourceToTranslation": "Source or abbreviation, e.g. Molina",
+    "reverse.placeholder.commentToSources": "Topic or word in comment",
     "tab.compare": "Compare lemma",
     "tab.browse": "Browse",
     "filter.title": "Filter",
@@ -473,6 +738,7 @@ const I18N = {
     "sort.childHint": "Order within each lemma",
     "toggle.expandCollapse": "Expand/Collapse",
     "page.current": "Current page",
+    "page.total": "of {{total}} pg.",
     "comentario.lang": "Comment language",
     "list.expandAll": "Expand/Collapse records",
     "lemma.expandAll": "Expand/Collapse lemmas",
@@ -525,6 +791,144 @@ function escapeHtml(str) {
 const FUENTE_OWNER = "fuentes";
 const COMPARE_OWNER = "compareOwner";
 const REVERSE_OWNER = "reverseOwner";
+const REVERSE_PRESETS = {
+  translationToEdition: {
+    titleKey: "reverse.preset.translationToEdition",
+    goalKey: "reverse.preset.translationToEditionGoal",
+    field: "Traducción",
+    mode: "any",
+    scope: "word",
+    objectiveKey: "reverse.objective.translationToEdition",
+    placeholderKey: "reverse.placeholder.translationToEdition",
+    viewMode: "lemmas",
+    visibleColumns: ["Texto estandarizado", "Traducción", "Fuente"],
+    commentFields: ["Traducción", "Comentario"]
+  },
+  translationToOriginal: {
+    titleKey: "reverse.preset.translationToOriginal",
+    goalKey: "reverse.preset.translationToOriginalGoal",
+    field: "Traducción",
+    mode: "any",
+    scope: "word",
+    objectiveKey: "reverse.objective.translationToOriginal",
+    placeholderKey: "reverse.placeholder.translationToOriginal",
+    viewMode: "rows",
+    visibleColumns: ["Escritura original", "Texto estandarizado", "Traducción", "Fuente"],
+    commentFields: ["Traducción", "Comentario"]
+  },
+  translationToSources: {
+    titleKey: "reverse.preset.translationToSources",
+    goalKey: "reverse.preset.translationToSourcesGoal",
+    field: "Traducción",
+    mode: "any",
+    scope: "word",
+    objectiveKey: "reverse.objective.translationToSources",
+    placeholderKey: "reverse.placeholder.translationToSources",
+    viewMode: "rows",
+    visibleColumns: ["Fuente", "Texto estandarizado", "Traducción"],
+    commentFields: ["Traducción", "Comentario"]
+  },
+  editionToTranslation: {
+    titleKey: "reverse.preset.editionToTranslation",
+    goalKey: "reverse.preset.editionToTranslationGoal",
+    field: "Texto estandarizado",
+    mode: "exact",
+    scope: "word",
+    objectiveKey: "reverse.objective.editionToTranslation",
+    placeholderKey: "reverse.placeholder.editionToTranslation",
+    viewMode: "rows",
+    visibleColumns: ["Texto estandarizado", "Traducción", "Fuente"]
+  },
+  editionToOriginal: {
+    titleKey: "reverse.preset.editionToOriginal",
+    goalKey: "reverse.preset.editionToOriginalGoal",
+    field: "Texto estandarizado",
+    mode: "exact",
+    scope: "word",
+    objectiveKey: "reverse.objective.editionToOriginal",
+    placeholderKey: "reverse.placeholder.editionToOriginal",
+    viewMode: "rows",
+    visibleColumns: ["Texto estandarizado", "Escritura original", "Fuente"]
+  },
+  editionToSources: {
+    titleKey: "reverse.preset.editionToSources",
+    goalKey: "reverse.preset.editionToSourcesGoal",
+    field: "Texto estandarizado",
+    mode: "exact",
+    scope: "word",
+    objectiveKey: "reverse.objective.editionToSources",
+    placeholderKey: "reverse.placeholder.editionToSources",
+    viewMode: "rows",
+    visibleColumns: ["Fuente", "Texto estandarizado", "Traducción"]
+  },
+  originalToEdition: {
+    titleKey: "reverse.preset.originalToEdition",
+    goalKey: "reverse.preset.originalToEditionGoal",
+    field: "Escritura original",
+    mode: "any",
+    scope: "word",
+    objectiveKey: "reverse.objective.originalToEdition",
+    placeholderKey: "reverse.placeholder.originalToEdition",
+    viewMode: "lemmas",
+    visibleColumns: ["Texto estandarizado", "Escritura original", "Traducción", "Fuente"]
+  },
+  originalToTranslation: {
+    titleKey: "reverse.preset.originalToTranslation",
+    goalKey: "reverse.preset.originalToTranslationGoal",
+    field: "Escritura original",
+    mode: "any",
+    scope: "word",
+    objectiveKey: "reverse.objective.originalToTranslation",
+    placeholderKey: "reverse.placeholder.originalToTranslation",
+    viewMode: "rows",
+    visibleColumns: ["Traducción", "Escritura original", "Texto estandarizado", "Fuente"]
+  },
+  sourceToEdition: {
+    titleKey: "reverse.preset.sourceToEdition",
+    goalKey: "reverse.preset.sourceToEditionGoal",
+    field: "Fuente",
+    mode: "any",
+    scope: "whole",
+    objectiveKey: "reverse.objective.sourceToEdition",
+    placeholderKey: "reverse.placeholder.sourceToEdition",
+    viewMode: "lemmas",
+    visibleColumns: ["Texto estandarizado", "Fuente", "Traducción"]
+  },
+  sourceToTranslation: {
+    titleKey: "reverse.preset.sourceToTranslation",
+    goalKey: "reverse.preset.sourceToTranslationGoal",
+    field: "Fuente",
+    mode: "any",
+    scope: "whole",
+    objectiveKey: "reverse.objective.sourceToTranslation",
+    placeholderKey: "reverse.placeholder.sourceToTranslation",
+    viewMode: "rows",
+    visibleColumns: ["Traducción", "Texto estandarizado", "Fuente"]
+  },
+  commentToEdition: {
+    titleKey: "reverse.preset.commentToEdition",
+    goalKey: "reverse.preset.commentToEditionGoal",
+    field: "Comentario",
+    mode: "any",
+    scope: "whole",
+    objectiveKey: "reverse.objective.commentToEdition",
+    placeholderKey: "reverse.placeholder.commentToEdition",
+    viewMode: "lemmas",
+    visibleColumns: ["Texto estandarizado", "Comentario", "Fuente"]
+  },
+  commentToSources: {
+    titleKey: "reverse.preset.commentToSources",
+    goalKey: "reverse.preset.commentToSourcesGoal",
+    field: "Comentario",
+    mode: "any",
+    scope: "whole",
+    objectiveKey: "reverse.objective.commentToSources",
+    placeholderKey: "reverse.placeholder.commentToSources",
+    viewMode: "rows",
+    visibleColumns: ["Fuente", "Comentario", "Texto estandarizado"]
+  }
+};
+let currentReversePreset = "translationToEdition";
 const FUENTE_OPTIONS = [
   "153? Trilingüe",
   "1547 Olmos_G",
@@ -561,6 +965,7 @@ let selectedFuentes = sessions[0].fuentes;
 let lastRenderRows = [];
 let lastRenderTotal = 0;
 let lastFilteredRows = [];
+let lastScrollNavChipCount = 0;
 let displayOffset = 0;
 const pageScrollByOffset = new Map();
 let sortKeys = []; // [{field, dir}]
@@ -898,7 +1303,6 @@ function setupChipsBarDelegation() {
     const chip = e.target.closest("[data-group-id]");
     if (chip && !e.target.closest(".chip-remove")) {
       if (chip.dataset.groupId === COMPARE_OWNER) return;
-      if (chip.dataset.groupId === REVERSE_OWNER) return;
       loadGroupForEditing(chip.dataset.groupId);
       showScreen("filters");
     }
@@ -916,6 +1320,50 @@ function showScreen(key) {
     b.classList.toggle("active", b.dataset.scroll === key);
   });
   window.scrollTo({ top: 0, behavior: "auto" });
+}
+
+function countActiveFilterChips() {
+  const groupOwners = new Set();
+  const syntheticOwners = new Set();
+  activeFilters.forEach(filter => {
+    if (filter.type === "fuenteSet" || filter.owner === FUENTE_OWNER || filter.owner === "f1") return;
+    if (filter.owner === COMPARE_OWNER) {
+      syntheticOwners.add(filter.owner);
+      return;
+    }
+    if (filter.owner) groupOwners.add(filter.owner);
+  });
+  return groupOwners.size + syntheticOwners.size;
+}
+
+function formatNavBadgeCount(value) {
+  const count = Number(value) || 0;
+  if (count >= 1000000) return `${Math.round(count / 1000000)}m`;
+  if (count >= 1000) return `${Math.round(count / 1000)}k`;
+  return String(count);
+}
+
+function setScrollNavBadge(kind, count, options = {}) {
+  const badge = document.querySelector(`[data-scroll-badge="${kind}"]`);
+  if (!badge) return;
+  const value = Math.max(0, Number(count) || 0);
+  const shouldShow = options.showZero ? dataRows.length > 0 || value > 0 : value > 0;
+  badge.hidden = !shouldShow;
+  badge.textContent = formatNavBadgeCount(value);
+  if (options.pulse && shouldShow) {
+    badge.classList.remove("scroll-nav-badge--pulse");
+    void badge.offsetWidth;
+    badge.classList.add("scroll-nav-badge--pulse");
+  }
+}
+
+function updateScrollNavBadges(options = {}) {
+  const chipCount = options.chipCount ?? countActiveFilterChips();
+  setScrollNavBadge("chips", chipCount, {
+    pulse: chipCount > lastScrollNavChipCount
+  });
+  lastScrollNavChipCount = chipCount;
+  setScrollNavBadge("results", options.resultCount ?? lastRenderTotal, { showZero: true });
 }
 
 function setupLiveSearch() {
@@ -936,6 +1384,8 @@ function setupLiveSearch() {
 function renderActiveFilterChips() {
   const bar = document.getElementById("activeFiltersBar");
   if (!bar) return;
+  const chipCount = countActiveFilterChips();
+  updateScrollNavBadges({ chipCount });
 
   // Card indicator for the live-preview card
   const f1Card = document.querySelector(".filter-card[data-owner='f1']");
@@ -946,15 +1396,13 @@ function renderActiveFilterChips() {
   activeFilters.forEach(f => {
     if (f.type === "fuenteSet" || f.owner === FUENTE_OWNER || f.owner === "f1") return;
     if (f.owner === COMPARE_OWNER) return;
-    if (f.owner === REVERSE_OWNER) return;
     if (!groups.has(f.owner)) groups.set(f.owner, []);
     groups.get(f.owner).push(f);
   });
 
   const compareFilter = activeFilters.find(f => f.owner === COMPARE_OWNER) || null;
-  const reverseFilter = activeFilters.find(f => f.owner === REVERSE_OWNER) || null;
 
-  if (!groups.size && !compareFilter && !reverseFilter) {
+  if (!groups.size && !compareFilter) {
     bar.classList.add("active-filters-bar--empty");
     bar.innerHTML = `<div class="active-filters-empty" data-i18n="chips.empty">${t("chips.empty")}</div>`;
     return;
@@ -978,23 +1426,6 @@ function renderActiveFilterChips() {
     bar.appendChild(zone);
   }
 
-  // Reverse-lookup chip (meaning → lemmas)
-  if (reverseFilter) {
-    const zone = document.createElement("div");
-    zone.className = "chips-zone chips-zone-reverse";
-    const chip = document.createElement("span");
-    chip.className = "filter-chip chip-reverse";
-    chip.dataset.groupId = REVERSE_OWNER;
-    const val = String(reverseFilter.value);
-    const display = val.length > 24 ? val.slice(0, 22) + "…" : val;
-    const fieldsBadge = Array.isArray(reverseFilter.fields) && reverseFilter.fields.includes("Comentario") ? " +C" : "";
-    chip.innerHTML =
-      `<span class="chip-label"><span class="chip-field">${escapeHtml(t("reverse.chipLabel") + fieldsBadge)}</span> "${escapeHtml(display)}"</span>` +
-      `<button type="button" class="chip-remove" aria-label="${escapeHtml(t("chips.removeFilter"))}">×</button>`;
-    zone.appendChild(chip);
-    bar.appendChild(zone);
-  }
-
   // Partition by logic using groupOrder for ordering
   const andIds = groupOrder.filter(g => g.logic === "AND" && groups.has(g.id)).map(g => g.id);
   const orIds  = groupOrder.filter(g => g.logic === "OR"  && groups.has(g.id)).map(g => g.id);
@@ -1004,18 +1435,25 @@ function renderActiveFilterChips() {
   });
 
   function makeChip(groupId, filters) {
-    const field = filters[0].field;
-    const scope = filters[0].scope;
     const logic = filters[0].logic || "AND";
-    const fieldLabel = FIELD_SHORT[field] || field;
-    const scopeBadge = scope === "word" ? " W" : "";
+    const fieldNames = filters.flatMap(f => (
+      Array.isArray(f.fields) && f.fields.length ? f.fields : [f.field]
+    )).filter(Boolean);
+    const fieldLabels = [...new Set(fieldNames.map(field => FIELD_SHORT[field] || field))];
+    const mixedFields = fieldLabels.length > 1;
+    const fieldLabel = fieldLabels.join("/");
+    const scopes = [...new Set(filters.map(f => f.scope || "whole"))];
+    const scopeBadge = scopes.length === 1 && scopes[0] === "word" ? " W" : "";
 
     const parts = filters.map(f => {
       const sym = MODE_SYMBOL[f.mode] || f.mode;
       const sign = f.negate ? "−" : "+";
       const val = String(f.value);
       const display = val.length > 16 ? val.slice(0, 14) + "…" : val;
-      return `<span class="chip-part ${f.negate ? "chip-part-excl" : ""}">${sym}${sign}&thinsp;"${escapeHtml(display)}"</span>`;
+      const partFields = Array.isArray(f.fields) && f.fields.length ? f.fields : [f.field];
+      const partFieldLabel = partFields.map(field => FIELD_SHORT[field] || field).join("/");
+      const fieldPrefix = mixedFields && filters.length > 1 ? `${escapeHtml(partFieldLabel)}:` : "";
+      return `<span class="chip-part ${f.negate ? "chip-part-excl" : ""}">${fieldPrefix}${sym}${sign}&thinsp;"${escapeHtml(display)}"</span>`;
     }).join('<span class="chip-dot"> · </span>');
 
     const chip = document.createElement("span");
@@ -1066,7 +1504,7 @@ function renderActiveFilterChips() {
     bar.appendChild(zone);
   }
 
-  const totalGroups = andIds.length + orIds.length + (compareFilter ? 1 : 0) + (reverseFilter ? 1 : 0);
+  const totalGroups = andIds.length + orIds.length + (compareFilter ? 1 : 0);
   if (totalGroups > 1) {
     const clearAll = document.createElement("button");
     clearAll.type = "button";
@@ -1345,7 +1783,7 @@ function vibe(ms) {
   try { if (navigator.vibrate) navigator.vibrate(ms); } catch {}
 }
 
-// Horizontal swipes on the panel shell cycle through Filtros / Reverso / Regex / Pares.
+// Horizontal swipes on the panel shell cycle through Filtros / Guiados / Regex / Pares.
 function setupSwipeTabs() {
   const shell = document.querySelector(".panel-shell");
   if (!shell) return;
@@ -1356,7 +1794,21 @@ function setupSwipeTabs() {
   if (mql.addEventListener) mql.addEventListener("change", onChange);
   else if (mql.addListener) mql.addListener(onChange);
 
-  const IGNORE_SEL = "input, textarea, select, button, .pill-group, .fuente-list, .session-bar, .panel-tabs";
+  const IGNORE_SEL = [
+    "input",
+    "textarea",
+    "select",
+    "button",
+    ".pill-group",
+    ".fuente-list",
+    ".session-bar",
+    ".panel-tabs",
+    ".toolbar-controls",
+    ".column-control-list",
+    ".filter-grid",
+    ".table-scroll",
+    ".reverse-presets-list"
+  ].join(", ");
   let startX = 0, startY = 0, startT = 0, tracking = false;
 
   shell.addEventListener("touchstart", e => {
@@ -1373,7 +1825,10 @@ function setupSwipeTabs() {
     const dx = e.touches[0].clientX - startX;
     const dy = e.touches[0].clientY - startY;
     if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 12) tracking = false;
-  }, { passive: true });
+    if (tracking && Math.abs(dx) > 18 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      e.preventDefault();
+    }
+  }, { passive: false });
 
   shell.addEventListener("touchend", e => {
     if (!tracking) return;
@@ -2245,6 +2700,7 @@ function setStatus(message) {
 }
 
 function updateTableStatus(displayed, total) {
+  updateScrollNavBadges({ resultCount: total });
   if (!total) {
     setTableStatusMessage(t("table.status.none"));
     return;
@@ -2376,7 +2832,8 @@ function loadColumnState() {
   if (payload.widths && typeof payload.widths === "object") {
     Object.entries(payload.widths).forEach(([key, w]) => {
       if (columnWidths.has(key) && Number.isFinite(w) && w >= 50) {
-        columnWidths.set(key, w);
+        const compactDefault = DEFAULT_COLUMN_WIDTHS.get(key);
+        columnWidths.set(key, Math.min(w, compactDefault || w));
       }
     });
   }
@@ -3118,7 +3575,7 @@ function updatePaginationControls(total) {
   const pageInput = document.getElementById("pageInput");
   if (pageInput && document.activeElement !== pageInput) pageInput.value = currentPage;
   const pageTotal = document.getElementById("pageTotal");
-  if (pageTotal) pageTotal.textContent = `de ${totalPages} pág.`;
+  if (pageTotal) pageTotal.textContent = t("page.total", { total: totalPages });
 }
 
 function setupSortControls() {
@@ -4229,30 +4686,104 @@ function removeCompareChip() {
   applyFilters();
 }
 
-// ── Reverse lookup chip (meaning → ranked lemmas) ───────────────────
+// ── Guided filters (intention shortcuts that create normal chips) ────
 
 function hasReverseChip() {
   return activeFilters.some(f => f.owner === REVERSE_OWNER);
 }
 
+function presetNeedsInput(preset) {
+  return preset?.requiresInput !== false;
+}
+
+function buildGuidedFilterSpecs(preset, value, options = {}) {
+  if (!preset) return [];
+  if (Array.isArray(preset.filters)) return preset.filters.slice();
+  if (!presetNeedsInput(preset) || !value) return [];
+  const inputValue = preset.valuePrefix ? `${preset.valuePrefix}${value}` : value;
+  const fields = options.includeComment && Array.isArray(preset.commentFields)
+    ? preset.commentFields
+    : [preset.field];
+  return [{
+    field: preset.field,
+    mode: preset.mode,
+    scope: preset.scope,
+    value: inputValue,
+    fields: fields.length > 1 ? fields : null
+  }];
+}
+
+function orderColumnsForGuidedPresentation(columns) {
+  if (!Array.isArray(columns) || !columns.length) return;
+  const byKey = new Map(TABLE_FIELDS.map(field => [field.key, field]));
+  const orderedKeys = [];
+  columns.forEach(key => {
+    if (byKey.has(key) && !orderedKeys.includes(key)) orderedKeys.push(key);
+  });
+  DEFAULT_COLUMN_ORDER.forEach(key => {
+    if (byKey.has(key) && !orderedKeys.includes(key)) orderedKeys.push(key);
+  });
+  if (orderedKeys.length !== TABLE_FIELDS.length) return;
+  TABLE_FIELDS.length = 0;
+  orderedKeys.forEach(key => TABLE_FIELDS.push(byKey.get(key)));
+  syncHeaderOrderToTableFields();
+  syncFieldPillOrder();
+}
+
+function applyGuidedPresentation(preset) {
+  if (!preset) return;
+  if (preset.viewMode === "lemmas" || preset.viewMode === "rows") {
+    tableViewMode = preset.viewMode;
+    updateViewToggleButtons();
+  }
+  if (Array.isArray(preset.visibleColumns) && preset.visibleColumns.length) {
+    orderColumnsForGuidedPresentation(preset.visibleColumns);
+    const visible = new Set(preset.visibleColumns);
+    hiddenColumns.clear();
+    TABLE_FIELDS.forEach(field => {
+      if (!visible.has(field.key)) hiddenColumns.add(field.key);
+    });
+    if (tableViewMode === "lemmas") hiddenColumns.delete("Texto estandarizado");
+    sortKeys = sortKeys.filter(key => !hiddenColumns.has(key.field));
+    syncColumnLayout();
+    renderColumnControls();
+  }
+}
+
 function setReverseChip(query, options = {}) {
+  const presetKey = REVERSE_PRESETS[options.preset] ? options.preset : currentReversePreset;
+  const preset = REVERSE_PRESETS[presetKey] || REVERSE_PRESETS.translationToEdition;
   const val = sanitizeInput(query).trim();
   activeFilters = activeFilters.filter(f => f.owner !== REVERSE_OWNER);
-  if (!val) {
+  groupOrder = groupOrder.filter(g => g.id !== REVERSE_OWNER);
+  if (presetNeedsInput(preset) && !val) {
     renderActiveFilterChips();
     applyFilters();
     return;
   }
-  const fields = options.includeComment ? ["Traducción", "Comentario"] : ["Traducción"];
-  appendFilter("Traducción", "any", val, "AND", false, "word", {
-    owner: REVERSE_OWNER,
-    type: "reverse",
-    fields
+  const specs = buildGuidedFilterSpecs(preset, val, options);
+  specs.forEach(spec => {
+    const fields = Array.isArray(spec.fields) && spec.fields.length > 1 ? spec.fields : null;
+    const extras = {
+      owner: REVERSE_OWNER,
+      reversePreset: presetKey
+    };
+    if (fields) {
+      extras.type = "reversePreset";
+      extras.fields = fields;
+    }
+    appendFilter(
+      spec.field,
+      spec.mode,
+      spec.value,
+      spec.logic || "AND",
+      !!spec.negate,
+      spec.scope || "whole",
+      extras
+    );
   });
-  if (tableViewMode !== "rows") {
-    tableViewMode = "rows";
-    updateViewToggleButtons();
-  }
+  if (specs.length) groupOrder.push({ id: REVERSE_OWNER, logic: "AND" });
+  applyGuidedPresentation(preset);
   displayOffset = 0;
   renderActiveFilterChips();
   applyFilters();
@@ -4261,6 +4792,7 @@ function setReverseChip(query, options = {}) {
 function removeReverseChip() {
   if (!hasReverseChip()) return;
   activeFilters = activeFilters.filter(f => f.owner !== REVERSE_OWNER);
+  groupOrder = groupOrder.filter(g => g.id !== REVERSE_OWNER);
   renderActiveFilterChips();
   applyFilters();
 }
@@ -4270,16 +4802,73 @@ function setupReverseLookup() {
   const submit = document.getElementById("reverseSubmit");
   const clear = document.getElementById("reverseClear");
   const includeComment = document.getElementById("reverseIncludeComment");
+  const objective = document.getElementById("reverseObjective");
+  const presetsList = document.getElementById("reversePresetsList");
   if (!input || !submit) return;
+  if (presetsList) {
+    presetsList.innerHTML = Object.entries(REVERSE_PRESETS).map(([id, preset]) => {
+      const count = Number.isFinite(preset.count) ? `<span class="reverse-preset-count">≈${escapeHtml(preset.count)}</span>` : "";
+      return `
+        <button type="button" class="reverse-preset-btn" data-reverse-preset="${escapeHtml(id)}">
+          ${count}
+          <span class="reverse-preset-title" data-i18n="${escapeHtml(preset.titleKey)}">${escapeHtml(t(preset.titleKey))}</span>
+          <span class="reverse-preset-objective" data-i18n="${escapeHtml(preset.goalKey)}">${escapeHtml(t(preset.goalKey))}</span>
+        </button>`;
+    }).join("");
+  }
+  const presetButtons = Array.from(document.querySelectorAll("[data-reverse-preset]"));
+
+  function setPreset(next) {
+    currentReversePreset = REVERSE_PRESETS[next] ? next : "translationToEdition";
+    presetButtons.forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.reversePreset === currentReversePreset);
+    });
+    const preset = REVERSE_PRESETS[currentReversePreset];
+    const needsInput = presetNeedsInput(preset);
+    if (objective && preset?.objectiveKey) {
+      objective.dataset.i18n = preset.objectiveKey;
+      objective.textContent = t(preset.objectiveKey);
+    }
+    if (input) {
+      input.hidden = !needsInput;
+      input.disabled = !needsInput;
+      if (!needsInput) {
+        input.value = "";
+        delete input.dataset.i18nPlaceholder;
+        input.removeAttribute("placeholder");
+      } else if (preset?.placeholderKey) {
+        input.dataset.i18nPlaceholder = preset.placeholderKey;
+        input.setAttribute("placeholder", t(preset.placeholderKey));
+      }
+    }
+    const canIncludeComment = !!(preset && preset.commentFields);
+    if (includeComment) {
+      includeComment.disabled = !canIncludeComment;
+      if (!canIncludeComment) includeComment.checked = false;
+      const opt = includeComment.closest(".reverse-field-opt");
+      opt?.classList.toggle("is-disabled", !canIncludeComment);
+      if (opt) opt.hidden = !canIncludeComment;
+    }
+    setButtonState(submit, needsInput ? "reverse.submit" : "reverse.apply", "icon-search");
+  }
 
   function run() {
-    const query = input.value.trim();
-    if (!query) {
+    const preset = REVERSE_PRESETS[currentReversePreset];
+    const query = presetNeedsInput(preset) ? input.value.trim() : "";
+    if (presetNeedsInput(preset) && !query) {
       removeReverseChip();
       return;
     }
-    setReverseChip(query, { includeComment: !!(includeComment && includeComment.checked) });
+    setReverseChip(query, {
+      includeComment: !!(includeComment && includeComment.checked && preset?.commentFields),
+      preset: currentReversePreset
+    });
   }
+
+  presetButtons.forEach(btn => {
+    btn.addEventListener("click", () => setPreset(btn.dataset.reversePreset));
+  });
+  setPreset(currentReversePreset);
 
   submit.addEventListener("click", run);
   input.addEventListener("keydown", e => {
@@ -4496,6 +5085,7 @@ function findLemmaPageIndex(itemOffset) {
 }
 
 function updateTableStatusForLemmas(total) {
+  updateScrollNavBadges({ resultCount: total });
   const rowsTotal = lastFilteredRows.length;
   setTableStatusMessage(t("view.lemmas.summary", { lemmas: total, rows: rowsTotal }));
 }

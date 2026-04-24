@@ -11,7 +11,7 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=hotspots-6" />
+  <link rel="stylesheet" href="style.css?v=guided-relations-2" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -26,9 +26,8 @@
       <path d="M4 5h16l-6 7v6l-4 2v-8Z" />
     </symbol>
     <symbol id="icon-reverse" viewBox="0 0 24 24">
-      <path d="M7 8h8a4 4 0 1 1 0 8H8" />
-      <path d="M9 5 6 8l3 3" />
-      <path d="M15 19l3-3-3-3" />
+      <path d="M8 7h8a5 5 0 0 1 0 10H6" />
+      <path d="m9 13-3 4 3 4" />
     </symbol>
     <symbol id="icon-swap-horizontal" viewBox="0 0 24 24">
       <path d="M7 7h12" />
@@ -158,6 +157,11 @@
       <path d="m17 16 2 2-2 2" />
       <path d="M14 18h5" />
     </symbol>
+    <symbol id="icon-quill" viewBox="0 0 24 24">
+      <path d="M19 4c-5.4.5-9.6 3.4-12.5 8.7L5 19l6.3-1.5C16.6 14.6 19.5 10.4 20 5Z" />
+      <path d="M7.2 16.8 13 11" />
+      <path d="M11 17.5 6.5 13" />
+    </symbol>
     <symbol id="icon-accent-free" viewBox="0 0 24 24">
       <path d="M7 17h10" />
       <path d="M9 14 12 7l3 7" />
@@ -223,7 +227,7 @@
             </button>
             <button type="button" role="tab" id="tab-reversePanel" class="tab-btn mobile-icon-btn" data-tab="reversePanel" aria-selected="false" aria-controls="reversePanel" tabindex="-1" data-i18n-aria-label="tab.reverse" data-i18n-title="tab.reverse">
               <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-reverse"></use></svg>
-              <span class="btn-label mobile-icon-label" data-i18n="tab.reverse">Reverso</span>
+              <span class="btn-label mobile-icon-label" data-i18n="tab.reverse">Guiados</span>
             </button>
             <button type="button" role="tab" id="tab-regexPanel" class="tab-btn mobile-icon-btn" data-tab="regexPanel" aria-selected="false" aria-controls="regexPanel" tabindex="-1" data-i18n-aria-label="tab.regex" data-i18n-title="tab.regex">
               <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-regex"></use></svg>
@@ -300,7 +304,7 @@
         </div>
         <div class="filter-actions">
           <div class="filter-options">
-            <button type="button" class="pill old-spanish-btn mobile-icon-btn" data-i18n="oldspanish.toggle" data-i18n-aria-label="oldspanish.toggle" data-i18n-title="oldspanish.toggle"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-orthography"></use></svg><span class="btn-label mobile-icon-label">Esp. ant.</span></button>
+            <button type="button" class="pill old-spanish-btn mobile-icon-btn" data-i18n="oldspanish.toggle" data-i18n-aria-label="oldspanish.toggle" data-i18n-title="oldspanish.toggle"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-quill"></use></svg><span class="btn-label mobile-icon-label">Esp. ant.</span></button>
             <div class="accent-field">
               <span class="accent-field-label" data-i18n="label.accent">Acento</span>
               <div class="accent-toggle" aria-label="Sensibilidad de acento">
@@ -343,15 +347,20 @@
         </div>
       </section>
 
-      <!-- ── Panel: Reverso ── -->
+      <!-- ── Panel: Guided filters ── -->
       <section class="tab-panel" id="reversePanel" role="tabpanel" aria-labelledby="tab-reversePanel">
       <div class="sources-card reverse-card">
         <div class="sources-head">
-          <h3 data-i18n="reverse.title">Búsqueda inversa</h3>
+          <h3 data-i18n="reverse.title">Filtros guiados</h3>
         </div>
-        <p class="reverse-hint" data-i18n="reverse.hint">Escribe una palabra en español o francés para encontrar lemas en náhuatl cuya traducción la contenga. Los resultados se muestran agrupados por lema, ordenados por cantidad de fuentes que los respaldan.</p>
+        <p class="reverse-hint" data-i18n="reverse.hint">Elige una relación: en qué columna buscas y qué columna quieres ver como resultado.</p>
+        <div class="reverse-presets" aria-label="Relaciones entre columnas:" data-i18n-aria-label="reverse.presets">
+          <span class="reverse-presets-label" data-i18n="reverse.presets">Relaciones entre columnas:</span>
+          <div class="reverse-presets-list" id="reversePresetsList"></div>
+        </div>
+        <p id="reverseObjective" class="reverse-objective" data-i18n="reverse.objective.translationToEdition">Relación: escribe una palabra que aparece en Traducción; la tabla presenta todos los lemas de Edición asociados.</p>
         <div class="reverse-controls">
-          <input type="text" id="reverseInput" class="reverse-input" autocomplete="off" spellcheck="false" data-i18n-aria-label="reverse.title" aria-label="Búsqueda inversa" />
+          <input type="text" id="reverseInput" class="reverse-input" autocomplete="off" spellcheck="false" aria-describedby="reverseObjective" data-i18n-aria-label="reverse.inputLabel" data-i18n-placeholder="reverse.placeholder.translationToEdition" aria-label="Texto para el objetivo" placeholder="Palabra en traducción, ej. agua" />
           <div class="reverse-field-toggle">
             <label class="reverse-field-opt icon-option"><input type="checkbox" id="reverseIncludeComment" /><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-comment"></use></svg><span data-i18n="reverse.includeComment">Incluir Comentario</span></label>
           </div>
@@ -639,17 +648,19 @@
       <button type="button" class="scroll-nav-btn mobile-icon-btn" data-scroll="chips" data-i18n-aria-label="nav.chips" data-i18n-title="nav.chips">
         <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-chips"></use></svg>
         <span class="btn-label mobile-icon-label" data-i18n="nav.chips">Aplicados</span>
+        <span class="scroll-nav-badge" data-scroll-badge="chips" hidden>0</span>
       </button>
       <button type="button" class="scroll-nav-btn mobile-icon-btn" data-scroll="results" data-i18n-aria-label="nav.results" data-i18n-title="nav.results">
         <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-results"></use></svg>
         <span class="btn-label mobile-icon-label" data-i18n="nav.results">Resultados</span>
+        <span class="scroll-nav-badge scroll-nav-badge--results" data-scroll-badge="results" hidden>0</span>
       </button>
     </nav>
   </div> <!-- .app-shell -->
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="data.js?v=hotspots-6"></script>
-<script src="filters.js?v=hotspots-6"></script>
-  <script src="script.js?v=hotspots-6"></script>
+<script src="data.js?v=guided-relations-2"></script>
+<script src="filters.js?v=guided-relations-2"></script>
+  <script src="script.js?v=guided-relations-2"></script>
 </body>
 </html>

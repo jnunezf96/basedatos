@@ -44,6 +44,7 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  overscroll-behavior-x: contain;
 }
 
 .panel-tab-row {
@@ -368,7 +369,7 @@ table {
 }
 
 #dataTable {
-  min-width: 908px;
+  min-width: 780px;
   table-layout: fixed;
 }
 
@@ -378,9 +379,9 @@ th {
   text-align: left;
   font-size: 12px;
   letter-spacing: 0.03em;
-  padding: 7px 9px;
+  padding: 6px 7px;
   border-bottom: 2px solid #c7cdf8;
-  width: 140px;
+  width: 116px;
   position: relative;
 }
 
@@ -409,15 +410,15 @@ th {
 }
 
 td {
-  padding: 7px 9px;
+  padding: 6px 7px;
   border-bottom: 1px solid #f0f1ff;
   vertical-align: top;
   font-size: 13px;
   color: #222b4f;
-  width: 140px;
+  width: 116px;
   word-break: break-word;
   white-space: normal;
-  line-height: 1.4;
+  line-height: 1.32;
 }
 
 td br {
@@ -433,14 +434,14 @@ th[data-field="Texto estandarizado"],
 td:nth-child(2),
 th[data-field="Fuente"],
 td:nth-child(4) {
-  width: 120px;
+  width: 108px;
 }
 
 th[data-field="Traducción"],
 td:nth-child(3),
 th[data-field="Comentario"],
 td:nth-child(5) {
-  width: 260px;
+  width: 220px;
 }
 
 .mobile-row-toggle,
@@ -497,7 +498,7 @@ td:nth-child(5) {
 }
 
 .column-menu-dropdown {
-  max-height: min(320px, 42vh);
+  max-height: min(260px, 36vh);
 }
 
 .export-menu-dropdown {
@@ -559,21 +560,21 @@ td:nth-child(5) {
 .column-control-list {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 5px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 8px 2px 2px;
+  padding: 6px 2px 2px;
   scrollbar-color: #c7cffa transparent;
 }
 
 .column-control-row {
   display: grid;
-  grid-template-columns: 20px minmax(96px, 1fr);
+  grid-template-columns: 16px minmax(72px, 1fr);
   align-items: center;
-  gap: 6px;
-  flex: 0 0 176px;
-  min-height: 36px;
-  padding: 6px;
+  gap: 4px;
+  flex: 0 0 138px;
+  min-height: 30px;
+  padding: 4px;
   border: 1px solid #eef0fc;
   border-radius: 8px;
   background: #fbfcff;
@@ -585,14 +586,14 @@ td:nth-child(5) {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #1b2354;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .column-visible-check {
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   accent-color: #4c6ef5;
   cursor: pointer;
 }
@@ -607,8 +608,8 @@ td:nth-child(5) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  padding-top: 5px;
+  gap: 4px;
+  padding-top: 3px;
 }
 
 .column-action-set {
@@ -621,13 +622,13 @@ td:nth-child(5) {
 }
 
 .column-icon-btn {
-  width: 30px;
-  height: 26px;
+  width: 24px;
+  height: 22px;
   border: 0;
   border-radius: 999px;
   background: transparent;
   color: #525c8d;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
@@ -1011,6 +1012,7 @@ td:nth-child(5) {
 
 .tab-panel {
   display: none;
+  overscroll-behavior-x: contain;
 }
 
 .tab-panel.active {
@@ -1212,6 +1214,7 @@ td:nth-child(5) {
 .filter-side-toggle:focus-visible,
 .fuente-act:focus-visible,
 .filter-help-toggle:focus-visible,
+.reverse-preset-btn:focus-visible,
 .accent-btn:focus-visible,
 .logic-btn:focus-visible,
 .column-reset-btn:focus-visible,
@@ -1303,6 +1306,22 @@ td:nth-child(5) {
   align-items: center;
   gap: 6px;
   flex: 1;
+}
+
+.filter-options .old-spanish-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 2px solid #eaeefc;
+  background: #eaeefc;
+  color: #5d6797;
+}
+
+.filter-options .old-spanish-btn.active {
+  background: #fff;
+  color: #2c345b;
+  box-shadow: 0 1px 2px rgba(26, 36, 104, 0.12);
 }
 
 .filter-actions-btns {
@@ -2385,7 +2404,48 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    position: relative;
     transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+  }
+
+  .scroll-nav-badge {
+    position: absolute;
+    top: -6px;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    border: 2px solid #fff;
+    background: #e03131;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    box-shadow: 0 2px 5px rgba(90, 18, 18, 0.24);
+  }
+
+  .scroll-nav-badge[hidden] {
+    display: none !important;
+  }
+
+  .scroll-nav-badge--results {
+    background: #1b2589;
+    box-shadow: 0 2px 5px rgba(22, 31, 100, 0.22);
+  }
+
+  .scroll-nav-badge--pulse {
+    animation: scrollBadgePulse 650ms ease;
+  }
+
+  @keyframes scrollBadgePulse {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.28); }
+    100% { transform: scale(1); }
   }
 
   .scroll-nav-btn.active {
@@ -2609,19 +2669,32 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .column-menu-dropdown {
-    max-height: 46vh;
+    max-height: 38vh;
     border-radius: 10px;
+    padding: 6px;
+  }
+
+  .column-control-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 5px 1px 1px;
   }
 
   .column-control-row {
-    grid-template-columns: 22px minmax(96px, 1fr);
-    flex-basis: 190px;
-    min-height: 38px;
+    grid-template-columns: 16px minmax(72px, 1fr);
+    flex: initial;
+    width: 100%;
+    min-width: 0;
+    min-height: 30px;
+    padding: 4px;
   }
 
   .column-icon-btn {
-    width: 38px;
-    height: 32px;
+    width: 28px;
+    height: 26px;
   }
 
   .column-action-set--width {
@@ -2629,7 +2702,8 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .column-row-actions {
-    justify-content: flex-start;
+    justify-content: flex-end;
+    gap: 3px;
   }
 
   .grid-row {
@@ -2708,19 +2782,36 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .filter-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
   }
 
   .filter-row .label {
-    display: none;
+    display: inline-flex;
+    position: relative;
+    z-index: 1;
+    grid-column: 1;
+    min-width: 0;
+    color: #697197;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: uppercase;
   }
 
   .pill-group {
-    width: 100%;
+    grid-column: 2;
+    width: auto;
+    max-width: 100%;
+    min-width: 0;
     flex-wrap: nowrap;
     overflow-x: auto;
+    overflow-y: hidden;
     padding: 3px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -2748,6 +2839,21 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   .pill-group .pill.mobile-icon-btn.active,
   .filter-options .pill.mobile-icon-btn.active {
+    background: #fff;
+    color: #2c345b;
+    box-shadow: 0 1px 2px rgba(26, 36, 104, 0.12);
+  }
+
+  .filter-options .pill.old-spanish-btn.mobile-icon-btn {
+    width: 36px;
+    min-width: 36px;
+    border: 2px solid #eaeefc;
+    background: #eaeefc;
+    color: #5d6797;
+    box-shadow: none;
+  }
+
+  .filter-options .pill.old-spanish-btn.mobile-icon-btn.active {
     background: #fff;
     color: #2c345b;
     box-shadow: 0 1px 2px rgba(26, 36, 104, 0.12);
@@ -3111,10 +3217,11 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .page-total {
-    display: none;
+    display: inline-flex;
     align-items: center;
     min-height: 32px;
     padding: 0 3px;
+    font-size: 11px;
   }
 
   .view-btn {
@@ -3280,45 +3387,122 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   cursor: default;
 }
 
-/* ── Reverse-lookup chip (meaning → lemmas) ─────────────── */
-.chips-zone-reverse {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding-right: 6px;
-  margin-right: 4px;
-  border-right: 1px dashed #cfe8d6;
-}
-
-.filter-chip.chip-reverse {
-  background: #e6f3ea;
-  border: 1px solid #a5d4b4;
-  color: #27663f;
-  box-shadow: 0 1px 0 rgba(24, 83, 46, 0.04);
-}
-
-.filter-chip.chip-reverse .chip-field {
-  color: #27663f;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  font-size: 0.9em;
-}
-
-.filter-chip.chip-reverse .chip-remove {
-  color: #27663f;
-}
-
-.filter-chip.chip-reverse:hover {
-  cursor: default;
-}
-
-/* ── Reverse lookup panel ─────────────── */
+/* ── Guided filters panel ─────────────── */
 .reverse-card .reverse-hint {
   color: #4a537c;
   font-size: 13px;
   margin: 4px 0 12px;
   line-height: 1.45;
+}
+
+.reverse-presets {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  min-width: 0;
+  margin: 0 0 10px;
+  padding: 8px;
+  border: 1px solid #edf0ff;
+  border-radius: 12px;
+  background: #f8faff;
+}
+
+.reverse-presets-label {
+  flex: 0 0 auto;
+  color: #6570a5;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.reverse-presets-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+  gap: 6px;
+  min-width: 0;
+  overflow: visible;
+}
+
+.reverse-preset-btn {
+  position: relative;
+  border: 1px solid #d8defa;
+  border-radius: 12px;
+  background: #fff;
+  color: #4b5688;
+  min-height: 54px;
+  padding: 8px 34px 8px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.18;
+  cursor: pointer;
+  text-align: left;
+  white-space: normal;
+}
+
+.reverse-preset-title,
+.reverse-preset-objective {
+  display: block;
+}
+
+.reverse-preset-title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.reverse-preset-objective {
+  margin-top: 3px;
+  color: #6670a2;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.reverse-preset-count {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #314097;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.reverse-preset-btn.active {
+  background: #4c6ef5;
+  border-color: #4c6ef5;
+  color: #fff;
+  box-shadow: 0 1px 3px rgba(76, 110, 245, 0.22);
+}
+
+.reverse-preset-btn.active .reverse-preset-objective {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.reverse-preset-btn.active .reverse-preset-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.reverse-objective {
+  margin: -2px 0 10px;
+  padding: 7px 9px;
+  border: 1px solid #e3e8ff;
+  border-radius: 10px;
+  background: #fff;
+  color: #2d376d;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.35;
 }
 
 .reverse-controls {
@@ -3360,6 +3544,11 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   user-select: none;
 }
 
+.reverse-field-opt.is-disabled {
+  cursor: default;
+  opacity: 0.46;
+}
+
 .w-lang-toggle {
   display: inline-flex;
   align-items: center;
@@ -3371,4 +3560,65 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   display: inline-flex;
   gap: 8px;
   margin-left: auto;
+}
+
+@media (max-width: 640px) {
+  .reverse-card .reverse-hint {
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .reverse-presets {
+    gap: 5px;
+    margin-bottom: 7px;
+    padding: 6px;
+  }
+
+  .reverse-presets-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .reverse-preset-btn {
+    min-height: 34px;
+    padding: 5px 24px 5px 7px;
+  }
+
+  .reverse-preset-title {
+    font-size: 9.5px;
+    line-height: 1.05;
+  }
+
+  .reverse-preset-objective {
+    display: none;
+  }
+
+  .reverse-preset-count {
+    top: 5px;
+    right: 5px;
+    min-width: 20px;
+    height: 15px;
+    padding: 0 4px;
+    font-size: 8.5px;
+  }
+
+  .reverse-objective {
+    max-height: 44px;
+    overflow: auto;
+    margin: -1px 0 7px;
+    padding: 6px 8px;
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  .reverse-controls {
+    gap: 7px;
+  }
+
+  .reverse-input {
+    flex-basis: 100%;
+    min-width: 0;
+    padding: 7px 10px;
+  }
 }
