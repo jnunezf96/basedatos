@@ -3,15 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Busca, filtra y compara cientos de miles de entradas de diccionarios históricos de náhuatl." />
+  <meta name="application-name" content="Base de datos náhuatl" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
   <meta name="theme-color" content="#4c6ef5" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Náhuatl DB" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Base de datos náhuatl" />
+  <meta property="og:description" content="Busca, filtra y compara cientos de miles de entradas de diccionarios históricos de náhuatl." />
+  <meta name="twitter:card" content="summary" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=guided-relations-2" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-13" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -25,9 +34,12 @@
     <symbol id="icon-filter" viewBox="0 0 24 24">
       <path d="M4 5h16l-6 7v6l-4 2v-8Z" />
     </symbol>
-    <symbol id="icon-reverse" viewBox="0 0 24 24">
-      <path d="M8 7h8a5 5 0 0 1 0 10H6" />
-      <path d="m9 13-3 4 3 4" />
+    <symbol id="icon-guided-filter" viewBox="0 0 24 24">
+      <path d="M4 5h11l-4.5 5.5V17l-3 2v-8.5Z" />
+      <path d="M18 3v6" />
+      <path d="M15 6h6" />
+      <path d="m16 4 4 4" />
+      <path d="m20 4-4 4" />
     </symbol>
     <symbol id="icon-swap-horizontal" viewBox="0 0 24 24">
       <path d="M7 7h12" />
@@ -203,7 +215,7 @@
       <path d="M9 12h6" />
     </symbol>
   </svg>
-  <div class="app-shell" data-screen="filters">
+  <main class="app-shell" data-screen="filters">
     <div id="filtersTopAnchor" class="scroll-anchor" aria-hidden="true"></div>
 
     <div class="panel-shell">
@@ -226,7 +238,7 @@
               <span class="btn-label mobile-icon-label" data-i18n="tab.filters">Filtros</span>
             </button>
             <button type="button" role="tab" id="tab-reversePanel" class="tab-btn mobile-icon-btn" data-tab="reversePanel" aria-selected="false" aria-controls="reversePanel" tabindex="-1" data-i18n-aria-label="tab.reverse" data-i18n-title="tab.reverse">
-              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-reverse"></use></svg>
+              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-guided-filter"></use></svg>
               <span class="btn-label mobile-icon-label" data-i18n="tab.reverse">Guiados</span>
             </button>
             <button type="button" role="tab" id="tab-regexPanel" class="tab-btn mobile-icon-btn" data-tab="regexPanel" aria-selected="false" aria-controls="regexPanel" tabindex="-1" data-i18n-aria-label="tab.regex" data-i18n-title="tab.regex">
@@ -488,7 +500,7 @@
     </div>
 
     <!-- ── Active filter chips ── -->
-    <div id="activeFiltersBar" class="active-filters-bar active-filters-bar--empty"></div>
+    <div id="activeFiltersBar" class="active-filters-bar active-filters-bar--empty" aria-live="polite" aria-label="Filtros aplicados" data-i18n-aria-label="chips.applied"></div>
 
     <!-- ── Data table ── -->
     <section class="data-panel">
@@ -587,6 +599,7 @@
       </div><!-- /.sticky-band -->
       <div class="table-scroll">
         <table id="dataTable">
+          <caption class="sr-only" data-i18n="table.caption">Resultados de la base de datos náhuatl</caption>
           <colgroup></colgroup>
           <thead class="col-headers">
             <tr>
@@ -656,11 +669,11 @@
         <span class="scroll-nav-badge scroll-nav-badge--results" data-scroll-badge="results" hidden>0</span>
       </button>
     </nav>
-  </div> <!-- .app-shell -->
+  </main> <!-- .app-shell -->
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="data.js?v=guided-relations-2"></script>
-<script src="filters.js?v=guided-relations-2"></script>
-  <script src="script.js?v=guided-relations-2"></script>
+<script src="data.js?v=publish-ready-13"></script>
+<script src="filters.js?v=publish-ready-13"></script>
+  <script src="script.js?v=publish-ready-13"></script>
 </body>
 </html>

@@ -309,7 +309,9 @@ const I18N = {
     "table.sort.label": "Orden:",
     "table.sort.all": "Todos",
     "table.sort.page": "Página",
+    "table.caption": "Resultados de la base de datos náhuatl",
     "table.status.loading": "Cargando datos…",
+    "table.status.error": "No se pudieron cargar los datos. Revisa la conexión y vuelve a intentar.",
     "table.status.none": "Sin registros para mostrar.",
     "table.status.showing": "Registros mostrados: {{start}}-{{end}} de {{total}}",
     "table.status.detail.auto": "{{exact}} lemas exactos · {{phrase}} frases",
@@ -360,6 +362,9 @@ const I18N = {
     "chips.zone.or": "O",
     "chips.clearAll": "Limpiar todo",
     "chips.removeFilter": "Quitar filtro",
+    "chips.applied": "Filtros aplicados",
+    "session.new": "Nueva búsqueda",
+    "session.close": "Cerrar búsqueda",
     "sort.childHint": "Orden dentro de cada lema",
     "toggle.expandCollapse": "Expandir/Colapsar",
     "page.current": "Página actual",
@@ -684,7 +689,9 @@ const I18N = {
     "table.sort.label": "Sort:",
     "table.sort.all": "All",
     "table.sort.page": "Page",
+    "table.caption": "Nahuatl database results",
     "table.status.loading": "Loading data…",
+    "table.status.error": "Couldn't load the data. Check the connection and try again.",
     "table.status.none": "No records to show.",
     "table.status.showing": "Records shown: {{start}}-{{end}} of {{total}}",
     "table.status.detail.auto": "{{exact}} exact lemmas · {{phrase}} phrases",
@@ -735,6 +742,9 @@ const I18N = {
     "chips.zone.or": "OR",
     "chips.clearAll": "Clear all",
     "chips.removeFilter": "Remove filter",
+    "chips.applied": "Applied filters",
+    "session.new": "New search",
+    "session.close": "Close search",
     "sort.childHint": "Order within each lemma",
     "toggle.expandCollapse": "Expand/Collapse",
     "page.current": "Current page",
@@ -934,7 +944,7 @@ const FUENTE_OPTIONS = [
   "1547 Olmos_G",
   "1547 Olmos_V ?",
   "1551-95 Documentos nahuas de la Ciudad de México",
-  "1565 Sahagún Escolio",
+  "1565 Sahagún Escolios",
   "1571 Molina 1",
   "1571 Molina 2",
   "1579 Durán",
@@ -995,6 +1005,7 @@ const expandableComments = new Set();
 const commentAnchors = new Map();
 const pendingComentarioSync = new WeakMap();
 let currentLang = "es";
+let dataLoadFailed = false;
 let lastPairResults = null;
 let lastPairMeta = null;
 let lastRankingSummary = null;
@@ -1022,13 +1033,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   document.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-      const otherPanel = document.activeElement?.closest("#regexPanel, #pairsPanel");
-      if (!otherPanel) {
-        e.preventDefault();
-        commitFilterCard();
-      }
-    }
+    if (e.key !== "Enter") return;
+    const target = e.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (!target.closest("#filtersPanel")) return;
+    if (!target.matches(".filter-input")) return;
+    e.preventDefault();
+    commitFilterCard();
   });
   setupFilterCards();
   initCardNavigation();
@@ -1056,12 +1067,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupSwipeTabs();
   setupKeyboardAvoidance();
   setupScrollNav();
-  fetch("data/data.jsonl.gz")
-    .then(r => {
-      const ds = new DecompressionStream("gzip");
-      r.body.pipeTo(ds.writable);
-      return new Response(ds.readable).text();
-    })
+  loadCompressedJsonl("data/data.jsonl.gz")
     .then(text => {
       const rows = text.split("\n").filter(Boolean).map(line => JSON.parse(line));
       rows.forEach((row, idx) => {
@@ -1081,8 +1087,32 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       hashRouteApplied = true;
       window.addEventListener("hashchange", handleHashChange);
+    })
+    .catch(() => {
+      dataLoadFailed = true;
+      dataRows = [];
+      setStatus(t("table.status.error"));
+      setTableStatusMessage(t("table.status.error"));
+      renderScrollNavBadges();
     });
 });
+
+function loadCompressedJsonl(url) {
+  return fetch(url).then(response => {
+    if (!response.ok) {
+      throw new Error(`Data request failed with ${response.status}`);
+    }
+    if (!response.body) {
+      throw new Error("Data response has no body");
+    }
+    if ("DecompressionStream" in window) {
+      const stream = new DecompressionStream("gzip");
+      response.body.pipeTo(stream.writable);
+      return new Response(stream.readable).text();
+    }
+    return response.text();
+  });
+}
 
 // Phone-only: scroll-nav buttons switch the app between three full-viewport
 // screens (filters / chips / results). Desktop ignores data-screen entirely —
@@ -1180,10 +1210,12 @@ function refreshLanguageDependentUI() {
   updateAccentLabels();
   renderColumnControls();
   if (!dataRows || !dataRows.length) {
-    setStatus(t("table.status.loading"));
+    setStatus(t(dataLoadFailed ? "table.status.error" : "table.status.loading"));
+    setTableStatusMessage(t(dataLoadFailed ? "table.status.error" : "table.status.loading"));
     return;
   }
   updateViewToggleLabels();
+  renderSessionBar();
   renderTable(lastRenderRows, lastRenderTotal);
   refreshPairFinderUI();
   requestAnimationFrame(() => {
@@ -1685,8 +1717,10 @@ function renderSessionBar() {
   bar.innerHTML = "";
 
   sessions.forEach(session => {
-    const tab = document.createElement("button");
-    tab.type = "button";
+    const tab = document.createElement("div");
+    tab.setAttribute("role", "button");
+    tab.tabIndex = session.id === currentSessionId ? 0 : -1;
+    tab.setAttribute("aria-pressed", session.id === currentSessionId ? "true" : "false");
     tab.className = "session-tab" + (session.id === currentSessionId ? " session-tab--active" : "");
     tab.dataset.sessionId = session.id;
 
@@ -1696,10 +1730,13 @@ function renderSessionBar() {
     tab.appendChild(label);
 
     if (sessions.length > 1) {
-      const close = document.createElement("span");
+      const close = document.createElement("button");
+      close.type = "button";
       close.className = "session-tab-close";
       close.textContent = "×";
       close.dataset.closeSession = session.id;
+      close.setAttribute("aria-label", `${t("session.close")}: ${sessionLabel(session)}`);
+      close.title = t("session.close");
       tab.appendChild(close);
     }
 
@@ -1710,8 +1747,24 @@ function renderSessionBar() {
   addBtn.type = "button";
   addBtn.className = "session-tab-add";
   addBtn.textContent = "+";
-  addBtn.title = "Nueva búsqueda";
+  addBtn.title = t("session.new");
+  addBtn.setAttribute("aria-label", t("session.new"));
   bar.appendChild(addBtn);
+  requestAnimationFrame(syncSessionFolderNotch);
+}
+
+function syncSessionFolderNotch() {
+  const shell = document.querySelector(".panel-shell");
+  const activeTab = document.querySelector(".session-tab--active");
+  const activePanelBody = document.querySelector(".tab-panel.active > .filter-card, .tab-panel.active > .sources-card");
+  if (!shell || !activeTab || !activePanelBody) return;
+  const tabRect = activeTab.getBoundingClientRect();
+  const bodyRect = activePanelBody.getBoundingClientRect();
+  const left = Math.max(0, tabRect.left - bodyRect.left);
+  const maxWidth = Math.max(0, bodyRect.width - left);
+  const width = Math.max(40, Math.min(tabRect.width, maxWidth));
+  shell.style.setProperty("--session-notch-left", `${left}px`);
+  shell.style.setProperty("--session-notch-width", `${width}px`);
 }
 
 function setupSessionBar() {
@@ -1739,6 +1792,22 @@ function setupSessionBar() {
       loadSession(tab.dataset.sessionId);
     }
   });
+
+  bar.addEventListener("keydown", e => {
+    const closeTarget = e.target.closest("[data-close-session]");
+    if (closeTarget && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      closeSession(closeTarget.dataset.closeSession);
+      return;
+    }
+    const tab = e.target.closest(".session-tab");
+    if (tab && tab.dataset.sessionId && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      loadSession(tab.dataset.sessionId);
+    }
+  });
+
+  window.addEventListener("resize", syncSessionFolderNotch);
 }
 
 // Update session bar label after committing filters (label derives from filter values)
@@ -1760,6 +1829,7 @@ function setupTabs() {
     document.querySelectorAll(".tab-panel").forEach(panel => {
       panel.classList.toggle("active", panel.id === tabId);
     });
+    requestAnimationFrame(syncSessionFolderNotch);
     if (focus) btn.focus();
   }
   buttons.forEach((btn, idx) => {
@@ -3110,22 +3180,47 @@ function syncColumnLayout() {
     table.querySelectorAll("thead th.mobile-th-anchor")
       .forEach(th => th.classList.remove("mobile-th-anchor"));
     let mobileAnchorTh = null;
-    if (firstVisibleIdx >= 0) {
+    if (isPhone && firstVisibleIdx >= 0) {
       const th = table.querySelector(`thead th:nth-child(${firstVisibleIdx + 1})`);
       if (th) {
         mobileAnchorTh = th;
         th.classList.add("mobile-th-anchor");
       }
     }
-    positionTableToggleAllButton(table, mobileAnchorTh, isPhone);
+    syncTableHeaderActionSlots(table, mobileAnchorTh, isPhone);
   }
 }
 
-function positionTableToggleAllButton(table, mobileAnchorTh, isPhone) {
-  const btn = document.getElementById("tableExpandAllMobile");
-  if (!btn || !table || !isPhone || !mobileAnchorTh) return;
-  const sortBtn = mobileAnchorTh.querySelector(".sort-btn");
-  if (sortBtn && sortBtn.nextElementSibling !== btn) sortBtn.after(btn);
+function syncTableHeaderActionSlots(table, mobileAnchorTh, isPhone) {
+  if (!table) return;
+  const mobileExpandAll = document.getElementById("tableExpandAllMobile");
+  const commentExpandAll = document.getElementById("comentarioExpandAll");
+
+  // These controls are actions, not data columns. Desktop anchors comment
+  // actions to Comentario; mobile anchors the global expand action to the
+  // one visible header.
+  placeHeaderAction(commentExpandAll, getHeaderCellForField(table, "Comentario"));
+  placeHeaderAction(
+    mobileExpandAll,
+    isPhone && mobileAnchorTh ? mobileAnchorTh : getHeaderCellForField(table, "Texto estandarizado")
+  );
+}
+
+function getHeaderCellForField(table, fieldKey) {
+  return Array.from(table.querySelectorAll("thead th"))
+    .find(th => th.dataset.field === fieldKey) || null;
+}
+
+function placeHeaderAction(btn, th) {
+  if (!btn || !th) return;
+  const slot = th.querySelector(".header-actions");
+  if (!slot) return;
+  const sortBtn = slot.querySelector(".sort-btn");
+  if (sortBtn) {
+    if (sortBtn.nextElementSibling !== btn) sortBtn.after(btn);
+  } else if (btn.parentElement !== slot) {
+    slot.appendChild(btn);
+  }
 }
 
 function setupStickyHeaderTable() {
@@ -3313,12 +3408,18 @@ function toggleVisibleLemmas() {
     if (allExpanded && isExpanded) {
       expandedLemmas.delete(lemma);
       groupRow.classList.remove("expanded");
-      if (toggleBtn) toggleBtn.textContent = "+";
+      if (toggleBtn) {
+        toggleBtn.textContent = "+";
+        toggleBtn.setAttribute("aria-expanded", "false");
+      }
       removeLemmaDetailRows(tbody, lemma);
     } else if (!allExpanded && !isExpanded) {
       expandedLemmas.add(lemma);
       groupRow.classList.add("expanded");
-      if (toggleBtn) toggleBtn.textContent = "−";
+      if (toggleBtn) {
+        toggleBtn.textContent = "−";
+        toggleBtn.setAttribute("aria-expanded", "true");
+      }
       const item = lastLemmaItems.find(it => it.lemma === lemma);
       if (item) {
         const stripe = groupRow.classList.contains("stripe-alt");
@@ -3426,10 +3527,13 @@ function updateComentarioToggleButton(rows) {
   if (!expandableRows.length) {
     btn.textContent = "+";
     btn.disabled = true;
+    btn.setAttribute("aria-pressed", "false");
     return;
   }
   btn.disabled = false;
-  btn.textContent = areAllExpandableCommentsExpanded(expandableRows) ? "−" : "+";
+  const allExpanded = areAllExpandableCommentsExpanded(expandableRows);
+  btn.textContent = allExpanded ? "−" : "+";
+  btn.setAttribute("aria-pressed", allExpanded ? "true" : "false");
 }
 
 function resetComentarioState() {
@@ -4545,6 +4649,7 @@ function buildLemmaGroupRow(item) {
       toggle.type = "button";
       toggle.className = "lemma-toggle";
       toggle.setAttribute("aria-label", t("toggle.expandCollapse"));
+      toggle.setAttribute("aria-expanded", expandedLemmas.has(item.lemma) ? "true" : "false");
       toggle.textContent = expandedLemmas.has(item.lemma) ? "−" : "+";
       wrap.appendChild(toggle);
 
@@ -4597,12 +4702,18 @@ function toggleLemmaExpansion(groupRow, lemma) {
   if (expanded) {
     expandedLemmas.delete(lemma);
     groupRow.classList.remove("expanded");
-    if (toggleBtn) toggleBtn.textContent = "+";
+    if (toggleBtn) {
+      toggleBtn.textContent = "+";
+      toggleBtn.setAttribute("aria-expanded", "false");
+    }
     removeLemmaDetailRows(tbody, lemma);
   } else {
     expandedLemmas.add(lemma);
     groupRow.classList.add("expanded");
-    if (toggleBtn) toggleBtn.textContent = "−";
+    if (toggleBtn) {
+      toggleBtn.textContent = "−";
+      toggleBtn.setAttribute("aria-expanded", "true");
+    }
     const item = lastLemmaItems.find(it => it.lemma === lemma);
     if (item) {
       const stripe = groupRow.classList.contains("stripe-alt");
