@@ -3561,39 +3561,6 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   box-shadow: 0 1px 2px rgba(26, 36, 104, 0.12);
 }
 
-/* ── Compare chip (synthetic filter on Edición) ─────────────── */
-.chips-zone-compare {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding-right: 6px;
-  margin-right: 4px;
-  border-right: 1px dashed #dbe0f2;
-}
-
-.filter-chip.chip-compare {
-  background: #e4ebfb;
-  border: 1px solid #b8c5f7;
-  color: #2c3d8f;
-  box-shadow: 0 1px 0 rgba(26, 43, 117, 0.04);
-}
-
-.filter-chip.chip-compare .chip-field {
-  color: #2c3d8f;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  font-size: 0.9em;
-}
-
-.filter-chip.chip-compare .chip-remove {
-  color: #2c3d8f;
-}
-
-.filter-chip.chip-compare:hover {
-  cursor: default;
-}
-
 /* ── Guided filters panel ─────────────── */
 .reverse-card .reverse-hint {
   color: #4a537c;

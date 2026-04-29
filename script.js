@@ -1331,10 +1331,9 @@ function setupChipsBarDelegation() {
       return;
     }
 
-    // Chip body click → load for editing (skip synthetic chips — they have no editor)
+    // Chip body click → load for editing
     const chip = e.target.closest("[data-group-id]");
     if (chip && !e.target.closest(".chip-remove")) {
-      if (chip.dataset.groupId === COMPARE_OWNER) return;
       loadGroupForEditing(chip.dataset.groupId);
       showScreen("filters");
     }
@@ -1356,16 +1355,11 @@ function showScreen(key) {
 
 function countActiveFilterChips() {
   const groupOwners = new Set();
-  const syntheticOwners = new Set();
   activeFilters.forEach(filter => {
     if (filter.type === "fuenteSet" || filter.owner === FUENTE_OWNER || filter.owner === "f1") return;
-    if (filter.owner === COMPARE_OWNER) {
-      syntheticOwners.add(filter.owner);
-      return;
-    }
     if (filter.owner) groupOwners.add(filter.owner);
   });
-  return groupOwners.size + syntheticOwners.size;
+  return groupOwners.size;
 }
 
 function formatNavBadgeCount(value) {
@@ -1423,40 +1417,21 @@ function renderActiveFilterChips() {
   const f1Card = document.querySelector(".filter-card[data-owner='f1']");
   if (f1Card) f1Card.classList.toggle("filter-card--active", activeFilters.some(f => f.owner === "f1"));
 
-  // Collect committed groups (not f1 preview, not fuente, not compare)
+  // Collect committed groups (not f1 preview or fuente)
   const groups = new Map();
   activeFilters.forEach(f => {
     if (f.type === "fuenteSet" || f.owner === FUENTE_OWNER || f.owner === "f1") return;
-    if (f.owner === COMPARE_OWNER) return;
     if (!groups.has(f.owner)) groups.set(f.owner, []);
     groups.get(f.owner).push(f);
   });
 
-  const compareFilter = activeFilters.find(f => f.owner === COMPARE_OWNER) || null;
-
-  if (!groups.size && !compareFilter) {
+  if (!groups.size) {
     bar.classList.add("active-filters-bar--empty");
     bar.innerHTML = `<div class="active-filters-empty" data-i18n="chips.empty">${t("chips.empty")}</div>`;
     return;
   }
   bar.classList.remove("active-filters-bar--empty");
   bar.innerHTML = "";
-
-  // Compare chip (rendered first, visually distinct)
-  if (compareFilter) {
-    const zone = document.createElement("div");
-    zone.className = "chips-zone chips-zone-compare";
-    const chip = document.createElement("span");
-    chip.className = "filter-chip chip-compare";
-    chip.dataset.groupId = COMPARE_OWNER;
-    const val = String(compareFilter.value);
-    const display = val.length > 20 ? val.slice(0, 18) + "…" : val;
-    chip.innerHTML =
-      `<span class="chip-label"><span class="chip-field">${escapeHtml(t("compare.chipLabel"))}</span> "${escapeHtml(display)}"</span>` +
-      `<button type="button" class="chip-remove" aria-label="${escapeHtml(t("chips.removeFilter"))}">×</button>`;
-    zone.appendChild(chip);
-    bar.appendChild(zone);
-  }
 
   // Partition by logic using groupOrder for ordering
   const andIds = groupOrder.filter(g => g.logic === "AND" && groups.has(g.id)).map(g => g.id);
@@ -1536,7 +1511,7 @@ function renderActiveFilterChips() {
     bar.appendChild(zone);
   }
 
-  const totalGroups = andIds.length + orIds.length + (compareFilter ? 1 : 0);
+  const totalGroups = andIds.length + orIds.length;
   if (totalGroups > 1) {
     const clearAll = document.createElement("button");
     clearAll.type = "button";
