@@ -20,7 +20,7 @@
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=publish-ready-13" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-15" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -283,10 +283,8 @@
         </div>
         <div class="filter-grid">
           <div class="filter-grid-mobile-head">
-            <span class="filter-side-label" data-filter-side-label data-i18n="grid.include">Incluye</span>
-            <button type="button" class="filter-side-toggle" data-filter-side-toggle data-i18n-aria-label="grid.side.toggle" data-i18n-title="grid.side.toggle" aria-label="Cambiar entre incluye y excluye" title="Cambiar entre incluye y excluye">
-              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-swap-horizontal"></use></svg>
-            </button>
+            <button type="button" class="filter-side-choice active" data-filter-side-choice="include" data-i18n="grid.include" aria-pressed="true">Incluye</button>
+            <button type="button" class="filter-side-choice" data-filter-side-choice="exclude" data-i18n="grid.exclude" aria-pressed="false">Excluye</button>
           </div>
           <div class="grid-row header">
             <span></span>
@@ -672,8 +670,8 @@
   </main> <!-- .app-shell -->
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="data.js?v=publish-ready-13"></script>
-<script src="filters.js?v=publish-ready-13"></script>
-  <script src="script.js?v=publish-ready-13"></script>
+<script src="data.js?v=publish-ready-15"></script>
+<script src="filters.js?v=publish-ready-15"></script>
+  <script src="script.js?v=publish-ready-15"></script>
 </body>
 </html>

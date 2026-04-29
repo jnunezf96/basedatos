@@ -1339,6 +1339,7 @@ td:nth-child(5) {
 .reverse-preset-btn:focus-visible,
 .accent-btn:focus-visible,
 .logic-btn:focus-visible,
+.filter-side-choice:focus-visible,
 .column-reset-btn:focus-visible,
 .export-menu-item:focus-visible,
 .chip-clear-all:focus-visible {
@@ -3054,37 +3055,44 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .filter-grid-mobile-head {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 6px;
-    padding: 0 2px 1px;
-  }
-
-  .filter-side-label {
     display: inline-flex;
     align-items: center;
-    min-height: 28px;
-    padding: 0 10px;
+    justify-content: flex-start;
+    justify-self: start;
+    gap: 2px;
+    padding: 2px;
     border-radius: 999px;
-    background: #e8edff;
-    color: #1b2589;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.06em;
+    background: #eaeefc;
+  }
+
+  .filter-side-choice {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    padding: 0 13px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #5d6797;
+    box-shadow: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
     line-height: 1;
-    text-transform: uppercase;
+    text-transform: none;
+    cursor: pointer;
+    transition: background 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
   }
 
-  .filter-side-toggle {
-    flex: 0 0 auto;
-    width: 32px;
-    height: 28px;
-    padding: 0;
+  .filter-side-choice:not(.active):hover {
+    color: #4c6ef5;
   }
 
-  .filter-side-toggle .mobile-icon {
-    display: inline-block;
+  .filter-side-choice.active {
+    background: #fff;
+    color: #2c345b;
+    box-shadow: 0 1px 2px rgba(26, 36, 104, 0.12);
   }
 
   .grid-row {

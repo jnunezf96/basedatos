@@ -1944,9 +1944,11 @@ function setFilterGridSide(card, side, options = {}) {
   const nextSide = side === "exclude" ? "exclude" : "include";
   card.dataset.filterSide = nextSide;
 
-  const label = card.querySelector("[data-filter-side-label]");
-  const labelKey = nextSide === "exclude" ? "grid.exclude" : "grid.include";
-  if (label) setTranslatedText(label, labelKey);
+  card.querySelectorAll("[data-filter-side-choice]").forEach(btn => {
+    const active = btn.dataset.filterSideChoice === nextSide;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-pressed", active ? "true" : "false");
+  });
 
   const toggle = card.querySelector("[data-filter-side-toggle]");
   if (toggle) {
@@ -1992,6 +1994,12 @@ function setupFilterCard(owner) {
       setFilterGridSide(card, current === "exclude" ? "include" : "exclude", { preserveFocus: true });
     });
   }
+
+  card.querySelectorAll("[data-filter-side-choice]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      setFilterGridSide(card, btn.dataset.filterSideChoice, { preserveFocus: true });
+    });
+  });
 
   const scopeButtons = card.querySelectorAll(".scope-btn");
   scopeButtons.forEach(btn => {
