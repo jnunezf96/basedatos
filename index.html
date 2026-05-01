@@ -20,7 +20,7 @@
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=publish-ready-16" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-23" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -46,6 +46,22 @@
       <path d="m16 4 3 3-3 3" />
       <path d="M17 17H5" />
       <path d="m8 14-3 3 3 3" />
+    </symbol>
+    <symbol id="icon-sort-az" viewBox="0 0 24 24">
+      <path d="M5 7h8" />
+      <path d="M5 12h6" />
+      <path d="M5 17h4" />
+      <path d="M17 5v14" />
+      <path d="m14 16 3 3 3-3" />
+    </symbol>
+    <symbol id="icon-year" viewBox="0 0 24 24">
+      <rect x="4" y="5" width="16" height="15" rx="2" />
+      <path d="M8 3v4" />
+      <path d="M16 3v4" />
+      <path d="M4 10h16" />
+      <path d="M8 14h3" />
+      <path d="M13 14h3" />
+      <path d="M8 17h3" />
     </symbol>
     <symbol id="icon-regex" viewBox="0 0 24 24">
       <path d="M6 6 3 12l3 6" />
@@ -340,15 +356,33 @@
         </div>
         <div class="fuente-section">
           <div class="fuente-head">
-            <div class="fuente-actions">
-              <button type="button" class="fuente-act mobile-icon-btn" id="fuenteFill" data-i18n-aria-label="sources.fill" data-i18n-title="sources.fill">
-                <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-all"></use></svg>
-                <span class="btn-label mobile-icon-label" data-i18n="sources.fill">Todas</span>
-              </button>
-              <button type="button" class="fuente-act mobile-icon-btn" id="fuenteClear" data-i18n-aria-label="sources.clear" data-i18n-title="sources.clear">
-                <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-none"></use></svg>
-                <span class="btn-label mobile-icon-label" data-i18n="sources.clear">Ninguna</span>
-              </button>
+            <div class="fuente-tools">
+              <div class="fuente-control">
+                <span class="fuente-control-label" data-i18n="sources.selection">Selección</span>
+                <div class="fuente-actions fuente-select-actions" role="group" data-i18n-aria-label="sources.selection">
+                  <button type="button" class="fuente-act mobile-icon-btn" id="fuenteFill" data-i18n-aria-label="sources.fill" data-i18n-title="sources.fill">
+                    <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-all"></use></svg>
+                    <span class="btn-label mobile-icon-label" data-i18n="sources.fill">Todas</span>
+                  </button>
+                  <button type="button" class="fuente-act mobile-icon-btn" id="fuenteClear" data-i18n-aria-label="sources.clear" data-i18n-title="sources.clear">
+                    <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-none"></use></svg>
+                    <span class="btn-label mobile-icon-label" data-i18n="sources.clear">Ninguna</span>
+                  </button>
+                </div>
+              </div>
+              <div class="fuente-control">
+                <span class="fuente-control-label" data-i18n="sources.sort">Orden</span>
+                <div class="fuente-actions fuente-sort-actions" role="group" data-i18n-aria-label="sources.sort">
+                  <button type="button" class="fuente-act mobile-icon-btn" data-fuente-order="title" data-i18n-aria-label="sources.orderAlpha" data-i18n-title="sources.orderAlpha">
+                    <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-sort-az"></use></svg>
+                    <span class="btn-label mobile-icon-label" data-i18n="sources.orderAlpha.short">A-Z</span>
+                  </button>
+                  <button type="button" class="fuente-act mobile-icon-btn" data-fuente-order="year" data-i18n-aria-label="sources.orderYear" data-i18n-title="sources.orderYear">
+                    <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-year"></use></svg>
+                    <span class="btn-label mobile-icon-label" data-i18n="sources.orderYear.short">Año</span>
+                  </button>
+                </div>
+              </div>
             </div>
             <span class="fuente-count" id="fuenteCount" aria-live="polite">0</span>
           </div>
@@ -670,8 +704,8 @@
   </main> <!-- .app-shell -->
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="data.js?v=publish-ready-16"></script>
-<script src="filters.js?v=publish-ready-16"></script>
-  <script src="script.js?v=publish-ready-16"></script>
+<script src="data.js?v=publish-ready-23"></script>
+<script src="filters.js?v=publish-ready-23"></script>
+  <script src="script.js?v=publish-ready-23"></script>
 </body>
 </html>

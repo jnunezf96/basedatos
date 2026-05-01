@@ -190,8 +190,14 @@ const I18N = {
     "placeholder.ends.incl": "termina con...",
     "placeholder.ends.excl": "no termina con...",
     "sources.title": "Fuentes",
+    "sources.selection": "Selección",
+    "sources.sort": "Orden",
     "sources.fill": "Todas",
     "sources.clear": "Ninguna",
+    "sources.orderAlpha": "Ordenar fuentes A-Z",
+    "sources.orderAlpha.short": "A-Z",
+    "sources.orderYear": "Ordenar fuentes por año",
+    "sources.orderYear.short": "Año",
     "regex.title": "Mini-lenguaje",
     "rx.wildcards": "Comodines",
     "rx.q1": "1 letra cualquiera",
@@ -294,6 +300,7 @@ const I18N = {
     "browse.badge.translations": "{{count}} trads.",
     "browse.meta.sources": "Fuentes: {{sources}}",
     "browse.meta.translations": "Traducciones: {{translations}}",
+    "browse.meta.entries": "{{rows}} entradas",
     "browse.meta.counts": "{{sources}} fuentes · {{rows}} filas · {{translations}} traducciones",
     "browse.compare": "Aislar",
     "browse.pagesize.label": "Filas",
@@ -570,8 +577,14 @@ const I18N = {
     "placeholder.ends.incl": "ends with...",
     "placeholder.ends.excl": "does not end with...",
     "sources.title": "Sources",
+    "sources.selection": "Selection",
+    "sources.sort": "Order",
     "sources.fill": "All",
     "sources.clear": "None",
+    "sources.orderAlpha": "Sort sources A-Z",
+    "sources.orderAlpha.short": "A-Z",
+    "sources.orderYear": "Sort sources by year",
+    "sources.orderYear.short": "Year",
     "regex.title": "Mini-language",
     "rx.wildcards": "Wildcards",
     "rx.q1": "any 1 letter",
@@ -674,6 +687,7 @@ const I18N = {
     "browse.badge.translations": "{{count}} trans.",
     "browse.meta.sources": "Sources: {{sources}}",
     "browse.meta.translations": "Translations: {{translations}}",
+    "browse.meta.entries": "{{rows}} entries",
     "browse.meta.counts": "{{sources}} sources · {{rows}} rows · {{translations}} translations",
     "browse.compare": "Isolate",
     "browse.pagesize.label": "Rows",
@@ -1013,9 +1027,12 @@ let tableViewMode = "rows"; // "rows" | "lemmas"
 let lastLemmaItems = [];
 let lastLemmaPageOffsets = [0];
 const prioritySortCache = new WeakMap();
+const FUENTE_ORDER_KEY = "nahuatl-source-order-v1";
+let fuenteOrderMode = "title"; // "title" | "year"
 
 document.addEventListener("DOMContentLoaded", () => {
   loadColumnState();
+  loadFuenteOrderMode();
   syncHeaderOrderToTableFields();
   syncFieldPillOrder();
   setupLanguageToggle();
@@ -3727,6 +3744,7 @@ function applyManualSort(arr, keys) {
 
 function getSortFieldValue(row, field) {
   const isDisplayField = TABLE_FIELDS.some(entry => entry.key === field);
+  if (field === "Fuente") return getFuenteSortKey(getDisplayValue(row, field));
   if (isDisplayField) return getDisplayValue(row, field);
   return row[field] ?? "";
 }
@@ -3790,7 +3808,7 @@ function getPrioritySortEntry(row) {
   if (entry) return entry;
   entry = {
     head: buildSortKey(getDisplayValue(row, "Texto estandarizado") || getDisplayValue(row, "Escritura original")),
-    source: buildSortKey(getDisplayValue(row, "Fuente"))
+    source: getFuenteSortKey(getDisplayValue(row, "Fuente"))
   };
   prioritySortCache.set(row, entry);
   return entry;
@@ -4436,9 +4454,74 @@ function extractContainsBothParts(text) {
 
 // =============== Fuentes =================
 function splitFuenteLabel(name) {
-  const m = name.match(/^(\S+)\s+(.+)$/);
-  if (m && /\d/.test(m[1])) return { year: m[1], title: m[2] };
+  const m = name.match(/^(\S+)(?:\s+(\?))?\s+(.+)$/);
+  if (m && /\d/.test(m[1])) {
+    return { year: [m[1], m[2]].filter(Boolean).join(" "), title: m[3] };
+  }
   return { year: "", title: name };
+}
+
+function normalizeFuenteSortText(value) {
+  return String(value || "")
+    .replace(/[^0-9A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+/g, "")
+    .trim();
+}
+
+function getFuenteSortKey(name) {
+  const { year, title } = splitFuenteLabel(String(name || ""));
+  return [title, year]
+    .map(part => normalizeFuenteSortText(part) || buildSortKey(part))
+    .filter(Boolean)
+    .join(" ");
+}
+
+function compareFuenteNames(a, b) {
+  return alphaNumCollator.compare(getFuenteSortKey(a), getFuenteSortKey(b));
+}
+
+function loadFuenteOrderMode() {
+  try {
+    const saved = localStorage.getItem(FUENTE_ORDER_KEY);
+    if (saved === "year" || saved === "title") fuenteOrderMode = saved;
+  } catch {}
+}
+
+function saveFuenteOrderMode() {
+  try {
+    localStorage.setItem(FUENTE_ORDER_KEY, fuenteOrderMode);
+  } catch {}
+}
+
+function getFuenteDisplayOptions() {
+  if (fuenteOrderMode === "year") return FUENTE_OPTIONS.slice();
+  return FUENTE_OPTIONS.slice().sort(compareFuenteNames);
+}
+
+function syncFuenteOrderControls() {
+  document.querySelectorAll("[data-fuente-order]").forEach(btn => {
+    const active = btn.dataset.fuenteOrder === fuenteOrderMode;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-pressed", String(active));
+  });
+}
+
+function setFuenteOrderMode(mode) {
+  const next = mode === "year" ? "year" : "title";
+  if (fuenteOrderMode === next) {
+    syncFuenteOrderControls();
+    return;
+  }
+  fuenteOrderMode = next;
+  saveFuenteOrderMode();
+  syncFuenteOrderControls();
+  renderFuenteList();
+}
+
+function setupFuenteOrderControls() {
+  document.querySelectorAll("[data-fuente-order]").forEach(btn => {
+    btn.addEventListener("click", () => setFuenteOrderMode(btn.dataset.fuenteOrder));
+  });
+  syncFuenteOrderControls();
 }
 
 function updateFuenteCount() {
@@ -4455,7 +4538,7 @@ function renderFuenteList() {
   const container = document.getElementById("fuenteList");
   if (!container) return;
   container.innerHTML = "";
-  FUENTE_OPTIONS.forEach(name => {
+  getFuenteDisplayOptions().forEach(name => {
     const { year, title } = splitFuenteLabel(name);
     const chip = document.createElement("button");
     chip.type = "button";
@@ -4493,6 +4576,7 @@ function toggleFuente(name, isChecked) {
 }
 
 function setupFuenteActions() {
+  setupFuenteOrderControls();
   const fillBtn = document.getElementById("fuenteFill");
   if (fillBtn) {
     fillBtn.addEventListener("click", () => {
@@ -4644,11 +4728,7 @@ function buildLemmaGroupRow(item) {
       const count = document.createElement("span");
       count.className = "lemma-count";
       count.textContent = `(${item.rowCount})`;
-      count.title = t("browse.meta.counts", {
-        sources: item.sourceCount,
-        rows: item.rowCount,
-        translations: item.translationCount
-      });
+      count.title = t("browse.meta.entries", { rows: item.rowCount });
       wrap.appendChild(count);
 
       const action = document.createElement("button");
@@ -4665,12 +4745,7 @@ function buildLemmaGroupRow(item) {
 
     const td = document.createElement("td");
     td.dataset.field = field.key;
-    if (field.key === "Fuente") {
-      td.textContent = String(item.sourceCount || 0);
-      if (item.sources && item.sources.length) td.title = item.sources.join(", ");
-    } else {
-      td.textContent = "";
-    }
+    td.textContent = "";
     tr.appendChild(td);
   });
 
@@ -5045,7 +5120,7 @@ function buildLemmaItemsFromRows(rows) {
       sortedRows.sort(compareLemmaRows);
     }
     const sourceSet = new Set(sortedRows.map(r => r["Fuente"]).filter(Boolean));
-    const sources = [...sourceSet].sort((a, b) => alphaNumCollator.compare(a, b));
+    const sources = [...sourceSet].sort(compareFuenteNames);
     const translations = collectBrowseTranslations(sortedRows);
     items.push({
       lemma: entry.lemma,
