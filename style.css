@@ -80,6 +80,7 @@ body {
   margin: 0 0 -1px;
   position: relative;
   z-index: 5;
+  isolation: isolate;
 }
 
 .panel-controls {
@@ -89,6 +90,9 @@ body {
   flex: 0 0 auto;
   min-width: 0;
   padding-bottom: 9px;
+  max-width: 100%;
+  position: relative;
+  z-index: 4;
 }
 
 .panel-tabs {
@@ -111,7 +115,7 @@ body {
   align-self: flex-end;
   margin-bottom: -1px;
   position: relative;
-  z-index: 6;
+  z-index: 8;
 }
 
 .panel-tabs::-webkit-scrollbar,
@@ -125,7 +129,9 @@ body {
   gap: 1px;
   flex: 1;
   min-width: 0;
+  max-width: 100%;
   overflow-x: auto;
+  overscroll-behavior-inline: contain;
   scrollbar-width: none;
 }
 
@@ -151,6 +157,7 @@ body {
 }
 
 .session-tab {
+  flex: 0 0 auto;
   gap: 4px;
   cursor: pointer;
   max-width: 140px;
@@ -203,12 +210,17 @@ body {
 .session-tab-add {
   display: inline-grid;
   place-items: center;
-  position: relative;
+  position: sticky;
+  right: 0;
+  z-index: 10;
+  flex: 0 0 auto;
   border-style: dashed;
   padding: 0;
   font-size: 0;
   line-height: 0;
   color: #5d6797;
+  background: #eef2ff;
+  box-shadow: -10px 0 14px -12px rgba(26, 36, 104, 0.45);
   min-width: 32px;
   justify-content: center;
   margin-bottom: 2px;
