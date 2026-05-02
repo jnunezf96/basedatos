@@ -1071,7 +1071,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!target.closest("#filtersPanel")) return;
     if (!target.matches(".filter-input")) return;
     e.preventDefault();
-    commitFilterCard();
+    submitFilterCardFromKeyboard(target.closest(".filter-card"));
   });
   setupFilterCards();
   initCardNavigation();
@@ -1367,8 +1367,8 @@ function setupChipsBarDelegation() {
     // Chip body click → load for editing
     const chip = e.target.closest("[data-group-id]");
     if (chip && !e.target.closest(".chip-remove")) {
-      loadGroupForEditing(chip.dataset.groupId);
       showScreen("filters");
+      loadGroupForEditing(chip.dataset.groupId);
     }
   });
 }
@@ -2028,7 +2028,8 @@ function setupFilterCard(owner) {
     input.addEventListener("keydown", e => {
       if (e.key === "Enter") {
         e.preventDefault();
-        commitFilterCard();
+        e.stopPropagation();
+        submitFilterCardFromKeyboard(card);
       }
     });
   });
@@ -2059,6 +2060,16 @@ function setupFilterCard(owner) {
       target.focus();
     });
   });
+}
+
+function submitFilterCardFromKeyboard(card) {
+  const targetCard = card || document.querySelector(".filter-card[data-owner='f1']");
+  const submitBtn = targetCard?.querySelector(".add-btn");
+  if (submitBtn && !submitBtn.disabled) {
+    submitBtn.click();
+    return;
+  }
+  commitFilterCard();
 }
 
 function commitFilterCard() {
