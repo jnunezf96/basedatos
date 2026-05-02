@@ -9,6 +9,19 @@ const DEFAULT_COLUMN_ORDER = TABLE_FIELDS.map(field => field.key);
 const COLUMN_CONTROL_ORDER = DEFAULT_COLUMN_ORDER.slice();
 const DEFAULT_COLUMN_WIDTHS = new Map(TABLE_FIELDS.map(field => [field.key, field.defaultWidth]));
 const TABLE_MIN_WIDTH = 908;
+const APP_ASSET_VERSION = (() => {
+  try {
+    const src = document.currentScript?.src || "";
+    return src ? new URL(src, location.href).searchParams.get("v") || "dev" : "dev";
+  } catch {
+    return "dev";
+  }
+})();
+
+function versionedAssetUrl(path) {
+  const separator = path.includes("?") ? "&" : "?";
+  return `${path}${separator}v=${encodeURIComponent(APP_ASSET_VERSION)}`;
+}
 
 const I18N = {
   es: {
@@ -381,6 +394,7 @@ const I18N = {
     "lemma.expandAll": "Expandir/Colapsar lemas",
     "comentario.expandAll": "Expandir/Colapsar comentarios",
     "table.pagesize.label": "Filas:",
+    "table.pagesize.lemmasLabel": "Lemas:",
     "table.columns": "Cols ▾",
     "columns.title": "Columnas",
     "columns.reset": "Restablecer",
@@ -768,6 +782,7 @@ const I18N = {
     "lemma.expandAll": "Expand/Collapse lemmas",
     "comentario.expandAll": "Expand/Collapse comments",
     "table.pagesize.label": "Rows:",
+    "table.pagesize.lemmasLabel": "Lemmas:",
     "table.columns": "Cols ▾",
     "columns.title": "Columns",
     "columns.reset": "Reset",
@@ -1084,7 +1099,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupSwipeTabs();
   setupKeyboardAvoidance();
   setupScrollNav();
-  loadCompressedJsonl("data/data.jsonl.gz")
+  loadCompressedJsonl(versionedAssetUrl("data/data.jsonl.gz"))
     .then(text => {
       const rows = text.split("\n").filter(Boolean).map(line => JSON.parse(line));
       rows.forEach((row, idx) => {
@@ -1220,6 +1235,7 @@ function applyTranslations() {
   });
 
   document.title = t("title");
+  updatePageSizeLabel();
 }
 
 function refreshLanguageDependentUI() {
@@ -2253,7 +2269,7 @@ function getDominantLemmaFilter(filters = activeFilters) {
 }
 
 function isUnfilteredBrowseState(filters = activeFilters) {
-  return !(filters && filters.length);
+  return !(filters && filters.length) && selectedFuentes.size === FUENTE_OPTIONS.length;
 }
 
 function buildRankingContext(rows) {
@@ -4803,6 +4819,7 @@ function updateViewToggleButtons() {
 
 function updateViewToggleLabels() {
   updateViewToggleButtons();
+  updatePageSizeLabel();
 }
 
 function setViewMode(next) {
@@ -4815,6 +4832,7 @@ function setViewMode(next) {
     syncColumnLayout();
   }
   updateViewToggleButtons();
+  updatePageSizeLabel();
   renderColumnControls();
   applyFilters();
 }
@@ -5230,16 +5248,8 @@ function removeLemmaDetailRows(tbody, lemma) {
 function computeLemmaPageOffsets(items, pageSize) {
   if (!items.length || pageSize <= 0) return [0];
   const offsets = [0];
-  let i = 0;
-  while (i < items.length) {
-    let cost = 0;
-    while (i < items.length) {
-      const itemCost = 1 + (expandedLemmas.has(items[i].lemma) ? items[i].rows.length : 0);
-      if (cost > 0 && cost + itemCost > pageSize) break;
-      cost += itemCost;
-      i++;
-    }
-    if (i < items.length) offsets.push(i);
+  for (let i = pageSize; i < items.length; i += pageSize) {
+    offsets.push(i);
   }
   return offsets;
 }
@@ -5498,8 +5508,15 @@ function renderPairResults(pairs, meta) {
 }
 
 // ── Page-size controls ──────────────────────────────────────────
+function updatePageSizeLabel() {
+  const label = document.querySelector('label[for="pageSizeSelect"]');
+  if (!label) return;
+  label.textContent = t(tableViewMode === "lemmas" ? "table.pagesize.lemmasLabel" : "table.pagesize.label");
+}
+
 function setupPageSizeControls() {
   const selects = [document.getElementById("pageSizeSelect")].filter(Boolean);
+  updatePageSizeLabel();
   selects.forEach(sel => {
     sel.value = String(maxDisplayRows);
     sel.addEventListener("change", () => {
