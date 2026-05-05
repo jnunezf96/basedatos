@@ -4138,6 +4138,27 @@ const WIMMER_BOLD_GRAMMAR_MARKER_REGEX = new RegExp(`^(\\s*(?:<b>\\s*(?:\\d+\\.?
 const WIMMER_UPPER_WORD = String.raw`[A-ZÁÉÍÓÚÜÑÂÊÎÔÛĀĒĪŌŪÀÈÌÒÙÇ]{2,}`;
 const WIMMER_LEADING_ALL_CAPS_RUN_REGEX = new RegExp(`^(\\s*(?:<[^>]+>\\s*)*)(${WIMMER_UPPER_WORD}(?:(?:[\\s,.;:¿?¡!()'"/-]+|&nbsp;)*${WIMMER_UPPER_WORD})*(?:[\\s,.;:¿?¡!()'"/-]+)*)`, "u");
 const WIMMER_UPPER_WORD_REGEX = new RegExp(WIMMER_UPPER_WORD, "gu");
+const WIMMER_TEXT_WORD = String.raw`[A-Za-zÁÉÍÓÚÜÑáéíóúüñÂÊÎÔÛâêîôûĀĒĪŌŪāēīōūÀÈÌÒÙàèìòùÇç'ʼ-]+`;
+const WIMMER_FULL_SMALL_EXAMPLE_START_REGEX = new RegExp(`^(?:in\\s+|zan\\s+|auh\\s+|ca\\s+|ic\\s+|inic\\s+|intlâ\\s+|ahmo\\s+|aocmo\\s+|oncân\\s+|huel\\s+|nô\\s+|mochi\\s+|niman\\s+|mâ\\s+)?${WIMMER_TEXT_WORD}(?:[\\s,;:]+${WIMMER_TEXT_WORD}){0,14}\\s*,\\s+`, "iu");
+const WIMMER_FULL_SMALL_SOURCE_START_REGEX = /^(?:Cf\.|Sah\s*\d|Sah\d|Sah\s+(?:HG|Garibay|19\d\d)|SIS\s*\d|Molina|M\.|m\s+[ivxlcdm]+|Launey|Andrews|A\.\s*Andrews|R\.\s*(?:Andrews|Joe|Siméon)|Cod\.?|Codex|Cron|Crónica|ECN|Acad|Bancroft|FC|Olmos|Carochi|Prim\.?\s*Mem|Prim|Mem|MS|Ms|U\.\s*Dyckerhoff|Dyckerhoff|W\.?\s*Lehmann|Garibay|Hern\.|Dibble|Rammow|SGA|Bautista)\b/i;
+const WIMMER_FULL_SMALL_LANGUAGE_NOTE_REGEX = /^(?:Allem|Alem|Allemand|German|English|Spanish|Angl|Ingl|Esp|Fr)\b\.?/i;
+const WIMMER_FULL_SMALL_COMMENTARY_CUE_REGEX = /\b(?:Se dice|se dice|Est dit|est dit|Is said|is said|Describe|describe|Décrit|décrit|Désigne|désigne|Designa|designa|Caractérise|caracteriza|Asociado|asociado|Associé|associé|Usado|usado|utilisé|Portées|Hablando|Il s'agit|A propos|A propósito|Dicho|Nom du|Nombre del|nombre\s+(?:divino|personal)|nom\s+(?:divin|personnel|pers\.)|topónimo|toponyme|término|terme|apócope|apocope|diminutivo|diminutif|pft\.)\b/i;
+const WIMMER_FULL_SMALL_TRAILING_SOURCE_REGEX = /(?:;|\.)\s*(?:Sah\d|Sah\s|Launey|Cod\.?|Acad|ECN|Prim|W\.?\s*Lehmann|CF)\b/i;
+const WIMMER_TRAILING_SOURCE_START_REGEX = /(?:^|[\s;=(])(?:Cf\.\s*)?(?:Sah(?:\s*(?:\d{4}|HG|Garibay|VI|VII|VIII|IX|X|XI|XII)\b|\d+)|SIS\s*\d|Launey|Cod\.?\s*(?:Flor|Mat)?|Acad(?:\s+Hist)?|ECN|CF|FC|Prim\.?\s*Mem|W\.?\s*Lehmann|U\.?\s*Dyckerhoff|Dyckerhoff|Garibay|Olmos|Bautista|Rammow|Dibble|SGA|Hern\.|Molina|M\.|m\s+[ivxlcdm]+)\b/gi;
+const WIMMER_NAHUATL_CONTINUATION_REGEX = /^(?:in|zan|auh|ca|ic|inic|intlâ|ahmo|aocmo|oncân|huel|nô|mochi|niman|mâ)\b/i;
+const WIMMER_NON_NAHUATL_START_REGEX = /^(?:Se|Est|Is|Describe|Décrit|Désigne|Designa|Caractérise|Caracteriza|Hablando|A|En|Dans|La|Le|Les|El|Los|Las|Un|Una|Une|Des|Du|De|Qui|Cern[ií]calo|Petit|Plein|Rouge|Mantas|Couvertures|Rem[eè]de|C[eé]ramiste|Mets|Parmi|Nombre|Nom|Forma|Form|Nota|Note|Hern|Sah|Cod|Acad)\b/i;
+const WIMMER_SAH_CITATION_REGEX = /\bSah\d+\s*,\s*\??\d+[a-z]?(?:-\d+[a-z]?)?(?::\d+(?:-\d+)?)?\.?/gi;
+const WIMMER_FOLIO_MARKER = String.raw`\d+[rv]\.?(?:[ab]\.?)?(?::\d+[A-Za-z]*(?:-\d+)?)?`;
+const WIMMER_FOLIO_SOURCE_CITATION_REGEX = new RegExp(String.raw`\b(?:J\.?\s*de\s+durand-forest\.\s*)?(?:Cf\.\s*(?:también\s+)?|Ver\s+|Véase\s+|Ilustraciónver\s+)?(?:Cod\.?\s*(?:Flor\.?|Mat(?:\s+Acad)?|ex)?|Códice\s+[A-Za-zÁÉÍÓÚÜÑáéíóúüñ-]+|Codex\s+[A-Za-zÁÉÍÓÚÜÑáéíóúüñ-]+|CF\s*XI|CFXI|CF11|CM|Bacalao(?:\s*(?:Flor|FIor|Mat|Acad|IVA\.?\s*A?|iva\.?\s*a?))?|Código\s+Flor|Acad(?:\s+Hist)?\s*MS|Prim\.?\s*Mem\.?\.?|Primera\s+Memoria|Primeros\s+Memoriales(?:\s+f\.?)?|Memoria\s+(?:primaria|de\s+sólo\s+lectura)|remilgado\.?\s+memoria|Bautista\s+Huehuetlatolli|Confesionario\s+mayor|Chim\.?(?:\s*\d+ª?\s+relación)?|Chim\d+|Chimalpahin|Química\.?\s*(?:\d+\.?\s*)?(?:Rel(?:ación)?\.?|relación)|H\.?\s*T\.?\s*Ch\.?|Carochi|carochs\s+arte|garochi\s+arte|Molina(?:\s+[iI]{1,2}\s*f\.?)?|molinai{1,2}|m\s+(?:i|ii)|olm\.?|Vetancurt\s+1673|Bankroft|Bancroft|BN\s*303|Tezozomoc\s+(?:1598\s+fol\.|crónica\s+mexicana\s+fol\.)|Cantares(?:\s+Mexicanos)?(?:,\s*fol\.?|\s+fol\.?)?|MS\s+Cantares\s+Mexicanos[^<;\n]*?f\.|Historia\s+tolteca[-\s]chichimeca|manuscrito\s+(?:de\s+)?badiano|manuscrito\s+badianus|codex\s+badianus|Badianus(?:\s+manuscrito)?|Badiano|Pichardo\.\s*Fábulas\s+de\s+Esopo\.\s*1898\.|arte\s+de\s+(?:la\s+)?lengua\s+mexicana(?:\s+f\.)?)[^<;\n]*?\b${WIMMER_FOLIO_MARKER}(?:\s*(?:y|e|and|et)\s*${WIMMER_FOLIO_MARKER})*\)?`, "giu");
+const WIMMER_TAGGED_FOLIO_SOURCE_CITATION_REGEX = new RegExp(String.raw`<(b|i)>\s*(?:Cantares(?:\s+Mexicanos)?|MS\s+Cantares\s+Mexicanos|Cod\.?\s*(?:Flor\.?|Mat(?:\s+Acad)?|ex)?|CF\s*XI|CFXI|CF11|CM|H\.?\s*T\.?\s*Ch\.?|Chim\.?(?:\s*\d+ª?\s+relación)?)\s*<\/\1>[^<;\n]*?\b${WIMMER_FOLIO_MARKER}(?:\s*(?:y|e|and|et)\s*${WIMMER_FOLIO_MARKER})*`, "giu");
+const WIMMER_SHORT_FOLIO_SOURCE_CITATION_REGEX = new RegExp(String.raw`(^|[\s(])((?:Cf\.\s*)?(?:X[lI]|F\.|f\.|fol\.|m\s*(?:i|ii)|mi|mii|t)\s+${WIMMER_FOLIO_MARKER}(?:\s*(?:y|e|and|et)\s*${WIMMER_FOLIO_MARKER})*\.?\)?)`, "giu");
+const WIMMER_FOLIO_PAREN_CITATION_REGEX = new RegExp(String.raw`\(([^()<>]{0,220}\b${WIMMER_FOLIO_MARKER}[^()<>]{0,220})\)`, "giu");
+const WIMMER_BARE_FOLIO_MARKER_REGEX = new RegExp(String.raw`\b${WIMMER_FOLIO_MARKER}\b`, "giu");
+const WIMMER_FOLIO_SOURCE_HINT_REGEX = /(?:^|\b)(?:m\s*(?:i|ii)|molinai{1,2}|molina|carochi|sah|prim|mem|cod|códice|codex|acad|bautista|confesionario|chimalpahin|chim\d+|rammow|badianus|badiano|pichardo|cantares|tezozomoc|historia|arte)\b/i;
+const WIMMER_ES_EXAMPLE_START_CUE = String.raw`(?:in|inic|intlâ|auh|ca|zan|yehhuâtl|îpan|ic|nô|ahmo|aocmo|oncân|huel|mâ)`;
+const WIMMER_ES_DEFINITION_EXAMPLE_SPLIT_REGEX = new RegExp(String.raw`^([\s\S]*?\.\s+)(${WIMMER_ES_EXAMPLE_START_CUE}\s+[\s\S]*?[âêîôûÂÊÎÔÛ][\s\S]*?,\s*[\s\S]*)$`, "iu");
+const WIMMER_ES_DEFINITION_PREFIX_REGEX = /^(?:['"“”‘’]?[a-zâêîôû]+['"“”‘’]?\s+se\s+coloca|Que|Como|También|Tambien|En|La|El|Los|Las|Un|Una|Este|Esta|Descripción|Descripcion|Cf\.|Véase|Vease|Se|Nombre|Nota|Forma|Atributo|Dado|Usado|Citado|Preside|Representación|Representacion)\b/i;
+const WIMMER_ES_DEFINITION_WORD_REGEX = /\b(?:que|con|relación|relacion|sentido|ofrenda|ritual|llamad[ao]s?|descrit[ao]s?|presenta|símbolo|simbolo|define|coloca|delante|palabra|página|pagina|título|titulo|especifica)\b/i;
 
 function normalizeWimmerReferences(text) {
   if (!text) return text;
@@ -4177,6 +4198,310 @@ function normalizeWimmerSmallMarkupLine(line) {
 
   if (smallOpen) out.push("</small>");
   return out.join("");
+}
+
+function unwrapWimmerFullLineSmallExamples(text, lemma = "") {
+  if (!text) return text;
+  const parts = String(text).split(/(<br\s*\/?>)/i);
+  return parts.map(part => /<br\s*\/?>/i.test(part) ? part : unwrapWimmerFullLineSmallExampleLine(part, lemma)).join("");
+}
+
+function unwrapWimmerFullLineSmallExampleLine(line, lemma = "") {
+  const source = String(line || "");
+  const noteThenSource = source.match(/^(\s*)<small\b[^>]*>\s*([\s\S]*?)\s*<\/small>(\s+<small\b[\s\S]*<\/small>\s*)$/i);
+  if (noteThenSource && !/<\/?small\b/i.test(noteThenSource[2])) {
+    const notePlain = collapseWhitespace(stripHtmlTags(noteThenSource[2]));
+    if (WIMMER_FULL_SMALL_COMMENTARY_CUE_REGEX.test(notePlain)) {
+      return `${noteThenSource[1]}${noteThenSource[2].trim()}${noteThenSource[3]}`;
+    }
+  }
+  const m = source.match(/^(\s*)<small\b[^>]*>\s*([\s\S]*?)\s*<\/small>(\s*)$/i);
+  if (!m) return line;
+  if (/<\/?small\b/i.test(m[2])) return line;
+  if (!shouldUnwrapWimmerFullLineSmall(m[2])) return line;
+  return `${m[1]}${formatWimmerFullLineSmallExample(m[2], lemma)}${m[3]}`;
+}
+
+function shouldUnwrapWimmerFullLineSmall(inner) {
+  const plain = collapseWhitespace(stripHtmlTags(inner));
+  if (!plain) return false;
+  const wrapped = `<small>${inner}</small>`;
+  if (isWimmerGrammarMarkerLine(wrapped)) return false;
+  if (isWimmerFullLineSmallSourceOnly(plain)) return false;
+  if (isWimmerMetaLine(plain)) return false;
+  if (WIMMER_FULL_SMALL_EXAMPLE_START_REGEX.test(plain)) return true;
+  if (WIMMER_FULL_SMALL_COMMENTARY_CUE_REGEX.test(plain)) return true;
+  return plain.length > 90
+    && /[âêîôûÂÊÎÔÛ]/.test(plain)
+    && WIMMER_FULL_SMALL_TRAILING_SOURCE_REGEX.test(plain);
+}
+
+function isWimmerFullLineSmallSourceOnly(plain) {
+  if (WIMMER_FULL_SMALL_LANGUAGE_NOTE_REGEX.test(plain)) return true;
+  if (!WIMMER_FULL_SMALL_SOURCE_START_REGEX.test(plain)) return false;
+  return !WIMMER_FULL_SMALL_COMMENTARY_CUE_REGEX.test(plain);
+}
+
+function wrapWimmerStandaloneSahCitations(text) {
+  if (!text) return text;
+  return mapWimmerOutsideSmallSpans(text, wrapWimmerStandaloneSahCitationsInText);
+}
+
+function mapWimmerOutsideSmallSpans(text, callback) {
+  return String(text || "")
+    .split(/(<small\b[^>]*>[\s\S]*?<\/small>)/gi)
+    .map(part => /^<small\b/i.test(part) ? part : callback(part))
+    .join("");
+}
+
+function wrapWimmerStandaloneSahCitationsInText(text) {
+  return String(text || "").replace(WIMMER_SAH_CITATION_REGEX, match => `<small>${match}</small>`);
+}
+
+function wrapWimmerFolioCitations(text) {
+  if (!text) return text;
+  const withParentheticalCitations = mapWimmerOutsideSmallSpans(text, wrapWimmerFolioParentheticalCitationsInText);
+  const withSourceCitations = mapWimmerOutsideSmallSpans(withParentheticalCitations, wrapWimmerFolioSourceCitationsInText);
+  return mapWimmerOutsideSmallSpans(withSourceCitations, wrapWimmerBareFolioMarkersInText);
+}
+
+function wrapWimmerFolioSourceCitationsInText(text) {
+  const withTaggedSources = String(text || "")
+    .replace(WIMMER_TAGGED_FOLIO_SOURCE_CITATION_REGEX, match => `<small>${match}</small>`);
+  const withNamedSources = mapWimmerOutsideSmallSpans(withTaggedSources, part =>
+    part.replace(WIMMER_FOLIO_SOURCE_CITATION_REGEX, match => `<small>${match}</small>`)
+  );
+  return mapWimmerOutsideSmallSpans(withNamedSources, part =>
+    part.replace(WIMMER_SHORT_FOLIO_SOURCE_CITATION_REGEX, (match, prefix, citation) => {
+      if (prefix.endsWith("(")) return `${prefix.slice(0, -1)}<small>(${citation}</small>`;
+      return `${prefix}<small>${citation}</small>`;
+    })
+  );
+}
+
+function wrapWimmerFolioParentheticalCitationsInText(text) {
+  return String(text || "").replace(WIMMER_FOLIO_PAREN_CITATION_REGEX, (match, inner) => {
+    return isWimmerFolioParentheticalCitation(inner) ? `<small>${match}</small>` : match;
+  });
+}
+
+function wrapWimmerBareFolioMarkersInText(text) {
+  return String(text || "").replace(WIMMER_BARE_FOLIO_MARKER_REGEX, match => `<small>${match}</small>`);
+}
+
+function isWimmerFolioParentheticalCitation(inner) {
+  const plain = collapseWhitespace(stripHtmlTags(inner));
+  return WIMMER_FOLIO_SOURCE_HINT_REGEX.test(plain)
+    || new RegExp(String.raw`^(?:t|mi|mii|f\.?|fol\.?)\s+${WIMMER_FOLIO_MARKER}$`, "iu").test(plain);
+}
+
+function splitWimmerEsDefinitionExampleLines(text, lemma = "") {
+  if (!text) return text;
+  const parts = String(text).split(/(<br\s*\/?>)/i);
+  return parts.map(part => /<br\s*\/?>/i.test(part) ? part : splitWimmerEsDefinitionExampleLine(part, lemma)).join("");
+}
+
+function splitWimmerEsDefinitionExampleLine(line, lemma = "") {
+  const source = String(line || "");
+  if (!source || /^<b>/i.test(source) || !/[âêîôûÂÊÎÔÛ]/.test(source) || !/<small\b/i.test(source)) return line;
+
+  const firstSmall = source.search(/<small\b/i);
+  if (firstSmall < 0) return line;
+  const head = source.slice(0, firstSmall);
+  const suffix = source.slice(firstSmall);
+  const split = findWimmerEsDefinitionExampleSplit(head, lemma);
+  if (!split) return line;
+
+  return `${split.definition}<br>${boldWimmerNahuatlLead(split.example, lemma)}${suffix}`;
+}
+
+function findWimmerEsDefinitionExampleSplit(text, lemma = "") {
+  const source = String(text || "");
+  const match = source.match(WIMMER_ES_DEFINITION_EXAMPLE_SPLIT_REGEX);
+  if (!match) return null;
+
+  const definition = match[1].trim();
+  const example = match[2].trim();
+  if (!looksLikeWimmerEsDefinitionPrefix(definition)) return null;
+  const firstComma = example.indexOf(",");
+  if (firstComma < 0) return null;
+  if (!looksLikeWimmerNahuatlPhrase(example.slice(0, firstComma), lemma)) return null;
+
+  return { definition, example: `${example} ` };
+}
+
+function looksLikeWimmerEsDefinitionPrefix(prefix) {
+  const plain = collapseWhitespace(stripHtmlTags(prefix));
+  if (!plain || WIMMER_NAHUATL_CONTINUATION_REGEX.test(plain)) return false;
+  return WIMMER_ES_DEFINITION_PREFIX_REGEX.test(plain) || WIMMER_ES_DEFINITION_WORD_REGEX.test(plain);
+}
+
+function unwrapWimmerFalseSourceSmallSpans(text) {
+  if (!text) return text;
+  return mapWimmerOutsideSmallSpans(text, part => part)
+    .split(/(<small\b[^>]*>[\s\S]*?<\/small>)/gi)
+    .map(part => /^<small\b/i.test(part) ? unwrapWimmerFalseSourceSmallSpan(part) : part)
+    .join("");
+}
+
+function unwrapWimmerFalseSourceSmallSpan(span) {
+  const m = String(span || "").match(/^<small\b[^>]*>\s*([\s\S]*?)\s*<\/small>$/i);
+  if (!m) return span;
+  const plain = collapseWhitespace(stripHtmlTags(m[1]));
+  if (/^Sahag[uú]n(?:\s+a\s+Huitzilopochtli)?$/i.test(plain)) return m[1].trim();
+  return span;
+}
+
+function boldWimmerNumberedSenseInlineExamples(text, lemma = "") {
+  if (!text) return text;
+  const parts = String(text).split(/(<br\s*\/?>)/i);
+  return parts.map(part => /<br\s*\/?>/i.test(part) ? part : boldWimmerNumberedSenseInlineExampleLine(part, lemma)).join("");
+}
+
+function boldWimmerNumberedSenseInlineExampleLine(line, lemma = "") {
+  const source = String(line || "");
+  if (/<\/b>\s*<b>/i.test(source)) return source;
+  return source.replace(/^(\s*<b>\s*\d+\.?~?\s*<\/b>\s*)(?!<b>)([^,<]{2,120})(,\s*)/i, (match, prefix, phrase, comma) => {
+    if (!looksLikeWimmerNahuatlPhrase(phrase, lemma)) return match;
+    return `${prefix}<b>${phrase.trim()}</b>${comma}`;
+  });
+}
+
+function formatWimmerFullLineSmallExample(inner, lemma = "") {
+  const content = normalizeWimmerAllCapsLine(String(inner || "").trim());
+  return boldWimmerNahuatlLead(wrapWimmerTrailingSource(content), lemma);
+}
+
+function wrapWimmerTrailingSource(line) {
+  const split = splitWimmerTrailingSource(line);
+  if (!split) return line;
+  return `${split.prefix} <small>${split.source}</small>`;
+}
+
+function splitWimmerTrailingSource(line) {
+  const source = String(line || "").trim();
+  const matches = [];
+  WIMMER_TRAILING_SOURCE_START_REGEX.lastIndex = 0;
+  let match;
+  while ((match = WIMMER_TRAILING_SOURCE_START_REGEX.exec(source))) {
+    let sourceStart = match.index;
+    while (sourceStart < source.length && /[\s;=(]/.test(source[sourceStart])) sourceStart += 1;
+    matches.push(sourceStart);
+  }
+
+  for (const sourceStart of matches) {
+    const sourceText = source.slice(sourceStart).trim();
+    if (!isLikelyWimmerTrailingSource(sourceText)) continue;
+    if (hasWimmerExampleAfterSourceStart(sourceText)) continue;
+    const prefix = source.slice(0, sourceStart).trimEnd().replace(/[\s;=(]+$/g, "").trimEnd();
+    if (!prefix) continue;
+    return { prefix, source: sourceText };
+  }
+
+  return null;
+}
+
+function isLikelyWimmerTrailingSource(source) {
+  const plain = collapseWhitespace(stripHtmlTags(source));
+  if (!plain || plain.length < 4) return false;
+  if (!/(?:\d|Sah|SIS|Launey|Cod|Acad|ECN|CF|FC|Prim|Lehmann|Dyckerhoff|Garibay|Olmos|Bautista|Rammow|Dibble|SGA|Hern|Molina|M\.)/i.test(plain)) return false;
+  return !/[.!?]\s+(?:Se dice|Est dit|Describe|Décrit|Désigne|Designa|Hablando)\b/i.test(plain);
+}
+
+function hasWimmerExampleAfterSourceStart(source) {
+  const afterFirstSeparator = String(source || "").replace(/^[^;]+;?/, "");
+  if (!afterFirstSeparator) return false;
+  return new RegExp(`;\\s*(?:${WIMMER_NAHUATL_CONTINUATION_REGEX.source.replace(/^\^|\$$/g, "")}\\s+)?${WIMMER_TEXT_WORD}(?:[\\s,;:]+${WIMMER_TEXT_WORD}){0,10}\\s*,\\s+`, "iu").test(`;${afterFirstSeparator}`);
+}
+
+function boldWimmerNahuatlLead(line, lemma = "") {
+  const source = String(line || "");
+  if (!source || /^<b>/i.test(source)) return source;
+  const trailing = source.match(/(\s*<small>[\s\S]*?<\/small>\s*)$/i);
+  const body = trailing ? source.slice(0, trailing.index) : source;
+  const suffix = trailing ? trailing[1] : "";
+  const span = findWimmerNahuatlLeadSpan(body, lemma);
+  if (!span) return source;
+  const nahuatl = normalizeWimmerBoldNahuatlCase(body.slice(span.start, span.end));
+  return `${body.slice(0, span.start)}<b>${nahuatl}</b>${body.slice(span.end)}${suffix}`;
+}
+
+function findWimmerNahuatlLeadSpan(body, lemma = "") {
+  const starts = [0];
+  const separatorRegex = /[.;]\s+/g;
+  let sep;
+  while ((sep = separatorRegex.exec(body)) && starts.length < 8) starts.push(sep.index + sep[0].length);
+
+  for (const rawStart of starts) {
+    const start = skipWimmerLeadingSpace(body, rawStart);
+    const comma = body.indexOf(",", start);
+    if (comma > start && comma - start <= 220) {
+      const end = extendWimmerNahuatlLeadThroughContinuations(body, start, comma, lemma);
+      if (looksLikeWimmerNahuatlPhrase(body.slice(start, end), lemma)) return { start, end };
+    }
+
+    const colon = body.indexOf(":", start);
+    if (colon > start && colon - start <= 90 && looksLikeWimmerNahuatlPhrase(body.slice(start, colon), lemma)) {
+      return { start, end: colon };
+    }
+
+    const sentence = body.slice(start).match(/^([^.<,;:]{2,90})\.\s+(?:nombre|nom)\s+(?:divino|divin|personal|personnel|pers\.)\b/i);
+    if (sentence && looksLikeWimmerNahuatlPhrase(sentence[1], lemma)) {
+      return { start, end: start + sentence[1].length };
+    }
+  }
+
+  return null;
+}
+
+function skipWimmerLeadingSpace(text, start) {
+  let i = start;
+  while (i < text.length && /\s/.test(text[i])) i += 1;
+  return i;
+}
+
+function extendWimmerNahuatlLeadThroughContinuations(text, start, comma, lemma = "") {
+  let end = comma;
+  let cursor = comma + 1;
+  while (cursor < text.length) {
+    cursor = skipWimmerLeadingSpace(text, cursor);
+    const nextComma = text.indexOf(",", cursor);
+    if (nextComma < 0 || nextComma - cursor > 120) break;
+    const nextPhrase = text.slice(cursor, nextComma);
+    if (!isWimmerNahuatlLeadContinuation(nextPhrase, lemma)) break;
+    end = nextComma;
+    cursor = nextComma + 1;
+  }
+  return end;
+}
+
+function isWimmerNahuatlLeadContinuation(phrase, lemma = "") {
+  const plain = collapseWhitespace(stripHtmlTags(phrase));
+  if (!plain || WIMMER_NON_NAHUATL_START_REGEX.test(plain)) return false;
+  if (WIMMER_NAHUATL_CONTINUATION_REGEX.test(plain)) return true;
+  if (/^i[A-Za-zÁÉÍÓÚÜÑáéíóúüñÂÊÎÔÛâêîôûĀĒĪŌŪāēīōūÀÈÌÒÙàèìòùÇç'ʼ-]{2,}h$/i.test(plain)) return true;
+  return looksLikeWimmerNahuatlPhrase(plain, lemma) && plain.split(/\s+/).length <= 4;
+}
+
+function looksLikeWimmerNahuatlPhrase(phrase, lemma = "") {
+  const plain = collapseWhitespace(stripHtmlTags(phrase)).replace(/^[¿?¡!'"()]+|[¿?¡!'"().;:]+$/g, "");
+  if (!plain || WIMMER_NON_NAHUATL_START_REGEX.test(plain)) return false;
+  const normalizedPhrase = normalizeString(plain);
+  const normalizedLemma = normalizeString(String(lemma || ""));
+  if (normalizedLemma && (normalizedPhrase.includes(normalizedLemma) || normalizedLemma.includes(normalizedPhrase))) return true;
+  if (/[âêîôûÂÊÎÔÛ]/.test(plain)) return true;
+  if (WIMMER_NAHUATL_CONTINUATION_REGEX.test(plain)) return true;
+  return /\b(?:tl|tz|hu|cu|qu|yoh|tli|lli|qui|oa|hua)\b/i.test(plain)
+    || /(?:tl|tz|cuauh|tzin|yotl|huia|tiuh|toca|pilli|calli|teotl|xochitl|patli|tli|lli)\b/i.test(plain);
+}
+
+function normalizeWimmerBoldNahuatlCase(text) {
+  const letters = String(text || "").match(/\p{L}/gu) || [];
+  if (letters.length < 4) return text;
+  const upper = letters.filter(char => char === char.toLocaleUpperCase("es") && char !== char.toLocaleLowerCase("es")).length;
+  if (upper / letters.length < 0.7) return text;
+  const lowered = text.toLocaleLowerCase("es");
+  return lowered.replace(/\p{L}/u, char => char.toLocaleUpperCase("es"));
 }
 
 function isWimmerMetaLine(line) {
@@ -4225,12 +4550,20 @@ function isWimmerCitationOnlySmall(line) {
 function isWimmerInlineExampleLine(line) {
   const trimmed = String(line || "").trim();
   if (!trimmed) return false;
-  if (!/^<b>[\s\S]*?<\/b>\s*,/i.test(trimmed)) return false;
+  if (!/^<b>[\s\S]*?<\/b>\s*,/i.test(trimmed)) return isWimmerPlainExampleLine(trimmed);
   const boldPlain = collapseWhitespace(stripHtmlTags((trimmed.match(/^<b>([\s\S]*?)<\/b>/i) || ["", ""])[1]));
   if (!boldPlain) return false;
   if (/^(?:A|B|C|D|E|F)\.~\b/i.test(boldPlain)) return false;
   if (/\b(?:forme|forma|variante|syn\.|plural|plur\.|pft\.|éventuel|eventual)\b/i.test(boldPlain)) return false;
   return true;
+}
+
+function isWimmerPlainExampleLine(line) {
+  if (/^<small\b/i.test(line)) return false;
+  const plain = collapseWhitespace(stripHtmlTags(line));
+  if (!plain || isWimmerMetaLine(plain) || isWimmerFullLineSmallSourceOnly(plain)) return false;
+  if (!WIMMER_FULL_SMALL_EXAMPLE_START_REGEX.test(plain)) return false;
+  return !/\b(?:forme|forma|variante|syn\.|plural|plur\.|pft\.|éventuel|eventual)\b/i.test(plain);
 }
 
 function isWimmerGrammarMarkerLine(line) {
@@ -4400,7 +4733,17 @@ function getWimmerComentario(row, comentarioKey) {
   if (!raw) return raw ?? "";
   const cacheKey = `__wimmerCom_${comentarioKey}`;
   if (row[cacheKey] !== undefined) return row[cacheKey];
-  const normalized = normalizeWimmerInlineExamples(normalizeWimmerSmallMarkup(normalizeWimmerReferences(raw)));
+  const lemma = row["Texto estandarizado"];
+  let normalized = normalizeWimmerSmallMarkup(normalizeWimmerReferences(raw));
+  normalized = unwrapWimmerFullLineSmallExamples(normalized, lemma);
+  normalized = wrapWimmerStandaloneSahCitations(normalized);
+  normalized = wrapWimmerFolioCitations(normalized);
+  normalized = unwrapWimmerFalseSourceSmallSpans(normalized);
+  if (comentarioKey === "Comentario (es)") {
+    normalized = splitWimmerEsDefinitionExampleLines(normalized, lemma);
+  }
+  normalized = boldWimmerNumberedSenseInlineExamples(normalized, lemma);
+  normalized = normalizeWimmerInlineExamples(normalized);
   row[cacheKey] = normalized;
   return normalized;
 }
