@@ -4076,702 +4076,12 @@ function exportTableAsImage(format = "jpeg") {
   }
 }
 
-function isQuestionLike(text) {
-  if (!text) return false;
-  const t = String(text).trim();
-  if (!t) return false;
-  return t.startsWith("¿") || t.endsWith("?");
-}
-
-// For Wimmer 2021: auto-translated Traducciones sometimes turn French relative
-// clauses ("Qui est pointu.") into Spanish questions ("¿Quién es astuto?").
-// Pull the first plain-text definition block out of the Comentario; return ""
-// if the Comentario also presents the sense as a question (i.e. the word
-// really is an interrogative, like TLEHHUATL or CANNEL).
-function extractWimmerDefinition(commentaryHtml, lemma) {
-  if (!commentaryHtml) return "";
-  const blocks = String(commentaryHtml)
-    .split(/\s*(?:<br\s*\/?>\s*){2,}/i)
-    .map(b => b.trim())
-    .filter(Boolean);
-  const lemmaKey = lemma ? normalizeString(String(lemma)).toLowerCase() : "";
-
-  for (const block of blocks) {
-    const plain = collapseWhitespace(stripHtmlTags(block)).trim();
-    if (!plain) continue;
-
-    // Markup-wrapped block with question content → legitimate interrogative.
-    if (/^</.test(block)) {
-      if (/[¿?]/.test(plain)) return "";
-      continue;
-    }
-
-    // Single-token blocks are lemma headers ("tlehhuâtl:"); skip.
-    if (!/\s/.test(plain)) continue;
-
-    // Skip grammar-metadata line ("lemma, éventuel de ...").
-    if (lemmaKey) {
-      const firstToken = normalizeString((block.match(/^[^\s,:.;()<]+/) || [""])[0]).toLowerCase();
-      if (firstToken && (lemmaKey.startsWith(firstToken) || firstToken.startsWith(lemmaKey))) continue;
-    }
-
-    if (/^Forma?\s*:/i.test(plain)) continue;
-    if (isQuestionLike(plain)) return "";
-    return plain;
-  }
-  return "";
-}
-
-// Wimmer 2021 references "Launey Introd" / "Andrews Introd" (his grammar and
-// Andrews' grammar) appear in Comentario with varied forms — OCR typos in the
-// source ("lntrod", "Intod", "Intro", truncated) and auto-translation garbling
-// in the Spanish copy ("Introducción", "introdujo", "presentó"). Normalize
-// them all to the canonical "Author Introd" form.
-const WIMMER_REF_REGEX = /\b(Launey|Andrews)\s+(?:Introducción|Introduction|introdujo|presentó|lntrod|Intod|Intro|introd)\b\.?/g;
-const WIMMER_GRAMMAR_CLASS = String.raw`[vV]\s*\.\s*(?:inanim(?:ado|é|e)?|impers|bitrans|r[eé]fl|refl|trans|intr|pronom|unipers|d[eé]fect|caus|freq|anim|aux|abs|i|t)(?![A-Za-zÁÉÍÓÚÜÑáéíóúüñÂÊÎÔÛâêîôûĀĒĪŌŪāēīōūÀÈÌÒÙàèìòùÇç])\s*\.?`;
-const WIMMER_GRAMMAR_PREFIX = String.raw`[A-Za-zÁÉÍÓÚÜÑáéíóúüñÂÊÎÔÛâêîôûĀĒĪŌŪāēīōūÀÈÌÒÙàèìòùÇç]+\s*-\s*\.?`;
-const WIMMER_GRAMMAR_MARKER = String.raw`(?:\*?\s*~\s*)?${WIMMER_GRAMMAR_CLASS}(?:\s+(?:(?:o|ou|or|y|et)\s+)?${WIMMER_GRAMMAR_PREFIX})*(?:\s+(?:en|a|à)\s+(?:sentido|sens)\s+(?:pasivo|passif))?(?:\s+(?:o|ou|or|y|et)\s+${WIMMER_GRAMMAR_CLASS}(?:\s+(?:(?:o|ou|or|y|et)\s+)?${WIMMER_GRAMMAR_PREFIX})*)?`;
-const WIMMER_GRAMMAR_MARKER_REGEX = new RegExp(`^${WIMMER_GRAMMAR_MARKER}$`, "iu");
-const WIMMER_LOOSE_GRAMMAR_MARKER_REGEX = new RegExp(`^(\\s*(?:<b>\\s*(?:\\d+\\.?~?|[A-Z]\\.?)\\s*<\\/b>\\s*)?)(<b>\\s*)?(${WIMMER_GRAMMAR_MARKER})([\\s\\S]*)$`, "iu");
-const WIMMER_SMALL_GRAMMAR_MARKER_REGEX = new RegExp(`^(\\s*(?:<b>\\s*(?:\\d+\\.?~?|[A-Z]\\.?)\\s*<\\/b>\\s*)?)<small>\\s*(${WIMMER_GRAMMAR_MARKER})\\s*<\\/small>([\\s\\S]*)$`, "iu");
-const WIMMER_BOLD_GRAMMAR_MARKER_REGEX = new RegExp(`^(\\s*(?:<b>\\s*(?:\\d+\\.?~?|[A-Z]\\.?)\\s*<\\/b>\\s*)?)<b>\\s*(${WIMMER_GRAMMAR_MARKER})([\\s\\S]*)$`, "iu");
-const WIMMER_UPPER_WORD = String.raw`[A-ZÁÉÍÓÚÜÑÂÊÎÔÛĀĒĪŌŪÀÈÌÒÙÇ]{2,}`;
-const WIMMER_LEADING_ALL_CAPS_RUN_REGEX = new RegExp(`^(\\s*(?:<[^>]+>\\s*)*)(${WIMMER_UPPER_WORD}(?:(?:[\\s,.;:¿?¡!()'"/-]+|&nbsp;)*${WIMMER_UPPER_WORD})*(?:[\\s,.;:¿?¡!()'"/-]+)*)`, "u");
-const WIMMER_UPPER_WORD_REGEX = new RegExp(WIMMER_UPPER_WORD, "gu");
-const WIMMER_TEXT_WORD = String.raw`[A-Za-zÁÉÍÓÚÜÑáéíóúüñÂÊÎÔÛâêîôûĀĒĪŌŪāēīōūÀÈÌÒÙàèìòùÇç'ʼ-]+`;
-const WIMMER_FULL_SMALL_EXAMPLE_START_REGEX = new RegExp(`^(?:in\\s+|zan\\s+|auh\\s+|ca\\s+|ic\\s+|inic\\s+|intlâ\\s+|ahmo\\s+|aocmo\\s+|oncân\\s+|huel\\s+|nô\\s+|mochi\\s+|niman\\s+|mâ\\s+)?${WIMMER_TEXT_WORD}(?:[\\s,;:]+${WIMMER_TEXT_WORD}){0,14}\\s*,\\s+`, "iu");
-const WIMMER_FULL_SMALL_SOURCE_START_REGEX = /^(?:Cf\.|Sah\s*\d|Sah\d|Sah\s+(?:HG|Garibay|19\d\d)|SIS\s*\d|Molina|M\.|m\s+[ivxlcdm]+|Launey|Andrews|A\.\s*Andrews|R\.\s*(?:Andrews|Joe|Siméon)|Cod\.?|Codex|Cron|Crónica|ECN|Acad|Bancroft|FC|Olmos|Carochi|Prim\.?\s*Mem|Prim|Mem|MS|Ms|U\.\s*Dyckerhoff|Dyckerhoff|W\.?\s*Lehmann|Garibay|Hern\.|Dibble|Rammow|SGA|Bautista)\b/i;
-const WIMMER_FULL_SMALL_LANGUAGE_NOTE_REGEX = /^(?:Allem|Alem|Allemand|German|English|Spanish|Angl|Ingl|Esp|Fr)\b\.?/i;
-const WIMMER_FULL_SMALL_COMMENTARY_CUE_REGEX = /\b(?:Se dice|se dice|Est dit|est dit|Is said|is said|Describe|describe|Décrit|décrit|Désigne|désigne|Designa|designa|Caractérise|caracteriza|Asociado|asociado|Associé|associé|Usado|usado|utilisé|Portées|Hablando|Il s'agit|A propos|A propósito|Dicho|Nom du|Nombre del|nombre\s+(?:divino|personal)|nom\s+(?:divin|personnel|pers\.)|topónimo|toponyme|término|terme|apócope|apocope|diminutivo|diminutif|pft\.)\b/i;
-const WIMMER_FULL_SMALL_TRAILING_SOURCE_REGEX = /(?:;|\.)\s*(?:Sah\d|Sah\s|Launey|Cod\.?|Acad|ECN|Prim|W\.?\s*Lehmann|CF)\b/i;
-const WIMMER_TRAILING_SOURCE_START_REGEX = /(?:^|[\s;=(])(?:Cf\.\s*)?(?:Sah(?:\s*(?:\d{4}|HG|Garibay|VI|VII|VIII|IX|X|XI|XII)\b|\d+)|SIS\s*\d|Launey|Cod\.?\s*(?:Flor|Mat)?|Acad(?:\s+Hist)?|ECN|CF|FC|Prim\.?\s*Mem|W\.?\s*Lehmann|U\.?\s*Dyckerhoff|Dyckerhoff|Garibay|Olmos|Bautista|Rammow|Dibble|SGA|Hern\.|Molina|M\.|m\s+[ivxlcdm]+)\b/gi;
-const WIMMER_NAHUATL_CONTINUATION_REGEX = /^(?:in|zan|auh|ca|ic|inic|intlâ|ahmo|aocmo|oncân|huel|nô|mochi|niman|mâ)\b/i;
-const WIMMER_NON_NAHUATL_START_REGEX = /^(?:Se|Est|Is|Describe|Décrit|Désigne|Designa|Caractérise|Caracteriza|Hablando|A|En|Dans|La|Le|Les|El|Los|Las|Un|Una|Une|Des|Du|De|Qui|Cern[ií]calo|Petit|Plein|Rouge|Mantas|Couvertures|Rem[eè]de|C[eé]ramiste|Mets|Parmi|Nombre|Nom|Forma|Form|Nota|Note|Hern|Sah|Cod|Acad)\b/i;
-const WIMMER_SAH_CITATION_REGEX = /\bSah\d+\s*,\s*\??\d+[a-z]?(?:-\d+[a-z]?)?(?::\d+(?:-\d+)?)?\.?/gi;
-const WIMMER_FOLIO_MARKER = String.raw`\d+[rv]\.?(?:[ab]\.?)?(?::\d+[A-Za-z]*(?:-\d+)?)?`;
-const WIMMER_FOLIO_SOURCE_CITATION_REGEX = new RegExp(String.raw`\b(?:J\.?\s*de\s+durand-forest\.\s*)?(?:Cf\.\s*(?:también\s+)?|Ver\s+|Véase\s+|Ilustraciónver\s+)?(?:Cod\.?\s*(?:Flor\.?|Mat(?:\s+Acad)?|ex)?|Códice\s+[A-Za-zÁÉÍÓÚÜÑáéíóúüñ-]+|Codex\s+[A-Za-zÁÉÍÓÚÜÑáéíóúüñ-]+|CF\s*XI|CFXI|CF11|CM|Bacalao(?:\s*(?:Flor|FIor|Mat|Acad|IVA\.?\s*A?|iva\.?\s*a?))?|Código\s+Flor|Acad(?:\s+Hist)?\s*MS|Prim\.?\s*Mem\.?\.?|Primera\s+Memoria|Primeros\s+Memoriales(?:\s+f\.?)?|Memoria\s+(?:primaria|de\s+sólo\s+lectura)|remilgado\.?\s+memoria|Bautista\s+Huehuetlatolli|Confesionario\s+mayor|Chim\.?(?:\s*\d+ª?\s+relación)?|Chim\d+|Chimalpahin|Química\.?\s*(?:\d+\.?\s*)?(?:Rel(?:ación)?\.?|relación)|H\.?\s*T\.?\s*Ch\.?|Carochi|carochs\s+arte|garochi\s+arte|Molina(?:\s+[iI]{1,2}\s*f\.?)?|molinai{1,2}|m\s+(?:i|ii)|olm\.?|Vetancurt\s+1673|Bankroft|Bancroft|BN\s*303|Tezozomoc\s+(?:1598\s+fol\.|crónica\s+mexicana\s+fol\.)|Cantares(?:\s+Mexicanos)?(?:,\s*fol\.?|\s+fol\.?)?|MS\s+Cantares\s+Mexicanos[^<;\n]*?f\.|Historia\s+tolteca[-\s]chichimeca|manuscrito\s+(?:de\s+)?badiano|manuscrito\s+badianus|codex\s+badianus|Badianus(?:\s+manuscrito)?|Badiano|Pichardo\.\s*Fábulas\s+de\s+Esopo\.\s*1898\.|arte\s+de\s+(?:la\s+)?lengua\s+mexicana(?:\s+f\.)?)[^<;\n]*?\b${WIMMER_FOLIO_MARKER}(?:\s*(?:y|e|and|et)\s*${WIMMER_FOLIO_MARKER})*\)?`, "giu");
-const WIMMER_TAGGED_FOLIO_SOURCE_CITATION_REGEX = new RegExp(String.raw`<(b|i)>\s*(?:Cantares(?:\s+Mexicanos)?|MS\s+Cantares\s+Mexicanos|Cod\.?\s*(?:Flor\.?|Mat(?:\s+Acad)?|ex)?|CF\s*XI|CFXI|CF11|CM|H\.?\s*T\.?\s*Ch\.?|Chim\.?(?:\s*\d+ª?\s+relación)?)\s*<\/\1>[^<;\n]*?\b${WIMMER_FOLIO_MARKER}(?:\s*(?:y|e|and|et)\s*${WIMMER_FOLIO_MARKER})*`, "giu");
-const WIMMER_SHORT_FOLIO_SOURCE_CITATION_REGEX = new RegExp(String.raw`(^|[\s(])((?:Cf\.\s*)?(?:X[lI]|F\.|f\.|fol\.|m\s*(?:i|ii)|mi|mii|t)\s+${WIMMER_FOLIO_MARKER}(?:\s*(?:y|e|and|et)\s*${WIMMER_FOLIO_MARKER})*\.?\)?)`, "giu");
-const WIMMER_FOLIO_PAREN_CITATION_REGEX = new RegExp(String.raw`\(([^()<>]{0,220}\b${WIMMER_FOLIO_MARKER}[^()<>]{0,220})\)`, "giu");
-const WIMMER_BARE_FOLIO_MARKER_REGEX = new RegExp(String.raw`\b${WIMMER_FOLIO_MARKER}\b`, "giu");
-const WIMMER_FOLIO_SOURCE_HINT_REGEX = /(?:^|\b)(?:m\s*(?:i|ii)|molinai{1,2}|molina|carochi|sah|prim|mem|cod|códice|codex|acad|bautista|confesionario|chimalpahin|chim\d+|rammow|badianus|badiano|pichardo|cantares|tezozomoc|historia|arte)\b/i;
-const WIMMER_ES_EXAMPLE_START_CUE = String.raw`(?:in|inic|intlâ|auh|ca|zan|yehhuâtl|îpan|ic|nô|ahmo|aocmo|oncân|huel|mâ)`;
-const WIMMER_ES_DEFINITION_EXAMPLE_SPLIT_REGEX = new RegExp(String.raw`^([\s\S]*?\.\s+)(${WIMMER_ES_EXAMPLE_START_CUE}\s+[\s\S]*?[âêîôûÂÊÎÔÛ][\s\S]*?,\s*[\s\S]*)$`, "iu");
-const WIMMER_ES_DEFINITION_PREFIX_REGEX = /^(?:['"“”‘’]?[a-zâêîôû]+['"“”‘’]?\s+se\s+coloca|Que|Como|También|Tambien|En|La|El|Los|Las|Un|Una|Este|Esta|Descripción|Descripcion|Cf\.|Véase|Vease|Se|Nombre|Nota|Forma|Atributo|Dado|Usado|Citado|Preside|Representación|Representacion)\b/i;
-const WIMMER_ES_DEFINITION_WORD_REGEX = /\b(?:que|con|relación|relacion|sentido|ofrenda|ritual|llamad[ao]s?|descrit[ao]s?|presenta|símbolo|simbolo|define|coloca|delante|palabra|página|pagina|título|titulo|especifica)\b/i;
-
-function normalizeWimmerReferences(text) {
-  if (!text) return text;
-  return String(text).replace(WIMMER_REF_REGEX, "$1 Introd");
-}
-
-function normalizeWimmerSmallMarkup(text) {
-  if (!text) return text;
-  const parts = String(text).split(/(<br\s*\/?>)/i);
-  return parts.map(part => /<br\s*\/?>/i.test(part) ? part : normalizeWimmerSmallMarkupLine(part)).join("");
-}
-
-function normalizeWimmerSmallMarkupLine(line) {
-  const parts = String(line || "").split(/(<\/?small\b[^>]*>)/i);
-  const out = [];
-  let smallOpen = false;
-
-  for (const part of parts) {
-    if (/^<small\b/i.test(part)) {
-      if (!smallOpen) {
-        out.push(part);
-        smallOpen = true;
-      }
-      continue;
-    }
-
-    if (/^<\/small>/i.test(part)) {
-      if (smallOpen) {
-        out.push(part);
-        smallOpen = false;
-      }
-      continue;
-    }
-
-    out.push(part);
-  }
-
-  if (smallOpen) out.push("</small>");
-  return out.join("");
-}
-
-function unwrapWimmerFullLineSmallExamples(text, lemma = "") {
-  if (!text) return text;
-  const parts = String(text).split(/(<br\s*\/?>)/i);
-  return parts.map(part => /<br\s*\/?>/i.test(part) ? part : unwrapWimmerFullLineSmallExampleLine(part, lemma)).join("");
-}
-
-function unwrapWimmerFullLineSmallExampleLine(line, lemma = "") {
-  const source = String(line || "");
-  const noteThenSource = source.match(/^(\s*)<small\b[^>]*>\s*([\s\S]*?)\s*<\/small>(\s+<small\b[\s\S]*<\/small>\s*)$/i);
-  if (noteThenSource && !/<\/?small\b/i.test(noteThenSource[2])) {
-    const notePlain = collapseWhitespace(stripHtmlTags(noteThenSource[2]));
-    if (WIMMER_FULL_SMALL_COMMENTARY_CUE_REGEX.test(notePlain)) {
-      return `${noteThenSource[1]}${noteThenSource[2].trim()}${noteThenSource[3]}`;
-    }
-  }
-  const m = source.match(/^(\s*)<small\b[^>]*>\s*([\s\S]*?)\s*<\/small>(\s*)$/i);
-  if (!m) return line;
-  if (/<\/?small\b/i.test(m[2])) return line;
-  if (!shouldUnwrapWimmerFullLineSmall(m[2])) return line;
-  return `${m[1]}${formatWimmerFullLineSmallExample(m[2], lemma)}${m[3]}`;
-}
-
-function shouldUnwrapWimmerFullLineSmall(inner) {
-  const plain = collapseWhitespace(stripHtmlTags(inner));
-  if (!plain) return false;
-  const wrapped = `<small>${inner}</small>`;
-  if (isWimmerGrammarMarkerLine(wrapped)) return false;
-  if (isWimmerFullLineSmallSourceOnly(plain)) return false;
-  if (isWimmerMetaLine(plain)) return false;
-  if (WIMMER_FULL_SMALL_EXAMPLE_START_REGEX.test(plain)) return true;
-  if (WIMMER_FULL_SMALL_COMMENTARY_CUE_REGEX.test(plain)) return true;
-  return plain.length > 90
-    && /[âêîôûÂÊÎÔÛ]/.test(plain)
-    && WIMMER_FULL_SMALL_TRAILING_SOURCE_REGEX.test(plain);
-}
-
-function isWimmerFullLineSmallSourceOnly(plain) {
-  if (WIMMER_FULL_SMALL_LANGUAGE_NOTE_REGEX.test(plain)) return true;
-  if (!WIMMER_FULL_SMALL_SOURCE_START_REGEX.test(plain)) return false;
-  return !WIMMER_FULL_SMALL_COMMENTARY_CUE_REGEX.test(plain);
-}
-
-function wrapWimmerStandaloneSahCitations(text) {
-  if (!text) return text;
-  return mapWimmerOutsideSmallSpans(text, wrapWimmerStandaloneSahCitationsInText);
-}
-
-function mapWimmerOutsideSmallSpans(text, callback) {
-  return String(text || "")
-    .split(/(<small\b[^>]*>[\s\S]*?<\/small>)/gi)
-    .map(part => /^<small\b/i.test(part) ? part : callback(part))
-    .join("");
-}
-
-function wrapWimmerStandaloneSahCitationsInText(text) {
-  return String(text || "").replace(WIMMER_SAH_CITATION_REGEX, match => `<small>${match}</small>`);
-}
-
-function wrapWimmerFolioCitations(text) {
-  if (!text) return text;
-  const withParentheticalCitations = mapWimmerOutsideSmallSpans(text, wrapWimmerFolioParentheticalCitationsInText);
-  const withSourceCitations = mapWimmerOutsideSmallSpans(withParentheticalCitations, wrapWimmerFolioSourceCitationsInText);
-  return mapWimmerOutsideSmallSpans(withSourceCitations, wrapWimmerBareFolioMarkersInText);
-}
-
-function wrapWimmerFolioSourceCitationsInText(text) {
-  const withTaggedSources = String(text || "")
-    .replace(WIMMER_TAGGED_FOLIO_SOURCE_CITATION_REGEX, match => `<small>${match}</small>`);
-  const withNamedSources = mapWimmerOutsideSmallSpans(withTaggedSources, part =>
-    part.replace(WIMMER_FOLIO_SOURCE_CITATION_REGEX, match => `<small>${match}</small>`)
-  );
-  return mapWimmerOutsideSmallSpans(withNamedSources, part =>
-    part.replace(WIMMER_SHORT_FOLIO_SOURCE_CITATION_REGEX, (match, prefix, citation) => {
-      if (prefix.endsWith("(")) return `${prefix.slice(0, -1)}<small>(${citation}</small>`;
-      return `${prefix}<small>${citation}</small>`;
-    })
-  );
-}
-
-function wrapWimmerFolioParentheticalCitationsInText(text) {
-  return String(text || "").replace(WIMMER_FOLIO_PAREN_CITATION_REGEX, (match, inner) => {
-    return isWimmerFolioParentheticalCitation(inner) ? `<small>${match}</small>` : match;
-  });
-}
-
-function wrapWimmerBareFolioMarkersInText(text) {
-  return String(text || "").replace(WIMMER_BARE_FOLIO_MARKER_REGEX, match => `<small>${match}</small>`);
-}
-
-function isWimmerFolioParentheticalCitation(inner) {
-  const plain = collapseWhitespace(stripHtmlTags(inner));
-  return WIMMER_FOLIO_SOURCE_HINT_REGEX.test(plain)
-    || new RegExp(String.raw`^(?:t|mi|mii|f\.?|fol\.?)\s+${WIMMER_FOLIO_MARKER}$`, "iu").test(plain);
-}
-
-function splitWimmerEsDefinitionExampleLines(text, lemma = "") {
-  if (!text) return text;
-  const parts = String(text).split(/(<br\s*\/?>)/i);
-  return parts.map(part => /<br\s*\/?>/i.test(part) ? part : splitWimmerEsDefinitionExampleLine(part, lemma)).join("");
-}
-
-function splitWimmerEsDefinitionExampleLine(line, lemma = "") {
-  const source = String(line || "");
-  if (!source || /^<b>/i.test(source) || !/[âêîôûÂÊÎÔÛ]/.test(source) || !/<small\b/i.test(source)) return line;
-
-  const firstSmall = source.search(/<small\b/i);
-  if (firstSmall < 0) return line;
-  const head = source.slice(0, firstSmall);
-  const suffix = source.slice(firstSmall);
-  const split = findWimmerEsDefinitionExampleSplit(head, lemma);
-  if (!split) return line;
-
-  return `${split.definition}<br>${boldWimmerNahuatlLead(split.example, lemma)}${suffix}`;
-}
-
-function findWimmerEsDefinitionExampleSplit(text, lemma = "") {
-  const source = String(text || "");
-  const match = source.match(WIMMER_ES_DEFINITION_EXAMPLE_SPLIT_REGEX);
-  if (!match) return null;
-
-  const definition = match[1].trim();
-  const example = match[2].trim();
-  if (!looksLikeWimmerEsDefinitionPrefix(definition)) return null;
-  const firstComma = example.indexOf(",");
-  if (firstComma < 0) return null;
-  if (!looksLikeWimmerNahuatlPhrase(example.slice(0, firstComma), lemma)) return null;
-
-  return { definition, example: `${example} ` };
-}
-
-function looksLikeWimmerEsDefinitionPrefix(prefix) {
-  const plain = collapseWhitespace(stripHtmlTags(prefix));
-  if (!plain || WIMMER_NAHUATL_CONTINUATION_REGEX.test(plain)) return false;
-  return WIMMER_ES_DEFINITION_PREFIX_REGEX.test(plain) || WIMMER_ES_DEFINITION_WORD_REGEX.test(plain);
-}
-
-function unwrapWimmerFalseSourceSmallSpans(text) {
-  if (!text) return text;
-  return mapWimmerOutsideSmallSpans(text, part => part)
-    .split(/(<small\b[^>]*>[\s\S]*?<\/small>)/gi)
-    .map(part => /^<small\b/i.test(part) ? unwrapWimmerFalseSourceSmallSpan(part) : part)
-    .join("");
-}
-
-function unwrapWimmerFalseSourceSmallSpan(span) {
-  const m = String(span || "").match(/^<small\b[^>]*>\s*([\s\S]*?)\s*<\/small>$/i);
-  if (!m) return span;
-  const plain = collapseWhitespace(stripHtmlTags(m[1]));
-  if (/^Sahag[uú]n(?:\s+a\s+Huitzilopochtli)?$/i.test(plain)) return m[1].trim();
-  return span;
-}
-
-function boldWimmerNumberedSenseInlineExamples(text, lemma = "") {
-  if (!text) return text;
-  const parts = String(text).split(/(<br\s*\/?>)/i);
-  return parts.map(part => /<br\s*\/?>/i.test(part) ? part : boldWimmerNumberedSenseInlineExampleLine(part, lemma)).join("");
-}
-
-function boldWimmerNumberedSenseInlineExampleLine(line, lemma = "") {
-  const source = String(line || "");
-  if (/<\/b>\s*<b>/i.test(source)) return source;
-  return source.replace(/^(\s*<b>\s*\d+\.?~?\s*<\/b>\s*)(?!<b>)([^,<]{2,120})(,\s*)/i, (match, prefix, phrase, comma) => {
-    if (!looksLikeWimmerNahuatlPhrase(phrase, lemma)) return match;
-    return `${prefix}<b>${phrase.trim()}</b>${comma}`;
-  });
-}
-
-function formatWimmerFullLineSmallExample(inner, lemma = "") {
-  const content = normalizeWimmerAllCapsLine(String(inner || "").trim());
-  return boldWimmerNahuatlLead(wrapWimmerTrailingSource(content), lemma);
-}
-
-function wrapWimmerTrailingSource(line) {
-  const split = splitWimmerTrailingSource(line);
-  if (!split) return line;
-  return `${split.prefix} <small>${split.source}</small>`;
-}
-
-function splitWimmerTrailingSource(line) {
-  const source = String(line || "").trim();
-  const matches = [];
-  WIMMER_TRAILING_SOURCE_START_REGEX.lastIndex = 0;
-  let match;
-  while ((match = WIMMER_TRAILING_SOURCE_START_REGEX.exec(source))) {
-    let sourceStart = match.index;
-    while (sourceStart < source.length && /[\s;=(]/.test(source[sourceStart])) sourceStart += 1;
-    matches.push(sourceStart);
-  }
-
-  for (const sourceStart of matches) {
-    const sourceText = source.slice(sourceStart).trim();
-    if (!isLikelyWimmerTrailingSource(sourceText)) continue;
-    if (hasWimmerExampleAfterSourceStart(sourceText)) continue;
-    const prefix = source.slice(0, sourceStart).trimEnd().replace(/[\s;=(]+$/g, "").trimEnd();
-    if (!prefix) continue;
-    return { prefix, source: sourceText };
-  }
-
-  return null;
-}
-
-function isLikelyWimmerTrailingSource(source) {
-  const plain = collapseWhitespace(stripHtmlTags(source));
-  if (!plain || plain.length < 4) return false;
-  if (!/(?:\d|Sah|SIS|Launey|Cod|Acad|ECN|CF|FC|Prim|Lehmann|Dyckerhoff|Garibay|Olmos|Bautista|Rammow|Dibble|SGA|Hern|Molina|M\.)/i.test(plain)) return false;
-  return !/[.!?]\s+(?:Se dice|Est dit|Describe|Décrit|Désigne|Designa|Hablando)\b/i.test(plain);
-}
-
-function hasWimmerExampleAfterSourceStart(source) {
-  const afterFirstSeparator = String(source || "").replace(/^[^;]+;?/, "");
-  if (!afterFirstSeparator) return false;
-  return new RegExp(`;\\s*(?:${WIMMER_NAHUATL_CONTINUATION_REGEX.source.replace(/^\^|\$$/g, "")}\\s+)?${WIMMER_TEXT_WORD}(?:[\\s,;:]+${WIMMER_TEXT_WORD}){0,10}\\s*,\\s+`, "iu").test(`;${afterFirstSeparator}`);
-}
-
-function boldWimmerNahuatlLead(line, lemma = "") {
-  const source = String(line || "");
-  if (!source || /^<b>/i.test(source)) return source;
-  const trailing = source.match(/(\s*<small>[\s\S]*?<\/small>\s*)$/i);
-  const body = trailing ? source.slice(0, trailing.index) : source;
-  const suffix = trailing ? trailing[1] : "";
-  const span = findWimmerNahuatlLeadSpan(body, lemma);
-  if (!span) return source;
-  const nahuatl = normalizeWimmerBoldNahuatlCase(body.slice(span.start, span.end));
-  return `${body.slice(0, span.start)}<b>${nahuatl}</b>${body.slice(span.end)}${suffix}`;
-}
-
-function findWimmerNahuatlLeadSpan(body, lemma = "") {
-  const starts = [0];
-  const separatorRegex = /[.;]\s+/g;
-  let sep;
-  while ((sep = separatorRegex.exec(body)) && starts.length < 8) starts.push(sep.index + sep[0].length);
-
-  for (const rawStart of starts) {
-    const start = skipWimmerLeadingSpace(body, rawStart);
-    const comma = body.indexOf(",", start);
-    if (comma > start && comma - start <= 220) {
-      const end = extendWimmerNahuatlLeadThroughContinuations(body, start, comma, lemma);
-      if (looksLikeWimmerNahuatlPhrase(body.slice(start, end), lemma)) return { start, end };
-    }
-
-    const colon = body.indexOf(":", start);
-    if (colon > start && colon - start <= 90 && looksLikeWimmerNahuatlPhrase(body.slice(start, colon), lemma)) {
-      return { start, end: colon };
-    }
-
-    const sentence = body.slice(start).match(/^([^.<,;:]{2,90})\.\s+(?:nombre|nom)\s+(?:divino|divin|personal|personnel|pers\.)\b/i);
-    if (sentence && looksLikeWimmerNahuatlPhrase(sentence[1], lemma)) {
-      return { start, end: start + sentence[1].length };
-    }
-  }
-
-  return null;
-}
-
-function skipWimmerLeadingSpace(text, start) {
-  let i = start;
-  while (i < text.length && /\s/.test(text[i])) i += 1;
-  return i;
-}
-
-function extendWimmerNahuatlLeadThroughContinuations(text, start, comma, lemma = "") {
-  let end = comma;
-  let cursor = comma + 1;
-  while (cursor < text.length) {
-    cursor = skipWimmerLeadingSpace(text, cursor);
-    const nextComma = text.indexOf(",", cursor);
-    if (nextComma < 0 || nextComma - cursor > 120) break;
-    const nextPhrase = text.slice(cursor, nextComma);
-    if (!isWimmerNahuatlLeadContinuation(nextPhrase, lemma)) break;
-    end = nextComma;
-    cursor = nextComma + 1;
-  }
-  return end;
-}
-
-function isWimmerNahuatlLeadContinuation(phrase, lemma = "") {
-  const plain = collapseWhitespace(stripHtmlTags(phrase));
-  if (!plain || WIMMER_NON_NAHUATL_START_REGEX.test(plain)) return false;
-  if (WIMMER_NAHUATL_CONTINUATION_REGEX.test(plain)) return true;
-  if (/^i[A-Za-zÁÉÍÓÚÜÑáéíóúüñÂÊÎÔÛâêîôûĀĒĪŌŪāēīōūÀÈÌÒÙàèìòùÇç'ʼ-]{2,}h$/i.test(plain)) return true;
-  return looksLikeWimmerNahuatlPhrase(plain, lemma) && plain.split(/\s+/).length <= 4;
-}
-
-function looksLikeWimmerNahuatlPhrase(phrase, lemma = "") {
-  const plain = collapseWhitespace(stripHtmlTags(phrase)).replace(/^[¿?¡!'"()]+|[¿?¡!'"().;:]+$/g, "");
-  if (!plain || WIMMER_NON_NAHUATL_START_REGEX.test(plain)) return false;
-  const normalizedPhrase = normalizeString(plain);
-  const normalizedLemma = normalizeString(String(lemma || ""));
-  if (normalizedLemma && (normalizedPhrase.includes(normalizedLemma) || normalizedLemma.includes(normalizedPhrase))) return true;
-  if (/[âêîôûÂÊÎÔÛ]/.test(plain)) return true;
-  if (WIMMER_NAHUATL_CONTINUATION_REGEX.test(plain)) return true;
-  return /\b(?:tl|tz|hu|cu|qu|yoh|tli|lli|qui|oa|hua)\b/i.test(plain)
-    || /(?:tl|tz|cuauh|tzin|yotl|huia|tiuh|toca|pilli|calli|teotl|xochitl|patli|tli|lli)\b/i.test(plain);
-}
-
-function normalizeWimmerBoldNahuatlCase(text) {
-  const letters = String(text || "").match(/\p{L}/gu) || [];
-  if (letters.length < 4) return text;
-  const upper = letters.filter(char => char === char.toLocaleUpperCase("es") && char !== char.toLocaleLowerCase("es")).length;
-  if (upper / letters.length < 0.7) return text;
-  const lowered = text.toLocaleLowerCase("es");
-  return lowered.replace(/\p{L}/u, char => char.toLocaleUpperCase("es"));
-}
-
-function isWimmerMetaLine(line) {
-  const plain = collapseWhitespace(stripHtmlTags(line));
-  return /^(?:Cf\.|Forma:|Form:|Nota:|Véase|Ver\b|Voir\b|See\b|Desaparecido en\b|Disparu\b|Absent\b)/i.test(plain);
-}
-
-function hasLeadingWimmerAllCapsRun(line) {
-  const source = String(line || "");
-  if (!source || /<b>/i.test(source)) return false;
-  const match = source.match(WIMMER_LEADING_ALL_CAPS_RUN_REGEX);
-  if (!match) return false;
-  const runPlain = collapseWhitespace(stripHtmlTags(match[2]));
-  const letters = runPlain.match(/[A-ZÁÉÍÓÚÜÑÂÊÎÔÛĀĒĪŌŪÀÈÌÒÙÇ]/g) || [];
-  if (letters.length < 6) return false;
-  return !/^(?:SGA|CF|SAH|SIS|ECN|FC|HG|PRIM|MEM|MS|GARIBAY|LAUNEY|ANDREWS|R\.?\s*ANDREWS|R\.?\s*JOE)\b/.test(runPlain);
-}
-
-function sentenceCaseWimmerCapsRun(run) {
-  const lowered = run.replace(WIMMER_UPPER_WORD_REGEX, word => word.toLocaleLowerCase("es"));
-  return lowered.replace(/[a-záéíóúüñâêîôûāēīōūàèìòùç]/i, char => char.toLocaleUpperCase("es"));
-}
-
-function normalizeWimmerAllCapsLine(line) {
-  const source = String(line || "");
-  if (!hasLeadingWimmerAllCapsRun(source)) return line;
-  return source.replace(WIMMER_LEADING_ALL_CAPS_RUN_REGEX, (match, prefix, run) => {
-    return `${prefix}${sentenceCaseWimmerCapsRun(run)}`;
-  });
-}
-
-function normalizeWimmerAllCapsLines(text) {
-  const parts = String(text || "").split(/(<br\s*\/?>)/i);
-  return parts.map(part => /<br\s*\/?>/i.test(part) ? part : normalizeWimmerAllCapsLine(part)).join("");
-}
-
-function isWimmerCitationOnlySmall(line) {
-  const m = String(line || "").trim().match(/^<small>\s*([\s\S]*?)\s*<\/small>$/i);
-  if (!m) return false;
-  const plain = stripHtmlTags(m[1]).trim();
-  if (!plain) return false;
-  if (/\b(?:Angl|Ingl|Esp|Alem|Allemand|German|English|Spanish|Fr)\b\.?/i.test(plain)) return false;
-  return /^(?:Sah|SIS|Molina|M\.|m\s+[ivxlcdm]+|Launey|Andrews|R\.\s*(?:Andrews|Joe)|Cod\.?|Codex|Cron|ECN|Acad|Bancroft|FC|Olmos|Carochi|Prim|Mem|Ms)\b/i.test(plain);
-}
-
-function isWimmerInlineExampleLine(line) {
-  const trimmed = String(line || "").trim();
-  if (!trimmed) return false;
-  if (!/^<b>[\s\S]*?<\/b>\s*,/i.test(trimmed)) return isWimmerPlainExampleLine(trimmed);
-  const boldPlain = collapseWhitespace(stripHtmlTags((trimmed.match(/^<b>([\s\S]*?)<\/b>/i) || ["", ""])[1]));
-  if (!boldPlain) return false;
-  if (/^(?:A|B|C|D|E|F)\.~\b/i.test(boldPlain)) return false;
-  if (/\b(?:forme|forma|variante|syn\.|plural|plur\.|pft\.|éventuel|eventual)\b/i.test(boldPlain)) return false;
-  return true;
-}
-
-function isWimmerPlainExampleLine(line) {
-  if (/^<small\b/i.test(line)) return false;
-  const plain = collapseWhitespace(stripHtmlTags(line));
-  if (!plain || isWimmerMetaLine(plain) || isWimmerFullLineSmallSourceOnly(plain)) return false;
-  if (!WIMMER_FULL_SMALL_EXAMPLE_START_REGEX.test(plain)) return false;
-  return !/\b(?:forme|forma|variante|syn\.|plural|plur\.|pft\.|éventuel|eventual)\b/i.test(plain);
-}
-
-function isWimmerGrammarMarkerLine(line) {
-  const trimmed = String(line || "").trim();
-  const m = trimmed.match(/^<small>\s*<i>\s*([\s\S]*?)\s*<\/i>\s*<\/small>\s*$/i);
-  if (!m) return false;
-  const plain = collapseWhitespace(stripHtmlTags(m[1]));
-  return /^\*?\s*~\s*/.test(plain) || WIMMER_GRAMMAR_MARKER_REGEX.test(plain);
-}
-
-function isWimmerNumberedSenseLine(line) {
-  const trimmed = String(line || "").trim();
-  const plain = collapseWhitespace(stripHtmlTags(trimmed));
-  return /^<b>\s*\d+\.?~?\s*<\/b>/i.test(trimmed) || /^\d+\.?~?\s+/.test(plain);
-}
-
-function isWimmerLemmaHeaderLine(line) {
-  const trimmed = String(line || "").trim();
-  const plain = collapseWhitespace(stripHtmlTags(trimmed));
-  if (!plain) return false;
-  if (isWimmerInlineExampleLine(trimmed) || isWimmerNumberedSenseLine(trimmed) || isWimmerGrammarMarkerLine(trimmed)) return false;
-  if (/^<b>[\s\S]*?<\/b>:?\s*$/i.test(trimmed)) return true;
-  return /:$/.test(plain) && !/[,.]/.test(plain);
-}
-
-function isWimmerSourceNoteLine(line) {
-  const trimmed = String(line || "").trim();
-  if (!/^<small>[\s\S]*?<\/small>\s*$/i.test(trimmed)) return false;
-  if (isWimmerGrammarMarkerLine(trimmed)) return false;
-  const plain = collapseWhitespace(stripHtmlTags(trimmed));
-  if (!plain) return false;
-  return /^(?:Angl|Ingl|Esp|Alem|Allemand|German|English|Spanish|Fr)\b\.?/i.test(plain)
-    || /(?:^|[;,]\s*)(?:Sah|SIS|Molina|M\.|m\s+[ivxlcdm]+|Launey|Andrews|R\.\s*(?:Andrews|Joe)|Cod\.?|Codex|Cron|ECN|Acad|Bancroft|FC|Olmos|Carochi|Prim|Mem|Ms)\b/i.test(plain);
-}
-
-function isWimmerNoteLine(line) {
-  return /^Nota\s*:/i.test(collapseWhitespace(stripHtmlTags(line)));
-}
-
-function shouldBreakBeforeWimmerLine(line, prevLine, hadBlankBefore) {
-  if (!prevLine) return false;
-  if (isWimmerSourceNoteLine(line)) return false;
-  if (isWimmerNoteLine(line)) return true;
-  if (isWimmerGrammarMarkerLine(line)) return !isWimmerLemmaHeaderLine(prevLine);
-  if (isWimmerInlineExampleLine(line)) return !isWimmerInlineExampleLine(prevLine);
-  if (isWimmerNumberedSenseLine(line)) return !isWimmerGrammarMarkerLine(prevLine);
-  if (isWimmerDefinitionLine(line) && isWimmerDefinitionLine(prevLine)) return false;
-  if (isWimmerMetaLine(line) && isWimmerDefinitionLine(prevLine)) return true;
-  return hadBlankBefore;
-}
-
-function isWimmerDefinitionLine(line) {
-  const trimmed = String(line || "").trim();
-  if (!trimmed) return false;
-  if (isWimmerLemmaHeaderLine(trimmed)) return false;
-  if (isWimmerGrammarMarkerLine(trimmed)) return false;
-  if (isWimmerNumberedSenseLine(trimmed)) return false;
-  if (isWimmerInlineExampleLine(trimmed)) return false;
-  if (isWimmerSourceNoteLine(trimmed)) return false;
-  if (isWimmerMetaLine(trimmed)) return false;
-  return true;
-}
-
-function styleWimmerLooseGrammarMarkerLine(line) {
-  const source = String(line || "");
-  if (!source || /^\s*<small>\s*<i>/i.test(source)) return line;
-
-  const smallMarker = source.match(WIMMER_SMALL_GRAMMAR_MARKER_REGEX);
-  if (smallMarker) {
-    const styled = buildWimmerGrammarMarker(smallMarker[1], smallMarker[2], smallMarker[3]);
-    if (styled) return styled;
-  }
-
-  const boldMarker = source.match(WIMMER_BOLD_GRAMMAR_MARKER_REGEX);
-  if (boldMarker) {
-    const styled = buildWimmerGrammarMarker(boldMarker[1], boldMarker[2], boldMarker[3], true);
-    if (styled) return styled;
-  }
-
-  const looseMarker = source.match(WIMMER_LOOSE_GRAMMAR_MARKER_REGEX);
-  if (!looseMarker) return line;
-  const styled = buildWimmerGrammarMarker(looseMarker[1], looseMarker[3], looseMarker[4], !!looseMarker[2]);
-  return styled || line;
-}
-
-function buildWimmerGrammarMarker(prefix = "", rawMarker = "", rawRest = "", hadBold = false) {
-  const marker = collapseWhitespace(stripHtmlTags(rawMarker));
-  let rest = rawRest || "";
-  if (!marker) return "";
-
-  const markerHtml = `<small><i>${marker}</i></small>`;
-  if (!hadBold) return `${prefix}${markerHtml}${rest}`;
-
-  const afterClosedBold = rest.match(/^\s*<\/b>\s*([\s\S]*)$/i);
-  if (afterClosedBold) {
-    const after = afterClosedBold[1] || "";
-    return `${prefix}${markerHtml}${after ? ` ${after}` : ""}`;
-  }
-
-  rest = rest.replace(/^\s+/, "");
-  return `${prefix}${markerHtml}${rest ? ` <b>${rest}` : ""}`;
-}
-
-function styleWimmerLooseGrammarMarkers(text) {
-  const parts = String(text || "").split(/(<br\s*\/?>)/i);
-  return parts.map(part => /<br\s*\/?>/i.test(part) ? part : styleWimmerLooseGrammarMarkerLine(part)).join("");
-}
-
-function addWimmerExampleParagraphBreaks(text) {
-  const lines = String(text || "").split(/<br\s*\/?>/i);
-  const out = [];
-  let blankCount = 0;
-  let prevLine = "";
-
-  for (const line of lines) {
-    if (!collapseWhitespace(stripHtmlTags(line))) {
-      blankCount += 1;
-      continue;
-    }
-
-    if (out.length) {
-      out.push(shouldBreakBeforeWimmerLine(line, prevLine, blankCount > 0) ? "<br><br>" : "<br>");
-    }
-
-    out.push(line);
-    prevLine = line;
-    blankCount = 0;
-  }
-
-  return out.join("");
-}
-
-function normalizeWimmerInlineExamples(text) {
-  if (!text) return text;
-  const source = String(text);
-  const parts = source.split(/(<br\s*\/?>)/i);
-  const out = [];
-
-  for (let i = 0; i < parts.length; i++) {
-    const part = parts[i];
-    if (!/<br\s*\/?>/i.test(part)) {
-      out.push(part);
-      continue;
-    }
-
-    const prev = out.length ? out[out.length - 1] : "";
-    const next = parts[i + 1] || "";
-    const prevPlain = collapseWhitespace(stripHtmlTags(prev));
-
-    if (
-      prevPlain &&
-      isWimmerCitationOnlySmall(next)
-    ) {
-      out[out.length - 1] = `${prev.replace(/\s+$/g, "")} ${next.trim()}`;
-      i += 1;
-      continue;
-    }
-
-    out.push(part);
-  }
-
-  return addWimmerExampleParagraphBreaks(styleWimmerLooseGrammarMarkers(normalizeWimmerAllCapsLines(out.join(""))));
-}
-
-function getWimmerComentario(row, comentarioKey) {
-  const raw = row[comentarioKey];
-  if (!raw) return raw ?? "";
-  const cacheKey = `__wimmerCom_${comentarioKey}`;
-  if (row[cacheKey] !== undefined) return row[cacheKey];
-  const lemma = row["Texto estandarizado"];
-  let normalized = normalizeWimmerSmallMarkup(normalizeWimmerReferences(raw));
-  normalized = unwrapWimmerFullLineSmallExamples(normalized, lemma);
-  normalized = wrapWimmerStandaloneSahCitations(normalized);
-  normalized = wrapWimmerFolioCitations(normalized);
-  normalized = unwrapWimmerFalseSourceSmallSpans(normalized);
-  if (comentarioKey === "Comentario (es)") {
-    normalized = splitWimmerEsDefinitionExampleLines(normalized, lemma);
-  }
-  normalized = boldWimmerNumberedSenseInlineExamples(normalized, lemma);
-  normalized = normalizeWimmerInlineExamples(normalized);
-  row[cacheKey] = normalized;
-  return normalized;
-}
-
-function getWimmerTraduccion(row, traduccionKey, comentarioKey) {
-  const raw = row[traduccionKey];
-  if (!raw || !isQuestionLike(raw)) return raw ?? "";
-  const cacheKey = `__wimmerDef_${traduccionKey}`;
-  if (row[cacheKey] !== undefined) return row[cacheKey] || raw;
-  const def = extractWimmerDefinition(getWimmerComentario(row, comentarioKey), row["Texto estandarizado"]);
-  row[cacheKey] = def;
-  return def || raw;
-}
-
 function getDisplayValue(row, fieldKey) {
   if (wimmerShowEs && row.Fuente === "2021 Wimmer") {
     const esKey = fieldKey === "Traducción" ? "Traducción (es)"
                 : fieldKey === "Comentario"  ? "Comentario (es)"
                 : null;
-    if (esKey && row[esKey]) {
-      if (fieldKey === "Traducción") return getWimmerTraduccion(row, "Traducción (es)", "Comentario (es)");
-      if (fieldKey === "Comentario") return getWimmerComentario(row, "Comentario (es)");
-      return row[esKey];
-    }
-  }
-  if (row.Fuente === "2021 Wimmer") {
-    if (fieldKey === "Traducción") return getWimmerTraduccion(row, "Traducción", "Comentario");
-    if (fieldKey === "Comentario") return getWimmerComentario(row, "Comentario");
+    if (esKey && row[esKey]) return row[esKey];
   }
   return row[fieldKey] ?? "";
 }
@@ -4841,11 +4151,11 @@ function applyHighlights(rawValue, fieldKey) {
     return rawValue == null ? "" : String(rawValue);
   }
   const val = rawValue == null ? "" : String(rawValue);
-  const allFilters = activeFilters.filter(f => f.field === fieldKey && f.value && !f.negate);
+  const allFilters = getHighlightFiltersForField(fieldKey);
   if (!allFilters.length) return val;
 
   const wordFilters = allFilters.filter(f => normalizeScope(f.scope) === "word");
-  const cellFilters = allFilters.filter(f => normalizeScope(f.scope) !== "word");
+  const cellFilters = allFilters.filter(f => normalizeScope(f.scope) !== "word" && !f.negate);
 
   let rendered = val;
 
@@ -4866,18 +4176,38 @@ function applyHighlights(rawValue, fieldKey) {
     const { regex, osRegex } = getHighlightRegexes(fieldKey, cellFilters);
     if (regex || osRegex) {
       const parts = rendered.split(/(<[^>]+>)/g);
+      const textPartIndexes = parts
+        .map((part, idx) => /^<[^>]+>$/.test(part) ? -1 : idx)
+        .filter(idx => idx >= 0);
+      const firstTextPart = textPartIndexes[0];
+      const lastTextPart = textPartIndexes[textPartIndexes.length - 1];
       rendered = parts
-        .map(part => {
+        .map((part, idx) => {
           if (/^<[^>]+>$/.test(part)) return part;
-          if (regex && osRegex) return highlightSegmentDual(part, regex, osRegex);
-          if (regex) return highlightSegment(part, regex);
-          return highlightSegment(part, osRegex);
+          const boundary = {
+            isFirstText: idx === firstTextPart,
+            isLastText: idx === lastTextPart
+          };
+          if (regex && osRegex) return highlightSegmentDual(part, regex, osRegex, boundary);
+          if (regex) return highlightSegment(part, regex, boundary);
+          return highlightSegment(part, osRegex, boundary);
         })
         .join("");
     }
   }
 
   return rendered;
+}
+
+function getHighlightFiltersForField(fieldKey) {
+  return activeFilters
+    .filter(filter => filter.value && highlightFilterAppliesToField(filter, fieldKey))
+    .map(filter => filter.field === fieldKey ? filter : { ...filter, field: fieldKey });
+}
+
+function highlightFilterAppliesToField(filter, fieldKey) {
+  if (filter.field === fieldKey) return true;
+  return Array.isArray(filter.fields) && filter.fields.includes(fieldKey);
 }
 
 function reverseOsExpand(str) {
@@ -4906,7 +4236,8 @@ function buildOsHighlightRegex(filters) {
     const literal = parsed.strict || parsed.loose;
     if (!literal) return;
     const expanded = reverseOsExpand(literal);
-    const relaxed = normalizePatternSource(stripAnchors(expanded));
+    const mode = parsed.effectiveMode || filter.mode;
+    const relaxed = normalizePatternSource(anchorHighlightSource(expanded, mode, { allowLoose: parsed.allowLoose }));
     sources.push(relaxed);
   });
   if (!sources.length) return null;
@@ -4917,21 +4248,39 @@ function buildOsHighlightRegex(filters) {
   }
 }
 
-function highlightSegmentDual(text, normalRegex, osRegex) {
+function highlightSegmentDual(text, normalRegex, osRegex, boundary = {}) {
   let combined;
   try {
     combined = new RegExp(`(${normalRegex.source})|(${osRegex.source})`, "gi");
   } catch {
-    return highlightSegment(text, normalRegex);
+    return highlightSegment(text, normalRegex, boundary);
   }
-  const norm = normalRegex.accentSensitive ? text.toLowerCase() : normalizeString(text);
+  const normalizedText = normalRegex.accentSensitive ? text.toLowerCase() : normalizeString(text);
+  const { candidate, textStart, textEnd } = buildHighlightCandidate(normalizedText, boundary);
+  const trimLooseEdges = !!(normalRegex.trimLooseEdges || osRegex.trimLooseEdges);
   let result = "";
   let lastIndex = 0;
   combined.lastIndex = 0;
   let match;
-  while ((match = combined.exec(norm)) !== null) {
-    const start = match.index;
-    const end = combined.lastIndex;
+  while ((match = combined.exec(candidate)) !== null) {
+    let start = Math.max(0, Math.min(text.length, match.index - textStart));
+    let end = Math.max(0, Math.min(text.length, combined.lastIndex - textStart));
+    if (combined.lastIndex <= textStart || match.index >= textEnd || end <= start) {
+      if (match[0].length === 0) combined.lastIndex++;
+      continue;
+    }
+    if (trimLooseEdges) {
+      ({ start, end } = trimLooseHighlightEdgeSpan(text, start, end));
+      if (end <= start) {
+        if (match[0].length === 0) combined.lastIndex++;
+        continue;
+      }
+    }
+    if (start < lastIndex) start = lastIndex;
+    if (end <= lastIndex) {
+      if (match[0].length === 0) combined.lastIndex++;
+      continue;
+    }
     result += text.slice(lastIndex, start);
     const cssClass = match[1] !== undefined ? "hl" : "hl-os";
     result += `<mark class="${cssClass}">${text.slice(start, end)}</mark>`;
@@ -4942,21 +4291,83 @@ function highlightSegmentDual(text, normalRegex, osRegex) {
   return result;
 }
 
-// Strip regex anchors (^ and $) from a pattern source.
-// In practice none of our highlight patterns use [^...] negated classes, so a global strip is safe.
-function stripAnchors(src) {
-  return src.replace(/\^/g, "").replace(/\$/g, "");
+const HIGHLIGHT_BOUNDARY_SENTINEL = "\uE000";
+const LOOSE_HIGHLIGHT_EDGE = "[^0-9A-Za-z\\u00C0-\\u024F\\u1E00-\\u1EFF\\uE000]*";
+
+function anchorHighlightSource(src, mode, options = {}) {
+  const looseEdge = options.allowLoose ? LOOSE_HIGHLIGHT_EDGE : "";
+  if (mode === "exact") {
+    return options.allowLoose
+      ? `^${looseEdge}(?:${src})(?=${looseEdge}$)`
+      : `^(?:${src})$`;
+  }
+  if (mode === "starts") {
+    return options.allowLoose
+      ? `^${looseEdge}(?:${src})`
+      : `^(?:${src})`;
+  }
+  if (mode === "ends") {
+    return options.allowLoose
+      ? `(?:${src})(?=${looseEdge}$)`
+      : `(?:${src})$`;
+  }
+  return src;
+}
+
+function relaxLooseHighlightAnchors(src, mode, allowLoose) {
+  if (!allowLoose) return src;
+  if (mode === "exact") {
+    return src.replace(/^\^/, `^${LOOSE_HIGHLIGHT_EDGE}`).replace(/\$$/, `(?=${LOOSE_HIGHLIGHT_EDGE}$)`);
+  }
+  if (mode === "starts") {
+    return src.replace(/^\^/, `^${LOOSE_HIGHLIGHT_EDGE}`);
+  }
+  if (mode === "ends") {
+    return src.replace(/\$$/, `(?=${LOOSE_HIGHLIGHT_EDGE}$)`);
+  }
+  return src;
 }
 
 // Normalize a regex pattern source for accent-insensitive matching.
-// Only safe when the pattern has no character classes (no `[`).
+// Preserve regex escapes: lowercasing/normalizing `\W` into `\w` changes the
+// meaning and breaks phrase highlights such as "estar con" -> `estar\W*con`.
+// Character classes are left untouched because normalizing their internals can
+// change range/class semantics.
 function normalizePatternSource(src) {
-  return src.includes("[") ? src : normalizeString(src);
+  const source = String(src || "");
+  let out = "";
+  let escaped = false;
+  let inClass = false;
+  for (const ch of source) {
+    if (escaped) {
+      out += ch;
+      escaped = false;
+      continue;
+    }
+    if (ch === "\\") {
+      out += ch;
+      escaped = true;
+      continue;
+    }
+    if (inClass) {
+      out += ch;
+      if (ch === "]") inClass = false;
+      continue;
+    }
+    if (ch === "[") {
+      out += ch;
+      inClass = true;
+      continue;
+    }
+    out += normalizeString(ch);
+  }
+  return out;
 }
 
 function buildHighlightRegex(filters) {
   const sources = [];
   let isAccentSensitive = false;
+  let trimLooseEdges = false;
   filters.forEach(filter => {
     const rawVal = (filter.value ?? "").trim();
     const andParts = extractContainsBothParts(rawVal);
@@ -4970,16 +4381,32 @@ function buildHighlightRegex(filters) {
     }
     const parsed = parseFilterValue(filter.value ?? "", filter.mode, { field: filter.field });
     if (parsed.accentSensitive) isAccentSensitive = true;
+    const mode = parsed.effectiveMode || filter.mode;
+    if (parsed.allowLoose && ["exact", "starts", "ends"].includes(mode)) {
+      trimLooseEdges = true;
+    }
     let rx = parsed.strictRegex || parsed.looseRegex;
+    let rxHasLooseEdges = false;
     if (!rx) {
       const literal = parsed.strict || parsed.loose;
       if (literal) {
-        const pattern = escapeRegex(String(literal)).replace(/\s+/g, "\\W*");
+        const pattern = anchorHighlightSource(
+          escapeRegex(String(literal)).replace(/\s+/g, "\\W*"),
+          mode,
+          { allowLoose: parsed.allowLoose }
+        );
         rx = new RegExp(pattern, "i");
+        rxHasLooseEdges = !!parsed.allowLoose;
       }
     }
     if (!rx) return;
-    const relaxed = stripAnchors(rx.source);
+    const relaxed = rxHasLooseEdges
+      ? rx.source
+      : relaxLooseHighlightAnchors(
+          rx.source,
+          mode,
+          parsed.allowLoose
+        );
     // Accent-sensitive queries: lowercase the pattern but preserve accents.
     // Plain queries: full normalization (accent-blind).
     const adjusted = parsed.accentSensitive
@@ -4991,24 +4418,42 @@ function buildHighlightRegex(filters) {
   try {
     const rx = new RegExp(`(${sources.join("|")})`, "gi");
     rx.accentSensitive = isAccentSensitive;
+    rx.trimLooseEdges = trimLooseEdges;
     return rx;
   } catch {
     return null;
   }
 }
 
-function highlightSegment(text, regex) {
+function highlightSegment(text, regex, boundary = {}) {
   // For accent-sensitive queries: match on lowercase-only text (preserve accents).
   // For plain queries: match on fully-normalized text (accent-blind).
   // In both cases, positions map 1-to-1 back to the original displayed text.
-  const norm = regex.accentSensitive ? text.toLowerCase() : normalizeString(text);
+  const normalizedText = regex.accentSensitive ? text.toLowerCase() : normalizeString(text);
+  const { candidate, textStart, textEnd } = buildHighlightCandidate(normalizedText, boundary);
   let result = "";
   let lastIndex = 0;
   regex.lastIndex = 0;
   let match;
-  while ((match = regex.exec(norm)) !== null) {
-    const start = match.index;
-    const end = regex.lastIndex;
+  while ((match = regex.exec(candidate)) !== null) {
+    let start = Math.max(0, Math.min(text.length, match.index - textStart));
+    let end = Math.max(0, Math.min(text.length, regex.lastIndex - textStart));
+    if (regex.lastIndex <= textStart || match.index >= textEnd || end <= start) {
+      if (match[0].length === 0) regex.lastIndex++;
+      continue;
+    }
+    if (regex.trimLooseEdges) {
+      ({ start, end } = trimLooseHighlightEdgeSpan(text, start, end));
+      if (end <= start) {
+        if (match[0].length === 0) regex.lastIndex++;
+        continue;
+      }
+    }
+    if (start < lastIndex) start = lastIndex;
+    if (end <= lastIndex) {
+      if (match[0].length === 0) regex.lastIndex++;
+      continue;
+    }
     result += text.slice(lastIndex, start);
     result += `<mark class="hl">${text.slice(start, end)}</mark>`;
     lastIndex = end;
@@ -5016,6 +4461,28 @@ function highlightSegment(text, regex) {
   }
   result += text.slice(lastIndex);
   return result;
+}
+
+function trimLooseHighlightEdgeSpan(text, start, end) {
+  while (start < end && isLooseHighlightEdgeChar(text[start])) start++;
+  while (end > start && isLooseHighlightEdgeChar(text[end - 1])) end--;
+  return { start, end };
+}
+
+function isLooseHighlightEdgeChar(ch) {
+  return !/[0-9A-Za-z\u00C0-\u024F\u1E00-\u1EFF]/.test(ch || "");
+}
+
+function buildHighlightCandidate(normalizedText, boundary = {}) {
+  const prefix = boundary.isFirstText === false ? HIGHLIGHT_BOUNDARY_SENTINEL : "";
+  const suffix = boundary.isLastText === false ? HIGHLIGHT_BOUNDARY_SENTINEL : "";
+  const candidate = `${prefix}${normalizedText}${suffix}`;
+  const textStart = prefix.length;
+  return {
+    candidate,
+    textStart,
+    textEnd: textStart + normalizedText.length
+  };
 }
 
 function partitionWordFiltersByGroup(filters) {
@@ -5056,9 +4523,9 @@ function tokenMatchesWordFilters(token, filters) {
   };
   const { groups, singles } = partitionWordFiltersByGroup(filters);
   for (const group of groups.values()) {
-    if (group.every(testFilter)) return true;
+    if (wordFilterGroupMatchesForHighlight(group, testFilter)) return true;
   }
-  return singles.some(testFilter);
+  return singles.some(filter => !filter.negate && testFilter(filter));
 }
 
 function tokenMatchesWordFiltersOS(token, filters) {
@@ -5072,9 +4539,31 @@ function tokenMatchesWordFiltersOS(token, filters) {
   };
   const { groups, singles } = partitionWordFiltersByGroup(filters);
   for (const group of groups.values()) {
-    if (group.every(testFilter)) return true;
+    if (wordFilterGroupMatchesForHighlight(group, testFilter)) return true;
   }
-  return singles.some(testFilter);
+  return singles.some(filter => !filter.negate && testFilter(filter));
+}
+
+function wordFilterGroupMatchesForHighlight(filters, testFilter) {
+  const segments = new Map();
+  let hasInclude = false;
+  filters.forEach(filter => {
+    const type = mapModeToWordRowType(filter.mode);
+    if (!segments.has(type)) segments.set(type, { include: [], exclude: [] });
+    const segment = segments.get(type);
+    if (filter.negate) {
+      segment.exclude.push(filter);
+    } else {
+      hasInclude = true;
+      segment.include.push(filter);
+    }
+  });
+  if (!hasInclude) return false;
+  for (const segment of segments.values()) {
+    if (segment.exclude.some(testFilter)) return false;
+    if (segment.include.length && !segment.include.some(testFilter)) return false;
+  }
+  return true;
 }
 
 function extractContainsBothParts(text) {
