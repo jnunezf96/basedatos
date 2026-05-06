@@ -1,0 +1,193 @@
+# 2021 Wimmer Traducción (es) Pilot Review — longest-translation
+# Review-only output. This file does not patch data/data.jsonl.gz.
+# Fields: old translation, proposed translation, reason, source snippets.
+
+════════════════════════════════════════════════════════════════════════════════
+01. tititl  [2021-wimmer:036477]
+REASON : corpus-short-leaky  tr_wc=80  com_wc=105  risk=7
+OLD    : calendario, mes 17 del año, en el que se celebraba una fiesta en honor a la diosa Ilamatecutli. La palabra 'tititl' significa endurecimiento, contracción. El personaje figurativo representa dos o tres trozos de madera unidos por una cuerda de la que una mano tira con fuerza, sin duda para marcar el tensado producido por el frío. Este mes se extendió según Sahagún. del 19 de diciembre al 7 de enero, y, según Clavijero, del 12 al 31 de enero (S).
+NEW    : calendario: Mes 17 del año.
+SOURCE : mes 17 del año, en el que se celebraba una fiesta en honor a la diosa Ilamatecutli. La palabra 'tititl' significa endurecimiento, contracción. El personaje figurativo representa dos o tres trozos de madera unidos por una cuerda de la que una mano tira con fuerza, sin duda para marcar el tensado producido por el frío. Este mes se extendió según Sahagún. del 19 de diciembre al 7 de enero, y, según Clavijero, del 12 al 31 de enero (S).
+
+════════════════════════════════════════════════════════════════════════════════
+02. metztlapohualli  [2021-wimmer:022524]
+REASON : corpus-short-leaky  tr_wc=78  com_wc=188  risk=7
+OLD    : Contando los meses. / tecpatl xihuitl 1520 îpan in momiquilîco en tlâcatl motêuczomatzin xôcoyôtl tlahtoâni Tenochtitlan îpan mêtztli julio auh nô yehhuâtl îpan huêhueh mêtztlapôhualli têcuilhuitôntli, el año 2 tecpatl, 1520, vino a morir el señor Moctezuma el menor, soberano en Tenochtitlan, en el mes de julio, o también, según la antigua cuenta de los meses el de tecuilhuitontli. Códice Chimalpahin: Sociedad y política en México Tenochtitlan, Tlatelolco, Culhuacan y otros altepetl náhuatl en el centro de México 216.
+NEW    : La cuenta de los meses.
+SOURCE : La cuenta de los meses.
+
+════════════════════════════════════════════════════════════════════════════════
+03. caltzontzin  [2021-wimmer:040086]
+REASON : short-leaky  tr_wc=68  com_wc=74  risk=4
+OLD    : Nombre dado por los aztecas a los soberanos de Michoacán, equivalente a faraón para los egipcios y César para los romanos. R.Siméon dice: rey de Michhuahcán, que se sometió a Cortés, designa sin duda a Tanpaxoan, el último Caltzontzin que, convertido a la fe cristiana, fue sin embargo ejecutado por orden de Nuño de Gusman, conquistador de Nueva Galicia, por no haber dado suficiente oro y joyas.
+NEW    : título.
+SOURCE : caltzontzin , título.
+
+════════════════════════════════════════════════════════════════════════════════
+04. tecuani  [2021-wimmer:031669]
+REASON : corpus-comment-senses  tr_wc=57  com_wc=480  risk=0
+OLD    : Leonado, fiera Salvaje: que devora a las personas. / Devora a la gente. / Que pica a la gente, venenoso. / Nombre de planta. / Usamos el perfecto como nombre de agente, con el significado particular de aquel que ejecuta las órdenes (de una autoridad). / calendario: Feroz, muy dañino, hablando del signo de un día. / metáfora: Una bestia, furiosa, salvaje, violenta.
+NEW    : Leonado, fiera Salvaje: que devora a las personas. / Devora a la gente. / Que pica a la gente, venenoso. / Que no es venenoso. / Nombre de planta. / Usamos el perfecto como nombre de agente, con el significado particular de aquel que ejecuta las órdenes (de una autoridad). / calendario: Feroz, muy dañino, hablando del signo de un día. / metáfora: Una bestia, furiosa, salvaje, violenta.
+SOURCE : 1.~ Leonado, fiera Salvaje: que devora a las personas.
+SOURCE : tēcuāni , devora a la gente - un día de fiera salvaje. Se dice que el signo es malinalli Sah4, 55
+SOURCE : 2.~ Que pica a la gente, venenoso.
+SOURCE : ahmo tēcuāni , que no es venenoso
+
+════════════════════════════════════════════════════════════════════════════════
+05. tlaxochimaco  [2021-wimmer:002245]
+REASON : short-leaky  tr_wc=57  com_wc=122  risk=4
+OLD    : Calendario, noveno mes del año, también llamado miccailhuitôntli, durante el cual se celebraba una gran fiesta en honor al dios Huitzilopochtli, su estatua era adornada con flores así como con imágenes de otras deidades. También celebramos al dios de los comerciantes Yacateuctli. Los habitantes de Tlaxcallan llamaban a este mes miccailhuitzintli. la pequeña celebración de los muertos.
+NEW    : Descrito en.
+SOURCE : Descrito en Sah2, 108
+
+════════════════════════════════════════════════════════════════════════════════
+06. tlaxitlan  [2021-wimmer:002189]
+REASON : comment-cleanup  tr_wc=54  com_wc=73  risk=1
+OLD    : Salón del palacio de los reyes, donde se reunían el soberano, los señores, los senadores, el pueblo noble para conocer de causas penales, juicios y recibir peticiones del pueblo llano; allí también fueron juzgados los grandes. Finalmente, fue allí donde los reyes liberaron a los que habían sido reducidos injustamente a la esclavitud (Sah.).
+NEW    : Sala del palacio de los reyes.
+SOURCE : Sala del palacio de los reyes, donde se reunía el soberano, los señores, los senadores, el pueblo noble para conocer de causas criminales, juicios y recibir peticiones del pueblo llano; allí también fueron juzgados los grandes. finalmente, es allí donde los reyes ponen en libertad a los que habían sido injustamente reducidos a esclavitud Sah.
+
+════════════════════════════════════════════════════════════════════════════════
+07. tetzahuitl  [2021-wimmer:035500]
+REASON : short-leaky  tr_wc=53  com_wc=520  risk=12
+OLD    : Prodigio, presagio: Launey II 206 señala que, al igual que el latín 'portentum', 'têtzâhuitl' designa un prodigio en el que vemos un presagio. / PRESAGIO FUNERARIO. / a la forma poseída.   ca îtêtzâuh, ca ya miquiz, es su presagio, va a morir - es su presagio que está a punto de morir. Sah11, 81. / TÍTULO DIVINO.
+NEW    : El término se aplica a todas las manifestaciones, todas las hierofanías, encarnadas o desencarnadas, de los dioses oraculares.
+SOURCE : El término se aplica a todas las manifestaciones, todas las hierofanías, encarnadas o desencarnadas, de los dioses oraculares: incluye al dios mismo, sus oráculos y sus intermediarios.en todas sus formas.
+
+════════════════════════════════════════════════════════════════════════════════
+08. chitonia  [2021-wimmer:010612]
+REASON : corpus-short-leaky  tr_wc=53  com_wc=133  risk=4
+OLD    : v.t. tla-., hacer que algo Salte, hacer que algo explote. la veta que queremos enhebrar, las astillas de madera. / v.t. tla-., dejar escapar una palabra sin querer, permitirse algo en perjuicio de alguien. / v.t. tla-., ganar, obtener ganancias en una venta. / v.refl., deja escapar alguna palabra sin darse cuenta.
+NEW    : v.t. tla-., hacer que algo Salte, hacer que algo explote. la veta que queremos enhebrar, las astillas de madera. / v.t. tla-., dejar escapar una palabra sin querer, permitirse algo en perjuicio de alguien. / v.t. tla-., ganar, obtener ganancias en una venta. / v.t. tla-., obtengo ganancias en una venta. / v.refl., deja escapar alguna palabra sin darse cuenta.
+SOURCE : 1.~ Hacer que algo Salte, hacer que algo explote. la veta que queremos enhebrar, las astillas de madera.
+SOURCE : 2.~ Dejar escapar una palabra sin querer, permitirse algo en perjuicio de alguien.
+SOURCE : 3.~ Ganar, obtener ganancias en una venta.
+SOURCE : achi nicchitōnia , obtengo ganancias en una venta - grangear or win algo en lo que se vende M.
+
+════════════════════════════════════════════════════════════════════════════════
+09. tlailotlac  [2021-wimmer:038984]
+REASON : corpus-short-leaky  tr_wc=52  com_wc=235  risk=11
+OLD    : Título de magistrado. / título de uno de los tres jueces del tribunal de tlâcatecatl. / plural., 'tlailotlaqueh', tribus provenientes de la mixteca y que se establecieron en Anáhuac bajo el reinado de Quinantzin. Vivían en uno de los barrios de Texcoco y se destacaban por su habilidad para pintar o escribir cuentos (Aub.).
+NEW    : Título de magistrado. / plural: Retomando esta idea.
+SOURCE : Título de magistrado.
+SOURCE : Retomando esta idea W.Lehmann 1938, 252 nota a, deriva esta palabra de una forma ilotla derivada de iloa, regresar, 'tlailotlaqueh', los que regresan, los que regresan.los antiguos toltecas que se refugiaron en la mixteca alta, regresaron a anáhuac.
+
+════════════════════════════════════════════════════════════════════════════════
+10. cac  [2021-wimmer:035030]
+REASON : possessed-only  tr_wc=52  com_wc=21  risk=9
+OLD    : en ôquicac en têcôhuânôtzani, cuando el huésped oyó esto. Sah9, 37. / B. ~ câc- radical de verbos compuestos, sólo aparece con auxiliar y significa 'estar vacío, desierto, abandonado', es probablemente una modificación de la base 2 de câhui (inusual por lo demás, y del cual câhua es el semi-causativo). Launey presentó 259.
+NEW    : cuando el anfitrión escuchó esto.
+SOURCE : in ōquicac in tēcōhuānōtzani , cuando el anfitrión escuchó esto Sah9, 37
+
+════════════════════════════════════════════════════════════════════════════════
+11. miquilia  [2021-wimmer:023028]
+REASON : corpus-short-leaky  tr_wc=51  com_wc=275  risk=8
+OLD    : v.refl., morir. / calli îpan in xihuitl in momiquilih in întlahtohcâuh tôltecah in quitzintih in tlahtohcâyôtl in îtôcâ Mixcôâmazâtzin , 1 Haus (817 A.D.) En ese año murió el rey de los toltecas que inició el reinado, llamado Mixcoamazatzin. / v.i., volverse mate, cuando se habla de una pieza de cerámica.
+NEW    : v.i., se convierte en mate, hablando de cerámica.
+SOURCE : se convierte en mate, hablando de cerámica.
+
+════════════════════════════════════════════════════════════════════════════════
+12. milnahuatl  [2021-wimmer:022923]
+REASON : corpus-short-leaky  tr_wc=49  com_wc=52  risk=9
+OLD    : citado en una lista de altos magistrados que ayudaron al soberano en su tribunal de justicia. Sah8, 55 (mjlnaoatl). / nombre de un hombre, que representa una serpiente ('îxiptlah côâtl') inmolada el día de la fiesta de la montaña que se realizaba durante el mes de tepêilhuitl. Sah2,132 (milnaoatl).
+NEW    : Nombre de un hombre.
+SOURCE : 2.~ Nombre de un hombre, que representa una serpiente ('îxiptlah côâtl') inmolada el día de la fiesta de la montaña que se realizaba durante el mes de tepêilhuitl Sah2, 132; milnaoatl
+
+════════════════════════════════════════════════════════════════════════════════
+13. tlaquimilolli  [2021-wimmer:042336]
+REASON : corpus-comment-cleanup  tr_wc=48  com_wc=243  risk=0
+OLD    : tapado, envuelto, encuadernado. / especie de paquete ceremonial en cuyo interior, escondido en pieles o telas, se encuentra un objeto simbólico que concreta la presencia del dios. Esto recuerda al "paquete médico" de las tribus norteamericanas. Duverger, El origen de los aztecas, p.187. / adorno usado en la espalda.
+NEW    : Tapado, envuelto, encuadernado. / Adorno usado en la espalda.
+SOURCE : 1.~ Tapado, envuelto, encuadernado.
+SOURCE : 3.~ Adorno usado en la espalda.
+
+════════════════════════════════════════════════════════════════════════════════
+14. iyauhqueme  [2021-wimmer:020401]
+REASON : short-leaky  tr_wc=48  com_wc=122  risk=12
+OLD    : Nombre de una montaña y de un niño sacrificado a ella. / nombre divino. / título sacerdotal, ôme tôchtli iyauhquêmeh, sacerdote encargado de velar por todo lo necesario para el sacrificio del personificador de Ome Tochtli Iyauhquemeh, en Tepeilhuitl. Prim.Mem. 259r (yyauhqueme, iiauhqueme y yiauhqueme) Cfr. Sah2,209 (yiauhqueme).
+NEW    : La montaña estaría ubicada en las cercanías de tacubaya.
+SOURCE : La montaña estaría ubicada en las cercanías de tacubaya.
+SOURCE : Su adorno Prim. Mem.. 263v (yyauhqueme).
+
+════════════════════════════════════════════════════════════════════════════════
+15. opochtli  [2021-wimmer:027826]
+REASON : corpus-comment-cleanup  tr_wc=47  com_wc=211  risk=0
+OLD    : mano izquierda. / n.divino, dios honrado por las poblaciones de la laguna, sería una manifestación de Tláloc, se le atribuyó la invención de la red de pesca, la hélice de dardos, el tridente para pescar, los remos y las redes para la caza de aves. / n.sacerdotal.
+NEW    : Mano izquierda. / N.Sacerdotal.
+SOURCE : 1.~ Mano izquierda.
+SOURCE : 3.~ N.Sacerdotal.
+
+════════════════════════════════════════════════════════════════════════════════
+16. necuiloa  [2021-wimmer:025050]
+REASON : corpus-short-leaky  tr_wc=47  com_wc=113  risk=4
+OLD    : v.t. tla-., torturar, torcer, doblar una cosa. / v.t. tla-., tráfico, comercio. / v.refl., bajar, hablando del sol, ondular, hablando de agua. / v.refl., ola, hablando de agua. / v.refl., cambiar de rumbo, hablando de un río. / v.refl., el río cambió de rumbo, se movió.
+NEW    : v.t. tla-., torturar, torcer, doblar una cosa. / v.t. tla-., tráfico, comercio. / v.refl., bajar, hablando del sol, ondular, hablando de agua. / v.refl., ola, hablando de agua. / v.refl., se ondulan como el agua. / v.refl., cambiar de rumbo, hablando de un río. / v.refl., el río cambió de rumbo, se movió.
+SOURCE : 1.~ Torturar, torcer, doblar una cosa.
+SOURCE : 2.~ Tráfico, comercio.
+SOURCE : Bajar, hablando del sol, ondular, hablando de agua.
+SOURCE : 2.~ Ola, hablando de agua.
+
+════════════════════════════════════════════════════════════════════════════════
+17. tetlepanquetzqui  [2021-wimmer:035375]
+REASON : corpus-comment-cleanup  tr_wc=47  com_wc=81  risk=0
+OLD    : Malvado hechicero que viste un trozo de madera como una momia funeraria y que por la noche lo quema en una pira mientras prepara las ofrendas, si por la mañana el desdichado a quien está destinado el hechizo prueba estas ofrendas está condenado a una muerte segura.
+NEW    : Malvado hechicero que viste un trozo de madera como una momia funeraria y que por la noche lo quema en una pira mientras dispone las ofrendas.
+SOURCE : Malvado hechicero que viste un trozo de madera como una momia funeraria y que por la noche lo quema en una pira mientras dispone las ofrendas, si por la mañana el infortunado a quien va destinado el hechizo prueba estas ofrendas está condenado a una muerte segura.
+
+════════════════════════════════════════════════════════════════════════════════
+18. tecomapilohua  [2021-wimmer:031444]
+REASON : corpus-short-leaky  tr_wc=46  com_wc=175  risk=4
+OLD    : Nombre de un instrumento musical. Especie de teponâztli o tambor que tenía una abertura arriba y otra abajo. A éste se le adjuntó un cuenco que colgaba, y de esta manera el instrumento sonaba mucho mejor. El músico que lo tocaba lo llevaba bajo la axila.
+NEW    : Su cara inferior.
+SOURCE : Su cara inferior; a este último se suspendían una o más calabazas o jarrones, lo que aumentaba y suavizaba el sonido”. daniel g. brinton.
+
+════════════════════════════════════════════════════════════════════════════════
+19. macuil calli  [2021-wimmer:021123]
+REASON : corpus-short-leaky  tr_wc=44  com_wc=131  risk=9
+OLD    : nombre divino., divinidad que patrocinaba a los picapedreros. Sah9, 79. Una de las cuatro deidades originarias de Xochimilco. Los otros tres fueron Chiucnâhui Itzcuintli (apodado Papalôxâhual o Tlâppâpalo), Nâhualpilli y Centeôtl. A. Mönnich 1969:93-94. / nombre de un oratorio también llamado mâcuîl quiyahuitl.
+NEW    : Aurélie couvreur 2002, 11.
+SOURCE : Aurélie couvreur 2002, 11.
+
+════════════════════════════════════════════════════════════════════════════════
+20. cuauhyacatl  [2021-wimmer:014144]
+REASON : short-leaky  tr_wc=44  com_wc=120  risk=5
+OLD    : / título que se daba a los grandes capitanes que habían tomado guerreros de Atlîxco, Huexotzinco o Tliliuhquitepêc (Sah.). Equivalente al hueyi tiyahcâuh, usado por los guerreros que tomaron cinco cautivos entre ellos algunos de Atlixco, Huexotzinco-Tiliuhquitepec. V.Piho Atti II 282. / n.pers.
+NEW    : Evocado en.
+SOURCE : Evocado en Sah9, 34 'los guías guerreros águila'.
+
+════════════════════════════════════════════════════════════════════════════════
+21. itztapaltotec  [2021-wimmer:019093]
+REASON : corpus-comment-cleanup  tr_wc=44  com_wc=58  risk=0
+OLD    : Título divino, deidad relacionada con Xipe Totec. Anne Marie Wohrer I 131 que hace referencia al Códice Vaticano-Ríos 36v. y Códice Telleriano-Remensis pl. XXXII y en la pl. A 6b, 8b, 9b, 17i, 20g,h, 21a,c, 22d, 41a, 45, 49b, 50d.
+NEW    : Divinidad relacionada con Xipe Totec. Anne Marie Wohrer I 131 que hace referencia al y Códice Telleriano-Remensis pl. XXXII y en la pl. A 6b.
+SOURCE : divinidad relacionada con Xipe Totec. Anne Marie Wohrer I 131 que hace referencia al Códice Vaticano-Ríos 36v. y Códice Telleriano-Remensis pl. XXXII y en la pl. A 6b, 8b, 9b, 17i, 20g, h, 21a, c, 22d, 41a, 45, 49b, 50d. tochtli.
+
+════════════════════════════════════════════════════════════════════════════════
+22. tetehuitl  [2021-wimmer:034772]
+REASON : comment-cleanup  tr_wc=43  com_wc=364  risk=0
+OLD    : Tiras de papel de corteza blanca, sobre las que se pintaban con goma líquida los símbolos correspondientes a los diferentes dioses, se suponía que eran la vestimenta de los dioses, en particular de las pequeñas deidades montañesas y se les ofrecían como ofrendas.
+NEW    : Tiras de papel de corteza blanca.
+SOURCE : Tiras de papel de corteza blanca, sobre las que se pintaban con goma líquida los símbolos correspondientes a los diferentes dioses, se suponía que eran la vestimenta de los dioses, en particular de las pequeñas deidades montañesas y se les ofrecían como ofrendas.
+
+════════════════════════════════════════════════════════════════════════════════
+23. tlacuacuallo  [2021-wimmer:037929]
+REASON : comment-cleanup  tr_wc=43  com_wc=246  risk=0
+OLD    : Chaqueta litúrgica que sirvió para cubrir la estatua de Huitzilopochtli y en la que estaban pintados los labios y extremidades de una persona desmembrada. Baudot. Cuentas Aztecas de la Conquista página 390, nota 67 que dice tlacuacualo, impers. de cuahcua, comemos, comemos todos.
+NEW    : Seler parafrasea.
+SOURCE : Seler parafrasea: 'mit zernagten gliedern bemalt' Sah 1927, 102
+
+════════════════════════════════════════════════════════════════════════════════
+24. camaxtli  [2021-wimmer:041256]
+REASON : short-leaky  tr_wc=43  com_wc=144  risk=5
+OLD    : Deidad solar adorada por los tlaxcaltecas, similar a Huitzilopochtli. Véase HG I 1.5. Garibay Sah 1969 IV 325. R.Siméon dice 'Nombre con el que los tlaxcaltecas adoraban al dios Huitzilopochtli'. Schultze Iena Sah 1950,256 da 'Camaxtle', dios de los Huexotzinca.
+NEW    : El color negro alrededor de los ojos.
+SOURCE : El color negro alrededor de los ojos, completado por puntos (estrellas) blancos sólo está atestiguado para paynal y atlaua en Sah 1958, 114 y 140. según seler también era el signo distintivo de mixcoatl, camaxtli y en ocasiones también de huitzilopochtli (sga ii 430, iv abb. 66-74). beyer 1965, 374, por otro lado, lo presenta por primera vez como una pintura específica de huitzilopochtli. u Dyckerhoff 1970, 268
+
+════════════════════════════════════════════════════════════════════════════════
+25. cuappiyaztli  [2021-wimmer:013237]
+REASON : short-leaky  tr_wc=42  com_wc=318  risk=7
+OLD    : A.~ cuâppiyâztli: / retórica, para decir que un guerrero ofrece numerosas víctimas para el sacrificio decimos que sostiene en su mano la copa destinada a recoger los corazones de las víctimas y el tubo que permitirá al Sol beber su sangre. / B.~ cuappiyaztli:
+NEW    : Tubo del águila o tubo del sol.
+SOURCE : Tubo del águila o tubo del sol, tubo de caña que se sumergía en la cavidad abierta por el desgarro del corazón, allí se recogía sangre y se ofrecía al sol.
+
+════════════════════════════════════════════════════════════════════════════════

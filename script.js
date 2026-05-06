@@ -32,6 +32,7 @@ const I18N = {
     "tab.regex": "Regex",
     "tab.pairs": "Pares a/i",
     "tab.reverse": "Guiados",
+    "tab.study": "Estudio",
     "reverse.title": "Filtros guiados",
     "reverse.hint": "Elige una relación: en qué columna buscas y qué columna quieres ver como resultado.",
     "reverse.submit": "Buscar",
@@ -272,6 +273,36 @@ const I18N = {
     "pairs.header.a": "Forma en -a",
     "pairs.header.i": "Forma en -i",
     "pairs.header.total": "Total",
+    "study.title": "Tarjetas",
+    "study.hint": "Crea un mazo desde los resultados actuales; cada tarjeta usa Edición y Traducción.",
+    "study.direction": "Dirección",
+    "study.direction.nt": "Edición → Traducción",
+    "study.direction.tn": "Traducción → Edición",
+    "study.limit": "Cartas",
+    "study.useFilters": "Usar resultados actuales",
+    "study.shortOnly": "Preferir definiciones cortas",
+    "study.shuffle": "Mezclar",
+    "study.build": "Crear mazo",
+    "study.reset": "Reiniciar",
+    "study.reveal": "Mostrar",
+    "study.again": "Otra vez",
+    "study.hard": "Difícil",
+    "study.good": "Bien",
+    "study.easy": "Fácil",
+    "study.empty": "Crea un mazo para empezar.",
+    "study.noCards": "No hay tarjetas con lema y traducción en este alcance.",
+    "study.done": "Mazo terminado.",
+    "study.summary": "Resumen",
+    "study.summary.results": "Resultados",
+    "study.summary.primary": "Cartas iniciales: {{cards}} · Respuestas: {{answers}}",
+    "study.summary.score": "Bien/Fácil: {{known}} ({{percent}}%) · Repasar: {{review}}",
+    "study.summary.detail": "Otra vez: {{again}} · Difícil: {{hard}} · Bien: {{good}} · Fácil: {{easy}}",
+    "study.scope": "{{rows}} filas disponibles · {{cards}} tarjetas posibles",
+    "study.cardCount": "{{current}}/{{total}}",
+    "study.progress": "{{seen}} vistas · {{good}} bien · {{again}} repasar",
+    "study.sources": "{{sources}} fuentes · {{rows}} filas",
+    "study.front.edition": "Edición",
+    "study.front.translation": "Traducción",
     "compare.title": "Comparar lema",
     "compare.run": "Comparar",
     "compare.clear": "Limpiar",
@@ -420,6 +451,7 @@ const I18N = {
     "tab.regex": "Regex guide",
     "tab.pairs": "a/i pairs",
     "tab.reverse": "Guided",
+    "tab.study": "Study",
     "reverse.title": "Guided filters",
     "reverse.hint": "Choose a relationship: which column to search in, and which column to show as the result.",
     "reverse.submit": "Search",
@@ -660,6 +692,36 @@ const I18N = {
     "pairs.header.a": "-a form",
     "pairs.header.i": "-i form",
     "pairs.header.total": "Total",
+    "study.title": "Flashcards",
+    "study.hint": "Build a deck from the current results; each card uses Edition and Translation.",
+    "study.direction": "Direction",
+    "study.direction.nt": "Edition → Translation",
+    "study.direction.tn": "Translation → Edition",
+    "study.limit": "Cards",
+    "study.useFilters": "Use current results",
+    "study.shortOnly": "Prefer short definitions",
+    "study.shuffle": "Shuffle",
+    "study.build": "Build deck",
+    "study.reset": "Restart",
+    "study.reveal": "Show",
+    "study.again": "Again",
+    "study.hard": "Hard",
+    "study.good": "Good",
+    "study.easy": "Easy",
+    "study.empty": "Build a deck to start.",
+    "study.noCards": "No cards with both lemma and translation in this scope.",
+    "study.done": "Deck finished.",
+    "study.summary": "Summary",
+    "study.summary.results": "Results",
+    "study.summary.primary": "Initial cards: {{cards}} · Answers: {{answers}}",
+    "study.summary.score": "Good/Easy: {{known}} ({{percent}}%) · Review: {{review}}",
+    "study.summary.detail": "Again: {{again}} · Hard: {{hard}} · Good: {{good}} · Easy: {{easy}}",
+    "study.scope": "{{rows}} available rows · {{cards}} possible cards",
+    "study.cardCount": "{{current}}/{{total}}",
+    "study.progress": "{{seen}} views · {{good}} good · {{again}} review",
+    "study.sources": "{{sources}} sources · {{rows}} rows",
+    "study.front.edition": "Edition",
+    "study.front.translation": "Translation",
     "compare.title": "Compare lemma",
     "compare.run": "Compare",
     "compare.clear": "Clear",
@@ -1037,6 +1099,12 @@ let currentLang = "es";
 let dataLoadFailed = false;
 let lastPairResults = null;
 let lastPairMeta = null;
+let studyBaseDeck = [];
+let studyDeck = [];
+let studyIndex = 0;
+let studyAnswerVisible = false;
+let studyStats = { seen: 0, again: 0, hard: 0, good: 0, easy: 0 };
+let studyEmptyMessageKey = "study.empty";
 let lastRankingSummary = null;
 let tableViewMode = "rows"; // "rows" | "lemmas"
 let lastLemmaItems = [];
@@ -1091,6 +1159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFuenteActions();
   setupWimmerTranslate();
   setupPairFinder();
+  setupStudyMode();
   setupViewToggle();
   setupEdicionCellClick();
   setupReverseLookup();
@@ -1251,6 +1320,7 @@ function refreshLanguageDependentUI() {
   renderSessionBar();
   renderTable(lastRenderRows, lastRenderTotal);
   refreshPairFinderUI();
+  refreshStudyModeUI();
   requestAnimationFrame(() => {
     setTableScroll(y);
   });
@@ -1861,7 +1931,7 @@ function vibe(ms) {
   try { if (navigator.vibrate) navigator.vibrate(ms); } catch {}
 }
 
-// Horizontal swipes on the panel shell cycle through Filtros / Guiados / Regex / Pares.
+// Horizontal swipes on the panel shell cycle through the top panel tabs.
 function setupSwipeTabs() {
   const shell = document.querySelector(".panel-shell");
   if (!shell) return;
@@ -2430,6 +2500,7 @@ function applyFilters(initial = false, options = {}) {
     updateSortIndicators();
     restoreScroll(options);
     renderActiveFilterChips();
+    updateStudyScope();
     updateUrlHash();
     return;
   }
@@ -2462,6 +2533,7 @@ function applyFilters(initial = false, options = {}) {
   updateSortIndicators();
   restoreScroll(options);
   renderActiveFilterChips();
+  updateStudyScope();
   updateUrlHash();
 }
 
@@ -4732,6 +4804,7 @@ function applyFuenteFilters(options = {}) {
     lastRenderTotal = 0;
     lastLemmaItems = [];
     renderTable([], 0);
+    updateStudyScope();
     updateUrlHash();
     return;
   }
@@ -5609,6 +5682,561 @@ function renderPairResults(pairs, meta) {
   });
   table.appendChild(tbody);
   resultsEl.appendChild(table);
+}
+
+// ── Flashcard study mode ──────────────────────────────────────────
+let studyEntityDecoder = null;
+
+function decodeStudyEntities(value) {
+  if (!studyEntityDecoder) studyEntityDecoder = document.createElement("textarea");
+  studyEntityDecoder.innerHTML = String(value ?? "");
+  return studyEntityDecoder.value;
+}
+
+function cleanStudyText(value) {
+  return collapseWhitespace(decodeStudyEntities(stripHtmlTags(String(value ?? ""))))
+    .replace(/\s+([,.;:!?])/g, "$1")
+    .trim();
+}
+
+function getStudyTranslation(row) {
+  return cleanStudyText(getDisplayValue(row, "Traducción"));
+}
+
+const STUDY_LEAK_PLACEHOLDER = "[...]";
+const STUDY_PROMPT_NOISE_WORDS = new Set([
+  "a", "al", "b", "c", "cf", "cfr", "de", "del", "du", "el", "en", "eventual",
+  "eventuel", "forma", "forme", "la", "le", "les", "los", "plur", "plural",
+  "metafora", "metaforico", "metaphore", "metaphor", "posible", "possible",
+  "parentesco", "parente", "posee", "poseida", "possedee", "see", "sobre",
+  "sur", "un", "una", "une", "v", "ver", "voir"
+]);
+
+function getStudyLeakKey(value) {
+  return normalizeString(cleanStudyText(value))
+    .replace(/[\u00b7'’ʼ`´-]/g, "")
+    .replace(/[^\p{L}\p{N}]+/gu, "");
+}
+
+function addStudyLeakForm(forms, key) {
+  if (key.length >= 4) forms.add(key);
+}
+
+function addStudyLeakDerivedForms(forms, key) {
+  if (key.endsWith("hua") && key.length > 5) addStudyLeakForm(forms, `${key.slice(0, -3)}uh`);
+  if (key.endsWith("ia") && key.length > 4) addStudyLeakForm(forms, `${key.slice(0, -1)}h`);
+  if (key.endsWith("oa") && key.length > 4) addStudyLeakForm(forms, `${key.slice(0, -1)}h`);
+}
+
+function addStudyLeakBaseForms(forms, key) {
+  [
+    "liztica", "cayotl", "liztli", "yotl", "tli", "lli", "tin", "meh",
+    "huan", "tl", "li", "in", "yo"
+  ].forEach(suffix => {
+    if (!key.endsWith(suffix) || key.length <= suffix.length + 3) return;
+    const base = key.slice(0, -suffix.length);
+    addStudyLeakForm(forms, base);
+    addStudyLeakDerivedForms(forms, base);
+  });
+}
+
+function getStudyLeakForms(lemma) {
+  const forms = new Set();
+  const cleaned = cleanStudyText(lemma);
+  const full = getStudyLeakKey(cleaned);
+  addStudyLeakForm(forms, full);
+  addStudyLeakDerivedForms(forms, full);
+  addStudyLeakBaseForms(forms, full);
+  cleaned.split(/[^\p{L}\p{N}\u00b7'’ʼ`´-]+/u).forEach(part => {
+    const key = getStudyLeakKey(part);
+    addStudyLeakForm(forms, key);
+    addStudyLeakDerivedForms(forms, key);
+    addStudyLeakBaseForms(forms, key);
+  });
+  return forms;
+}
+
+function getCommonPrefixLength(a, b) {
+  const max = Math.min(a.length, b.length);
+  let i = 0;
+  while (i < max && a[i] === b[i]) i += 1;
+  return i;
+}
+
+function getStudyComparableLeakKeys(key) {
+  const keys = new Set([key]);
+  const hless = key.replace(/h/g, "");
+  if (hless.length >= 4) keys.add(hless);
+  const quAsC = key.replace(/qu/g, "c");
+  if (quAsC.length >= 4) keys.add(quAsC);
+  const quAsCHless = quAsC.replace(/h/g, "");
+  if (quAsCHless.length >= 4) keys.add(quAsCHless);
+  return keys;
+}
+
+function isStudyLeakyKeyPair(key, form, options = {}) {
+  const allowContains = options.allowContains !== false;
+    if (key === form) return true;
+    if (allowContains && form.length >= 5 && key.length >= 5 && (key.includes(form) || form.includes(key))) return true;
+    const min = Math.min(key.length, form.length);
+    const prefixLength = getCommonPrefixLength(key, form);
+    if (min >= 5 && Math.abs(key.length - form.length) <= 2 && prefixLength >= 5) return true;
+    const finalPair = `${key[key.length - 1] || ""}${form[form.length - 1] || ""}`;
+    if (min >= 5 && key.length === form.length && prefixLength >= min - 1 && (finalPair === "ah" || finalPair === "ha")) {
+      return true;
+    }
+  return false;
+}
+
+function isStudyLeakyKey(key, forms) {
+  if (key.length < 4) return false;
+  const keyVariants = getStudyComparableLeakKeys(key);
+  for (const form of forms) {
+    const formVariants = getStudyComparableLeakKeys(form);
+    for (const keyVariant of keyVariants) {
+      for (const formVariant of formVariants) {
+        if (isStudyLeakyKeyPair(keyVariant, formVariant)) return true;
+      }
+    }
+  }
+  return false;
+}
+
+function isStudyLeakyCombinedKey(key, forms) {
+  if (key.length < 4) return false;
+  const keyVariants = getStudyComparableLeakKeys(key);
+  for (const form of forms) {
+    const formVariants = getStudyComparableLeakKeys(form);
+    for (const keyVariant of keyVariants) {
+      for (const formVariant of formVariants) {
+        if (isStudyLeakyKeyPair(keyVariant, formVariant, { allowContains: false })) return true;
+      }
+    }
+  }
+  return false;
+}
+
+function isStudyLeakyToken(token, forms) {
+  return isStudyLeakyKey(getStudyLeakKey(token), forms);
+}
+
+function getStudyMaskableTokens(text) {
+  const tokens = [];
+  const pattern = /[\p{L}\p{M}\u00b7'’ʼ`´-]+/gu;
+  let match;
+  while ((match = pattern.exec(text))) {
+    tokens.push({
+      start: match.index,
+      end: match.index + match[0].length,
+      key: getStudyLeakKey(match[0])
+    });
+  }
+  return tokens;
+}
+
+function maskStudyTranslationLeaks(translation, lemma) {
+  const forms = getStudyLeakForms(lemma);
+  const text = cleanStudyText(translation);
+  if (!forms.size || !text) return text;
+  const tokens = getStudyMaskableTokens(text);
+  const masked = tokens.map(token => isStudyLeakyKey(token.key, forms));
+  for (let i = 0; i < tokens.length; i += 1) {
+    let combined = tokens[i].key;
+    for (let j = i + 1; j < Math.min(tokens.length, i + 4); j += 1) {
+      combined += tokens[j].key;
+      if (isStudyLeakyCombinedKey(combined, forms)) {
+        for (let k = i; k <= j; k += 1) masked[k] = true;
+      }
+    }
+  }
+  let out = "";
+  let cursor = 0;
+  tokens.forEach((token, index) => {
+    out += text.slice(cursor, token.start);
+    out += masked[index] ? STUDY_LEAK_PLACEHOLDER : text.slice(token.start, token.end);
+    cursor = token.end;
+  });
+  return out + text.slice(cursor);
+}
+
+function isStudyPromptMetaSegment(segment) {
+  const normalized = normalizeString(cleanStudyText(segment)).trim();
+  if (!normalized) return true;
+  if (/^(?:Cf\.?|Cfr\.?|cf\.?|cfr\.?|Ver|Voir|See)\b/.test(cleanStudyText(segment))) return true;
+  if (/^(?:[bc]|variante|variant)\.?\s*~/i.test(cleanStudyText(segment))) return true;
+  return [
+    /^(?:(?:solo|solamente|unicamente)\s+)?(?:la\s+forma|(?:a|en|con)\s+(?:la\s+)?forma)\s+poseida\b/,
+    /^(?:seulement\s+)?(?:la\s+forme|(?:a|en|avec)\s+(?:la\s+)?forme)\s+possedee\b/,
+    /^forme possedee\b/,
+    /^en composicion con\b/,
+    /^en composition avec\b/,
+    /^metaf(?:ora|orico|oricamente)?[.,;:]*$/,
+    /^metaph(?:ore|orique|oriquement)?[.,;:]*$/
+  ].some(pattern => pattern.test(normalized));
+}
+
+function cleanStudyPromptTranslation(translation) {
+  const text = cleanStudyText(translation);
+  if (!text) return "";
+  const segments = text.split(/\s*\/\s*/).map(part => part.trim()).filter(Boolean);
+  if (!segments.length) return "";
+  const kept = segments.filter(segment => !isStudyPromptMetaSegment(segment));
+  return kept.join(" / ");
+}
+
+function stripStudyPromptCitation(text) {
+  return cleanStudyText(text)
+    .replace(/\s*(?:;\s*)?(?:Sah|Sa)\s*\d+\s*,\s*\d+(?:\s*=\s*.+?)?\.?\s*$/i, "")
+    .trim();
+}
+
+function normalizeStudyPromptMarker(text) {
+  return cleanStudyText(text)
+    .replace(/\b(met[aá]fora|m[eé]taphor(?:e)?|metaphor)\s*(?:\.,?|[.,:])\s*/gi, "$1: ")
+    .replace(/\b(metaf[oó]rico|metaf[oó]ricamente)\s*(?:\.,?|[.,:])\s*/gi, "$1: ")
+    .replace(/\b(parentesco|parent[eé])\s*(?:\.,?|[.,:])\s*/gi, "$1: ")
+    .replace(/\b(?:plural|plur)\s*(?:\.,?|[.,:])\s*/gi, "plural: ");
+}
+
+function removeStudyPromptLeakPlaceholders(text) {
+  return cleanStudyText(text)
+    .replace(/\s*\[\.\.\.\]\s*/g, " ")
+    .replace(/\s+([,.;:!?])/g, "$1")
+    .replace(/([,;:])\s*(?:[,;:]\s*)+/g, "$1 ")
+    .replace(/([.;:])\s*,\s*/g, "$1 ")
+    .replace(/,\s*([.;:!?])/g, "$1")
+    .replace(/\s+/g, " ")
+    .replace(/,\s*$/, "")
+    .trim();
+}
+
+function cleanMaskedStudyPromptSegment(segment) {
+  const withoutCitation = stripStudyPromptCitation(segment);
+  if (isStudyPromptMetaSegment(withoutCitation)) return "";
+  if (!withoutCitation.includes(STUDY_LEAK_PLACEHOLDER)) {
+    return normalizeStudyPromptMarker(withoutCitation);
+  }
+  let unmasked = removeStudyPromptLeakPlaceholders(withoutCitation);
+  if (/^(?:plural|plur)\b/i.test(normalizeString(unmasked))) {
+    unmasked = unmasked.replace(/\bhonor\.\s*/gi, "");
+  }
+  const cleaned = normalizeStudyPromptMarker(unmasked);
+  return isStudyPromptUsable(cleaned) ? cleaned : "";
+}
+
+function cleanMaskedStudyPrompt(text) {
+  const segments = cleanStudyText(text).split(/\s*\/\s*/).map(part => part.trim()).filter(Boolean);
+  return segments
+    .map(cleanMaskedStudyPromptSegment)
+    .filter(Boolean)
+    .join(" / ");
+}
+
+function isStudyPromptUsable(text) {
+  if (/^(?:Cf\.?|Cfr\.?|cf\.?|cfr\.?|Ver|Voir|See)\b/.test(cleanStudyText(text))) return false;
+  const normalized = normalizeString(cleanStudyText(text).split(STUDY_LEAK_PLACEHOLDER).join(" "))
+    .replace(/[^\p{L}\p{N}\s]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!normalized) return false;
+  return normalized.split(/\s+/).some(word => word.length >= 4 && !STUDY_PROMPT_NOISE_WORDS.has(word));
+}
+
+function getStudyCardTranslation(row, lemma, direction) {
+  const translation = getStudyTranslation(row);
+  if (!translation) return "";
+  if (direction !== "spanishToNahuatl") return translation;
+  const promptTranslation = cleanStudyPromptTranslation(translation);
+  if (!promptTranslation) return "";
+  const masked = cleanMaskedStudyPrompt(maskStudyTranslationLeaks(promptTranslation, lemma));
+  return isStudyPromptUsable(masked) ? masked : "";
+}
+
+function getStudyLimit() {
+  const value = parseInt(document.getElementById("studyLimit")?.value || "50", 10);
+  return Number.isFinite(value) && value > 0 ? value : 50;
+}
+
+function getStudyDirection() {
+  const value = document.getElementById("studyDirection")?.value;
+  return value === "spanishToNahuatl" ? value : "nahuatlToSpanish";
+}
+
+function getStudyRows() {
+  const useCurrent = document.getElementById("studyUseFilters")?.checked ?? true;
+  if (useCurrent) return Array.isArray(lastFilteredRows) ? lastFilteredRows.slice() : [];
+  return dataRows.filter(row => selectedFuentes.has(row.Fuente));
+}
+
+function addStudyTranslation(entry, translation) {
+  const normalized = normalizeString(translation);
+  if (!normalized) return;
+  const existing = entry.translationStats.get(normalized);
+  if (existing) existing.count += 1;
+  else entry.translationStats.set(normalized, { display: translation, count: 1, normalized });
+}
+
+function buildStudyCardsFromRows(rows, options = {}) {
+  const shortOnly = !!options.shortOnly;
+  const direction = options.direction || "nahuatlToSpanish";
+  const byLemma = new Map();
+  const sortedRows = rows.slice().sort(comparePriorityOrder);
+
+  sortedRows.forEach(row => {
+    const lemma = cleanStudyText(getDisplayValue(row, "Texto estandarizado"));
+    const translation = getStudyCardTranslation(row, lemma, direction);
+    if (!lemma || !translation) return;
+    if (shortOnly && translation.length > 180) return;
+    const key = normalizeString(lemma);
+    if (!key) return;
+    let entry = byLemma.get(key);
+    if (!entry) {
+      entry = {
+        lemma,
+        rows: 0,
+        sources: new Set(),
+        translationStats: new Map()
+      };
+      byLemma.set(key, entry);
+    }
+    entry.rows += 1;
+    if (row.Fuente) entry.sources.add(row.Fuente);
+    addStudyTranslation(entry, translation);
+  });
+
+  return [...byLemma.values()]
+    .map(entry => {
+      const translations = [...entry.translationStats.values()]
+        .sort((a, b) => {
+          if (b.count !== a.count) return b.count - a.count;
+          return alphaNumCollator.compare(a.normalized, b.normalized);
+        })
+        .slice(0, 3)
+        .map(item => item.display);
+      if (!translations.length) return null;
+      const translation = translations.join("; ");
+      const nahuatlToSpanish = direction !== "spanishToNahuatl";
+      return {
+        lemma: entry.lemma,
+        translation,
+        front: nahuatlToSpanish ? entry.lemma : translation,
+        back: nahuatlToSpanish ? translation : entry.lemma,
+        frontLabelKey: nahuatlToSpanish ? "study.front.edition" : "study.front.translation",
+        backLabelKey: nahuatlToSpanish ? "study.front.translation" : "study.front.edition",
+        sourceCount: entry.sources.size,
+        rowCount: entry.rows
+      };
+    })
+    .filter(Boolean);
+}
+
+function countStudyPossibleCardsFromRows(rows, options = {}) {
+  const shortOnly = document.getElementById("studyShortOnly")?.checked ?? true;
+  const direction = options.direction || getStudyDirection();
+  const seen = new Set();
+  rows.forEach(row => {
+    const lemma = cleanStudyText(getDisplayValue(row, "Texto estandarizado"));
+    const translation = getStudyCardTranslation(row, lemma, direction);
+    if (!lemma || !translation) return;
+    if (shortOnly && translation.length > 180) return;
+    const key = normalizeString(lemma);
+    if (key) seen.add(key);
+  });
+  return seen.size;
+}
+
+function shuffleStudyCards(cards) {
+  for (let i = cards.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+  return cards;
+}
+
+function getStudyPossibleCardCount() {
+  const rows = getStudyRows();
+  return countStudyPossibleCardsFromRows(rows, { direction: getStudyDirection() });
+}
+
+function updateStudyScope() {
+  const el = document.getElementById("studyScope");
+  if (!el) return;
+  const rows = getStudyRows();
+  const cards = rows.length ? getStudyPossibleCardCount() : 0;
+  el.textContent = t("study.scope", { rows: rows.length, cards });
+}
+
+function resetStudyStats() {
+  studyStats = { seen: 0, again: 0, hard: 0, good: 0, easy: 0 };
+}
+
+function getStudyAnswerCount() {
+  return studyStats.again + studyStats.hard + studyStats.good + studyStats.easy;
+}
+
+function getStudySummaryText() {
+  const answers = getStudyAnswerCount();
+  const known = studyStats.good + studyStats.easy;
+  const review = studyStats.again + studyStats.hard;
+  const percent = answers ? Math.round((known / answers) * 100) : 0;
+  return [
+    t("study.summary.primary", { cards: studyBaseDeck.length, answers }),
+    t("study.summary.score", { known, percent, review }),
+    t("study.summary.detail", {
+      again: studyStats.again,
+      hard: studyStats.hard,
+      good: studyStats.good,
+      easy: studyStats.easy
+    })
+  ].join("\n");
+}
+
+function buildStudyDeck() {
+  const rows = getStudyRows();
+  const limit = getStudyLimit();
+  const shortOnly = document.getElementById("studyShortOnly")?.checked ?? true;
+  const shouldShuffle = document.getElementById("studyShuffle")?.checked ?? true;
+  let cards = buildStudyCardsFromRows(rows, {
+    shortOnly,
+    direction: getStudyDirection()
+  });
+  if (shouldShuffle) cards = shuffleStudyCards(cards);
+  studyBaseDeck = cards.slice(0, limit);
+  studyDeck = studyBaseDeck.slice();
+  studyIndex = 0;
+  studyAnswerVisible = false;
+  studyEmptyMessageKey = studyDeck.length ? "study.empty" : "study.noCards";
+  resetStudyStats();
+  renderStudyCard();
+  updateStudyScope();
+}
+
+function resetStudyDeck() {
+  studyDeck = studyBaseDeck.slice();
+  studyIndex = 0;
+  studyAnswerVisible = false;
+  resetStudyStats();
+  renderStudyCard();
+}
+
+function getCurrentStudyCard() {
+  if (!studyDeck.length) return null;
+  if (studyIndex < 0 || studyIndex >= studyDeck.length) return null;
+  return studyDeck[studyIndex];
+}
+
+function setStudyText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+
+function renderStudyCard() {
+  const current = getCurrentStudyCard();
+  const isDone = studyDeck.length > 0 && studyIndex >= studyDeck.length;
+  const countEl = document.getElementById("studyCardCount");
+  const fillEl = document.getElementById("studyProgressFill");
+  const backWrap = document.getElementById("studyBackWrap");
+  const revealBtn = document.getElementById("studyRevealBtn");
+  const resetBtn = document.getElementById("studyResetBtn");
+  const gradeBtns = document.querySelectorAll(".study-grade-btn");
+
+  if (countEl) {
+    const currentNumber = current ? studyIndex + 1 : isDone ? studyDeck.length : 0;
+    countEl.textContent = t("study.cardCount", { current: currentNumber, total: studyDeck.length });
+  }
+  if (fillEl) {
+    const pct = studyDeck.length ? Math.min(100, (studyIndex / studyDeck.length) * 100) : 0;
+    fillEl.style.width = `${pct}%`;
+  }
+
+  if (!studyDeck.length) {
+    setStudyText("studyFrontLabel", t("study.front.edition"));
+    setStudyText("studyBackLabel", t("study.front.translation"));
+    setStudyText("studyFront", t(studyEmptyMessageKey));
+    setStudyText("studyBack", "");
+    setStudyText("studyMeta", "");
+  } else if (isDone) {
+    setStudyText("studyFrontLabel", t("study.summary"));
+    setStudyText("studyBackLabel", t("study.summary.results"));
+    setStudyText("studyFront", t("study.done"));
+    setStudyText("studyBack", getStudySummaryText());
+    setStudyText("studyMeta", t("study.progress", {
+      seen: studyStats.seen,
+      good: studyStats.good + studyStats.easy,
+      again: studyStats.again + studyStats.hard
+    }));
+  } else if (current) {
+    setStudyText("studyFront", current.front);
+    setStudyText("studyBack", studyAnswerVisible ? current.back : "");
+    setStudyText("studyFrontLabel", t(current.frontLabelKey));
+    setStudyText("studyBackLabel", t(current.backLabelKey));
+    setStudyText("studyMeta", t("study.sources", {
+      sources: current.sourceCount,
+      rows: current.rowCount
+    }));
+  }
+
+  if (backWrap) backWrap.hidden = !(studyAnswerVisible && current) && !isDone;
+  if (revealBtn) revealBtn.disabled = !current || studyAnswerVisible;
+  if (resetBtn) resetBtn.disabled = !studyDeck.length;
+  gradeBtns.forEach(btn => {
+    btn.disabled = !current || !studyAnswerVisible;
+  });
+
+  setStudyText("studyProgress", t("study.progress", {
+    seen: studyStats.seen,
+    good: studyStats.good + studyStats.easy,
+    again: studyStats.again + studyStats.hard
+  }));
+}
+
+function revealStudyAnswer() {
+  if (!getCurrentStudyCard()) return;
+  if (!studyAnswerVisible) studyStats.seen += 1;
+  studyAnswerVisible = true;
+  renderStudyCard();
+}
+
+function gradeStudyCard(grade) {
+  const current = getCurrentStudyCard();
+  if (!current) return;
+  if (!studyAnswerVisible) {
+    revealStudyAnswer();
+    return;
+  }
+  if (!studyStats[grade]) studyStats[grade] = 0;
+  studyStats[grade] += 1;
+  if (grade === "again" || grade === "hard") {
+    const delay = grade === "again" ? 3 : 8;
+    const target = Math.min(studyDeck.length, studyIndex + delay);
+    studyDeck.splice(target, 0, current);
+  }
+  studyIndex += 1;
+  studyAnswerVisible = false;
+  renderStudyCard();
+}
+
+function refreshStudyModeUI() {
+  updateStudyScope();
+  renderStudyCard();
+}
+
+function setupStudyMode() {
+  const buildBtn = document.getElementById("studyBuildBtn");
+  const resetBtn = document.getElementById("studyResetBtn");
+  const revealBtn = document.getElementById("studyRevealBtn");
+  if (buildBtn) buildBtn.addEventListener("click", buildStudyDeck);
+  if (resetBtn) resetBtn.addEventListener("click", resetStudyDeck);
+  if (revealBtn) revealBtn.addEventListener("click", revealStudyAnswer);
+  document.querySelectorAll(".study-grade-btn[data-study-grade]").forEach(btn => {
+    btn.addEventListener("click", () => gradeStudyCard(btn.dataset.studyGrade));
+  });
+  ["studyUseFilters", "studyShortOnly", "studyDirection", "studyLimit"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("change", updateStudyScope);
+  });
+  updateStudyScope();
+  renderStudyCard();
 }
 
 // ── Page-size controls ──────────────────────────────────────────

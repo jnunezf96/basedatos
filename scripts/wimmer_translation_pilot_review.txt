@@ -1,0 +1,201 @@
+# 2021 Wimmer Traducción (es) Pilot Review — shortest-risk
+# Review-only output. This file does not patch data/data.jsonl.gz.
+# Fields: old translation, proposed translation, reason, source snippets.
+
+════════════════════════════════════════════════════════════════════════════════
+01. tecaxtic  [2021-wimmer:031199]
+REASON : corpus-short-leaky  tr_wc=2  com_wc=26  risk=4
+OLD    : locativo. / topónimo.
+NEW    : En un cuenco de piedra.
+SOURCE : En un cuenco de piedra.
+
+════════════════════════════════════════════════════════════════════════════════
+02. chichilihui  [2021-wimmer:009919]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=156  risk=4
+OLD    : v.i., sonrojarse.
+NEW    : v.i., sonrojarse. / v.i., pararse bermejo o colorado.
+SOURCE : sonrojarse.
+SOURCE : Pararse bermejo o colorado M.
+
+════════════════════════════════════════════════════════════════════════════════
+03. cuacuauhtiuh  [2021-wimmer:012742]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=51  risk=4
+OLD    : v.i., crecen.
+NEW    : v.i., crecen. / v.i., durante un terremoto (.
+SOURCE : crecen.
+SOURCE : Durante un terremoto ( Sah5, 187)
+
+════════════════════════════════════════════════════════════════════════════════
+04. cuicuihuia  [2021-wimmer:014818]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=10  risk=4
+OLD    : v.i., chirp.
+NEW    : v.i., chirp. / v.i., piar el pollo (.
+SOURCE : chirp.
+SOURCE : Piar el pollo (Bnf 362 - Cuicuihuya)
+
+════════════════════════════════════════════════════════════════════════════════
+05. eheca  [2021-wimmer:015423]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=88  risk=4
+OLD    : v.impers., venter.
+NEW    : v.impers., venter. / v.impers., hacer viteo, o aire.
+SOURCE : venter. Launey Introd 144.
+SOURCE : Hacer viteo, o aire M.
+
+════════════════════════════════════════════════════════════════════════════════
+06. eltepitza  [2021-wimmer:015774]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=12  risk=4
+OLD    : v.i., tartamudeo.
+NEW    : v.i., tartamudeo. / v.i., desaparecido en r.
+SOURCE : tartamudeo.
+SOURCE : Desaparecido en r.siméon.
+
+════════════════════════════════════════════════════════════════════════════════
+07. ixxochtia  [2021-wimmer:020300]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=17  risk=4
+OLD    : v.refl., vomit.
+NEW    : v.refl., vomit. / v.refl., gomitar o vomitar.
+SOURCE : vomit.
+SOURCE : Gomitar o vomitar (m i 66r.a.)
+
+════════════════════════════════════════════════════════════════════════════════
+08. mahuia  [2021-wimmer:021174]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=14  risk=4
+OLD    : v.refl., masturbate.
+NEW    : v.refl., masturbate. / v.refl., hazerlo enlas manos. pretérito: oninomaui.
+SOURCE : masturbate.
+SOURCE : Hazerlo enlas manos. pretérito: oninomaui M.
+
+════════════════════════════════════════════════════════════════════════════════
+09. nomahiximati  [2021-wimmer:026894]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=17  risk=4
+OLD    : v.refl., reconocerse.
+NEW    : v.refl., reconocerse. / v.refl., conocerse asi mesmo. listo: oninonomaixima.
+SOURCE : reconocerse S.
+SOURCE : Conocerse asi mesmo. listo: oninonomaixima M.
+
+════════════════════════════════════════════════════════════════════════════════
+10. pachihui  [2021-wimmer:028178]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=274  risk=4
+OLD    : v.inanim., colapso.
+NEW    : v.i., saciar, saciarse, saciarse. / v.inanim., colapso. / v.i., enfoque.
+SOURCE : saciar, saciarse, saciarse. R. Andrews, introd. 461.
+SOURCE : colapso.
+SOURCE : enfoque.
+
+════════════════════════════════════════════════════════════════════════════════
+11. paltiya  [2021-wimmer:028312]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=94  risk=4
+OLD    : v.inanim., mojarse.
+NEW    : v.inanim., mojarse. / Bajo la influencia del miedo (.
+SOURCE : mojarse.
+SOURCE : Bajo la influencia del miedo ( Sah5, 175)
+
+════════════════════════════════════════════════════════════════════════════════
+12. tlahuihuicaltia  [2021-wimmer:038730]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=20  risk=4
+OLD    : v.refl., maldecir.
+NEW    : v.refl., maldecir. / v.refl., se maldice (t). alguien.
+SOURCE : maldecir.
+SOURCE : Se maldice (t). alguien.
+
+════════════════════════════════════════════════════════════════════════════════
+13. xipetzoa  [2021-wimmer:005849]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=87  risk=4
+OLD    : v.refl., desnudarse.
+NEW    : v.t. tla-., lo encuera, lo desviste (t). / v.refl., desnudarse.
+SOURCE : Lo encuera, lo desviste (t).
+SOURCE : desnudarse.
+
+════════════════════════════════════════════════════════════════════════════════
+14. yolpaqui  [2021-wimmer:008277]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=25  risk=4
+OLD    : v.i., regocíjate.
+NEW    : v.i., regocíjate. / v.i., estar alegre (mecayapan.
+SOURCE : regocíjate.
+SOURCE : Estar alegre (mecayapan - yôlpâqui)
+
+════════════════════════════════════════════════════════════════════════════════
+15. zahua  [2021-wimmer:008572]
+REASON : corpus-short-leaky  tr_wc=3  com_wc=353  risk=4
+OLD    : v.refl., rápido.
+NEW    : v.refl., rápido. / v.refl., abtenerse, hacer penitencia.
+SOURCE : rápido.
+SOURCE : Abtenerse, hacer penitencia. w.jiménez moreno 1974, 55.
+
+════════════════════════════════════════════════════════════════════════════════
+16. comixin  [2021-wimmer:011993]
+REASON : short-leaky  tr_wc=4  com_wc=9  risk=8
+OLD    : Pequeño lagarto. /plural, 'côcomîxtin'.
+NEW    : Lagartija.
+SOURCE : Lagartija.
+
+════════════════════════════════════════════════════════════════════════════════
+17. hueliliztli  [2021-wimmer:016642]
+REASON : short-leaky  tr_wc=4  com_wc=3  risk=7
+OLD    : Poder, habilidad. / B.~ huêliliztli:
+NEW    : A.. poner.
+SOURCE : A.. poner (S).
+
+════════════════════════════════════════════════════════════════════════════════
+18. tlapatlalli  [2021-wimmer:041831]
+REASON : corpus-short-leaky  tr_wc=4  com_wc=21  risk=7
+OLD    : Intercambiados, trocados. / B. ~tlapâtlalli:
+NEW    : Deshecho, disuelto, derretido.
+SOURCE : Deshecho, disuelto, derretido.
+
+════════════════════════════════════════════════════════════════════════════════
+19. acamelahua  [2021-wimmer:022187]
+REASON : corpus-short-leaky  tr_wc=4  com_wc=44  risk=4
+OLD    : v.i., endereza flechas.
+NEW    : v.i., endereza flechas. / v.i., trabaja flechas de obsidiana.
+SOURCE : endereza flechas.
+SOURCE : itzhuitequi ācamelāhua , trabaja flechas de obsidiana, endereza flechas. Dicho como metáfora de alguien que odia a alguien y prepara los medios para hacerle daño
+
+════════════════════════════════════════════════════════════════════════════════
+20. acati  [2021-wimmer:025695]
+REASON : short-leaky  tr_wc=4  com_wc=32  risk=4
+OLD    : v.i., ser alguien.
+NEW    : Ser alguien.
+SOURCE : ser alguien.
+
+════════════════════════════════════════════════════════════════════════════════
+21. achiya  [2021-wimmer:039909]
+REASON : corpus-short-leaky  tr_wc=4  com_wc=31  risk=4
+OLD    : v.i., espera agua.
+NEW    : v.i., espera agua. / v.i., espera lluvias.
+SOURCE : espera agua (de la temporada de lluvias.)
+SOURCE : āchiya , espera lluvias - espera crecidas. Se dice del vendedor de pescado Sah10, 80
+
+════════════════════════════════════════════════════════════════════════════════
+22. achyotepehui  [2021-wimmer:002895]
+REASON : corpus-short-leaky  tr_wc=4  com_wc=40  risk=4
+OLD    : v.i., esparcir semillas.
+NEW    : v.i., esparcir semillas. / v.i., esparce sus semillas, siembra sus semillas.
+SOURCE : esparcir semillas.
+SOURCE : achyōtepēhui, achyōpixāhui , esparce sus semillas, siembra sus semillas - arroja las semillas, derrama las semillas. Cod Flor XI 188v = ECN11, 90 = Acad Hist MS 217v = Sah11, 202 - las semillas se esparcen, se llueven. achyô-tl
+
+════════════════════════════════════════════════════════════════════════════════
+23. ahahuiyalia  [2021-wimmer:011787]
+REASON : corpus-short-leaky  tr_wc=4  com_wc=13  risk=4
+OLD    : v.refl., lamer, saborear.
+NEW    : v.refl., lamer, saborear. / v.refl., relamerse o saborearse.
+SOURCE : lamer, saborear.
+SOURCE : Relamerse o saborearse.
+
+════════════════════════════════════════════════════════════════════════════════
+24. ahuillatoa  [2021-wimmer:014947]
+REASON : corpus-short-leaky  tr_wc=4  com_wc=43  risk=4
+OLD    : v.i., hablar innecesariamente.
+NEW    : v.i., habla inútilmente.
+SOURCE : habla inútilmente.
+
+════════════════════════════════════════════════════════════════════════════════
+25. cochca  [2021-wimmer:011488]
+REASON : possessed-only  tr_wc=5  com_wc=42  risk=11
+OLD    : en forma poseída en cochcâyôtl.
+NEW    : cena, comida.
+SOURCE : tocochca , nuestra cena - (Das) mit unserem Schlafen, d.h. unser Abend essen SIS 1950, 384
+SOURCE : nocochca , mi cena (Par.) - mi cena. A.J.O.Anderson Reglas 78
+SOURCE : in īcochca in īneuhca , su comida Sah6, 256; jcochca
+
+════════════════════════════════════════════════════════════════════════════════
