@@ -1,0 +1,20 @@
+Non-Wimmer old-Spanish inventory for Traducción
+rows_with_hits=696
+
+1992 Karttunen	250	{'preterite_abbrev': 239, 'hazer_family': 4, 'old_grave_or_circumflex': 3, 'cedilla': 4}
+1645 Carochi	146	{'old_grave_or_circumflex': 82, 'cedilla': 64}
+1571 Molina 2	68	{'hazer_family': 33, 'cedilla': 35}
+1565 Sahagún Escolios	58	{'old_grave_or_circumflex': 9, 'cedilla': 49}
+17?? Bnf_362bis	44	{'old_grave_or_circumflex': 42, 'hazer_family': 2}
+1780 ? Bnf_361	39	{'hazer_family': 38, 'old_grave_or_circumflex': 1}
+1571 Molina 1	26	{'hazer_family': 23, 'cedilla': 3}
+2002 Mecayapan	17	{'old_grave_or_circumflex': 16, 'hazer_family': 1}
+1780 Clavijero	16	{'old_grave_or_circumflex': 16}
+V94 Diccionario Global SNP	16	{'hazer_family': 16}
+1759 Paredes	15	{'old_grave_or_circumflex': 15}
+153? Trilingüe	10	{'cedilla': 3, 'old_grave_or_circumflex': 7}
+1629 Alarcón	9	{'cedilla': 4, 'old_grave_or_circumflex': 5}
+1547 Olmos_G	1	{'hazer_family': 1}
+1547 Olmos_V ?	1	{'cedilla': 1}
+1551-95 Documentos nahuas de la Ciudad de México	1	{'hazer_family': 1}
+1765 Cortés y Zedeño	1	{'hazer_family': 1}
