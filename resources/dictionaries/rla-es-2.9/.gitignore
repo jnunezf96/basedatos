@@ -1,0 +1,8 @@
+*~
+*.oxt
+*.xpi
+*.zip
+.vscode
+.zed
+productos/
+contrib/

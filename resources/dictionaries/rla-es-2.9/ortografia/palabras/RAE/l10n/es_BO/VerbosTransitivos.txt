@@ -1,0 +1,101 @@
+# Lista de lemas: VerbosTransitivos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+achurar/RED
+acolchonar/RED
+ajear/RED
+alfalfar/RED
+alinderar/RED
+amanzanar/RED
+antelar/RED
+apealar/RED
+aprensar/RED
+arrequintar/RED
+aserruchar/RED
+ataucar/RED
+atrincar/RED
+basurear/RED
+bolsiquear/RED
+cafetear/RED
+cargosear/RED
+carnear/RED
+challar/RED
+chancar/RED
+charquear/RED
+chasconear/RED
+chicotear/RED
+chuzar/RED
+coimear/REDÀ
+concuasar/RED
+conflictuar/IRD
+corar/RED
+corretear/REDÀÅ
+cuerear/REDÀ
+cuerpear/RED
+demeritar/RED
+desaterrar/IRD
+descachazar/RED
+descarozar/REDÀ
+deschapar/RED
+descuajeringar/RED
+desguañangar/RED
+desmalezar/RED
+despilarar/RED
+despresar/RED
+devolver/IRñòù
+difuntear/RED
+discar/RED
+empotrerar/RED
+enchipar/RED
+engualichar/RED
+enlozar/RED
+enmadejar/RED
+enmugrar/RED
+enrostrar/REDÂÅ
+entrabar/RED
+fritar/RED
+hormiguillar/RED
+humear/RED
+hurguetear/RED
+improbar/IRD
+lampear/RED
+llapar/RED
+pallaquear/RED
+parquear/RED
+peticionar/RED
+pialar/RED
+picanear/RED
+pololear/RED
+quinchar/RED
+quiñar/RED
+rasmillar/RED
+rasquetear/RED
+refaccionar/REDÀ
+relievar/RED
+reportear/RED
+retobar/RED
+socapar/RED
+talonear/RED
+taucar/RED
+testear/RED
+tincar/RED
+trapear/RED
+trasbocar/RED
+tusar/RED
+ubicar/REDÀÄ
+vichar/RED
+vivar/REDÌÙ
+yapar/RED

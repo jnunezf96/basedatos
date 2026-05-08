@@ -1,0 +1,213 @@
+# Lista de lemas: NombresMasculinos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+abigeato/S
+abigeo/S
+abrojillo/S
+acápite/S
+acopiador/S
+acoplado/S
+ajicero/S
+ajizal/S
+alargue/S
+alfilerillo/S
+altoparlante/S
+amacayo/S
+amanzanamiento/S
+andinismo/S
+añares
+apunamiento/S
+ara/S
+armado/S
+arrollado/S
+atrenzo/S
+balero
+bananal
+barbijo/S
+benteveo/S
+bíper/S
+bizcochuelo/S
+bluyín/S
+bulón/S
+cabildante/S
+cachimbo/S
+cachumbo/S
+caí/S
+cais		# Plural de cay
+cajetilla/S
+camarotero/S
+camote/S
+campana/S
+carángano/S
+carato/S
+carpidor/S
+cay
+celular/S
+chiche/S
+chop/S
+chucho/S
+chumbo/S
+cielito/S
+cimarrón/S
+ciruelillo/S
+clavado/S
+cocacho/S
+cochayuyo/S
+coipo/S
+coloniaje/S
+comercial/S
+conguito/S
+conscripto/S
+convertible/S
+corderaje/S
+coronillo/S
+cortinado/S
+cuando
+cuerazo/S
+cui/S
+cunchu
+curupáis		# Plural de curupay
+curupay
+cuy			# Su plural es cuis
+despilaramiento/S
+diarismo/S
+draque/S
+empacamiento/S
+encabezado/S
+encasquillador/S
+escobilleo/S
+espinillo/S
+esponjamiento/S
+expendio/S
+fachinal/S
+facilismo/S
+facón/S
+felipe/S
+fierro/S
+firulete/S
+fólder/S
+fono/S
+frijol/S
+frutillar/S
+futre/S
+futsal
+gachumbo/S
+gamonalismo/S
+gauchaje/S
+gofio/S
+guachaje/S
+guadal/S
+guarapo/S
+guascazo/S
+guindado/S
+hechor/S
+hembraje/S
+huaco/S
+identikit/S
+jeringatorio/S
+jonrón/S
+jote/S
+laburo/S
+ladero/S
+magíster/S
+maguey/S
+martillero/S
+matambre/S
+mensual/S
+multifamiliar/S
+naco/S
+nevado/S
+nocaut/S
+noticioso/S
+ño/S
+overol/S
+papelerío/S
+paragolpes/S
+parlante/S
+patrullero/S
+pininos
+pitanguero/S
+pizarrón/S
+platón/S
+polvillo/S
+poroto/S
+porsiacaso/S
+pucho/S
+puntaje/S
+quijo/S
+quilláis	# Plural de quillay
+quillango/S
+quillay
+quilombo/S
+quinchihue/S
+quique/S
+quirquincho/S
+radioteatro/S
+rayador/S
+rayero/S
+reservorio/S
+riflero/S
+rin/S
+rinde/S
+rocambor/S
+rollito/S
+romerillo/S
+rompenueces
+rozado/S
+rubro/S
+rulero/S
+salar/S
+sanco/S
+seleccionado/S
+sobrepelo
+sport
+sud
+talar/S
+talero/S
+tamal/S
+tambo/S
+tarco/S
+tasi/S
+tata/S
+tembladeral/S
+tero/S
+teruteru
+timbó/S
+tincazo/S
+tipeo/S
+tiuque/S
+tlaco/S
+tomatillo/S
+torito/S
+totoral/S
+trascendido/S
+traspatio/S
+tropero/S
+tuco/S
+tui/S
+urundáis		# Plural de urunday
+urunday
+urundéis		# Plural de urundey
+urundey
+uveral/S
+vacaráis		# Plural de vacaray
+vacaray
+vasito/S
+vuelto/S
+yatáis			# Plural de yatay
+yatay
+yuyo/S
+zapallo/S

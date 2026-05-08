@@ -1,0 +1,101 @@
+# Lista de lemas: VerbosTransitivos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+acolchonar/RED
+aleonar/RED
+alfalfar/RED
+alinderar/RED
+apealar/RED
+aprensar/RED
+arrequintar/RED
+aserruchar/RED
+atrincar/RED
+bogar/RED
+bolsiquear/RED
+calendarizar/REDA
+cangallar/RED
+cargosear/RED
+carnear/RED
+causear/RED
+champear/RED
+chancar/RED
+chapecar/RED
+charquear/RED
+chasconear/RED
+chicotear/RED
+coimear/REDÀ
+corar/RED
+corretear/REDÀÅ
+coscachear/RED
+cuotear/RED
+demeritar/RED
+desaterrar/IRD
+descachazar/RED
+descarozar/REDÀ
+deschapar/RED
+descuajeringar/RED
+desguañangar/RED
+desmalezar/RED
+despelucar/RED
+despilarar/RED
+despostar/RED
+despresar/RED
+devolver/IRñòù
+difuntear/RED
+digitar/RED
+empalicar/RED
+emplantillar/RED
+empotrerar/RED
+encandelillar/RED
+encielar/RED
+enlozar/RED
+enmadejar/RED
+enmugrar/RED
+enrostrar/REDÂÅ
+entrabar/RED
+graficar/RED
+harnear/RED
+hijuelar/RED
+hormiguillar/RED
+humear/RED
+hurguetear/RED
+improbar/IRD
+llapar/RED
+parquear/RED
+peticionar/RED
+pialar/RED
+picanear/RED
+pichulear/RED
+pircar/RED
+pispar/RED
+pololear/RED
+quinchar/RED
+quiñar/RED
+rasmillar/RED
+rasquetear/RED
+refaccionar/REDÀ
+reportear/RED
+retobar/RED
+talonear/RED
+testear/RED
+tincar/RED
+topear/RED
+trapear/RED
+trasbocar/RED
+tusar/RED
+ubicar/REDÀÄ
+vivar/REDÌÙ
+yapar/RED

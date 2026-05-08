@@ -1,0 +1,117 @@
+# Lista de lemas: NombresFemeninos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+acreencia/S
+arepa/S
+auyama/S
+azua/S
+basurita/S
+bellísima/S
+bombacha/S
+cachapa/S
+calilla/S
+calla/S
+camaza/S
+canta/S
+cantuta/S
+cañabrava/S
+carcacha/S
+carterita/S
+cedulación/S
+cesantía/S
+chícora/S
+cigarrería/S
+cochinera/S
+comelona/S
+contesta/S
+contraloría/S
+criandera/S
+cueriza/S
+defensoría/S
+diagramación/S
+disquera/S
+escondidas
+estiptiquez/S
+estrictez/S
+fleta/S
+gauchada/S
+gavera/S
+gritadera/S
+guama/S
+guanabanada/S
+guanábana/S
+guaricha/S
+guarura/S
+guasca/S
+gurbia/S
+hallaca/S
+hayaca/S
+huaca/S
+huasca/S
+implicancia/S
+jaba/S
+jicotea/S
+jora/S
+lonchera/S
+maloca/S
+mantequillera/S
+mapoteca/S
+matada/S
+miniteca/S
+negrada/S
+ña
+ñapa/S
+oroya/S
+pachamanca/S
+paraulata/S
+patota/S
+picuda/S
+pitahaya/S
+poblada/S
+premiación/S
+pulpería/S
+quila/S
+rara/S
+reclame/S
+regimentación/S
+renguera/S
+renquera/S
+rochela/S
+rubiera/S
+sábila/S
+salivadera/S
+sarteneja/S
+secua/S
+seringa/S
+silbatina/S
+simaruba/S
+soca/S
+tapera/S
+tapisca/S
+tigra/S
+tinterillada/S
+tola/S
+torreja/S
+tortolita/S
+totora/S
+totuma/S
+tracalada/S
+trácala/S
+tragavenado/S
+vidorria/S
+viravira/S
+yuruma/S
+zoncera/S

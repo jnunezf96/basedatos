@@ -1,0 +1,11 @@
+# Lista de lemas: NombresMasculinosFemeninos.txt
+
+# Colaboradores:
+# + Edward Villegas Pulgarin (@cosmoscalibur).
+
+# Elaborado para el proyecto [RLA-ES](https://github.com/sbosio/rla-es/).
+
+agachón/GS
+bebeleche/S
+bocabierta/S
+cansón/GS

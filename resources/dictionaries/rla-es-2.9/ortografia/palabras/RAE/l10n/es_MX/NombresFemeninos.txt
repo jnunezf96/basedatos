@@ -1,0 +1,129 @@
+# Lista de lemas: NombresFemeninos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+acreencia/S
+alifa/S
+anchoveta/S
+arreglada/S
+azotada/S
+barcina/S
+basurita/S
+bellísima/S
+bombacha/S
+cajuela/S
+calaca/S
+calilla/S
+calla/S
+camaza/S
+cañabrava/S
+capitaneja/S
+carcacha/S
+cemita/S
+chachalaca/S
+chingada/S
+ciclovía/S
+cigarrería/S
+cocineta/S
+contesta/S
+contraloría/S
+cozolmeca/S
+criandera/S
+cueriza/S
+curul/S
+cuya/S
+declaratoria/S
+defensoría/S
+derriba/S
+domada/S
+embarradilla/S
+escondidas
+escondidillas
+estiptiquez/S
+estrictez/S
+exótica/S
+follisca/S
+fregada/S
+gripa/S
+guanabanada/S
+guanábana/S
+guaraná/S
+guatusa/S
+gurbia/S
+hablada/S
+hierbería/S
+huaca/S
+huesuda/S
+jaba/S
+jamaica
+juana/S
+julia/S
+lastimada/S
+lonchera/S
+mantequillera/S
+mapoteca/S
+mara/S
+marmaja
+mazorquera/S
+membresía/S
+memela/S
+mezcalería/S
+milpa/S
+miscelánea/S
+neja/S
+ña
+ñapa/S
+oroya/S
+piruja/S
+pitahaya/S
+planeación/S
+podada/S
+portación/S
+premiación/S
+pulpería/S
+quitada/S
+radioemisora/S
+rajada/S
+rara/S
+rasgada/S
+reclame/S
+regañada/S
+rellena/S
+renguera/S
+renquera/S
+responsiva/S
+reversa/S
+sábila/S
+sarteneja/S
+seringa/S
+sobrebota/S
+soca/S
+soya/S
+tallada/S
+tapisca/S
+terracería/S
+tigra/S
+tilichera/S
+tilma/S
+tinterillada/S
+tobillera/S
+totuma/S
+tracalada/S
+trácala/S
+trajinera/S
+tunca/S
+vitrola/S
+zoncera/S
+zurria/S

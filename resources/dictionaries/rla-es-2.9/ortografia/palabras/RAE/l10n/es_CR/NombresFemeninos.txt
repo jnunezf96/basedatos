@@ -1,0 +1,79 @@
+# Lista de lemas: NombresFemeninos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+acreencia/S
+aguadulce/S
+bellísima/S
+bombacha/S
+botellita/S
+calilla/S
+calla/S
+camaza/S
+cañabrava/S
+capitaneja/S
+cascabela/S
+cedulación/S
+chachalaca/S
+chirraca/S
+ciclovía/S
+cigarrería/S
+collareja/S
+consumida/S
+contesta/S
+contraloría/S
+corroncha/S
+criandera/S
+cueriza/S
+escondidas
+estiptiquez/S
+estrictez/S
+gacilla/S
+gauchada/S
+guanabanada/S
+guanábana/S
+guaraná/S
+gurbia/S
+huaca/S
+jaba/S
+jamaica
+lonchera/S
+mantequillera/S
+milpa/S
+natilla/S
+ña
+oroya/S
+pitahaya/S
+premiación/S
+pulpería/S
+radioemisora/S
+rara/S
+reclame/S
+renguera/S
+renquera/S
+resbaladera/S
+seringa/S
+simaruba/S
+sobrebota/S
+soca/S
+taltuza/S
+tapisca/S
+tarsana/S
+tigra/S
+tinterillada/S
+toboba/S
+totuma/S
+tracalada/S
+zoncera/S

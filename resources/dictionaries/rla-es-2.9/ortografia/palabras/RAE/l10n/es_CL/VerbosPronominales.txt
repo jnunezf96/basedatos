@@ -1,0 +1,68 @@
+# Lista de lemas: VerbosPronominales.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+ababillar/RED
+acaserar/RED
+achaplinar/RED
+achiguar/RED
+acriollar/RED
+afiebrar/RED
+afrechar/RED
+agringar/RED
+aguarapar/RED
+ahuesar/RED
+alipegar/RED
+amachar/RED
+amallar/RED
+aparragar/RED
+aparroquiar/RED
+apensionar
+apirgüinar/RED
+apirular/RED
+apolvillar/RED
+apozar/RED
+apunar/RED
+aquintralar/RED
+asorochar/RED
+azarear/RED
+brocear/RED
+cachetear/RED
+cachiporrear/RED
+costalear/RED
+empajar/RED
+empalar/REDô
+empampar/RED
+empastar/RED
+enancar/RED
+encachar/RED
+encalillar/RED
+encamotar/RED
+enguarapar/RED
+enguatar/RED
+enmonar/RED
+envegar/RED
+expedir/XDñ
+fondear/RED
+fregar/IRDñõ
+hornaguear/RED
+mantear/RED
+paletear/RED
+pifiar/RED
+pololear/RED
+rayar/RED
+taimar/RED
+trapicar/REDñô
+virar/REDñ

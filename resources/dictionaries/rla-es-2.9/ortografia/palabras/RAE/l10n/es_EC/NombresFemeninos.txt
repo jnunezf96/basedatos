@@ -1,0 +1,95 @@
+# Lista de lemas: NombresFemeninos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+acreencia/S
+azua/S
+banana/S
+basurita/S
+bellísima/S
+bombacha/S
+calilla/S
+calla/S
+cantuta/S
+cañabrava/S
+cedulación/S
+cepillada/S
+ciclovía/S
+cigarrería/S
+contesta/S
+contraloría/S
+criandera/S
+cueriza/S
+curul/S
+escondidas
+estiptiquez/S
+estrictez/S
+gauchada/S
+gradiente/S
+guanabanada/S
+guanábana/S
+guaricha/S
+guasca/S
+guatusa/S
+gurbia/S
+huaca/S
+huasca/S
+humita/S
+implicancia/S
+jaba/S
+jora/S
+lonchera/S
+maloca/S
+mamancona/S
+mantequillera/S
+membresía/S
+multicancha/S
+naranjillada/S
+narigada/S
+ña
+ñapa/S
+oroya/S
+pachamanca/S
+pitahaya/S
+poblada/S
+premiación/S
+pulpería/S
+quila/S
+quinua/S
+rara/S
+reclame/S
+renguera/S
+renquera/S
+salamanqueja/S
+salivadera/S
+sarteneja/S
+sayama/S
+seringa/S
+silbatina/S
+simaruba/S
+soca/S
+tagua/S
+tambarria/S
+tamba/S
+tapera/S
+tapisca/S
+tigra/S
+tinterillada/S
+tola/S
+totora/S
+totuma/S
+tracalada/S
+viravira/S
+zoncera/S

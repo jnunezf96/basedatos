@@ -1,0 +1,151 @@
+# Lista de lemas: NombresMasculinos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+abigeato/S
+abigeo/S
+abuje/S
+acápite/S
+aglomeramiento/S
+ajicero/S
+altoparlante/S
+amacayo/S
+anaiboa/S
+apretazón/S
+ara/S
+atol/S
+atrenzo/S
+aurero/S
+bajillo/S
+bluyín/S
+bocabajo/S
+boniatillo/S
+brillador/S
+cachimbo/S
+cachumbo/S
+caico/S
+camarotero/S
+camote/S
+cao/S
+carángano/S
+carato/S
+carpidor/S
+catibo/S
+celular/S
+chavo/S
+chiche/S
+chuchero/S
+chucho/S
+cocotazo/S
+cogollero/S
+coloniaje/S
+comercial/S
+conguito/S
+conuco/S
+conversatorio/S
+convertible/S
+copéis		# Plural de copey
+copey
+corrientazo/S
+cuerazo/S
+cunchu
+cuyá/S
+despilaramiento/S
+diablito/S
+diarismo/S
+draque/S
+empacamiento/S
+encasquillador/S
+escobilleo/S
+espartillo/S
+estefanote/S
+expendio/S
+facho/S
+facilismo/S
+fierro/S
+flamboyán/S
+flotante/S
+fólder/S
+frijol/S
+fumado/S
+gachumbo/S
+gofio/S
+granadillo/S
+guacamole/S
+guarapo/S
+guayo/S
+güin/S
+irrespeto/S
+jan/S
+jeringatorio/S
+jonrón/S
+maguey/S
+majarete/S
+malojero/S
+matahambre/S
+montuno/S
+morrocóis		# Plural de morrocoy
+morrocoy
+muleque/S
+multifamiliar/S
+naco/S
+nancer/S
+nevado/S
+nocaut/S
+noticioso/S
+ñangué/S
+ño
+ocuje/S
+overol/S
+palito/S
+papalote/S
+papelerío/S
+patanco/S
+patao/S
+patrullero/S
+pinatero/S
+pinol/S
+pitirre/S
+pizarrón/S
+platón/S
+polvillo/S
+quijo/S
+quitasolillo/S
+removedor/S
+reservorio/S
+retranquero/S
+revientacaballo/S
+romerillo/S
+rompenueces
+ronco/S
+rubro/S
+sabanazo/S
+sandiego/S
+secundario/S
+sietecueros
+sport
+sud
+tamal/S
+tareco/S
+tata/S
+tebenque/S
+tibe/S
+timbiriche/S
+tlaco/S
+traspatio/S
+uveral/S
+vacabuey/S
+vuelto/S
+yale/S

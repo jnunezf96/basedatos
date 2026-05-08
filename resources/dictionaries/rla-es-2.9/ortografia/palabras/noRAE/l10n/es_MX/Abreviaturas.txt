@@ -1,0 +1,38 @@
+# Lista de lemas: Abreviaturas.txt
+# Copyright (C) 2004-2012 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+C				#[topónimo] Juan C. Bonilla
+CFE				#Comisión Federal de Electricidad
+CNDH				#Comisión Nacional de los Derechos Humanos
+CONACYT				#Consejo Nacional de Ciencia y Tecnología
+CONAGUA				#Comisión Nacional del Agua
+CURP				#Clave Única de Registro de Población
+Dr				#[topónimo] Dr. Belisario Domínguez
+G				#[topónimo] Praxedis G. Guerrero
+I				#[topónimo] Francisco I. Madero
+IMSS				#Instituto Mexicano del Seguro Social
+INE				#Instituto Nacional Electoral
+INEGI				#Instituto Nacional de Estadística y Geografía
+INFONAVIT			#Instituto del Fondo Nacional de la Vivienda para los Trabajadores
+ISSSTE				#Instituto de Seguridad y Servicios Sociales de los Trabajadores del Estado
+N				#[topónimo] Juan N. Méndez
+P				#[topónimo] Othón P. Blanco
+PEMEX				#Petróleos Mexicanos
+R				#[topónimo] Juan R. Escudero, Angel R. Cabada, General Francisco R. Murguía
+SAT				#Servicio de Administración Tributaria
+SEDENA				#Secretaría de la Defensa Nacional
+SEP				#Secretaría de Educación Pública
+Z				#[topónimo] Francisco Z. Mena, Camerino Z. Mendoza

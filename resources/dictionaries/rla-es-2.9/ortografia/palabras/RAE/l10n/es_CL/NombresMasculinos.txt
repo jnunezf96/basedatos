@@ -1,0 +1,191 @@
+# Lista de lemas: NombresMasculinos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+abastero/S
+abigeato/S
+abigeo/S
+acápite/S
+acoplado/S
+aglomeramiento/S
+ajicero/S
+ajizal/S
+alargue/S
+alfilerillo/S
+altoparlante/S
+amacayo/S
+andinismo/S
+anisal/S
+apunamiento/S
+ara/S
+arrollado/S
+atrenzo/S
+berlín/S
+billullo
+bíper/S
+bluyín/S
+bodegaje/S
+caballazo/S
+cabildante/S
+cachimbo/S
+cachumbo/S
+camarotero/S
+camote/S
+carángano/S
+carato/S
+carpidor/S
+celular/S
+chiche/S
+ciruelillo/S
+cochayuyo/S
+cóguil/S
+coicóis		# Plural de coicoy
+coicoy
+coipo/S
+colliguáis	# Plural de colliguay
+colliguay
+coloniaje/S
+comercial/S
+conguito/S
+conscripto/S
+convertible/S
+corderaje/S
+corisanto/S
+coscacho/S
+cuadrillazo/S
+cuerazo/S
+cui/S
+cuicúis		# Plural de cuicuy
+cuicuy
+cunchu
+cuy		# Su plural es cuis
+despilaramiento/S
+diarismo/S
+dinacho/S
+draque/S
+empacamiento/S
+encasquillador/S
+entretecho/S
+escobilleo/S
+estoquillo/S
+faenero/S
+falte/S
+fierro/S
+fiofío/S
+firulete/S
+fólder/S
+fono/S
+frijol/S
+frutillar/S
+futre/S
+futsal
+gachumbo/S
+gamonalismo/S
+guachaje/S
+guarapo/S
+guascazo/S
+guayo/S
+guindado/S
+hembraje/S
+hierbal/S
+huaco/S
+huilte/S
+imbunche/S
+jeringatorio/S
+jonrón/S
+jote/S
+laque/S
+linao/S
+maguey/S
+marrueco/S
+martillero/S
+mingaco/S
+moya
+multifamiliar/S
+naco/S
+natral/S
+nevado/S
+nocaut/S
+noticioso/S
+nuco/S
+ño
+overol/S
+pangue/S
+panque/S
+papelerío/S
+parlante/S
+peneca/S
+pichiruche/S
+pillopillo/S
+pingopingo/S
+pirquinero/S
+piure/S
+pizarrón/S
+platón/S
+polvillo/S
+pregrado/S
+pucho/S
+puntaje/S
+queule/S
+quiebre/S
+quijo/S
+quilláis	# Plural de quillay
+quillay
+quilombo/S
+quilmáis	# Plural de quilmay
+quilmay
+quiltro/S
+quinchihue/S
+quique/S
+quirquincho/S
+quisco/S
+rayador/S
+removedor/S
+reservorio/S
+riflero/S
+rocambor/S
+romerillo/S
+rompenueces
+rubro/S
+sanco/S
+sport
+sud
+suplementero/S
+talero/S
+tamal/S
+tata/S
+temu/S
+teruteru
+tijeral/S
+tipeo/S
+tiuque/S
+tlaco/S
+tomatillo/S
+tontito/S
+torito/S
+totoral/S
+totorero/S
+traro/S
+trascendido/S
+traspatio/S
+trebo/S
+trumao/S
+uslero/S
+uveral/S
+video/S
+vuelto/S
+yeco/S
+yuyo/S
+zapallo/S

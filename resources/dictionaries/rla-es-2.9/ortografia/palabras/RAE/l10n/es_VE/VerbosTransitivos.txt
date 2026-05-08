@@ -1,0 +1,73 @@
+# Lista de lemas: VerbosTransitivos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+acolchonar/RED
+alinderar/RED
+apealar/RED
+arrequintar/RED
+aserruchar/RED
+atrincar/RED
+bolsiquear/RED
+caletear/RED
+carnear/RED
+cedular/RED
+chicotear/RED
+coimear/REDÀ
+corar/RED
+demeritar/RED
+desaterrar/IRD
+descachazar/RED
+descarozar/REDÀ
+descuajeringar/RED
+desentejar/RED
+desguañangar/RED
+desmalezar/RED
+despichar/RED
+despilarar/RED
+despresar/RED
+devolver/IRñòù
+difuntear/RED
+empotrerar/RED
+encabullar/RED
+encabuyar/RED
+engavetar/RED
+enlozar/RED
+enrostrar/REDÂÅ
+entrabar/RED
+hormiguillar/RED
+humear/RED
+hurguetear/RED
+improbar/IRD
+llapar/RED
+negrear/RED
+obstinar/RED
+parquear/RED
+peticionar/RED
+pialar/RED
+picanear/RED
+puyar/RED
+quinchar/RED
+rasquetear/RED
+reencauchar/RED
+refaccionar/REDÀ
+reportear/RED
+rustir/RED
+trapear/RED
+trasbocar/RED
+tusar/RED
+ubicar/REDÀÄ
+vivar/REDÌÙ
+yapar/RED

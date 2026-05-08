@@ -1,0 +1,57 @@
+# Lista de lemas: NombresMasculinosFemeninos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+abombado/GS
+alojado/GS
+aplazado/GS
+arrimado/GS
+bebe/GS
+boletero/GS
+botellero/GS
+calandraco/GS
+chapín/GS
+chavo/GS
+cholo/GS
+cogotudo/GS
+coyotero/GS
+cuto/GS
+designado/GS
+desocupado/GS
+entrador/GS
+facilitador/GS
+ferrocarrilero/GS
+guate/GS
+guato/GS
+hulero/GS
+lechoso/GS
+marero/GS
+marucho/GS
+maturrango/GS
+mesero/GS
+mitotero/GS
+moto/GS
+nacatamalero/GS
+orillero/GS
+paletero/GS
+patojo/GS
+retardado/GS
+tachero/GS
+tamalero/GS
+tierno/GS
+trompudo/GS
+varado/GS
+yerbero/GS
+zarandajo/GS

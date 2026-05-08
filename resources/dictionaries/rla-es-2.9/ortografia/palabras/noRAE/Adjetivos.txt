@@ -1,0 +1,152 @@
+# Lista de lemas: Adjetivos.txt
+# Copyright (C) 2004-2012 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+afrodescendiente/S
+anatomoclínico/GS
+ansiogénico/GS
+anticomercial/S
+antimonopólico/GS
+apaciguante/S
+asintótico/GS
+autoconsciente/S
+autocontenido/GS
+autocorrectivo/GS
+autodeterminado/GS
+autoimpuesto/GS
+autolubricante/S
+autosómico/GS
+autosustentable/S
+avergonzante/S
+ayurvédico/GS
+bariónico/GS
+belaruso/GS
+belorruso/GS
+bisauguineano/GS
+booleano/GS
+borbotante/S
+botsuanés/S
+burkinés/GS
+capacitivo/GS
+cataclísmico/GS
+catamarcano/GS
+ceilandés/GS
+combinacional/S			# Contribuida por César Romé
+completísimo/GS
+concatenante/S
+conceptualizante/S
+concipiente/S
+cromodinámico/GS
+desarrollador/GS
+desestabilizante/S
+destellante/S
+desvaneciente/S
+diferenciable/S
+emiratí/S
+enceguecedor/GS
+encriptado/GS
+espirométrico/GS
+estirable/S
+etnolingüístico/GS
+facilísimo/GS
+fenólico/GS
+ferrimagnético/GS
+finísimo/GS
+gaussiano/GS
+geotérmico/GS
+grandísimo/GS
+gravable/S
+gravitomagnético/GS
+heterolítico/GS
+hidrotérmico/GS
+hipergeométrico/GS
+hitchcockiano/GS
+holofónico/GS
+homolítico/GS
+impatriado/GS
+importantísimo/GS
+impráctico/GS
+incremental/S
+inentendible/S
+inferencial/S
+inspectorial/S
+interactuante/S
+interoperable/S			# Contribuida por Gonzalo Higuera Díaz
+interpolante/S
+interrelacionado/GS
+intuible/S
+irakí/S
+larguísimo/GS
+maremotriz/S
+melamínico/GS
+microinformático/GS
+mitocondrial/S
+monotípico/S
+multiescala/S
+multisensorial/S
+nanométrico/GS
+neobarroco/S
+neogótico/GS
+neoguineano/GS
+oligopólico/GS
+omanés/GS
+omnidireccional/S
+orbitante/Sh
+ortotipográfico/GS
+papuano/GS
+patrocinante/S
+pequeñísimo/GS
+peregrinante/S
+periodontal/S
+piroclástico/GS
+policéntrico/GS
+polandés/GS
+postraumático/GS
+posvacacional/S
+propositivo/GS
+psicosocial/S
+reconducible/S
+relumbrante/S
+representacional/S
+reproducible/S
+reumatoide/S
+reverberante/S
+rugiente/S
+saheliano/GS
+santaluciano/GS
+semiconsciente/S
+senoidal/S
+sobreviniente/S
+srilanqués/GS
+sudsudanés/GS
+sufriente/S
+supermasivo/GS
+supersimétrico/GS
+suprasensible/S
+sursudanés/GS
+taquiónico/GS
+texturado/GS
+torsor/S
+unario/GS
+unipolar/S
+utilísimo/GS
+uzbeco/GS
+vigorizante/S
+yemenita/S
+yibutense/S
+yibutí/S
+zambés/GS
+zambio/GS
+zapoteco/GS

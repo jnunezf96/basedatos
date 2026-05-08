@@ -1,0 +1,72 @@
+# Lista de lemas: NombresMasculinosFemeninos.txt
+# Copyright (C) 2004-2009 de Santiago Bosio (sbosio AT gmail.com)
+
+# Este listado es software libre: usted puede redistribuirlo y/o modificarlo
+# conforme a los términos de la Licencia Pública General de GNU, publicada
+# por la Free Software Foundation, ya sea la versión 3 de la Licencia,
+# o una versión posterior (a su elección).
+
+# Este listado se distribuye con el deseo que le resulte útil, pero
+# SIN GARANTÍAS DE NINGÚN TIPO; ni siquiera con las garantías implícitas
+# de COMERCIABILIDAD o APTITUD PARA UN PROPÓSITO DETERMINADO. Para más
+# información consulte el texto de la licencia respectiva seleccionada.
+
+# Debe haber recibido una copia de la Licencia Pública General de GNU junto
+# con este listado. Si no es así, visite <http://www.gnu.org/licenses/>
+
+abarrotero/GS
+abombado/GS
+alojado/GS
+amigovio/GS
+aplazado/GS
+arrimado/GS
+baratero/GS
+boletero/GS
+briago/GS
+calandraco/GS
+chaperón/GS
+chapín/GS
+chavo/GS
+chilero/GS
+chilpayate/GS
+cholo/GS
+chueco/GS
+cogotudo/GS
+coyotero/GS
+cuate/GS
+desocupado/GS
+entrador/GS
+escuincle/GS
+ferrocarrilero/GS
+fifí/S
+güiro/GS
+hierbatero/GS
+hierbero/GS
+huesero/GS
+hulero/GS
+jolín/GS
+machetero/GS
+manito/GS
+mano/GS
+maturrango/GS
+meco/GS
+mesero/GS
+mezcalero/GS
+mitotero/GS
+naco/GS
+obrajero/GS
+orillero/GS
+paletero/GS
+penoso/GS
+pocho/GS
+profesionista/S
+resbaloso/GS
+rielero/GS
+tachero/GS
+tamalero/GS
+taquero/GS
+trompudo/GS
+varado/GS
+ventajoso/GS
+yerbatero/GS
+yerbero/GS

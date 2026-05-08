@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "data.jsonl.gz"
 REPORT_PATH = ROOT / "scripts" / "non_wimmer_old_spanish_ui_signal_inventory.jsonl"
 SUMMARY_PATH = ROOT / "scripts" / "non_wimmer_old_spanish_ui_signal_inventory_summary.txt"
+SKIP_SOURCES = {"2021 Wimmer", "1992 Karttunen"}
 
 
 TOKEN_RE = re.compile(r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+")
@@ -55,7 +56,7 @@ def main() -> None:
         for line in fh:
             row = json.loads(line)
             source = row.get("Fuente") or ""
-            if source == "2021 Wimmer":
+            if source in SKIP_SOURCES:
                 continue
             text = row.get("Traducción") or ""
             for match in TOKEN_RE.finditer(text):

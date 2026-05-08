@@ -1,0 +1,129 @@
+lexicon_files=507
+lexicon_exact_lemmas=66786
+review_rows=301
+review_occurrences=567
+
+review_buckets:
+subtract_nahuatl_or_source	rows=218	occurrences=314
+  {"token": "quiza", "count": "22", "source": "1571 Molina 2", "lemma": "topan ninochihua  =", "translation": "Cf. quiza +", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "huitzilopochtli", "count": "18", "source": "1598 Tezozomoc", "lemma": "tozcatoci", "translation": "dios sujeto a Huitzilopochtli, con camisa de rosas *D", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "esquividad", "count": "6", "source": "1571 Molina 1", "lemma": "acan teicniuhyotl", "translation": "esquividad así.", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "ahuado", "count": "2", "source": "1571 Molina 1", "lemma": "pouhtiuh", "translation": "sosegarse o estar seguro o ahuado de algún trabajo, enfermedad o angustia.", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "aquiense", "count": "1", "source": "1571 Molina 2", "lemma": "tlanonotztli", "translation": "informada persona, o aquiense dio parte de algún negocio, o de algún secreto.", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "ayocacatzintli", "count": "1", "source": "1571 Molina 2", "lemma": "cac, maz ez reuerencial  =", "translation": "Cf. ayocacatzintli", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "blanquibol", "count": "1", "source": "153? Trilingüe", "lemma": "neichichihualoni", "translation": "Blanquibol o albayalde.", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "catzin", "count": "1", "source": "1645 Carochi", "lemma": "quemaca", "translation": "quëmàcatzin, sí (más reverencial) / sí (reverencial)", "reason": "exact source-form token"}
+  {"token": "iuan", "count": "1", "source": "1571 Molina 2", "lemma": "noye", "translation": "y también. s. iuan. conjunción.", "reason": "exact source-form token"}
+  {"token": "iucci", "count": "1", "source": "1645 Carochi", "lemma": "icuci", "translation": "cocerse, o sazonarse algo -véase iucci", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "quinatzin", "count": "1", "source": "1580 Sahagún/Máynez", "lemma": "techotlalla chichimeca", "translation": "Ayo y sucesor de Quinatzin", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "tequiz", "count": "1", "source": "1629 Alarcón", "lemma": "quechnahua", "translation": "abrazarse dos (quittonezqui quechnahuàtequiz)", "reason": "exact source-form token"}
+  {"token": "tzinap", "count": "1", "source": "17?? Bnf_362", "lemma": "teotetl", "translation": "Azauachi, esto no es propriamente azabache sino una piedra negra que en Tarasco llaman Tzinap", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "vtsa", "count": "1", "source": "1565 Sahagún Escolios", "lemma": "tehuyotica tepiltzin", "translation": "[hijo o hija legítimos] ídem [tlaçopilli], ca. vtsa (5)", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "iuhqui", "count": "9", "source": "1645 Carochi", "lemma": "ye", "translation": "ya / çan ~ nö ihui, de la misma manera / (çan ~) nö iuh, de la misma manera / ca ~, ya / çan ~ nö iuhqui, de la misma manera / çan ~ nö, mismo / (in) ~ nechca, ", "reason": "Nahuatl form or cross-reference note"}
+  {"token": "tlacaeleltzin", "count": "6", "source": "1598 Tezozomoc", "lemma": "tlacaeleltze", "translation": "Cf. tlacaeleltzin", "reason": "Nahuatl form or cross-reference note"}
+subtract_productive_derivative	rows=31	occurrences=88
+  {"token": "embarnizador", "count": "8", "source": "1571 Molina 1", "lemma": "tlatizahui", "translation": "embarnizador de esta manera.", "reason": "productive diminutive or derivational form"}
+  {"token": "embrocadura", "count": "8", "source": "1571 Molina 1", "lemma": "tlatzonicquetzaliztli", "translation": "embrocadura tal.", "reason": "productive diminutive or derivational form"}
+  {"token": "atestiguador", "count": "7", "source": "1571 Molina 1", "lemma": "temelahuani", "translation": "atestiguador.", "reason": "productive diminutive or derivational form"}
+  {"token": "obispillo", "count": "4", "source": "1571 Molina 1", "lemma": "coyametl icuitlatecon tlanacatentli", "translation": "obispillo de puerco.", "reason": "productive diminutive or derivational form"}
+  {"token": "abrochadura", "count": "3", "source": "153? Trilingüe", "lemma": "tlatlalpiliztli", "translation": "Abrochadura de vestido.", "reason": "productive diminutive or derivational form"}
+  {"token": "embarbascador", "count": "3", "source": "1571 Molina 1", "lemma": "tlaapahuiani", "translation": "embarbascador.", "reason": "productive diminutive or derivational form"}
+  {"token": "enredamiento", "count": "3", "source": "153? Trilingüe", "lemma": "tlatzohuiliztli", "translation": "Enredamiento así.", "reason": "productive diminutive or derivational form"}
+  {"token": "bautizador", "count": "2", "source": "1571 Molina 1", "lemma": "tecuatequiani", "translation": "bautizador.", "reason": "productive diminutive or derivational form"}
+  {"token": "besador", "count": "2", "source": "1571 Molina 1", "lemma": "tetennamiquini", "translation": "besador.", "reason": "productive diminutive or derivational form"}
+  {"token": "bruñidero", "count": "2", "source": "1571 Molina 2", "lemma": "tlapetlahualoni", "translation": "bruñidero, o instrumento para acecalar y bruñir algo.", "reason": "productive diminutive or derivational form"}
+  {"token": "burlamiento", "count": "2", "source": "1780 ? Bnf_361", "lemma": "tetlatolpinahuiliztli", "translation": "Escarnecimiento, o burlamiento de lo que otro dice.", "reason": "productive diminutive or derivational form"}
+  {"token": "embarramiento", "count": "2", "source": "1571 Molina 2", "lemma": "tlazoquiyotiliztli", "translation": "embarramiento así.", "reason": "productive diminutive or derivational form"}
+  {"token": "embetunador", "count": "2", "source": "1571 Molina 1", "lemma": "tlatzacuiani", "translation": "embetunador.", "reason": "productive diminutive or derivational form"}
+  {"token": "abundamiento", "count": "1", "source": "153? Trilingüe", "lemma": "onehualiztli", "translation": "Abundamiento.", "reason": "productive diminutive or derivational form"}
+  {"token": "barbechador", "count": "1", "source": "1571 Molina 2", "lemma": "tlapopoxoani", "translation": "barbechador.", "reason": "productive diminutive or derivational form"}
+  {"token": "blandilla", "count": "1", "source": "1571 Molina 2", "lemma": "yamactontli", "translation": "cosa blandilla así.", "reason": "productive diminutive or derivational form"}
+subtract_rla_valid	rows=23	occurrences=119
+  {"token": "abuhado", "count": "20", "source": "1571 Molina 1", "lemma": "zazamac", "translation": "abuhado así.", "reason": "rla_exact_rae"}
+  {"token": "aborrecedor", "count": "18", "source": "17?? Bnf_362", "lemma": "tecocoliani", "translation": "Aborrecedor", "reason": "rla_exact_rae"}
+  {"token": "batimiento", "count": "14", "source": "1571 Molina 1", "lemma": "tlatzotzonaliztli", "translation": "batimiento de metal.", "reason": "rla_exact_rae"}
+  {"token": "abofeteador", "count": "13", "source": "1780 ? Bnf_361", "lemma": "teixcapaniani", "translation": "Dador de bofetón; o abofeteador.", "reason": "rla_exact_rae"}
+  {"token": "abajamiento", "count": "10", "source": "1571 Molina 1", "lemma": "tololiztli", "translation": "abajamiento tal.", "reason": "rla_exact_rae"}
+  {"token": "abrimiento", "count": "8", "source": "1571 Molina 2", "lemma": "cencamachaloliztli", "translation": "un abrimiento de boca, o una boqueada.", "reason": "rla_exact_rae"}
+  {"token": "averiguador", "count": "8", "source": "1571 Molina 1", "lemma": "tlatolaxiltiani", "translation": "averiguador tal.", "reason": "rla_exact_rae"}
+  {"token": "bendecidor", "count": "6", "source": "1571 Molina 1", "lemma": "tlateochihuani", "translation": "bendecidor.", "reason": "rla_exact_rae"}
+  {"token": "absolvedor", "count": "4", "source": "1571 Molina 1", "lemma": "tetlatlacolpolhuiani", "translation": "absolvedor tal.", "reason": "rla_exact_rae"}
+  {"token": "enrojar", "count": "2", "source": "153? Trilingüe", "lemma": "cozahuia ^", "translation": "Enrojar o enrubiarse.", "reason": "rla_exact_rae"}
+  {"token": "oblada", "count": "2", "source": "153? Trilingüe", "lemma": "huentli", "translation": "Oblada.", "reason": "rla_exact_rae"}
+  {"token": "abortón", "count": "1", "source": "153? Trilingüe", "lemma": "tlatlaxtli", "translation": "Abortón.", "reason": "rla_exact_rae"}
+  {"token": "blanquete", "count": "1", "source": "1765 Cortés y Zedeño", "lemma": "iztactic", "translation": "Alvayarde, o blanquete", "reason": "rla_exact_rae"}
+  {"token": "bruneta", "count": "1", "source": "153? Trilingüe", "lemma": "castilla tliltic tilmatli", "translation": "Bruneta, paño negro.", "reason": "rla_exact_rae"}
+  {"token": "desalbardar", "count": "1", "source": "153? Trilingüe", "lemma": "pepechtemohuia", "translation": "Desalbardar.", "reason": "rla_exact_rae"}
+  {"token": "embarnecer", "count": "1", "source": "1565 Sahagún Escolios", "lemma": "patlani", "translation": "volar: por metáfora quieren decir crescer y embarnecer en el cuerpo.", "reason": "rla_exact_rae"}
+subtract_regional_or_domain	rows=8	occurrences=9
+  {"token": "abejita", "count": "1", "source": "2002 Mecayapan", "lemma": "calnec", "translation": "Tipo de abejita negra que no tiene aguijón; se refiere también a su panal y su miel.", "reason": "modern/regional/domain vocabulary"}
+  {"token": "balacear", "count": "1", "source": "1984 Tzinacapan", "lemma": "toponia", "translation": "Balacear, disparar", "reason": "modern/regional/domain vocabulary"}
+  {"token": "brilloso", "count": "1", "source": "2002 Mecayapan", "lemma": "pichoti", "translation": "brilloso", "reason": "modern/regional/domain vocabulary"}
+  {"token": "ngojtzitz", "count": "1", "source": "2002 Mecayapan", "lemma": "teyina", "translation": "derribar (frutas y flores) Inïn ejeca' yej panoj tami' quiteyîn seli'mângojtzitzîn. El viento que pasó derribó todos los mangos tiernitos.", "reason": "modern/regional/domain vocabulary"}
+  {"token": "chahuiztle", "count": "2", "source": "2002 Mecayapan", "lemma": "chahuiz", "translation": "chahuiztle (enfermedad de plantas)", "reason": "modern/regional/domain vocabulary"}
+  {"token": "barbasco", "count": "1", "source": "2002 Mecayapan", "lemma": "moycoy", "translation": "barbasco (bejuco de donde se saca veneno para pescar)", "reason": "modern/regional/domain vocabulary"}
+  {"token": "basuriento", "count": "1", "source": "2002 Mecayapan", "lemma": "tlazoltla", "translation": "haber basura (ambiente), basuriento", "reason": "modern/regional/domain vocabulary"}
+  {"token": "tehuizote", "count": "1", "source": "1984 Tzinacapan", "lemma": "tehuizotl", "translation": "Tehuizote ( palma pequeña)", "reason": "modern/regional/domain vocabulary"}
+subtract_taxonomy_latin	rows=7	occurrences=8
+  {"token": "bixa", "count": "1", "source": "2002 Mecayapan", "lemma": "achiyo", "translation": "achiote (bixa orellana)", "reason": "scientific/taxonomic token"}
+  {"token": "borní", "count": "1", "source": "153? Trilingüe", "lemma": "tlotli", "translation": "Borní especie de halcón.", "reason": "scientific/taxonomic context"}
+  {"token": "betuláceo", "count": "2", "source": "1984 Tzinacapan", "lemma": "ilicuahuitl", "translation": "Aliso (árbol betuláceo)", "reason": "scientific/taxonomic context"}
+  {"token": "bixáceas", "count": "1", "source": "1580 Sahagún/Máynez", "lemma": "achiyotl", "translation": "Árbol de las bixáceas", "reason": "scientific/taxonomic context"}
+  {"token": "bromeliáceas", "count": "1", "source": "1984 Tzinacapan", "lemma": "pachtli", "translation": "Pachtle (planta de la familia de las bromeliáceas, que cuelga de las ramas de los árboles)", "reason": "scientific/taxonomic context"}
+  {"token": "nopotzin", "count": "1", "source": "17?? Bnf_362bis", "lemma": "po", "translation": "saltillo en la ô. Esta particula se puede usar opor si sola, o compuesta con todo género de nombres. De cualquiera manera pide los semipronombres no, mo, i etce", "reason": "scientific/taxonomic context"}
+  {"token": "xeretzi", "count": "1", "source": "1780 Clavijero", "lemma": "comalquilitl", "translation": "Planta antihemorroidal que en Tarasco llaman Tzaguanguanitz Xeretzi", "reason": "scientific/taxonomic context"}
+subtract_proper_name	rows=5	occurrences=10
+  {"token": "belcebú", "count": "1", "source": "1629 Alarcón", "lemma": "tlacolteyotl  +", "translation": "dioses silvestres / dioses silvestres (donde ponen este carácter X, y por él entienden al enemigo o a Belcebú, que como superior a los demás a quien llaman dios", "reason": "proper name or toponym"}
+  {"token": "guadalupe", "count": "1", "source": "1551-95 Documentos nahuas de la Ciudad de México", "lemma": "de  +", "translation": "nuestra señora de Guadalupe", "reason": "proper name or toponym"}
+  {"token": "orizaba", "count": "4", "source": "1598 Tezozomoc", "lemma": "ahuilizapan", "translation": "Orizaba en español *T", "reason": "proper name or toponym"}
+  {"token": "benito", "count": "3", "source": "1571 Molina 2", "lemma": "nezcayotilli  +", "translation": "deshonrado e infamado con señal. s. de san benito. etc.", "reason": "proper name or toponym"}
+  {"token": "baco", "count": "1", "source": "1579 Durán", "lemma": "ome tochtli", "translation": "Dos conejos. El dios Baco. \"Dos conejo\"", "reason": "proper name or toponym"}
+subtract_valid_spanish	rows=5	occurrences=6
+  {"token": "aborrecedora", "count": "1", "source": "1765 Cortés y Zedeño", "lemma": "tetlacocoliani", "translation": "Aborrecedor, aborrecedora", "reason": "valid Spanish form missed by review heuristics"}
+  {"token": "atestiguadores", "count": "1", "source": "1571 Molina 2", "lemma": "tetlaneltilicahuan", "translation": "atestiguadores.", "reason": "valid Spanish form missed by review heuristics"}
+  {"token": "enredadizo", "count": "1", "source": "1780 Clavijero", "lemma": "ilacatziuhqui", "translation": "Enredadizo. Se dice particularmente de las plantas", "reason": "valid Spanish form missed by review heuristics"}
+  {"token": "bravísimamente", "count": "2", "source": "1571 Molina 2", "lemma": "tlachichinacapololli", "translation": "atormentado bravísimamente.", "reason": "valid Spanish form missed by review heuristics"}
+  {"token": "enriquecidamente", "count": "1", "source": "1571 Molina 2", "lemma": "tecuiltonoliztica", "translation": "enriquecidamente.", "reason": "valid Spanish form missed by review heuristics"}
+subtract_dle_valid	rows=4	occurrences=13
+  {"token": "bodegonero", "count": "8", "source": "1780 ? Bnf_361", "lemma": "vino namacac", "translation": "Vinatero, que vende vino. Tabernero, tabernera. Bodegonero", "reason": "DLE: bodegonero, ra"}
+  {"token": "baldrés", "count": "2", "source": "153? Trilingüe", "lemma": "cuetlaxtli", "translation": "Baldrés, pelleja curtida.", "reason": "DLE: baldrés"}
+  {"token": "orinienta", "count": "2", "source": "1571 Molina 2", "lemma": "poxcauhqui", "translation": "cosa mohosa, o orinienta.", "reason": "DLE: oriniento, ta"}
+  {"token": "bodegonera", "count": "1", "source": "153? Trilingüe", "lemma": "cihuatl ocnamacac", "translation": "Bodegonera que vende allí.", "reason": "DLE: bodegonero, ra"}
+
+rla_statuses:
+not_in_rla	rows=271	occurrences=415
+  {"token": "huitzilopochtli", "count": "18", "source": "1598 Tezozomoc", "lemma": "tozcatoci", "translation": "dios sujeto a Huitzilopochtli, con camisa de rosas *D", "rla_match": ""}
+  {"token": "bodegonero", "count": "8", "source": "1780 ? Bnf_361", "lemma": "vino namacac", "translation": "Vinatero, que vende vino. Tabernero, tabernera. Bodegonero", "rla_match": ""}
+  {"token": "embarnizador", "count": "8", "source": "1571 Molina 1", "lemma": "tlatizahui", "translation": "embarnizador de esta manera.", "rla_match": ""}
+  {"token": "embrocadura", "count": "8", "source": "1571 Molina 1", "lemma": "tlatzonicquetzaliztli", "translation": "embrocadura tal.", "rla_match": ""}
+  {"token": "atestiguador", "count": "7", "source": "1571 Molina 1", "lemma": "temelahuani", "translation": "atestiguador.", "rla_match": ""}
+  {"token": "esquividad", "count": "6", "source": "1571 Molina 1", "lemma": "acan teicniuhyotl", "translation": "esquividad así.", "rla_match": ""}
+  {"token": "obispillo", "count": "4", "source": "1571 Molina 1", "lemma": "coyametl icuitlatecon tlanacatentli", "translation": "obispillo de puerco.", "rla_match": ""}
+  {"token": "abrochadura", "count": "3", "source": "153? Trilingüe", "lemma": "tlatlalpiliztli", "translation": "Abrochadura de vestido.", "rla_match": ""}
+  {"token": "embarbascador", "count": "3", "source": "1571 Molina 1", "lemma": "tlaapahuiani", "translation": "embarbascador.", "rla_match": ""}
+  {"token": "enredamiento", "count": "3", "source": "153? Trilingüe", "lemma": "tlatzohuiliztli", "translation": "Enredamiento así.", "rla_match": ""}
+  {"token": "ahuado", "count": "2", "source": "1571 Molina 1", "lemma": "pouhtiuh", "translation": "sosegarse o estar seguro o ahuado de algún trabajo, enfermedad o angustia.", "rla_match": ""}
+  {"token": "baldrés", "count": "2", "source": "153? Trilingüe", "lemma": "cuetlaxtli", "translation": "Baldrés, pelleja curtida.", "rla_match": ""}
+rla_exact_rae	rows=24	occurrences=122
+  {"token": "abuhado", "count": "20", "source": "1571 Molina 1", "lemma": "zazamac", "translation": "abuhado así.", "rla_match": "RAE/Adjetivos"}
+  {"token": "aborrecedor", "count": "18", "source": "17?? Bnf_362", "lemma": "tecocoliani", "translation": "Aborrecedor", "rla_match": "RAE/Adjetivos"}
+  {"token": "batimiento", "count": "14", "source": "1571 Molina 1", "lemma": "tlatzotzonaliztli", "translation": "batimiento de metal.", "rla_match": "RAE/NombresMasculinos"}
+  {"token": "abofeteador", "count": "13", "source": "1780 ? Bnf_361", "lemma": "teixcapaniani", "translation": "Dador de bofetón; o abofeteador.", "rla_match": "RAE/Adjetivos"}
+  {"token": "abajamiento", "count": "10", "source": "1571 Molina 1", "lemma": "tololiztli", "translation": "abajamiento tal.", "rla_match": "RAE/NombresMasculinos"}
+  {"token": "abrimiento", "count": "8", "source": "1571 Molina 2", "lemma": "cencamachaloliztli", "translation": "un abrimiento de boca, o una boqueada.", "rla_match": "RAE/NombresMasculinos"}
+  {"token": "averiguador", "count": "8", "source": "1571 Molina 1", "lemma": "tlatolaxiltiani", "translation": "averiguador tal.", "rla_match": "RAE/Adjetivos"}
+  {"token": "bendecidor", "count": "6", "source": "1571 Molina 1", "lemma": "tlateochihuani", "translation": "bendecidor.", "rla_match": "RAE/Adjetivos"}
+  {"token": "absolvedor", "count": "4", "source": "1571 Molina 1", "lemma": "tetlatlacolpolhuiani", "translation": "absolvedor tal.", "rla_match": "RAE/Adjetivos"}
+  {"token": "benito", "count": "3", "source": "1571 Molina 2", "lemma": "nezcayotilli  +", "translation": "deshonrado e infamado con señal. s. de san benito. etc.", "rla_match": "RAE/Adjetivos; toponimos/toponimos-centros_poblados; toponimos/toponimos-ciudades; toponimos/toponimos-distritos; toponimos/toponimos-municipios"}
+  {"token": "enrojar", "count": "2", "source": "153? Trilingüe", "lemma": "cozahuia ^", "translation": "Enrojar o enrubiarse.", "rla_match": "RAE/VerbosTransitivosPronominales"}
+  {"token": "oblada", "count": "2", "source": "153? Trilingüe", "lemma": "huentli", "translation": "Oblada.", "rla_match": "RAE/NombresFemeninos"}
+rla_exact_no_rae	rows=2	occurrences=2
+  {"token": "belcebú", "count": "1", "source": "1629 Alarcón", "lemma": "tlacolteyotl  +", "translation": "dioses silvestres / dioses silvestres (donde ponen este carácter X, y por él entienden al enemigo o a Belcebú, que como superior a los demás a quien llaman dios", "rla_match": "noRAE/NombresPropiosSiglas"}
+  {"token": "guadalupe", "count": "1", "source": "1551-95 Documentos nahuas de la Ciudad de México", "lemma": "de  +", "translation": "nuestra señora de Guadalupe", "rla_match": "noRAE/NombresPropiosSiglas; toponimos/toponimos-centros_poblados; toponimos/toponimos-distritos; toponimos/toponimos-municipios"}
+rla_exact_other	rows=2	occurrences=5
+  {"token": "orizaba", "count": "4", "source": "1598 Tezozomoc", "lemma": "ahuilizapan", "translation": "Orizaba en español *T", "rla_match": "toponimos/toponimos-municipios"}
+  {"token": "baco", "count": "1", "source": "1579 Durán", "lemma": "ome tochtli", "translation": "Dos conejos. El dios Baco. \"Dos conejo\"", "rla_match": "toponimos/toponimos-ciudades"}
+rla_accent_variant	rows=1	occurrences=22
+  {"token": "quiza", "count": "22", "source": "1571 Molina 2", "lemma": "topan ninochihua  =", "translation": "Cf. quiza +", "rla_match": "quizá :: RAE/Adverbios"}
+rla_reflexive_rae	rows=1	occurrences=1
+  {"token": "enaguazarse", "count": "1", "source": "1571 Molina 2", "lemma": "tlaahuaqui", "translation": "abochornarse los panes o enaguazarse y anegarse.", "rla_match": "enaguazar :: RAE/VerbosTransitivosPronominales"}

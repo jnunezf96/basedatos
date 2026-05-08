@@ -1,0 +1,302 @@
+relation	token	guess	count	source	lemma	translation	guesses	rla_status	rla_match	review_bucket	bucket_reason
+accent-only	quiza	quizá	22	1571 Molina 2	topan ninochihua  =	Cf. quiza +	quizá, Guiza, suiza, quizás, quita	rla_accent_variant	quizá :: RAE/Adverbios	subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+accent-only	huitzilopochtli	Huitzilopochtli	18	1598 Tezozomoc	tozcatoci	dios sujeto a Huitzilopochtli, con camisa de rosas *D	Huitzilopochtli	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+accent-only	belcebú	Belcebú	1	1629 Alarcón	tlacolteyotl  +	dioses silvestres / dioses silvestres (donde ponen este carácter X, y por él entienden al enemigo o a Belcebú, que como superior a los demás a quien llaman dioses silvestres o menores)	Belcebú	rla_exact_no_rae	noRAE/NombresPropiosSiglas	subtract_proper_name	proper name or toponym
+accent-only	guadalupe	Guadalupe	1	1551-95 Documentos nahuas de la Ciudad de México	de  +	nuestra señora de Guadalupe	Guadalupe	rla_exact_no_rae	noRAE/NombresPropiosSiglas; toponimos/toponimos-centros_poblados; toponimos/toponimos-distritos; toponimos/toponimos-municipios	subtract_proper_name	proper name or toponym
+other	abuhado	abuzado	20	1571 Molina 1	zazamac	abuhado así.	abuzado	rla_exact_rae	RAE/Adjetivos	subtract_rla_valid	rla_exact_rae
+other	aborrecedor	aborrecido	18	17?? Bnf_362	tecocoliani	Aborrecedor	aborrecido, aborrecer, aborrecemos, aborrecidos, aborreced	rla_exact_rae	RAE/Adjetivos	subtract_rla_valid	rla_exact_rae
+other	batimiento	abatimiento	14	1571 Molina 1	tlatzotzonaliztli	batimiento de metal.	abatimiento, bastimento, bastimentó	rla_exact_rae	RAE/NombresMasculinos	subtract_rla_valid	rla_exact_rae
+other	abofeteador	abofeteado	13	1780 ? Bnf_361	teixcapaniani	Dador de bofetón; o abofeteador.	abofeteado, abofeteados	rla_exact_rae	RAE/Adjetivos	subtract_rla_valid	rla_exact_rae
+other	abajamiento	abarramiento	10	1571 Molina 1	tololiztli	abajamiento tal.	abarramiento	rla_exact_rae	RAE/NombresMasculinos	subtract_rla_valid	rla_exact_rae
+other	abrimiento	aburrimiento	8	1571 Molina 2	cencamachaloliztli	un abrimiento de boca, o una boqueada.	aburrimiento, abarramiento	rla_exact_rae	RAE/NombresMasculinos	subtract_rla_valid	rla_exact_rae
+other	averiguador	averiguado	8	1571 Molina 1	tlatolaxiltiani	averiguador tal.	averiguado, averiguados	rla_exact_rae	RAE/Adjetivos	subtract_rla_valid	rla_exact_rae
+other	bodegonero	bodegoneo	8	1780 ? Bnf_361	vino namacac	Vinatero, que vende vino. Tabernero, tabernera. Bodegonero	bodegoneo	not_in_rla		subtract_dle_valid	DLE: bodegonero, ra
+other	embarnizador	embarnizados	8	1571 Molina 1	tlatizahui	embarnizador de esta manera.	embarnizados, embarnizado	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	embrocadura	embocadura	8	1571 Molina 1	tlatzonicquetzaliztli	embrocadura tal.	embocadura	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	atestiguador	atestiguado	7	1571 Molina 1	temelahuani	atestiguador.	atestiguado, atestiguados	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	bendecidor	bendecido	6	1571 Molina 1	tlateochihuani	bendecidor.	bendecido, bendecidos	rla_exact_rae	RAE/Adjetivos	subtract_rla_valid	rla_exact_rae
+other	esquividad	esquivado	6	1571 Molina 1	acan teicniuhyotl	esquividad así.	esquivado, esquivada, esquivadas, esquivad	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+other	absolvedor	absolver	4	1571 Molina 1	tetlatlacolpolhuiani	absolvedor tal.	absolver, absolved, absolvemos	rla_exact_rae	RAE/Adjetivos	subtract_rla_valid	rla_exact_rae
+other	obispillo	obispado	4	1571 Molina 1	coyametl icuitlatecon tlanacatentli	obispillo de puerco.	obispado, obispal	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	orizaba	orillaba	4	1598 Tezozomoc	ahuilizapan	Orizaba en español *T	orillaba, erizaba, rizaba, orinaba, orzaba	rla_exact_other	toponimos/toponimos-municipios	subtract_proper_name	proper name or toponym
+other	abrochadura	abrochada	3	153? Trilingüe	tlatlalpiliztli	Abrochadura de vestido.	abrochada, abrochara, abrochador	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	benito	bonito	3	1571 Molina 2	nezcayotilli  +	deshonrado e infamado con señal. s. de san benito. etc.	bonito, bendito, Benito, buenito, Benita	rla_exact_rae	RAE/Adjetivos; toponimos/toponimos-centros_poblados; toponimos/toponimos-ciudades; toponimos/toponimos-distritos; toponimos/toponimos-municipios	subtract_proper_name	proper name or toponym
+other	embarbascador	embarbascados	3	1571 Molina 1	tlaapahuiani	embarbascador.	embarbascados, embarbascado	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	enredamiento	enervamiento	3	153? Trilingüe	tlatzohuiliztli	Enredamiento así.	enervamiento	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	ahuado	aguado	2	1571 Molina 1	pouhtiuh	sosegarse o estar seguro o ahuado de algún trabajo, enfermedad o angustia.	aguado, ahumado, ahusado	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+other	baldrés	baldes	2	153? Trilingüe	cuetlaxtli	Baldrés, pelleja curtida.	baldes, baldares, baldees, baldosé, baladres	not_in_rla		subtract_dle_valid	DLE: baldrés
+other	bautizador	bautizado	2	1571 Molina 1	tecuatequiani	bautizador.	bautizado, bautizados	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	besador	besado	2	1571 Molina 1	tetennamiquini	besador.	besado, besados, pesador	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	bruñidero	bruñidor	2	1571 Molina 2	tlapetlahualoni	bruñidero, o instrumento para acecalar y bruñir algo.	bruñidor, bruñidores	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	burlamiento	bruñimiento	2	1780 ? Bnf_361	tetlatolpinahuiliztli	Escarnecimiento, o burlamiento de lo que otro dice.	bruñimiento	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	embarramiento	envaramiento	2	1571 Molina 2	tlazoquiyotiliztli	embarramiento así.	envaramiento, embarraliento	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	embetunador	embetunados	2	1571 Molina 1	tlatzacuiani	embetunador.	embetunados, embetunado	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	enrojar	enojar	2	153? Trilingüe	cozahuia ^	Enrojar o enrubiarse.	enojar, enrollar, enrolar, enrejar, enromar	rla_exact_rae	RAE/VerbosTransitivosPronominales	subtract_rla_valid	rla_exact_rae
+other	oblada	poblada	2	153? Trilingüe	huentli	Oblada.	poblada, doblada, orlada, bolada, obrada	rla_exact_rae	RAE/NombresFemeninos	subtract_rla_valid	rla_exact_rae
+other	orinienta	orienta	2	1571 Molina 2	poxcauhqui	cosa mohosa, o orinienta.	orienta	not_in_rla		subtract_dle_valid	DLE: oriniento, ta
+other	abejita	abestia	1	2002 Mecayapan	calnec	Tipo de abejita negra que no tiene aguijón; se refiere también a su panal y su miel.	abestia	not_in_rla		subtract_regional_or_domain	modern/regional/domain vocabulary
+other	aborrecedora	adormecedora	1	1765 Cortés y Zedeño	tetlacocoliani	Aborrecedor, aborrecedora	adormecedora	not_in_rla		subtract_valid_spanish	valid Spanish form missed by review heuristics
+other	abortón	aborten	1	153? Trilingüe	tlatlaxtli	Abortón.	aborten, abortan	rla_exact_rae	RAE/NombresMasculinos	subtract_rla_valid	rla_exact_rae
+other	abundamiento	abultamiento	1	153? Trilingüe	onehualiztli	Abundamiento.	abultamiento	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	aquiense	aquietes	1	1571 Molina 2	tlanonotztli	informada persona, o aquiense dio parte de algún negocio, o de algún secreto.	aquietes	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+other	atestiguadores	atestiguados	1	1571 Molina 2	tetlaneltilicahuan	atestiguadores.	atestiguados, atestiguares	not_in_rla		subtract_valid_spanish	valid Spanish form missed by review heuristics
+other	ayocacatzintli	aaocacatzintli	1	1571 Molina 2	cac, maz ez reuerencial  =	Cf. ayocacatzintli	aaocacatzintli	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+other	baco	buco	1	1579 Durán	ome tochtli	"Dos conejos. El dios Baco. ""Dos conejo"""	buco, laco, paco, bajo, banco	rla_exact_other	toponimos/toponimos-ciudades	subtract_proper_name	proper name or toponym
+other	balacear	balacera	1	1984 Tzinacapan	toponia	Balacear, disparar	balacera, balancear	not_in_rla		subtract_regional_or_domain	modern/regional/domain vocabulary
+other	barbechador	barbechados	1	1571 Molina 2	tlapopoxoani	barbechador.	barbechados, barbechado	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	bixa	bisa	1	2002 Mecayapan	achiyo	achiote (bixa orellana)	bisa, biga, bina, bita, bija	not_in_rla		subtract_taxonomy_latin	scientific/taxonomic token
+other	blandilla	blandita	1	1571 Molina 2	yamactontli	cosa blandilla así.	blandita, blandida	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	blanquete	banquete	1	1765 Cortés y Zedeño	iztactic	Alvayarde, o blanquete	banquete, blanquece	rla_exact_rae	RAE/NombresMasculinos	subtract_rla_valid	rla_exact_rae
+other	blanquibol	blanquillo	1	153? Trilingüe	neichichihualoni	Blanquibol o albayalde.	blanquillo	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+other	blándilla	blandito	1	1571 Molina 2	yamancatontli	blándilla cosa.	blandito, blandita, blandir, blandura, blanditas	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	bodegonera	bodegonear	1	153? Trilingüe	cihuatl ocnamacac	Bodegonera que vende allí.	bodegonear, bodegonea, bodegoneara	not_in_rla		subtract_dle_valid	DLE: bodegonero, ra
+other	bollitos	boletos	1	1579 Durán	tzocoyotl	Bollitos	boletos, pollitos, bolitas, bolillos	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	borbollitas	borbollabas	1	1571 Molina 2	ixmomoloca	hacer el agua borbollitas.	borbollabas, borbollas, borbollaras, borbolleas	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	borní	borne	1	153? Trilingüe	tlotli	Borní especie de halcón.	borne, bornee	rla_exact_rae	RAE/NombresMasculinos	subtract_taxonomy_latin	scientific/taxonomic context
+other	brilloso	brillos	1	2002 Mecayapan	pichoti	brilloso	brillos, brillos o	not_in_rla		subtract_regional_or_domain	modern/regional/domain vocabulary
+other	bruneta	Brunete	1	153? Trilingüe	castilla tliltic tilmatli	Bruneta, paño negro.	Brunete, bruñera	rla_exact_rae	RAE/NombresCompuestos	subtract_rla_valid	rla_exact_rae
+other	catzin	catrín	1	1645 Carochi	quemaca	quëmàcatzin, sí (más reverencial) / sí (reverencial)	catrín	not_in_rla		subtract_nahuatl_or_source	exact source-form token
+other	desalbardar	descalabrado	1	153? Trilingüe	pepechtemohuia	Desalbardar.	descalabrado, descalabrar, desagradar, descalabrada, descalabrara	rla_exact_rae	RAE/VerbosTransitivos	subtract_rla_valid	rla_exact_rae
+other	embarcadura	embarcadora	1	153? Trilingüe	acalco calaquiliztli	Embarcadura.	embarcadora, embarradura	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	embarnecer	embravecer	1	1565 Sahagún Escolios	patlani	volar: por metáfora quieren decir crescer y embarnecer en el cuerpo.	embravecer, embarbecer	rla_exact_rae	RAE/VerbosIntransitivos	subtract_rla_valid	rla_exact_rae
+other	embarnizadura	embarnizada	1	153? Trilingüe	tlachiemahuiliztli	Embarnizadura.	embarnizada, embarnizara	rla_exact_rae	RAE/NombresFemeninos	subtract_rla_valid	rla_exact_rae
+other	embazadura	embaladura	1	153? Trilingüe	neizahuiliztli	Embazadura.	embaladura, embarradura	rla_exact_rae	RAE/NombresFemeninos	subtract_rla_valid	rla_exact_rae
+other	embijamiento	embobamiento	1	1571 Molina 2	teozaliztli	unción, o embijamiento que se hace a otro.	embobamiento, embotamiento, embrujamiento	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	enaguazarse	enaguaras	1	1571 Molina 2	tlaahuaqui	abochornarse los panes o enaguazarse y anegarse.	enaguaras, enaguares	rla_reflexive_rae	enaguazar :: RAE/VerbosTransitivosPronominales	subtract_rla_valid	rla_reflexive_rae
+other	enredadizo	enredado	1	1780 Clavijero	ilacatziuhqui	Enredadizo. Se dice particularmente de las plantas	enredado	not_in_rla		subtract_valid_spanish	valid Spanish form missed by review heuristics
+other	enriscamiento	enroscamiento	1	153? Trilingüe	tlacpacieliztli	Enriscamiento.	enroscamiento, enfrascamiento	rla_exact_rae	RAE/NombresMasculinos	subtract_rla_valid	rla_exact_rae
+other	enrizamiento	enrolamiento	1	153? Trilingüe	cihuapahualiztli	Enrizamiento así.	enrolamiento, erizamiento	rla_exact_rae	RAE/NombresMasculinos	subtract_rla_valid	rla_exact_rae
+other	enrosador	enlosador	1	1765 Cortés y Zedeño	xochiani	Rosador, o enrosador	enlosador	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+other	iuan	iban	1	1571 Molina 2	noye	y también. s. iuan. conjunción.	iban, Juan, cuan, izan	not_in_rla		subtract_nahuatl_or_source	exact source-form token
+other	iucci	iicci	1	1645 Carochi	icuci	cocerse, o sazonarse algo -véase iucci	iicci, iccci, idcci, ilcci, imcci	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+other	ngojtzitz	negojtzitz	1	2002 Mecayapan	teyina	derribar (frutas y flores) Inïn ejeca' yej panoj tami' quiteyîn seli'mângojtzitzîn. El viento que pasó derribó todos los mangos tiernitos.	negojtzitz	not_in_rla		subtract_regional_or_domain	modern/regional/domain vocabulary
+other	quinatzin	quintaron	1	1580 Sahagún/Máynez	techotlalla chichimeca	Ayo y sucesor de Quinatzin	quintaron, quintan, quintaban, quintasen, quintaran	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+other	tequiz	Teques	1	1629 Alarcón	quechnahua	abrazarse dos (quittonezqui quechnahuàtequiz)	Teques	not_in_rla		subtract_nahuatl_or_source	exact source-form token
+other	tzinap	tiznan	1	17?? Bnf_362	teotetl	Azauachi, esto no es propriamente azabache sino una piedra negra que en Tarasco llaman Tzinap	tiznan, tiznar, tizna, tiznas, tiznad	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+other	vtsa	visa	1	1565 Sahagún Escolios	tehuyotica tepiltzin	[hijo o hija legítimos] ídem [tlaçopilli], ca. vtsa (5)	visa, vasta	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	barrimiento		9	1571 Molina 1	tlehuahuanaliztli	barrimiento o barredura tal.		not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+no-guess	iuhqui		9	1645 Carochi	ye	ya / çan ~ nö ihui, de la misma manera / (çan ~) nö iuh, de la misma manera / ca ~, ya / çan ~ nö iuhqui, de la misma manera / çan ~ nö, mismo / (in) ~ nechca, tiempos pasados / (in) ~ nëpa, tiempos pasados / ~ huècauh, antiguo / ~ imman, ya es hora / ~ imman,		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	buscamiento		7	1571 Molina 1	tlatemoliztli	buscamiento.		not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+no-guess	tlacaeleltzin		6	1598 Tezozomoc	tlacaeleltze	Cf. tlacaeleltzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	cuandoquiera		5	1571 Molina 2	zaciquin	sea cuandoquiera. s. que algo acaeciere. adverbio.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	oniquiz		5	1565 Sahagún Escolios	mana	ninomana. pt. oninomâ. Salir cosa llana como parece el sol que sale (d) / salir, pt. oniquiz. oninoman (23+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	barnizamiento		4	1571 Molina 1	tlaaxhuiliztli	barnizamiento tal.		not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+no-guess	bambaneamiento		3	1571 Molina 2	ahuic huechiliztli	bambaneamiento.		not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+no-guess	barbinegro		3	1571 Molina 1	tentzon tliltic	barbinegro.		rla_exact_rae	RAE/Adjetivos	subtract_rla_valid	rla_exact_rae
+no-guess	iuhcatzintli		3	17?? Bnf_362bis	iuhcatzintli	Iuhqui (adverbio, algunas veces es nombre, y su plural es Iuhquê, y su reverencial Iuhcatzintli) su significación se conoce por estos ejemplos		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	iuhqu		3	17?? Bnf_362bis	iuhcatzintli	Iuhqui (adverbio, algunas veces es nombre, y su plural es Iuhquê, y su reverencial Iuhcatzintli) su significación se conoce por estos ejemplos		not_in_rla		subtract_nahuatl_or_source	exact source-form token
+no-guess	iuhquimma		3	17?? Bnf_362bis	in mayo$qui	lo mismo que iuhquimma		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	moyolicatzin		3	17?? Bnf_362bis	ammoyolicatzin	Vosotros, Os. (vide Moyolicatzin)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notzicuicticauh		3	1565 Sahagún Escolios	tzicuictic	cosa suelto. ca. notzicuicticauh (4) / ligera, ca. notzicuicticauh (5) / vivo agudo ligero o veloz, ca. notzicuicticauh (13+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	teputze		3	1565 Sahagún Escolios	cuexane	el que rige o sustenta algún cargo, estos tres vocablos [cuexane, teputze, macuche] andan siempre juntos, ca. nocuexanecauh (9-) / persona que lleva algo en el regazo (17)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlalhuiz		3	17?? Bnf_362bis	ilihuiz	inconsideramente. sinonimo de Tlalhuiz		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlaquatzi		3	1629 Alarcón	tlacopatli	bebedizo que es de la Raíz llaman tlacopàtli, aunque tal vez se valen de la cola del tlaquatzi / raíz		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	achitzin		2	1780 Clavijero	aquiton	Véase Achitzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	betuláceo		2	1984 Tzinacapan	ilicuahuitl	Aliso (árbol betuláceo)		not_in_rla		subtract_taxonomy_latin	scientific/taxonomic context
+no-guess	boqueamiento		2	1571 Molina 1	camachaloliztli	boqueamiento.		not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+no-guess	bravísimamente		2	1571 Molina 2	tlachichinacapololli	atormentado bravísimamente.		not_in_rla		subtract_valid_spanish	valid Spanish form missed by review heuristics
+no-guess	chahuiztle		2	2002 Mecayapan	chahuiz	chahuiztle (enfermedad de plantas)		not_in_rla		subtract_regional_or_domain	modern/regional/domain vocabulary
+no-guess	embarnizamiento		2	1571 Molina 1	tlachiyamahuiliztli	embarnizamiento de esta manera.		not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+no-guess	embetunamiento		2	1571 Molina 1	tlatzauchuiliztli	embetunamiento.		not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+no-guess	itechtzinco		2	1759 Paredes	itetzinco	de itechtzinco. Pierde la ch, por la siguiente tz / es lo mismo que itechtzinco		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	iuiyotia		2	1571 Molina 2	ihuiyoquiza	lo mismo es que iuiyotia.		not_in_rla		subtract_nahuatl_or_source	exact source-form token
+no-guess	mauizopoloa		2	1571 Molina 2	mahuizpoloa	lo mismo es que mauizopoloa.		not_in_rla		subtract_nahuatl_or_source	exact source-form token
+no-guess	nachtzin		2	1565 Sahagún Escolios	teachtze	el hermano mayor en linaje de oficio, dice la mujer nachtzin, ca. nachtze (1+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notlatziuhcauh		2	1565 Sahagún Escolios	tlatziuhqui	perezoso o perezosa, ca. notlatziuhcauh (2) {mi perezoso o perezoza} / persona perezosa, ca. notlatziuhcauh (9)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onenquiz		2	1565 Sahagún Escolios	amo nenquiza	no pasar en balde, pt. amo onenquiz. (2)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onipetzin		2	1565 Sahagún Escolios	petzini	asomar, pt. onipetzin (24) / nipetzini. pt. onipetzin. asomar se cualquiera cosa (e)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onivaltziniloth		2	1565 Sahagún Escolios	hualtzinilotia	recular o volver atrás, pt. onivaltziniloth (100-)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	otlauizcalli		2	1565 Sahagún Escolios	quequetza  +	aparece gran claridad, pt. otlauizcalli moquequetz. (9+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	polihuiztli		2	1571 Molina 2	ipam polihuiliztli  =	Cf. ipam polihuiztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	quemacatzin		2	17?? Bnf_362bis	quemaca	Si, con alguna reverencia. Quemacatzin. si, con mayor reverencia.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	quiztiquiça		2	1571 Molina 2	quiztihuetzi	lo mismo es que quiztiquiça.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlailiuizuia		2	1565 Sahagún Escolios	tlatlaxcoloa	[ser arrojado o precipitado] ídem [tlailiuizuia], pt. onitlatlaxcolo (52)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlathuiztli		2	1571 Molina 2	aquen tlattaliztli  =	Cf. aquen tlathuiztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	achihualhuetzi		1	1571 Molina 2	achinicchitonia:  =	Cf. achihualhuetzi		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ahuizotl		1	1580 Sahagún/Máynez	tziuhcoac	Provincia conquistada por Ahuizotl		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	auhtzin		1	17?? Bnf_362bis	aú	se distingue mucho del anterior [auh]: su significación por ser dificultosa se entenderá mejor con los ejemplos. (sílaba larga y su reverencial Auhtzin)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	barbasco		1	2002 Mecayapan	moycoy	barbasco (bejuco de donde se saca veneno para pescar)		not_in_rla		subtract_regional_or_domain	modern/regional/domain vocabulary
+no-guess	basuriento		1	2002 Mecayapan	tlazoltla	haber basura (ambiente), basuriento		not_in_rla		subtract_regional_or_domain	modern/regional/domain vocabulary
+no-guess	bixáceas		1	1580 Sahagún/Máynez	achiyotl	Árbol de las bixáceas		not_in_rla		subtract_taxonomy_latin	scientific/taxonomic context
+no-guess	bizcochillo		1	1598 Tezozomoc	tlaxcalmimilolli	tortilla y manera de bizcochillo		not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+no-guess	bromeliáceas		1	1984 Tzinacapan	pachtli	Pachtle (planta de la familia de las bromeliáceas, que cuelga de las ramas de los árboles)		not_in_rla		subtract_taxonomy_latin	scientific/taxonomic context
+no-guess	buharro		1	1579 Durán	cozcacuauhtli	"Buharro. ""Águila de collar"""		rla_exact_rae	RAE/NombresMasculinos	subtract_rla_valid	rla_exact_rae
+no-guess	cauhtiquiza		1	1780 ? Bnf_361	necauhtiquizaliztli	Cosa quedada o detenida, vid cauhtiquiza		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	cenquizca		1	17?? Bnf_362bis	cenquizqui	muy, mucho. Junto con nombre lo hace superlativo. vide cenquizca		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	choquilitzatzi		1	1571 Molina 2	choquitzatzi	lo mismo es que choquilitzatzi.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	choquitzatzi		1	1571 Molina 2	choquilitzatzi  =	Cf. choquitzatzi		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	choquiztli		1	1571 Molina 2	choquiliztli  =	Cf. choquiztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	cocotzin		1	1780 Clavijero	tlapalcocotli	Véase Cocotzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	colhuacatzinco		1	1580 Sahagún/Máynez	colhuacatzincatl	El que habita en Colhuacatzinco		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	cueyatzin		1	1598 Tezozomoc	cuetzin	Cf. cueyatzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ehecacehuazquetzalli		1	1598 Tezozomoc	heccaçehuazquetzalli	Cf. ehecacehuazquetzalli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	eltzitzica		1	1571 Molina 2	elpantlatla  =	Cf. eltzitzica		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	eltzitzicac		1	1571 Molina 2	elpantlatlac  =	Cf. eltzitzicac		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	eltzitzicaliztli		1	1571 Molina 2	elpantlatlaliztli  =	Cf. eltzitzicaliztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	embestimiento		1	153? Trilingüe	tlaehuatiquetzaliztli	Embestimiento.		not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
+no-guess	enriquecidamente		1	1571 Molina 2	tecuiltonoliztica	enriquecidamente.		not_in_rla		subtract_valid_spanish	valid Spanish form missed by review heuristics
+no-guess	huactzin		1	1629 Alarcón	huactzin  +	espíritu o conjurado huactzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	huexotzincatl		1	1598 Tezozomoc	huexotzincatl	Cf. huexotzincatl		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	huexotzinco		1	1580 Sahagún/Máynez	huexotzincayotl	A la manera de Huexotzinco		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	huitzilihuiyotl		1	1598 Tezozomoc	huitzilihuiutl	Cf. huitzilihuiyotl		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	huitzillan		1	1598 Tezozomoc	huitzilam	Cf. huitzillan		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	huitzilopuchtli		1	1598 Tezozomoc	tetzauhteotl	abusión / Huitzilopuchtli *D		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	huitztomatzin		1	1780 Clavijero	neixpopohualoni	Véase Huitztomatzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	huiztlanpa		1	1551-95 Documentos nahuas de la Ciudad de México	huitztlampa itztimani	[Sur] estar hacia Huiztlanpa		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ichpochtzintli		1	1759 Paredes	ichpotzintli	es Ichpochtzintli. Pierde la ch por la tz		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ichpochxillantzinco		1	1759 Paredes	ichpoxillantzinco	se dice también ichpochxillantzinco		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ichpoxillantzinco		1	1759 Paredes	ichpochxillantzinco	se dice también ichpoxillantzinco, perdida la ch; por la siguiente x		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ihuiyoquiza		1	1571 Molina 2	ihuiyotia  =	Cf. ihuiyoquiza		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	inpiltzin		1	1629 Alarcón	piltzintli	criatura [Ver ipiltzin, inpiltzin]		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ipiltzin		1	1629 Alarcón	piltzintli	criatura [Ver ipiltzin, inpiltzin]		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	iuhc		1	1645 Carochi	iuhcan	véase iuhcän		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	iuhquin		1	1645 Carochi	iuhquin	véase iuhquin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	mahuizmaca		1	1571 Molina 2	mahuizomaca  =	Cf. mahuizmaca		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	mahuizpoloa		1	1571 Molina 2	mahuizopoloa  =	Cf. mahuizpoloa		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	mahuizpololo		1	1571 Molina 2	mahuizopololo  =	Cf. mahuizpololo		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	matlazincatl		1	1598 Tezozomoc	matalçingas	Cf. matlazincatl		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	mauizopololo		1	1571 Molina 2	mahuizpololo	lo mismo es que mauizopololo		not_in_rla		subtract_nahuatl_or_source	exact source-form token
+no-guess	mauiztli		1	1565 Sahagún Escolios	mahuiztli teca	imprimir temor. o espanto, pt. mauiztli omotecac. (8)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	miquiztli		1	1547 Olmos_G	miquiztli	miquiliztli, vel (latín: o) miquiztli; muerte		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nachtze		1	1565 Sahagún Escolios	teachtze	el hermano mayor en linaje de oficio, dice la mujer nachtzin, ca. nachtze (1+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nauitzin		1	1565 Sahagún Escolios	teahui	tia, ca. Naui nauitzin (1)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	netlaquizahuiliztli		1	1571 Molina 2	netlac izahuiliztli  =	Cf. netlaquizahuiliztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nezahualcoyotzin		1	1598 Tezozomoc	neçalhuacoyotzin	Cf. nezahualcoyotzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ninotzatzili		1	1565 Sahagún Escolios	itech tzatzilia	gloria se de alguno diciendo que desciende del, pt. ytech ninotzatzili (6)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ninozihuauhtia		1	17?? Bnf_362	cihuauhtia	Casarse, suelen individuarse los sexos diciendo los hombres Ninozihuauhtia		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nipetzini		1	1565 Sahagún Escolios	petzini	asomar, pt. onipetzin (24) / nipetzini. pt. onipetzin. asomar se cualquiera cosa (e)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	niquiza		1	1571 Molina 2	topan ninochihua  =	Cf. tepan niquiza		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nixquamoltzin		1	1565 Sahagún Escolios	ixcuamoltzin	persona que procede de otro, como los barbas y cejas procede de la cara, ca. nixquamoltzin (3+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nocalpanpiltzin		1	1565 Sahagún Escolios	calpan pilli	[hijo o hija bastardos] ídem [ychtacaconetl], ca. nocalpanpiltzin (7)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nochicauacatzin		1	1565 Sahagún Escolios	chicahuac	cosa dura, ca. nochicauacatzin {nochicauatzin} (2) / cosa que tiene la carne dura de vejez, ca. nochicavacauh (3) / cosa recia o fuerte, ca. nochicauacauh, nochicacticauh (2)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nochicauatzin		1	1565 Sahagún Escolios	chicahuac	cosa dura, ca. nochicauacatzin {nochicauatzin} (2) / cosa que tiene la carne dura de vejez, ca. nochicavacauh (3) / cosa recia o fuerte, ca. nochicauacauh, nochicacticauh (2)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nocitzin		1	1565 Sahagún Escolios	citli	abuela, ca. noci, nocitzin (1)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nomecapiltzin		1	1565 Sahagún Escolios	mecapilli	[hijo o hija bastardos] ídem [ychtacaconetl], ca., nomecapiltzin (10)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nonantzin		1	1565 Sahagún Escolios	nantli	Madre, ca. nona, nonan, nonantzin (1)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nonenquizcauh		1	1565 Sahagún Escolios	nenquizqui	persona inútil, ca. nonenquizcauh (33)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nonetequizpan		1	1565 Sahagún Escolios	netetequizpan	la hora de echarse a dormir, ca. nonetequizpan (5)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nopilhuacatzin		1	1565 Sahagún Escolios	pilhua	cosa que tiene hijos, ca. nopilhuacauh (2) {madre de mis hijos} / persona que tiene hijos o hijas, ca. nopilhuacauh, nopilhuatzin, nopilhuacatzin (18)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nopilhuatzin		1	1565 Sahagún Escolios	pilhua	cosa que tiene hijos, ca. nopilhuacauh (2) {madre de mis hijos} / persona que tiene hijos o hijas, ca. nopilhuacauh, nopilhuatzin, nopilhuacatzin (18)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nopiltzin		1	1565 Sahagún Escolios	tecuneuh  +	Hijo o hija, ca. nopiltzin nocuneuh (1)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	nopotzin		1	17?? Bnf_362bis	po	saltillo en la ô. Esta particula se puede usar opor si sola, o compuesta con todo género de nombres. De cualquiera manera pide los semipronombres no, mo, i etcetera y significa iguladad o semejanza, loqual declara mejor los ejemplos. Por si sola se usa así: No		not_in_rla		subtract_taxonomy_latin	scientific/taxonomic context
+no-guess	noquixtilpiltzin		1	1565 Sahagún Escolios	quixtilpilli	muchacho o muchacha que imita la nobleza, ca., noquixtilpiltzin (4+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	noteavilizittacauh		1	1565 Sahagún Escolios	teahuilizittani	persona desperdiciadora que no se da nada por ninguna cosa, ca. noteavilizittacauh (24)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notemiquiztemachicauh		1	1565 Sahagún Escolios	temiquiztemachiyani	persona que desea la muerte a otro, ca. notemiquitlancauh, notemiquiztemachicauh (12)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notentzontzin		1	1565 Sahagún Escolios	tentzontzin	persona que procede de otro, como los barbas y cejas procede de la cara, ca. notentzontzin (3-)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	noteputzecauh		1	1565 Sahagún Escolios	tepotze	el que rige o sustenta algún cargo, estos tres vocablos [cuexane, teputze, macuche] andan siempre juntos, ca. noteputzecauh, (9+) / persona que lleva algo a cuestas (18)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notetzatzilicauh		1	1565 Sahagún Escolios	tetzatziliani	persona que manda lo que se ha de hacer en casa, ca. notetzatzilicauh (27+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notlaavilizittacauh		1	1565 Sahagún Escolios	tlaahuilizittani	cosa desperdiciadora, ca. notlaavilizittacauh (1)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notlamauiztilicauh		1	1565 Sahagún Escolios	tlamahuiztiliani	cosa reverente, ca. notlamauiztilicauh (16)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notlauelilocapiltzin		1	1565 Sahagún Escolios	tepiltzin  +	hijo, ca. notlauelilocapiltzin (26)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notlauizcal		1	1565 Sahagún Escolios	tlahuizcalli	el alba del día, ca. notlauizcal. (54)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notzecauh		1	1565 Sahagún Escolios	ootzti	hembra preñada, ca. notzecauh. (5)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notzicuevallo		1	1565 Sahagún Escolios	tetzicuehuallo	quebradura de la piedra que se labra o nieto o hijo, ca. notzicuevallo (5)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notzitzicacecauh		1	1565 Sahagún Escolios	tzitzicace	persona que reprehende y castiga, ca. notzitzicacecauh (9)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notzitzicaz		1	1565 Sahagún Escolios	atl cecec tzitzicaztli	castigo o corrección, ca. nalceceuh {nalcececauh} notzitzicaz (44)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	notzitzimiuh		1	1565 Sahagún Escolios	tzitzitzimi	demonio o diablo, ca. notzitzimiuh (33)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	noxuiuhticatzin		1	1565 Sahagún Escolios	ixhuiuhticatzin	Nieto o nieta, ca. noxuiuhticatzin (1+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	noxviuhtzin		1	1565 Sahagún Escolios	ixhuiuhtzin	Nieto o nieta, ca. noxviuhtzin (1+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ntzinco		1	1645 Carochi	tollantzincatl	natural de Tölläntzinco		not_in_rla		subtract_nahuatl_or_source	exact source-form token
+no-guess	omotzineuh		1	1565 Sahagún Escolios	tzinehua	entrarse, pt. omotzineuh (34+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onauilquiztine		1	1565 Sahagún Escolios	ahuilquiztinemi	ser pública pecadora o pecador, pt. onauilquiztine{n} (12)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onictzineuh		1	1565 Sahagún Escolios	tzinehua	volverlo de arriba abajo. o trastorna algo, pt. onictzineuh. (60)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onimauhcaquiz		1	1565 Sahagún Escolios	mauhcaquiza	Salir de alguna parte con miedo, pt. onimauhcaquiz. (24)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	oninenquiz		1	1565 Sahagún Escolios	nenquiza	trabajar en balde, pt. onenquiz { oninenquiz }(36)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	oninotlalotiquiz		1	1565 Sahagún Escolios	tlalotiquiza	huir, pt. oninotlalotiquiz. (92)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitemiquiztemachi		1	1565 Sahagún Escolios	miquiztemachiya	desear la muerte a alguno, pt. onitemiquiztemachi (13)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitenpatziuh		1	1565 Sahagún Escolios	tempatzihui	Nacer boquituerto, pt. onitenpatziuh (17-)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitetzatzili		1	1565 Sahagún Escolios	tzatzilia	bocear, pt. onitetzatzili. (10)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitetzitzicazui		1	1565 Sahagún Escolios	tzitzicazhuia	herir con ortigas o castigar con palabras penosas, pt. onitetzitzicazui (8)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitlaauilizittac		1	1565 Sahagún Escolios	tlaahuilizitta	desperdiciar, pt. onitlaauilizittac (3)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitlacatzinti		1	1565 Sahagún Escolios	tlacatzintia	empezar la generación, pt. onitlacatzinti (7+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitlailiuizvi		1	1565 Sahagún Escolios	tlailihuizhuia	ser arrojado o precipitado, pt. onitlailiuizvi (50)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitlamauiztili		1	1565 Sahagún Escolios	tlamahuiztilia	reverenciar o honrar, pt. onitlamauiztili (17)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitlateputzito		1	1565 Sahagún Escolios	tepotzitoa	murmurar, pt. onitlateputzitto { onitlateputzito }(36)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitlateputzitto		1	1565 Sahagún Escolios	tepotzitoa	murmurar, pt. onitlateputzitto { onitlateputzito }(36)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitlatzinti		1	1565 Sahagún Escolios	tzintia	principiar, pt. onitlatzinti (7-)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitlatzitzicuini		1	1565 Sahagún Escolios	tzitzicuinia	rociar con sangre, con el golpe del dedo medio resoltido sobre el pulgar, pt. onitlatzitzicuini. (21)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitlatziuh		1	1565 Sahagún Escolios	tlatzihui	hacerse inútil o infructuoso o impotente, pt. onitlatziuh (6)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitlatzotzopotzine		1	1565 Sahagún Escolios	tlatzotzopotzinemi	andar revolviendo el agua andando debajo de ella, pt. onitlatzotzopotzine. (41+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitzatzic		1	1565 Sahagún Escolios	tzatzi	vocear, pt. onitzatzic}		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitzincholo		1	1565 Sahagún Escolios	tzincholoa	saltar atrás, pt. onitzincholo. (6+)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onitzinquiz		1	1565 Sahagún Escolios	tzinquiza	excusarse, pt. onitzinquiz (34)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onivaltzincholo		1	1565 Sahagún Escolios	hualtzincholoa	saltar atrás, pt. onivaltzincholo (6-)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onivaltzinquiz		1	1565 Sahagún Escolios	hualtzinquiza	recular o volver atrás, pt. onivaltzinquiz. onivaltziniloth (100-)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	onixpatziuh		1	1565 Sahagún Escolios	ixpatzihui	Nacer bizco, pt. onixpatziuh (18-)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ontzitzicuin		1	1565 Sahagún Escolios	tzitzicuini	rociar con alguna cosa, pt. ontzitzicuin. (34)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	oquichtzintli		1	1759 Paredes	oquitzintli	es oquichtzintli; y pierde la ch por la siguiente tz / oquich pierde la ch		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	oquiz		1	1565 Sahagún Escolios	calaqui  +	por una oreja le entra y por otra le sale el buen consejo, pt. oquiz ocalac (43)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	otlachoquiztleuac		1	1565 Sahagún Escolios	tlachoquiztlehua	todos lloran a voces, pt. otlachoquiztleuac}		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	otlauizcalleuac		1	1565 Sahagún Escolios	tlahuizcalehua	asoma el alba, pt. otlauizcalleuac. (9)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	otzatziuac		1	1565 Sahagún Escolios	tzatzihua	todos dan voces, pt. otzatziuac (16)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	oualacoquiz		1	1565 Sahagún Escolios	hualacoquiza	se sube en alto, pt. oualacoquiz (22)		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	pachihuiz		1	1780 Clavijero	auh	Partícula equivalente al veró de los latinos. Cenca nimitztlazotla; auh inic moyollo pachihuiz, etcétera. Mucho te amo, y para que te satisfagas, etcétera. Auh quen tihuitz. ¿Y bien cómo vienes?		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	pacxantzin		1	1780 Clavijero	tenextlacotl	Véase Pacxantzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	pahuetzi		1	1571 Molina 2	panhuetzi  =	Cf. pahuetzi		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	panuetzi		1	1571 Molina 2	pahuetzi	lo mismo es que panuetzi.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	piltzin		1	1551-95 Documentos nahuas de la Ciudad de México	ipiltzin	ver -piltzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	piltzinteuctl		1	1629 Alarcón	chicome xochitl	al venado llaman ahora Piltzinteuctl) / Chicome Xochitl		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	piltzinteuctli		1	1629 Alarcón	piltzinteuctli	él que ahora es venado en le primer siglo del venado se llamaba Piltzinteuctli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	piltzintia		1	1571 Molina 2	pilpepenia  =	Cf. piltzintia		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	pixquizpan		1	1571 Molina 2	pixquipan  =	Cf. pixquizpan		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	quanatzinca		1	1571 Molina 2	cuatlapanca;  +	lo mismo es que quanatzinca.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	quetzalhuitzitzil		1	1598 Tezozomoc	huitziltlachihualli	pluma muy menuda del quetzalhuitzitzil (sinzón), pájaro muy pequeño, relumbrante, que parecía de oro		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	quiquiza		1	1571 Molina 2	cuacualli atl quiquiza  =	Cf. quiquiza incuacualli atl		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	quiztihuetzi		1	1571 Molina 2	quiztiquiza  =	Cf. quiztihuetzi		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	quiztihuetziliztli		1	1571 Molina 2	quiztiquizaliztli  =	Cf. quiztihuetziliztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	quiztiquiçaliztli		1	1571 Molina 2	quiztihuetziliztli	lo mismo es que quiztiquiçaliztli.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	taziticatian		1	1598 Tezozomoc	taçiticatyan	Cf. taziticatian		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tecihuanitzin		1	1598 Tezozomoc	teçicuanitzin	Cf. tecihuanitzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tehuizote		1	1984 Tzinacapan	tehuizotl	Tehuizote ( palma pequeña)		not_in_rla		subtract_regional_or_domain	modern/regional/domain vocabulary
+no-guess	tentliltzin		1	1598 Tezozomoc	tentlitzin	Cf. tentliltzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	teotzinitzcan		1	1580 Sahagún/Máynez	teotzinitzcan	"Ave divina ""Teotzinitzcan legítimo"""		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tepitzin		1	17?? Bnf_362bis	tepiton	lo mismo que tepitzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	teteuhtzitzquia		1	1571 Molina 2	teteuhquitzquia  =	Cf. teteuhtzitzquia		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tetzatziliani		1	1571 Molina 2	tetzatziliqui	lo mismo es que tetzatziliani.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tetzatziliqui		1	1571 Molina 2	tetzatziliani  =	Cf. tetzatziliqui		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tetzauhmauiztic		1	1571 Molina 2	tetzauhtlamahuizolli	lo mismo es que tetzauhmauiztic.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tetzauhtlamahuizolli		1	1571 Molina 2	tetzauhmahuiztic  =	Cf. tetzauhtlamahuizolli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	timiquiz		1	17?? Bnf_362bis	iciuhca,	(con ä larga y grave), presto, con presteza. Ma iciuhcä ximonahuatitehua, ca iciuhca timiquiz. haz presto tu testamento, porque en breve morirás		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tizocicatzin		1	1598 Tezozomoc	tiçoçicatzin	Cf. tizocicatzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlacuauhtzitzquia		1	1571 Molina 2	tlacuauhquitzquia  =	Cf. tlacuauhtzitzquia		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlahuiltetzin		1	1598 Tezozomoc	tlaahuiltetzin	Cf. tlahuiltetzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlalcocoltzin		1	1780 Clavijero	cocoltzin	Véase Tlalcocoltzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlamahuiztililli		1	1571 Molina 2	tlamahuizotilli  =	Cf. tlamahuiztililli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlamatzinco		1	1580 Sahagún/Máynez	tlamatzincatl	El de Tlamatzinco		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlanatonauiztli		1	1571 Molina 2	tlancoacihuiztli	lo mismo es que tlanatonauiztli.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlancoacihuiztli		1	1571 Molina 2	tlanatonahuiztli  =	Cf. tlancoacihuiztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlatepozilpilli		1	1571 Molina 2	tlatepotzacutli  =	Cf. tlatepozilpilli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlatlacatzintli		1	1571 Molina 2	tlatlacatl  =	Cf. tlatlacatzintli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlatzetzeloani		1	1571 Molina 2	tlatzetzeloqui	lo mismo es que tlatzetzeloani.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlatzetzeloqui		1	1571 Molina 2	tlatzetzeloani  =	Cf. tlatzetzeloqui		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlatzintlan		1	17?? Bnf_362bis	itzintlan	debajo de algo. vide Tlatzintlan		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlaçolmiquiztli		1	1629 Alarcón	tetlazolaltiloni	remedio, cura de tlaçolmiquiztli y netepalhuiliztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tlehuitzilin		1	1598 Tezozomoc	tlehuitzillin	Cf. tlehuitzilin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	totoquihuaztli		1	1598 Tezozomoc	totonquihuaztli	Cf. totoquihuaztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tozmiquiztli		1	1598 Tezozomoc	tozmihuiztli	Cf. tozmiquiztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzatziliztli		1	1571 Molina 2	tzatziztli	lo mismo es que tzatziliztli.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzatziztli		1	1571 Molina 2	tzatziliztli  =	Cf. tzatziztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzicatlinan		1	1780 Clavijero	cuauhtzicatlinan	Véase Tzicatlinan		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzicoac		1	1598 Tezozomoc	tziccoac	Cf. tzicoac		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzicoacatl		1	1598 Tezozomoc	tziccoacas	Cf. tzicoacatl		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzimpetlayo		1	1571 Molina 2	tzinacayo	lo mismo es que tzimpetlayo.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzinacayo		1	1571 Molina 2	tzimpetlayo  =	Cf. tzinacayo		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzinitzcan		1	1551-95 Documentos nahuas de la Ciudad de México	tzinitzca	plumas que llaman tzinitzcan		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzitzihuan		1	1759 Paredes	itlazotzitzinhuan	se dice también, tzitzihuan, porque en la pronunciación, apenas se percibe la n, del plural tzitzinhuan		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzitzimitl		1	1580 Sahagún/Máynez	tzitzintlapatl	Tlápatl de la tzitzimitl		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzitzinhuan		1	1759 Paredes	itlazotzitzinhuan	se dice también, tzitzihuan, porque en la pronunciación, apenas se percibe la n, del plural tzitzinhuan		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzitzitza		1	1571 Molina 2	cacatza  =	Cf. tzitzitza		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzonquizaliztli		1	1571 Molina 2	tzonquizaliztli  =	Cf. tzonquizaliztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzonquizcayotl		1	1571 Molina 2	tzonquizalizyotl  =	Cf. tzonquizcayotl		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	tzoquizincan		1	1598 Tezozomoc	tzoquiçinga	Cf. tzoquizincan		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	xeretzi		1	1780 Clavijero	comalquilitl	Planta antihemorroidal que en Tarasco llaman Tzaguanguanitz Xeretzi		not_in_rla		subtract_taxonomy_latin	scientific/taxonomic context
+no-guess	xhuiuhtzin		1	1551-95 Documentos nahuas de la Ciudad de México	ixhuiuhtzin	ver -xhuiuhtzin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	xicotzi		1	1571 Molina 2	xizo  =	Cf. xicotzi		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	yamaziliztli		1	1571 Molina 2	yamaniliztli  =	Cf. yamaziliztli		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	yaotzatzi		1	1571 Molina 2	yaotzatzilia	lo mismo es que yaotzatzi.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	yaotzatzilia		1	1571 Molina 2	yaotzatzi  =	cf. yaotzatzilia		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	yctitotzinquixtizque		1	1571 Molina 2	aoctle itech titotlamizque	lo mismo es que aoctle yctitotzinquixtizque.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ylamatcatzitzintin		1	1547 Olmos_G	ilamatzin	vieja honrada, o viejecita; plural ylamatcatzitzintin		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	yohuatzinco		1	1780 Clavijero	axcan	Ahora, al presente. Axcan yohuatzinco, esta mañana, Axcan teotlac, esta tarde. Axcan yohualtica, esta noche: Axcan nepantla tonatiuh. Hoy a mediodía, etcétera.		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	ypillotzitzihuan		1	17?? Bnf_362	pillotl	{así} llaman ellos solo a sus sobrinas, de donde se ve cuánta propiedad fué llamar a los Ángeles Ypillotzitzihuan in Dios, como se ve en un Autor Antiguo		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+no-guess	çolmiquiztli		1	1629 Alarcón	tlazolmimiquiliztli	significa casi lo mismo [que tlàçolmiquiztli], solo denota juntamente la falta del sentido		not_in_rla		subtract_nahuatl_or_source	exact source-form token
