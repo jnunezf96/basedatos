@@ -1,5 +1,5 @@
-candidate_tokens=1619
-candidate_occurrences=16540
+candidate_tokens=1618
+candidate_occurrences=16594
 
 bien	656	1571 Molina 1	tlatia	engañar a otro con aparencia de bien.
 quiera	512	153? Trilingüe	tlatemoa ^	Buscar como quiera.
@@ -10,7 +10,7 @@ buen	235	1780 ? Bnf_361	tlaxtlahuia	Galardonar la buen obra
 abajo	213	153? Trilingüe	tlatzincuepaliztli	Vuelta de lo arriba abajo.
 buena	209	1571 Molina 1	caqui  +	echar a buena parte lo que se dice o hace.
 cualquiera	200	153? Trilingüe	tlatemantli	Dinero cualquiera moneda.
-quien	195	1571 Molina 2	tlatlaocolilli	el que es horro, de esclavo que era primero, o persona privilegiada y exenta, o persona apiadada, o a quien se hizo misericordia.
+quien	196	1571 Molina 2	tlatlaocolilli	el que es horro, de esclavo que era primero, o persona privilegiada y exenta, o persona apiadada, o a quien se hizo misericordia.
 barro	189	1571 Molina 2	tlateteitzaliztli	el acto de roer hueso, o cosa semejante, o de quebrantar y hacer pedazos algún vaso de barro, o de vidrio.
 beber	171	153? Trilingüe	tlatequitilli	Abrevado harto de beber.
 blanco	171	1780 ? Bnf_361	tlatizahui	Embarnizador de blanco
@@ -62,6 +62,7 @@ abrirse	40	1571 Molina 1	toma	abrirse así.
 obligación	39	1571 Molina 1	tlatenehualiztli	obligación.
 oriente	39	1565 Sahagún Escolios	tlauhcopa	hacia el oriente. (71)
 barca	39	1571 Molina 1	yetixtiuh	ir muy cargada la barca o carreta.
+bando	38	1645 Carochi	tlocpa	de la parte y bando (posposición)
 bubas	38	1571 Molina 1	tzotzohui	tener bubas.
 blanda	38	1571 Molina 2	yamactic	cosa blanda y muelle.
 obedecer	37	1984 Tzinacapan	caqui	Obedecer
@@ -74,10 +75,10 @@ bosque	35	1765 Cortés y Zedeño	tlatilaccan	Bosque de árboles
 bola	35	1571 Molina 1	tolontic	esférica cosa redonda como bola.
 bravo	34	1571 Molina 2	tlatlacacihuitiani	el que doma o amansa lo bravo.
 obras	34	1565 Sahagún Escolios	tlauhcayotia	dar {buena} fama a otros con obras, pt. onitlatlauhcayoti (11+)
-ablandar	34	1571 Molina 2	tlayamaniliztli	el acto de ablandar, enternecer algo, o de templar el agua que esta fria, o cosa semejante.
+ablandar	34	1571 Molina 2	tlayamaniliztli	el acto de ablandar, enternecer algo, o de templar el agua que está fria, o cosa semejante.
 obispo	34	1571 Molina 2	topilli  +	vara, o gancho de pastor, o báculo de obispo, o cosa semejante.
 barbero	34	1571 Molina 2	tzonyohua	henchirse de pelos el barbero, cuando afeita, o el afeitado.
-basta	33	1571 Molina 2	yecualli	bien esta, o basta. adverbio.
+basta	33	1571 Molina 2	yecualli	bien está, o basta. adverbio.
 bailar	33	153? Trilingüe	chocholoa ^	Bailar o danzar.
 bañarse	33	1571 Molina 2	ahaltia	bañarse en el agua.
 buenas	32	1571 Molina 2	tlatlatolnanamictli	el que es ayudado con buenas razones y consejos.
@@ -154,6 +155,7 @@ inquirir	22	1571 Molina 1	tlatemolia	inquirir.
 embriagarse	22	1780 ? Bnf_361	tlatlapeuhcaini	Bebedor en muchas tabernas, hasta embriagarse
 buey	22	153? Trilingüe	cuacuahuecatontli	Buey nuevo o novillo.
 perseguir	22	17?? Bnf_362	tlayehualtia	Perseguir a otros y acosarlos
+banda	22	17?? Bnf_362bis	tlocpa	de la parte y banda de alguno
 cuadril	22	1571 Molina 1	tocuappan	cadera o cuadril.
 quiza	22	1571 Molina 2	topan ninochihua  =	Cf. quiza +
 batea	22	17?? Bnf_362	xicalpechtli	Batea
@@ -191,6 +193,7 @@ quieren	19	1571 Molina 2	chitoni	saltar el astilla, o la cuenta cuando la quiere
 orinar	19	2002 Mecayapan	cochmaxixa	orinar durmiendo
 siguiente	19	1629 Alarcón	cuix  +	¿hasta mañana y el día siguiente? / no ha de ser mañana ni el dia siguiente
 quizá	19	1571 Molina 2	cuix zazantlein?	es quizá alguna cosa por ahí?. adv.
+besar	19	1984 Tzinacapan	namiqui	Ir a besar al Santo
 bendición	18	1984 Tzinacapan	tlateochihual	Bendición
 bermeja	18	153? Trilingüe	tlatlactic	Bermeja cosa.
 breña	18	153? Trilingüe	tlatlacutla	Maleza o breña.
@@ -233,7 +236,6 @@ bastardo	16	153? Trilingüe	ichtacaconetl	Borde por bastardo.
 bezudo	16	1571 Molina 1	itztapaltene	bezudo de largos besos.
 barros	16	1571 Molina 1	ixocuillohua	barros tener así.
 obreros	16	1571 Molina 1	macohuia	alquilar obreros.
-besar	16	1984 Tzinacapan	namiqui	Ir a besar al Santo
 bañan	16	1571 Molina 1	nealtilatl	agua donde se bañan.
 obedecido	15	1571 Molina 1	tlatlacamattli	obedecido.
 abofetear	15	1765 Cortés y Zedeño	tlatlacinia	Abofetear
@@ -250,7 +252,7 @@ aguada	15	1780 ? Bnf_361	amo tene	Bota cosa, no aguada
 aborrecimiento	15	1571 Molina 2	anel, niteitta	mirar a otro de mal ojo, o con aborrecimiento.
 obligarse	14	1571 Molina 1	tlatenehua	obligarse.
 bisabuelo	14	1551-95 Documentos nahuas de la Ciudad de México	achton	pariente de [abuelo, bisabuelo]
-abrasar	14	17?? Bnf_362	tlatla	Abrasar con fuego, mas propriamente es Rayar; Quemarse; Arder
+abrasar	14	17?? Bnf_362	tlatla	Abrasar con fuego, mas propiamente es Rayar; Quemarse; Arder
 dondequiera	14	1645 Carochi	canin	¿dónde? (interrogativo) / in ~, donde (no interrogativo) / ach ~, no saber dónde / in ~, dondequiera / in ïquin in ~, en tiempos por venir
 obstinado	14	1759 Paredes	tlatlacoani  +	obstinado pecador
 aborrecida	14	1571 Molina 2	tlatlaelittalli	cosa aborrecida.
@@ -299,5 +301,3 @@ enredado	12	153? Trilingüe	canitli	Enredado hecho como red.
 origen	12	17?? Bnf_362	tlatlacolpeuhcayotl	Origen
 abolengo	12	1571 Molina 2	tlatocamecayotl	genealogía o abolengo de grándes señores.
 retribuir	12	17?? Bnf_362	tlaxtlahuia	Recompenzar o retribuir algo, pero esto es pagar
-ablandada	12	1571 Molina 2	tlayamanililli	ablandada cosa así.
-blandear	12	153? Trilingüe	tlazotlahua	Blandear torciendo lo duro.

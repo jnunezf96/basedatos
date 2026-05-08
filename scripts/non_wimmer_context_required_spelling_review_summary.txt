@@ -1,0 +1,8 @@
+Context-required spelling/grammar review ledger
+scope=Traducción, excluding 2021 Wimmer, 1992 Karttunen, V94 Diccionario Global SNP
+rows=0
+buckets={}
+
+accounted={'demonstrative_esta': 1346}
+
+top_candidates:

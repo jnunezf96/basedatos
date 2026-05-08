@@ -7,7 +7,7 @@
 {"token": "abajo", "count": 213, "record_id": "153-trilingue:000598", "source": "153? Trilingüe", "lemma": "tlatzincuepaliztli", "translation": "Vuelta de lo arriba abajo."}
 {"token": "buena", "count": 209, "record_id": "1571-molina-1:001312", "source": "1571 Molina 1", "lemma": "caqui  +", "translation": "echar a buena parte lo que se dice o hace."}
 {"token": "cualquiera", "count": 200, "record_id": "153-trilingue:000011", "source": "153? Trilingüe", "lemma": "tlatemantli", "translation": "Dinero cualquiera moneda."}
-{"token": "quien", "count": 195, "record_id": "1571-molina-2:000561", "source": "1571 Molina 2", "lemma": "tlatlaocolilli", "translation": "el que es horro, de esclavo que era primero, o persona privilegiada y exenta, o persona apiadada, o a quien se hizo misericordia."}
+{"token": "quien", "count": 196, "record_id": "1571-molina-2:000561", "source": "1571 Molina 2", "lemma": "tlatlaocolilli", "translation": "el que es horro, de esclavo que era primero, o persona privilegiada y exenta, o persona apiadada, o a quien se hizo misericordia."}
 {"token": "barro", "count": 189, "record_id": "1571-molina-2:000203", "source": "1571 Molina 2", "lemma": "tlateteitzaliztli", "translation": "el acto de roer hueso, o cosa semejante, o de quebrantar y hacer pedazos algún vaso de barro, o de vidrio."}
 {"token": "beber", "count": 171, "record_id": "153-trilingue:000069", "source": "153? Trilingüe", "lemma": "tlatequitilli", "translation": "Abrevado harto de beber."}
 {"token": "blanco", "count": 171, "record_id": "1780-bnf-361:000482", "source": "1780 ? Bnf_361", "lemma": "tlatizahui", "translation": "Embarnizador de blanco"}
@@ -59,6 +59,7 @@
 {"token": "obligación", "count": 39, "record_id": "1571-molina-1:000092", "source": "1571 Molina 1", "lemma": "tlatenehualiztli", "translation": "obligación."}
 {"token": "oriente", "count": 39, "record_id": "1565-sahagun-escolios:000060", "source": "1565 Sahagún Escolios", "lemma": "tlauhcopa", "translation": "hacia el oriente. (71)"}
 {"token": "barca", "count": 39, "record_id": "1571-molina-1:005978", "source": "1571 Molina 1", "lemma": "yetixtiuh", "translation": "ir muy cargada la barca o carreta."}
+{"token": "bando", "count": 38, "record_id": "1645-carochi:000158", "source": "1645 Carochi", "lemma": "tlocpa", "translation": "de la parte y bando (posposición)"}
 {"token": "bubas", "count": 38, "record_id": "1571-molina-1:004344", "source": "1571 Molina 1", "lemma": "tzotzohui", "translation": "tener bubas."}
 {"token": "blanda", "count": 38, "record_id": "1571-molina-2:003915", "source": "1571 Molina 2", "lemma": "yamactic", "translation": "cosa blanda y muelle."}
 {"token": "obedecer", "count": 37, "record_id": "1984-tzinacapan:000067", "source": "1984 Tzinacapan", "lemma": "caqui", "translation": "Obedecer"}
@@ -71,10 +72,10 @@
 {"token": "bola", "count": 35, "record_id": "1571-molina-1:003276", "source": "1571 Molina 1", "lemma": "tolontic", "translation": "esférica cosa redonda como bola."}
 {"token": "bravo", "count": 34, "record_id": "1571-molina-2:000309", "source": "1571 Molina 2", "lemma": "tlatlacacihuitiani", "translation": "el que doma o amansa lo bravo."}
 {"token": "obras", "count": 34, "record_id": "1565-sahagun-escolios:000058", "source": "1565 Sahagún Escolios", "lemma": "tlauhcayotia", "translation": "dar {buena} fama a otros con obras, pt. onitlatlauhcayoti (11+)"}
-{"token": "ablandar", "count": 34, "record_id": "1571-molina-2:001536", "source": "1571 Molina 2", "lemma": "tlayamaniliztli", "translation": "el acto de ablandar, enternecer algo, o de templar el agua que esta fria, o cosa semejante."}
+{"token": "ablandar", "count": 34, "record_id": "1571-molina-2:001536", "source": "1571 Molina 2", "lemma": "tlayamaniliztli", "translation": "el acto de ablandar, enternecer algo, o de templar el agua que está fria, o cosa semejante."}
 {"token": "obispo", "count": 34, "record_id": "1571-molina-2:002380", "source": "1571 Molina 2", "lemma": "topilli  +", "translation": "vara, o gancho de pastor, o báculo de obispo, o cosa semejante."}
 {"token": "barbero", "count": 34, "record_id": "1571-molina-2:003000", "source": "1571 Molina 2", "lemma": "tzonyohua", "translation": "henchirse de pelos el barbero, cuando afeita, o el afeitado."}
-{"token": "basta", "count": 33, "record_id": "1571-molina-2:004137", "source": "1571 Molina 2", "lemma": "yecualli", "translation": "bien esta, o basta. adverbio."}
+{"token": "basta", "count": 33, "record_id": "1571-molina-2:004137", "source": "1571 Molina 2", "lemma": "yecualli", "translation": "bien está, o basta. adverbio."}
 {"token": "bailar", "count": 33, "record_id": "153-trilingue:002809", "source": "153? Trilingüe", "lemma": "chocholoa ^", "translation": "Bailar o danzar."}
 {"token": "bañarse", "count": 33, "record_id": "1571-molina-2:006348", "source": "1571 Molina 2", "lemma": "ahaltia", "translation": "bañarse en el agua."}
 {"token": "buenas", "count": 32, "record_id": "1571-molina-2:000695", "source": "1571 Molina 2", "lemma": "tlatlatolnanamictli", "translation": "el que es ayudado con buenas razones y consejos."}
@@ -151,6 +152,7 @@
 {"token": "embriagarse", "count": 22, "record_id": "1780-bnf-361:000925", "source": "1780 ? Bnf_361", "lemma": "tlatlapeuhcaini", "translation": "Bebedor en muchas tabernas, hasta embriagarse"}
 {"token": "buey", "count": 22, "record_id": "153-trilingue:000808", "source": "153? Trilingüe", "lemma": "cuacuahuecatontli", "translation": "Buey nuevo o novillo."}
 {"token": "perseguir", "count": 22, "record_id": "17-bnf-362:000225", "source": "17?? Bnf_362", "lemma": "tlayehualtia", "translation": "Perseguir a otros y acosarlos"}
+{"token": "banda", "count": 22, "record_id": "17-bnf-362bis:000035", "source": "17?? Bnf_362bis", "lemma": "tlocpa", "translation": "de la parte y banda de alguno"}
 {"token": "cuadril", "count": 22, "record_id": "1571-molina-1:003214", "source": "1571 Molina 1", "lemma": "tocuappan", "translation": "cadera o cuadril."}
 {"token": "quiza", "count": 22, "record_id": "1571-molina-2:002371", "source": "1571 Molina 2", "lemma": "topan ninochihua  =", "translation": "Cf. quiza +"}
 {"token": "batea", "count": 22, "record_id": "17-bnf-362:000653", "source": "17?? Bnf_362", "lemma": "xicalpechtli", "translation": "Batea"}
@@ -188,6 +190,7 @@
 {"token": "orinar", "count": 19, "record_id": "2002-mecayapan:000772", "source": "2002 Mecayapan", "lemma": "cochmaxixa", "translation": "orinar durmiendo"}
 {"token": "siguiente", "count": 19, "record_id": "1629-alarcon:000565", "source": "1629 Alarcón", "lemma": "cuix  +", "translation": "¿hasta mañana y el día siguiente? / no ha de ser mañana ni el dia siguiente"}
 {"token": "quizá", "count": 19, "record_id": "1571-molina-2:007719", "source": "1571 Molina 2", "lemma": "cuix zazantlein?", "translation": "es quizá alguna cosa por ahí?. adv."}
+{"token": "besar", "count": 19, "record_id": "1984-tzinacapan:001802", "source": "1984 Tzinacapan", "lemma": "namiqui", "translation": "Ir a besar al Santo"}
 {"token": "bendición", "count": 18, "record_id": "1984-tzinacapan:000005", "source": "1984 Tzinacapan", "lemma": "tlateochihual", "translation": "Bendición"}
 {"token": "bermeja", "count": 18, "record_id": "153-trilingue:000184", "source": "153? Trilingüe", "lemma": "tlatlactic", "translation": "Bermeja cosa."}
 {"token": "breña", "count": 18, "record_id": "153-trilingue:000199", "source": "153? Trilingüe", "lemma": "tlatlacutla", "translation": "Maleza o breña."}
@@ -230,7 +233,6 @@
 {"token": "bezudo", "count": 16, "record_id": "1571-molina-1:014763", "source": "1571 Molina 1", "lemma": "itztapaltene", "translation": "bezudo de largos besos."}
 {"token": "barros", "count": 16, "record_id": "1571-molina-1:015222", "source": "1571 Molina 1", "lemma": "ixocuillohua", "translation": "barros tener así."}
 {"token": "obreros", "count": 16, "record_id": "1571-molina-1:016423", "source": "1571 Molina 1", "lemma": "macohuia", "translation": "alquilar obreros."}
-{"token": "besar", "count": 16, "record_id": "1984-tzinacapan:001802", "source": "1984 Tzinacapan", "lemma": "namiqui", "translation": "Ir a besar al Santo"}
 {"token": "bañan", "count": 16, "record_id": "1571-molina-1:019366", "source": "1571 Molina 1", "lemma": "nealtilatl", "translation": "agua donde se bañan."}
 {"token": "obedecido", "count": 15, "record_id": "1571-molina-1:000539", "source": "1571 Molina 1", "lemma": "tlatlacamattli", "translation": "obedecido."}
 {"token": "abofetear", "count": 15, "record_id": "1765-cortes-y-zedeno:000041", "source": "1765 Cortés y Zedeño", "lemma": "tlatlacinia", "translation": "Abofetear"}
@@ -247,7 +249,7 @@
 {"token": "aborrecimiento", "count": 15, "record_id": "1571-molina-2:012675", "source": "1571 Molina 2", "lemma": "anel, niteitta", "translation": "mirar a otro de mal ojo, o con aborrecimiento."}
 {"token": "obligarse", "count": 14, "record_id": "1571-molina-1:000090", "source": "1571 Molina 1", "lemma": "tlatenehua", "translation": "obligarse."}
 {"token": "bisabuelo", "count": 14, "record_id": "1551-95-documentos-nahuas-de-la-ciudad-de-mexico:000005", "source": "1551-95 Documentos nahuas de la Ciudad de México", "lemma": "achton", "translation": "pariente de [abuelo, bisabuelo]"}
-{"token": "abrasar", "count": 14, "record_id": "17-bnf-362:000038", "source": "17?? Bnf_362", "lemma": "tlatla", "translation": "Abrasar con fuego, mas propriamente es Rayar; Quemarse; Arder"}
+{"token": "abrasar", "count": 14, "record_id": "17-bnf-362:000038", "source": "17?? Bnf_362", "lemma": "tlatla", "translation": "Abrasar con fuego, mas propiamente es Rayar; Quemarse; Arder"}
 {"token": "dondequiera", "count": 14, "record_id": "1645-carochi:000016", "source": "1645 Carochi", "lemma": "canin", "translation": "¿dónde? (interrogativo) / in ~, donde (no interrogativo) / ach ~, no saber dónde / in ~, dondequiera / in ïquin in ~, en tiempos por venir"}
 {"token": "obstinado", "count": 14, "record_id": "1759-paredes:000020", "source": "1759 Paredes", "lemma": "tlatlacoani  +", "translation": "obstinado pecador"}
 {"token": "aborrecida", "count": 14, "record_id": "1571-molina-2:000410", "source": "1571 Molina 2", "lemma": "tlatlaelittalli", "translation": "cosa aborrecida."}
@@ -422,7 +424,6 @@
 {"token": "obscuridad", "count": 8, "record_id": "1692-guerra:000035", "source": "1692 Guerra", "lemma": "tlayohua ya", "translation": "La Obscuridad de la noche"}
 {"token": "abalanzarse", "count": 8, "record_id": "1571-molina-1:002855", "source": "1571 Molina 1", "lemma": "tlaztihuetzi", "translation": "abalanzarse o echarse por esos suelos prostrado."}
 {"token": "esquivar", "count": 8, "record_id": "1571-molina-1:003099", "source": "1571 Molina 1", "lemma": "aci  +", "translation": "esquivar."}
-{"token": "banda", "count": 8, "record_id": "17-bnf-362bis:000035", "source": "17?? Bnf_362bis", "lemma": "tlocpa", "translation": "de la parte y banda de alguno"}
 {"token": "siguiendo", "count": 8, "record_id": "1629-alarcon:000060", "source": "1629 Alarcón", "lemma": "toca", "translation": "seguir / ir siguiendo a / seguir un camino / sembrar"}
 {"token": "bajarse", "count": 8, "record_id": "1571-molina-1:003268", "source": "1571 Molina 1", "lemma": "toloa", "translation": "bajarse inclinandose."}
 {"token": "burbujear", "count": 8, "record_id": "153-trilingue:001225", "source": "153? Trilingüe", "lemma": "totomoni", "translation": "Burbujear haz burbujas."}
@@ -435,7 +436,7 @@
 {"token": "bocanadas", "count": 8, "record_id": "1571-molina-1:004496", "source": "1571 Molina 1", "lemma": "xaxahuania", "translation": "a bocanadas echar algo."}
 {"token": "brújula", "count": 8, "record_id": "1571-molina-1:004620", "source": "1571 Molina 1", "lemma": "xictlalia", "translation": "brújula poner así."}
 {"token": "blancos", "count": 8, "record_id": "1571-molina-2:003326", "source": "1571 Molina 2", "lemma": "xitomatl", "translation": "tomates grandes colorados, amarillos y blancos."}
-{"token": "buenamente", "count": 8, "record_id": "1629-alarcon:000161", "source": "1629 Alarcón", "lemma": "xochhua", "translation": "araña xochhua / araña xochua (parece les capta la benevolencia, a nuestros enemigos, como si dijera que su intento no es echarlos de alli con su daño, sino que se aparten buenamente)"}
+{"token": "buenamente", "count": 8, "record_id": "1629-alarcon:000161", "source": "1629 Alarcón", "lemma": "xochhua", "translation": "araña xochhua / araña xochua (parece les capta la benevolencia, a nuestros enemigos, como si dijera que su intento no es echarlos de allí con su daño, sino que se aparten buenamente)"}
 {"token": "brillar", "count": 8, "record_id": "2002-mecayapan:000438", "source": "2002 Mecayapan", "lemma": "xotla", "translation": "alumbrar, brillar, arder (lumbre, luz); arder (la piel, por la calentura)"}
 {"token": "brotada", "count": 8, "record_id": "1571-molina-1:005245", "source": "1571 Molina 1", "lemma": "xotlac", "translation": "brotada flor."}
 {"token": "borrego", "count": 8, "record_id": "1571-molina-1:005796", "source": "1571 Molina 1", "lemma": "yecualton", "translation": "borrego."}
@@ -448,6 +449,7 @@
 {"token": "abarcar", "count": 8, "record_id": "1571-molina-1:008301", "source": "1571 Molina 1", "lemma": "ciacahuia", "translation": "abarcar debajo delsobaco."}
 {"token": "buenos", "count": 8, "record_id": "1571-molina-2:006810", "source": "1571 Molina 2", "lemma": "cuallalnamiquiliztli", "translation": "buen pensamiento, o buenos pensamientos y consideraciones."}
 {"token": "emboscarse", "count": 8, "record_id": "1571-molina-1:009795", "source": "1571 Molina 1", "lemma": "cuauhaquia", "translation": "emboscarse."}
+{"token": "ermitaño", "count": 8, "record_id": "153-trilingue:003505", "source": "153? Trilingüe", "lemma": "cuauhtlanemini", "translation": "Ermitaño de esta ermita."}
 {"token": "emboscado", "count": 8, "record_id": "1780-bnf-361:007496", "source": "1780 ? Bnf_361", "lemma": "cuauhyoacatlacalacqui", "translation": "Emboscado."}
 {"token": "yerros", "count": 8, "record_id": "1571-molina-1:012357", "source": "1571 Molina 1", "lemma": "huica  +", "translation": "destruir los males e yerros del pueblo."}
 {"token": "banderas", "count": 8, "record_id": "1580-sahagun-maynez:001073", "source": "1580 Sahagún/Máynez", "lemma": "amapanme", "translation": "\"Banderas de papel\""}
@@ -464,7 +466,7 @@
 {"token": "aborrecido", "count": 7, "record_id": "1571-molina-2:000425", "source": "1571 Molina 2", "lemma": "tlatlahuelittali", "translation": "aborrecido."}
 {"token": "borrachear", "count": 7, "record_id": "1571-molina-1:000949", "source": "1571 Molina 1", "lemma": "tlatlapehuia", "translation": "borrachear templadamente."}
 {"token": "bufido", "count": 7, "record_id": "1571-molina-1:001153", "source": "1571 Molina 1", "lemma": "tlatlatzomiliztli", "translation": "bufido así."}
-{"token": "borrón", "count": 7, "record_id": "1571-molina-2:000833", "source": "1571 Molina 2", "lemma": "tlatliltzicuiniliztli", "translation": "tilde, cosa salpicada de tínta o cosa borrada con algún borrón que cayo sobrel o escripto."}
+{"token": "borrón", "count": 7, "record_id": "1571-molina-2:000833", "source": "1571 Molina 2", "lemma": "tlatliltzicuiniliztli", "translation": "tilde, cosa salpicada de tínta o cosa borrada con algún borrón que cayó sobre el o escrito."}
 {"token": "embajada", "count": 7, "record_id": "1571-molina-1:001341", "source": "1571 Molina 1", "lemma": "tlatocatetitlaniliztli", "translation": "embajada así."}
 {"token": "barajas", "count": 7, "record_id": "1571-molina-2:000937", "source": "1571 Molina 2", "lemma": "tlatolicuaniani", "translation": "el que estorua e impide pleitos, o barajas."}
 {"token": "bote", "count": 7, "record_id": "1571-molina-2:001168", "source": "1571 Molina 2", "lemma": "tlatzicuiniliztli", "translation": "bote de pelota, o salpicadura de cosa liquida."}
@@ -581,7 +583,6 @@
 {"token": "ablandado", "count": 5, "record_id": "1571-molina-1:002666", "source": "1571 Molina 1", "lemma": "tlayolyamanilli", "translation": "ablandado así."}
 {"token": "emblanquecido", "count": 5, "record_id": "1571-molina-1:002849", "source": "1571 Molina 1", "lemma": "tlaztalilli", "translation": "emblanquecido."}
 {"token": "embudo", "count": 5, "record_id": "1571-molina-1:003017", "source": "1571 Molina 1", "lemma": "caxpiyaztli", "translation": "embudo."}
-{"token": "bando", "count": 5, "record_id": "1645-carochi:000158", "source": "1645 Carochi", "lemma": "tlocpa", "translation": "de la parte y bando (posposición)"}
 {"token": "burbuja", "count": 5, "record_id": "153-trilingue:001226", "source": "153? Trilingüe", "lemma": "totomoniliztli", "translation": "Burbuja ampolla pequeña."}
 {"token": "bordar", "count": 5, "record_id": "1571-molina-1:004164", "source": "1571 Molina 1", "lemma": "tzoma", "translation": "bordar o coser."}
 {"token": "abejón", "count": 5, "record_id": "2002-mecayapan:000349", "source": "2002 Mecayapan", "lemma": "xico", "translation": "abejón, jicote"}
@@ -599,7 +600,6 @@
 {"token": "bostezar", "count": 5, "record_id": "1571-molina-1:008583", "source": "1571 Molina 1", "lemma": "cochcamachaloa", "translation": "bocezar o bostezar."}
 {"token": "bacas", "count": 5, "record_id": "1780-bnf-361:006840", "source": "1780 ? Bnf_361", "lemma": "cuacuahueiceceyo", "translation": "Manteca de Bacas."}
 {"token": "boyada", "count": 5, "record_id": "1571-molina-2:006648", "source": "1571 Molina 2", "lemma": "cuacuahueque", "translation": "hato de vacas, o boyada."}
-{"token": "ermitaño", "count": 5, "record_id": "153-trilingue:003505", "source": "153? Trilingüe", "lemma": "cuauhtlanemini", "translation": "Ermitaño de esta ermita."}
 {"token": "bordo", "count": 5, "record_id": "1571-molina-2:007506", "source": "1571 Molina 2", "lemma": "cuezcomatentli", "translation": "bordo de troja."}
 {"token": "berro", "count": 5, "record_id": "1565-sahagun-escolios:000450", "source": "1565 Sahagún Escolios", "lemma": "ahuilnemi", "translation": "andar a la flor del berro (11) / andar puteando, pt. onavilne (27)"}
 {"token": "abrigarse", "count": 5, "record_id": "1571-molina-2:007789", "source": "1571 Molina 2", "lemma": "ecatzacuilia", "translation": "abrigarse del viento."}
@@ -690,10 +690,11 @@
 {"token": "bozo", "count": 4, "record_id": "1765-cortes-y-zedeno:002280", "source": "1765 Cortés y Zedeño", "lemma": "itentzon  +", "translation": "Bozo"}
 {"token": "bizco", "count": 4, "record_id": "2002-mecayapan:001616", "source": "2002 Mecayapan", "lemma": "ixchicoti", "translation": "bizco"}
 {"token": "baptisterio", "count": 4, "record_id": "1571-molina-1:017330", "source": "1571 Molina 1", "lemma": "amoxtli  +", "translation": "bautisterio o baptisterio, s: el libro con que bautizan."}
-{"token": "cualesquier", "count": 4, "record_id": "1571-molina-2:012380", "source": "1571 Molina 2", "lemma": "amo zan ilhuiz tlatolli", "translation": "no cualesquier palabras de por ay."}
+{"token": "cualesquier", "count": 4, "record_id": "1571-molina-2:012380", "source": "1571 Molina 2", "lemma": "amo zan ilhuiz tlatolli", "translation": "no cualesquier palabras de por ahí."}
 {"token": "bautizado", "count": 4, "record_id": "1571-molina-1:018104", "source": "1571 Molina 1", "lemma": "mocuatequi", "translation": "bautizado."}
 {"token": "boberías", "count": 4, "record_id": "1571-molina-1:018115", "source": "1571 Molina 1", "lemma": "anicmamati", "translation": "bobear decir boberías."}
 {"token": "equivocarse", "count": 4, "record_id": "17-bnf-362:002962", "source": "17?? Bnf_362", "lemma": "acana", "translation": "Aventar Trigo o otra semilla (se puede quitar por no equivocarse con otro verbo sucio)"}
+{"token": "bandero", "count": 4, "record_id": "1571-molina-1:018446", "source": "1571 Molina 1", "lemma": "moquetzani  +", "translation": "bandero hombre de bando."}
 {"token": "abstinente", "count": 4, "record_id": "1571-molina-2:013081", "source": "1571 Molina 2", "lemma": "motlacahualtiqui", "translation": "abstinente que se va alamano."}
 {"token": "balsa", "count": 4, "record_id": "1571-molina-1:018995", "source": "1571 Molina 1", "lemma": "acapechtli", "translation": "balsa para pasar río."}
 {"token": "brocal", "count": 4, "record_id": "1571-molina-2:013628", "source": "1571 Molina 2", "lemma": "aolhuaztentli", "translation": "brocal de pozo."}
@@ -817,7 +818,6 @@
 {"token": "burlón", "count": 3, "record_id": "1984-tzinacapan:002224", "source": "1984 Tzinacapan", "lemma": "quequelli", "translation": "Burlón (a la mala)"}
 {"token": "bigotes", "count": 3, "record_id": "1571-molina-1:025203", "source": "1571 Molina 1", "lemma": "tatlia", "translation": "bigotes."}
 {"token": "embaidor", "count": 3, "record_id": "1571-molina-1:026443", "source": "1571 Molina 1", "lemma": "teixcuepani", "translation": "embaidor."}
-{"token": "bezar", "count": 3, "record_id": "17-bnf-362:004077", "source": "17?? Bnf_362", "lemma": "tempitzoa", "translation": "Bezar, propriamente para bezar la boca"}
 {"token": "barbinegro", "count": 3, "record_id": "1571-molina-1:027491", "source": "1571 Molina 1", "lemma": "tentzon tliltic", "translation": "barbinegro."}
 {"token": "bezo", "count": 3, "record_id": "1571-molina-1:027517", "source": "1571 Molina 1", "lemma": "tenxipalli", "translation": "bezo o labrio."}
 {"token": "embarbascador", "count": 3, "record_id": "1571-molina-1:031039", "source": "1571 Molina 1", "lemma": "tlaapahuiani", "translation": "embarbascador."}
@@ -855,7 +855,7 @@
 {"token": "abra", "count": 2, "record_id": "1571-molina-2:002666", "source": "1571 Molina 2", "lemma": "tzallantli", "translation": "abra, quebrada de sierras o cañada."}
 {"token": "inquiriendo", "count": 2, "record_id": "1571-molina-2:002769", "source": "1571 Molina 2", "lemma": "tzimmatoca", "translation": "examinar algún negocio, inquiriendo de como paso, para saber la verdad."}
 {"token": "obsceno", "count": 2, "record_id": "17-bnf-362:000523", "source": "17?? Bnf_362", "lemma": "tzincuiloa", "translation": "Hacer Pecado nefando, muy obsceno"}
-{"token": "brutos", "count": 2, "record_id": "1571-molina-2:002805", "source": "1571 Molina 2", "lemma": "tzinquetza", "translation": "tener parte y tomarse el varón y la mujer, amanera de brutos."}
+{"token": "brutos", "count": 2, "record_id": "1571-molina-2:002805", "source": "1571 Molina 2", "lemma": "tzinquetza", "translation": "tener parte y tomarse el varón y la mujer, a manera de brutos."}
 {"token": "originar", "count": 2, "record_id": "17-bnf-362:000531", "source": "17?? Bnf_362", "lemma": "tzintia", "translation": "Originar o comenzar alguna cosa"}
 {"token": "enrubiar", "count": 2, "record_id": "1571-molina-2:002924", "source": "1571 Molina 2", "lemma": "tzoncozalhuia", "translation": "enrubiar los cabellos."}
 {"token": "abedul", "count": 2, "record_id": "153-trilingue:001516", "source": "153? Trilingüe", "lemma": "xahuactli", "translation": "Abedul árbol de madera negra."}
@@ -863,7 +863,7 @@
 {"token": "burlesco", "count": 2, "record_id": "1780-clavijero:000062", "source": "1780 Clavijero", "lemma": "cehuan", "translation": "Cierta ave que sigue a los viajantes y remeda su voz en un tono que parece burlesco"}
 {"token": "breves", "count": 2, "record_id": "17-bnf-362:000707", "source": "17?? Bnf_362", "lemma": "xiuhtotopitl", "translation": "Maíz, casta que se hace en breves dias"}
 {"token": "barrigudo", "count": 2, "record_id": "1571-molina-2:003388", "source": "1571 Molina 2", "lemma": "xixiahua", "translation": "barrigudo."}
-{"token": "benevolencia", "count": 2, "record_id": "1629-alarcon:000161", "source": "1629 Alarcón", "lemma": "xochhua", "translation": "araña xochhua / araña xochua (parece les capta la benevolencia, a nuestros enemigos, como si dijera que su intento no es echarlos de alli con su daño, sino que se aparten buenamente)"}
+{"token": "benevolencia", "count": 2, "record_id": "1629-alarcon:000161", "source": "1629 Alarcón", "lemma": "xochhua", "translation": "araña xochhua / araña xochua (parece les capta la benevolencia, a nuestros enemigos, como si dijera que su intento no es echarlos de allí con su daño, sino que se aparten buenamente)"}
 {"token": "emborracho", "count": 2, "record_id": "1692-guerra:000131", "source": "1692 Guerra", "lemma": "xocomiqui", "translation": "yo me emborracho"}
 {"token": "brota", "count": 2, "record_id": "1571-molina-2:003584", "source": "1571 Molina 2", "lemma": "celtiliztli", "translation": "verdor, o frescura de árbol que brota y retoñece."}
 {"token": "abrasa", "count": 2, "record_id": "1580-sahagun-maynez:000404", "source": "1580 Sahagún/Máynez", "lemma": "xoxotlatzin", "translation": "\"La venerable que abrasa\""}
@@ -948,7 +948,7 @@
 {"token": "enredarse", "count": 2, "record_id": "1780-clavijero:001254", "source": "1780 Clavijero", "lemma": "ilacatzihui", "translation": "Enredarse"}
 {"token": "enrollar", "count": 2, "record_id": "1780-clavijero:001258", "source": "1780 Clavijero", "lemma": "ilacatzoa", "translation": "Enredar, enrollar esteras, etcétera."}
 {"token": "betuláceo", "count": 2, "record_id": "1984-tzinacapan:001323", "source": "1984 Tzinacapan", "lemma": "ilicuahuitl", "translation": "Aliso (árbol betuláceo)"}
-{"token": "perseguirme", "count": 2, "record_id": "1571-molina-2:009850", "source": "1571 Molina 2", "lemma": "in  +", "translation": "perseguirme mis pecados, poniendose delante los ojos, o representandoseme, o amenazandome."}
+{"token": "perseguirme", "count": 2, "record_id": "1571-molina-2:009850", "source": "1571 Molina 2", "lemma": "in  +", "translation": "perseguirme mis pecados, poniéndose delante los ojos, o representandoseme, o amenazandome."}
 {"token": "bausán", "count": 2, "record_id": "1765-cortes-y-zedeno:002194", "source": "1765 Cortés y Zedeño", "lemma": "amo  +", "translation": "Bausán, cosa de poco precio"}
 {"token": "polihuiztli", "count": 2, "record_id": "1571-molina-2:010113", "source": "1571 Molina 2", "lemma": "ipam polihuiliztli  =", "translation": "Cf. ipam polihuiztli"}
 {"token": "equivaler", "count": 2, "record_id": "1759-paredes:000891", "source": "1759 Paredes", "lemma": "ipan mati", "translation": "equivaler"}
@@ -1074,7 +1074,7 @@
 {"token": "bario", "count": 1, "record_id": "1551-95-documentos-nahuas-de-la-ciudad-de-mexico:000117", "source": "1551-95 Documentos nahuas de la Ciudad de México", "lemma": "tlaxilacalpan", "translation": "barrio / al barrio / barrio (en el) / en el bario"}
 {"token": "abollonado", "count": 1, "record_id": "153-trilingue:000759", "source": "153? Trilingüe", "lemma": "tlaxitomonilli", "translation": "Abollonado con bollones."}
 {"token": "bollones", "count": 1, "record_id": "153-trilingue:000759", "source": "153? Trilingüe", "lemma": "tlaxitomonilli", "translation": "Abollonado con bollones."}
-{"token": "persuadida", "count": 1, "record_id": "1571-molina-2:001592", "source": "1571 Molina 2", "lemma": "tlayeltilli", "translation": "cosa ahuyéntada, o persona persuadida a que haga algo de buena gana y desu voluntad."}
+{"token": "persuadida", "count": 1, "record_id": "1571-molina-2:001592", "source": "1571 Molina 2", "lemma": "tlayeltilli", "translation": "cosa ahuyéntada, o persona persuadida a que haga algo de buena gana y de su voluntad."}
 {"token": "disuadido", "count": 1, "record_id": "1571-molina-2:001639", "source": "1571 Molina 2", "lemma": "tlayolcueptli", "translation": "disuadido, traqueado, o maleado de otros."}
 {"token": "çolmiquiztli", "count": 1, "record_id": "1629-alarcon:000045", "source": "1629 Alarcón", "lemma": "tlazolmimiquiliztli", "translation": "significa casi lo mismo [que tlàçolmiquiztli], solo denota juntamente la falta del sentido"}
 {"token": "basuriento", "count": 1, "record_id": "2002-mecayapan:000112", "source": "2002 Mecayapan", "lemma": "tlazoltla", "translation": "haber basura (ambiente), basuriento"}
@@ -1204,7 +1204,7 @@
 {"token": "menguada", "count": 1, "record_id": "1571-molina-2:006474", "source": "1571 Molina 2", "lemma": "cotonqui metztli", "translation": "luna demediada, o menguada."}
 {"token": "enrollada", "count": 1, "record_id": "1580-sahagun-maynez:000745", "source": "1580 Sahagún/Máynez", "lemma": "cototzauhqui xihuitl", "translation": "\"Hierba enrollada\""}
 {"token": "buharro", "count": 1, "record_id": "1579-duran:000128", "source": "1579 Durán", "lemma": "cozcacuauhtli", "translation": "Buharro. \"Águila de collar\""}
-{"token": "bermejeado", "count": 1, "record_id": "17-bnf-362:001575", "source": "17?? Bnf_362", "lemma": "coztic", "translation": "Amarillo; El que esta bermejeado o amarilleado"}
+{"token": "bermejeado", "count": 1, "record_id": "17-bnf-362:001575", "source": "17?? Bnf_362", "lemma": "coztic", "translation": "Amarillo; El que está bermejeado o amarilleado"}
 {"token": "batihoja", "count": 1, "record_id": "1765-cortes-y-zedeno:001294", "source": "1765 Cortés y Zedeño", "lemma": "coztic  +", "translation": "Batihoja, batidor de oro"}
 {"token": "bancal", "count": 1, "record_id": "153-trilingue:003219", "source": "153? Trilingüe", "lemma": "cuachpepechtl", "translation": "Bancal."}
 {"token": "boyuno", "count": 1, "record_id": "153-trilingue:003230", "source": "153? Trilingüe", "lemma": "cuacuahue itechpohuai", "translation": "Boyuno cosa de buey o vara."}
@@ -1342,7 +1342,7 @@
 {"token": "obscurecerse", "count": 1, "record_id": "1780-clavijero:001765", "source": "1780 Clavijero", "lemma": "mixtecomatia", "translation": "Obscurecerse"}
 {"token": "abstenían", "count": 1, "record_id": "1579-duran:000244", "source": "1579 Durán", "lemma": "mocexiuhzauhque", "translation": "Los que hacían penitencia y se abstenían de llegar a mujeres y de ofrendar a dios por un año. \"Penitentes por un año\""}
 {"token": "besarse", "count": 1, "record_id": "153-trilingue:006279", "source": "153? Trilingüe", "lemma": "momachititiuh", "translation": "Besarse o acostumbrarse."}
-{"token": "abarraganado", "count": 1, "record_id": "153-trilingue:006290", "source": "153? Trilingüe", "lemma": "momecatitinemi oquichtli", "translation": "Abarraganado varón conhera."}
+{"token": "abarraganado", "count": 1, "record_id": "153-trilingue:006290", "source": "153? Trilingüe", "lemma": "momecatitinemi oquichtli", "translation": "Abarraganado varón con hembra."}
 {"token": "yernos", "count": 1, "record_id": "1765-cortes-y-zedeno:002915", "source": "1765 Cortés y Zedeño", "lemma": "montli", "translation": "Yernos"}
 {"token": "barbasco", "count": 1, "record_id": "2002-mecayapan:001999", "source": "2002 Mecayapan", "lemma": "moycoy", "translation": "barbasco (bejuco de donde se saca veneno para pescar)"}
 {"token": "erizado", "count": 1, "record_id": "1780-bnf-361:013160", "source": "1780 ? Bnf_361", "lemma": "mozoneuhqui", "translation": "En erizado el perro, o cosas semejante."}
@@ -1482,7 +1482,7 @@
 {"token": "barbuda", "count": 1, "record_id": "1580-sahagun-maynez:001811", "source": "1580 Sahagún/Máynez", "lemma": "tentzonquilitl", "translation": "\"Hierba comestible barbuda\""}
 {"token": "notentzontzin", "count": 1, "record_id": "1565-sahagun-escolios:001249", "source": "1565 Sahagún Escolios", "lemma": "tentzontzin", "translation": "persona que procede de otro, como los barbas y cejas procede de la cara, ca. notentzontzin (3-)"}
 {"token": "bendigo", "count": 1, "record_id": "1692-guerra:000754", "source": "1692 Guerra", "lemma": "teochihua", "translation": "yo bendigo"}
-{"token": "tzinap", "count": 1, "record_id": "17-bnf-362:004185", "source": "17?? Bnf_362", "lemma": "teotetl", "translation": "Azauachi, esto no es propriamente azabache sino una piedra negra que en Tarasco llaman Tzinap"}
+{"token": "tzinap", "count": 1, "record_id": "17-bnf-362:004185", "source": "17?? Bnf_362", "lemma": "teotetl", "translation": "Azauachi, esto no es propiamente azabache sino una piedra negra que en Tarasco llaman Tzinap"}
 {"token": "teotzinitzcan", "count": 1, "record_id": "1580-sahagun-maynez:001862", "source": "1580 Sahagún/Máynez", "lemma": "teotzinitzcan", "translation": "\"Ave divina\" \"Teotzinitzcan legítimo\""}
 {"token": "embijamiento", "count": 1, "record_id": "1571-molina-2:019078", "source": "1571 Molina 2", "lemma": "teozaliztli", "translation": "unción, o embijamiento que se hace a otro."}
 {"token": "blanqueadura", "count": 1, "record_id": "153-trilingue:009262", "source": "153? Trilingüe", "lemma": "tepaniztacatiliztli", "translation": "Blanqueadura de pared."}
@@ -1546,7 +1546,7 @@
 {"token": "adquieren", "count": 1, "record_id": "1580-sahagun-maynez:002036", "source": "1580 Sahagún/Máynez", "lemma": "tlacacohuacan", "translation": "\"Donde se adquieren hombres\""}
 {"token": "obedezco", "count": 1, "record_id": "1692-guerra:000825", "source": "1692 Guerra", "lemma": "tlacamati", "translation": "yo obedezco"}
 {"token": "onitlacatzinti", "count": 1, "record_id": "1565-sahagun-escolios:001388", "source": "1565 Sahagún Escolios", "lemma": "tlacatzintia", "translation": "empezar la generación, pt. onitlacatzinti (7+)"}
-{"token": "continuado", "count": 1, "record_id": "1780-bnf-361:023772", "source": "1780 ? Bnf_361", "lemma": "tlacentecpanalli", "translation": "Orden continuado de cualquiera cosa que esta, o va consertada como en procesión, o cosa así"}
+{"token": "continuado", "count": 1, "record_id": "1780-bnf-361:023772", "source": "1780 ? Bnf_361", "lemma": "tlacentecpanalli", "translation": "Orden continuado de cualquiera cosa que está, o va consertada como en procesión, o cosa así"}
 {"token": "embarnizadura", "count": 1, "record_id": "153-trilingue:010649", "source": "153? Trilingüe", "lemma": "tlachiemahuiliztli", "translation": "Embarnizadura."}
 {"token": "abre", "count": 1, "record_id": "153-trilingue:010651", "source": "153? Trilingüe", "lemma": "tlachihuallizelizmatini", "translation": "Filosofo el que da abre a ella."}
 {"token": "erisipela", "count": 1, "record_id": "2002-mecayapan:002881", "source": "2002 Mecayapan", "lemma": "tlachinol", "translation": "erisipela"}
@@ -1581,7 +1581,7 @@
 {"token": "oninotlalotiquiz", "count": 1, "record_id": "1565-sahagun-escolios:001471", "source": "1565 Sahagún Escolios", "lemma": "tlalotiquiza", "translation": "huir, pt. oninotlalotiquiz. (92)"}
 {"token": "yermar", "count": 1, "record_id": "153-trilingue:011361", "source": "153? Trilingüe", "lemma": "tlalpoloa ^", "translation": "Yermar."}
 {"token": "breñas", "count": 1, "record_id": "1780-bnf-361:025922", "source": "1780 ? Bnf_361", "lemma": "tlaltetzmolli", "translation": "Breñas, mata grande"}
-{"token": "beata", "count": 1, "record_id": "1571-molina-2:022860", "source": "1571 Molina 2", "lemma": "tlamacehuani", "translation": "penitente, o el que hace algunos ejercicios para merecer, hermitaño o beata. etc."}
+{"token": "beata", "count": 1, "record_id": "1571-molina-2:022860", "source": "1571 Molina 2", "lemma": "tlamacehuani", "translation": "penitente, o el que hace algunos ejercicios para merecer, ermitaño o beata. etc."}
 {"token": "bruzar", "count": 1, "record_id": "153-trilingue:011401", "source": "153? Trilingüe", "lemma": "tlamachihua", "translation": "Labrar bruzar."}
 {"token": "obedecida", "count": 1, "record_id": "17-bnf-362:004862", "source": "17?? Bnf_362", "lemma": "tlamachoni", "translation": "Cosa que es digna de ser obedecida"}
 {"token": "abundantes", "count": 1, "record_id": "1759-paredes:001959", "source": "1759 Paredes", "lemma": "tlamachtia", "translation": "estar abundantes"}
@@ -1604,14 +1604,13 @@
 {"token": "bromear", "count": 1, "record_id": "1984-tzinacapan:002823", "source": "1984 Tzinacapan", "lemma": "camanaloa", "translation": "Bromear"}
 {"token": "bogador", "count": 1, "record_id": "1571-molina-2:023303", "source": "1571 Molina 2", "lemma": "tlanelo", "translation": "bogador o remador."}
 {"token": "bixáceas", "count": 1, "record_id": "1580-sahagun-maynez:002184", "source": "1580 Sahagún/Máynez", "lemma": "achiyotl", "translation": "Árbol de las bixáceas"}
-{"token": "aquiense", "count": 1, "record_id": "1571-molina-2:023518", "source": "1571 Molina 2", "lemma": "tlanonotztli", "translation": "informada persona, o aquiense dio parte de algún negocio, o de algún secreto."}
 {"token": "embijado", "count": 1, "record_id": "1571-molina-2:023658", "source": "1571 Molina 2", "lemma": "tlaozalli", "translation": "ungido o embijado con alguna resina de árboles. etc."}
 {"token": "bruzas", "count": 1, "record_id": "1629-alarcon:001531", "source": "1629 Alarcón", "lemma": "tlapachtlaza  +", "translation": "cara arriba echado de bruzas"}
 {"token": "batanada", "count": 1, "record_id": "1571-molina-2:023684", "source": "1571 Molina 2", "lemma": "tlapactli", "translation": "cosa lavada o batanada."}
 {"token": "cocotzin", "count": 1, "record_id": "1780-clavijero:003226", "source": "1780 Clavijero", "lemma": "tlapalcocotli", "translation": "Véase Cocotzin"}
 {"token": "encuadra", "count": 1, "record_id": "1571-molina-2:023819", "source": "1571 Molina 2", "lemma": "tlapatlaxintli", "translation": "cosa labrada encuadra, o con cuatro esquinas."}
 {"token": "embarro", "count": 1, "record_id": "2002-mecayapan:003132", "source": "2002 Mecayapan", "lemma": "tlapepechol", "translation": "pared (de embarro)"}
-{"token": "barrado", "count": 1, "record_id": "17-bnf-362:005052", "source": "17?? Bnf_362", "lemma": "tlapepecholli", "translation": "Lo que esta en barrado con lodo"}
+{"token": "barrado", "count": 1, "record_id": "17-bnf-362:005052", "source": "17?? Bnf_362", "lemma": "tlapepecholli", "translation": "Lo que está en barrado con lodo"}
 {"token": "abro", "count": 1, "record_id": "1692-guerra:000911", "source": "1692 Guerra", "lemma": "tlapoa", "translation": "yo abro"}
 {"token": "barbechador", "count": 1, "record_id": "1571-molina-2:024018", "source": "1571 Molina 2", "lemma": "tlapopoxoani", "translation": "barbechador."}
 {"token": "barbechada", "count": 1, "record_id": "1571-molina-2:024021", "source": "1571 Molina 2", "lemma": "tlapopoxolli", "translation": "tierra barbechada así."}

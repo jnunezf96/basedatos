@@ -21,6 +21,7 @@
 {"guesses":[],"language":"es","token":"oniquiz"}
 {"guesses":["obispado","obispal"],"language":"es","token":"obispillo"}
 {"guesses":["orillaba","erizaba","rizaba","orinaba","orzaba","Orizaba","o rizaba"],"language":"es","token":"orizaba"}
+{"guesses":["bandera","bandeo","bañadero"],"language":"es","token":"bandero"}
 {"guesses":["absolver","absolved","absolvemos"],"language":"es","token":"absolvedor"}
 {"guesses":[],"language":"es","token":"barnizamiento"}
 {"guesses":["abrochada","abrochara","abrochador"],"language":"es","token":"abrochadura"}
@@ -296,6 +297,5 @@
 {"guesses":[],"language":"es","token":"tlancoacihuiztli"}
 {"guesses":[],"language":"es","token":"tlanatonauiztli"}
 {"guesses":[],"language":"es","token":"bixáceas"}
-{"guesses":["aquietes"],"language":"es","token":"aquiense"}
 {"guesses":[],"language":"es","token":"cocotzin"}
 {"guesses":["barbechados","barbechado"],"language":"es","token":"barbechador"}

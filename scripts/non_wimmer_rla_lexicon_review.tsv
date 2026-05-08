@@ -17,6 +17,7 @@ other	atestiguador	atestiguado	7	1571 Molina 1	temelahuani	atestiguador.	atestig
 other	bendecidor	bendecido	6	1571 Molina 1	tlateochihuani	bendecidor.	bendecido, bendecidos	rla_exact_rae	RAE/Adjetivos	subtract_rla_valid	rla_exact_rae
 other	esquividad	esquivado	6	1571 Molina 1	acan teicniuhyotl	esquividad así.	esquivado, esquivada, esquivadas, esquivad	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
 other	absolvedor	absolver	4	1571 Molina 1	tetlatlacolpolhuiani	absolvedor tal.	absolver, absolved, absolvemos	rla_exact_rae	RAE/Adjetivos	subtract_rla_valid	rla_exact_rae
+other	bandero	bandera	4	1571 Molina 1	moquetzani  +	bandero hombre de bando.	bandera, bandeo, bañadero	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
 other	obispillo	obispado	4	1571 Molina 1	coyametl icuitlatecon tlanacatentli	obispillo de puerco.	obispado, obispal	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
 other	orizaba	orillaba	4	1598 Tezozomoc	ahuilizapan	Orizaba en español *T	orillaba, erizaba, rizaba, orinaba, orzaba	rla_exact_other	toponimos/toponimos-municipios	subtract_proper_name	proper name or toponym
 other	abrochadura	abrochada	3	153? Trilingüe	tlatlalpiliztli	Abrochadura de vestido.	abrochada, abrochara, abrochador	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
@@ -38,7 +39,6 @@ other	abejita	abestia	1	2002 Mecayapan	calnec	Tipo de abejita negra que no tiene
 other	aborrecedora	adormecedora	1	1765 Cortés y Zedeño	tetlacocoliani	Aborrecedor, aborrecedora	adormecedora	not_in_rla		subtract_valid_spanish	valid Spanish form missed by review heuristics
 other	abortón	aborten	1	153? Trilingüe	tlatlaxtli	Abortón.	aborten, abortan	rla_exact_rae	RAE/NombresMasculinos	subtract_rla_valid	rla_exact_rae
 other	abundamiento	abultamiento	1	153? Trilingüe	onehualiztli	Abundamiento.	abultamiento	not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
-other	aquiense	aquietes	1	1571 Molina 2	tlanonotztli	informada persona, o aquiense dio parte de algún negocio, o de algún secreto.	aquietes	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
 other	atestiguadores	atestiguados	1	1571 Molina 2	tetlaneltilicahuan	atestiguadores.	atestiguados, atestiguares	not_in_rla		subtract_valid_spanish	valid Spanish form missed by review heuristics
 other	ayocacatzintli	aaocacatzintli	1	1571 Molina 2	cac, maz ez reuerencial  =	Cf. ayocacatzintli	aaocacatzintli	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
 other	baco	buco	1	1579 Durán	ome tochtli	"Dos conejos. El dios Baco. ""Dos conejo"""	buco, laco, paco, bajo, banco	rla_exact_other	toponimos/toponimos-ciudades	subtract_proper_name	proper name or toponym
@@ -72,7 +72,7 @@ other	iucci	iicci	1	1645 Carochi	icuci	cocerse, o sazonarse algo -véase iucci	i
 other	ngojtzitz	negojtzitz	1	2002 Mecayapan	teyina	derribar (frutas y flores) Inïn ejeca' yej panoj tami' quiteyîn seli'mângojtzitzîn. El viento que pasó derribó todos los mangos tiernitos.	negojtzitz	not_in_rla		subtract_regional_or_domain	modern/regional/domain vocabulary
 other	quinatzin	quintaron	1	1580 Sahagún/Máynez	techotlalla chichimeca	Ayo y sucesor de Quinatzin	quintaron, quintan, quintaban, quintasen, quintaran	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
 other	tequiz	Teques	1	1629 Alarcón	quechnahua	abrazarse dos (quittonezqui quechnahuàtequiz)	Teques	not_in_rla		subtract_nahuatl_or_source	exact source-form token
-other	tzinap	tiznan	1	17?? Bnf_362	teotetl	Azauachi, esto no es propriamente azabache sino una piedra negra que en Tarasco llaman Tzinap	tiznan, tiznar, tizna, tiznas, tiznad	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
+other	tzinap	tiznan	1	17?? Bnf_362	teotetl	Azauachi, esto no es propiamente azabache sino una piedra negra que en Tarasco llaman Tzinap	tiznan, tiznar, tizna, tiznas, tiznad	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
 other	vtsa	visa	1	1565 Sahagún Escolios	tehuyotica tepiltzin	[hijo o hija legítimos] ídem [tlaçopilli], ca. vtsa (5)	visa, vasta	not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note
 no-guess	barrimiento		9	1571 Molina 1	tlehuahuanaliztli	barrimiento o barredura tal.		not_in_rla		subtract_productive_derivative	productive diminutive or derivational form
 no-guess	iuhqui		9	1645 Carochi	ye	ya / çan ~ nö ihui, de la misma manera / (çan ~) nö iuh, de la misma manera / ca ~, ya / çan ~ nö iuhqui, de la misma manera / çan ~ nö, mismo / (in) ~ nechca, tiempos pasados / (in) ~ nëpa, tiempos pasados / ~ huècauh, antiguo / ~ imman, ya es hora / ~ imman,		not_in_rla		subtract_nahuatl_or_source	Nahuatl form or cross-reference note

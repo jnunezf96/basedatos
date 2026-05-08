@@ -59,6 +59,7 @@ abrirse
 obligación
 oriente
 barca
+bando
 bubas
 blanda
 obedecer
@@ -151,6 +152,7 @@ inquirir
 embriagarse
 buey
 perseguir
+banda
 cuadril
 quiza
 batea
@@ -188,6 +190,7 @@ quieren
 orinar
 siguiente
 quizá
+besar
 bendición
 bermeja
 breña
@@ -230,7 +233,6 @@ bastardo
 bezudo
 barros
 obreros
-besar
 bañan
 obedecido
 abofetear
@@ -422,7 +424,6 @@ bohío
 obscuridad
 abalanzarse
 esquivar
-banda
 siguiendo
 bajarse
 burbujear
@@ -448,6 +449,7 @@ blasfemo
 abarcar
 buenos
 emboscarse
+ermitaño
 emboscado
 yerros
 banderas
@@ -581,7 +583,6 @@ bonito
 ablandado
 emblanquecido
 embudo
-bando
 burbuja
 bordar
 abejón
@@ -599,7 +600,6 @@ bagre
 bostezar
 bacas
 boyada
-ermitaño
 bordo
 berro
 abrigarse
@@ -694,6 +694,7 @@ cualesquier
 bautizado
 boberías
 equivocarse
+bandero
 abstinente
 balsa
 brocal
@@ -817,7 +818,6 @@ obstante
 burlón
 bigotes
 embaidor
-bezar
 barbinegro
 bezo
 embarbascador
@@ -1604,7 +1604,6 @@ burlesca
 bromear
 bogador
 bixáceas
-aquiense
 embijado
 bruzas
 batanada

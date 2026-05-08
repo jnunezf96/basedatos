@@ -24,6 +24,16 @@ DOLLAR_S_RE = re.compile(rf"(?<=[{LETTER}])\$(?=[{LETTER}])")
 ROW_TRANSLATION_REPLACEMENTS = {
     "1571-molina-1:024470": "reguizcar (arcaico: hacer cosquillas).",
     "1571-molina-1:025356": "reguizcar (arcaico: escarnecer o mofar).",
+    "1780-bnf-361:002699": "Desconocer el beneficio recibido",
+    "153-trilingue:006290": "Abarraganado varón con hembra.",
+    "153-trilingue:006742": "Señas para entenderse.",
+    "1571-molina-1:016703": "ensayarse a poner bien la rodela para arrodelarse.",
+    "1571-molina-2:014748": "solana, o lugar para calentarse al sol.",
+    "1780-bnf-361:018963": "Acostarse a la parte de alguna persona; hacerse del bando contrario; favorecer socorriendo a otro en algún peligro; ayudar a otro haciéndose de su banda; acostarse hacia, o a la parte de alguna persona",
+    "1780-bnf-361:015310": "Acostado, o entortado madero o pared; cosa no derecha como asa de jarro; encorvado, por encorvarse.",
+    "1780-bnf-361:025728": "Estimar, tasar o apreciar.",
+    "153-trilingue:008020": "Colchón o colcedra (arcaico: colchón) de cama.",
+    "1765-cortes-y-zedeno:004451": "Colchón, o colcedra (arcaico: colchón) de cama",
 }
 
 
@@ -286,6 +296,7 @@ PHRASE_REPLACEMENTS: list[tuple[re.Pattern[str], str, str]] = [
     (re.compile(r"\botrodize\b", re.I), "otro dice", "old_context_phrase"),
     (re.compile(r"\bqualq\(uier\)a\b", re.I), "cualquiera", "old_context_phrase"),
     (re.compile(r"\ba\s+a\s+lguien\b", re.I), "a alguien", "old_context_phrase"),
+    (re.compile(r"\ba\s+o\s+otro\b", re.I), "a otro", "old_context_phrase"),
     (re.compile(r"\bbarui\[\]rojo\b", re.I), "barbirrojo", "old_context_phrase"),
     (re.compile(r"\bve\[\]zindad\b", re.I), "vecindad", "old_context_phrase"),
     (re.compile(r"\bcon\$tituir\b", re.I), "constituir", "old_context_phrase"),
@@ -295,12 +306,83 @@ PHRASE_REPLACEMENTS: list[tuple[re.Pattern[str], str, str]] = [
     (re.compile(r"\ben\s+en\s+la\b", re.I), "en la", "old_context_phrase"),
     (re.compile(r"\ben\s+en\s+los\b", re.I), "en los", "old_context_phrase"),
     (re.compile(r"\ben\s+en\s+las\b", re.I), "en las", "old_context_phrase"),
+    (re.compile(r"\bde\s+de\s+mujer\b", re.I), "de mujer", "old_context_phrase"),
     (re.compile(r"\bposesión\s+oblig\.", re.I), "posesión obligatoria", "old_context_phrase"),
     (re.compile(r"\bhazercimiento\b", re.I), "hacer cimiento", "old_context_phrase"),
     (re.compile(r"\bénhaziénda\b", re.I), "en hacienda", "old_context_phrase"),
     (re.compile(r"\bamanizquierda\b", re.I), "a mano izquierda", "old_context_phrase"),
     (re.compile(r"\bbuentratamiento\b", re.I), "buen tratamiento", "old_context_phrase"),
     (re.compile(r"\bpicobaxo\b", re.I), "pico bajo", "old_context_phrase"),
+    (re.compile(r"\bpor\s+ay\b", re.I), "por ahí", "old_context_phrase"),
+    (re.compile(r"\bde\s+aqui\b", re.I), "de aquí", "old_context_phrase"),
+    (re.compile(r"\bdesde\s+aqui\b", re.I), "desde aquí", "old_context_phrase"),
+    (re.compile(r"\bde\s+hay\b", re.I), "de ahí", "old_context_phrase"),
+    (re.compile(r"\bde\s+ay\b", re.I), "de ahí", "old_context_phrase"),
+    (re.compile(r"\bhasta\s+hay\b", re.I), "hasta ahí", "old_context_phrase"),
+    (re.compile(r"\bhasta\s+ay\b", re.I), "hasta ahí", "old_context_phrase"),
+    (re.compile(r"\bdesde\s+ay\b", re.I), "desde ahí", "old_context_phrase"),
+    (re.compile(r"\bhay\s+donde\b", re.I), "ahí donde", "old_context_phrase"),
+    (re.compile(r"\bay\s+donde\b", re.I), "ahí donde", "old_context_phrase"),
+    (re.compile(r"\benque\s+esta\b", re.I), "en que está", "old_context_phrase"),
+    (re.compile(r"\bqe\.\s+esta\b", re.I), "que está", "old_context_phrase"),
+    (re.compile(r"\bdeque\s+esta\b", re.I), "de que está", "old_context_phrase"),
+    (re.compile(r"\bque\s+esta\b", re.I), "que está", "old_context_phrase"),
+    (re.compile(r"\bque\s+estas\b", re.I), "que estás", "old_context_phrase"),
+    (re.compile(r"\bdonde\s+esta\b", re.I), "donde está", "old_context_phrase"),
+    (re.compile(r"\bcuando\s+esta\b", re.I), "cuando está", "old_context_phrase"),
+    (re.compile(r"\btu\s+estas\b", re.I), "tú estás", "old_context_phrase"),
+    (re.compile(r"\blla\s+esta\b", re.I), "ya está", "old_context_phrase"),
+    (re.compile(r"\blla\s+lo\s+esta\b", re.I), "ya lo está", "old_context_phrase"),
+    (re.compile(r"\bdigno\s+deser\b", re.I), "digno de ser", "old_context_phrase"),
+    (re.compile(r"\bdigna\s+deser\b", re.I), "digna de ser", "old_context_phrase"),
+    (re.compile(r"\bdignas\s+deser\b", re.I), "dignas de ser", "old_context_phrase"),
+    (re.compile(r"\bdignos\s+deser\b", re.I), "dignos de ser", "old_context_phrase"),
+    (re.compile(r"\bcodicia\s+deser\b", re.I), "codicia de ser", "old_context_phrase"),
+    (re.compile(r"\bDeseo,\s+deser\s+codiciado\b", re.I), "Deseo de ser codiciado", "old_context_phrase"),
+    (re.compile(r"\bdeser\s+codiciado\b", re.I), "de ser codiciado", "old_context_phrase"),
+    (re.compile(r"\bdescobrir\s+se\b", re.I), "descubrirse", "old_context_phrase"),
+    (re.compile(r"\besta\s+encubierto\b", re.I), "está encubierto", "old_context_phrase"),
+    (re.compile(r"\besta\s+cubierto\b", re.I), "está cubierto", "old_context_phrase"),
+    (re.compile(r"\besta\s+amancebado\b", re.I), "está amancebado", "old_context_phrase"),
+    (re.compile(r"\besta\s+enlasado\b", re.I), "está enlazado", "old_context_phrase"),
+    (re.compile(r"\bsu\s+merced\s+encasa\b", re.I), "su merced en casa", "old_context_phrase"),
+    (re.compile(r"\bdóndevoy\b", re.I), "donde voy", "old_context_phrase"),
+    (re.compile(r"\bconella\b", re.I), "con ella", "old_context_phrase"),
+    (re.compile(r"\bes\s+entres\s+maneras\b", re.I), "es en tres maneras", "old_context_phrase"),
+    (re.compile(r"\bdividido\s+entres\s+partes\b", re.I), "dividido en tres partes", "old_context_phrase"),
+]
+
+
+EXPAND_REPLACEMENTS: list[tuple[re.Pattern[str], str, str]] = [
+    (
+        re.compile(
+            r"\b("
+            r"abierta|abuhado|adonde|ahuhado|algo|algo mejor|alguno|aquel|allí|"
+            r"aquí|así|bien|cabe quien|cada uno|cargo|claro|como|con quien|cosa|"
+            r"de veras|deque|"
+            r"dónde algo|dónde aquel|dónde otro|el alba|el enfermo|el que|elque|"
+            r"enfermo|enque|le|me|no|nos|otro|por donde otro|por dónde|qe\.|"
+            r"que nos|que tanto|se|siempre|una cosa|ya"
+            r")\s+esta\b",
+            re.I,
+        ),
+        r"\1 está",
+        "contextual_estar_accent",
+    ),
+    (
+        re.compile(
+            r"\besta\s+("
+            r"a mi cargo|adornado|ahito|aliviado|alto|apegada|bien|borracho|bueno|claro|"
+            r"crecido|desbastado|determinado|dividido|el|en|enduresido|"
+            r"escarmenado|estendida|firme|la|limpio|lleno|madura|mejor|"
+            r"muriendo|otorgando|pensando|podrida|prometid[ao]|repleto|"
+            r"riendo|seco|sentado|su merced|tejida|vivo|ya estendida"
+            r")\b",
+            re.I,
+        ),
+        r"está \1",
+        "contextual_estar_accent",
+    ),
 ]
 
 
@@ -857,6 +939,12 @@ abreuia	abrevia
 abreuiadamente	abreviadamente
 abreviadura	abreviatura
 adquire	adquiere
+aduertencia	advertencia
+aduertiendo	advirtiendo
+aduertiendolo	advirtiéndolo
+aduertiéndo	advirtiendo
+aduertid	advertid
+aduertir	advertir
 aduiento	adviento
 agluien	alguien
 agradezer	agradecer
@@ -864,6 +952,7 @@ aguazero	aguacero
 aguazeros	aguaceros
 apaziguar	apaciguar
 aquien	a quien
+aquiense	a quien se
 azeitera	aceitera
 azeituno	aceituno
 azepillado	acepillado
@@ -1703,6 +1792,8 @@ angel	ángel
 angeles	ángeles
 arbol	árbol
 arboles	árboles
+arronjada	arrojada
+asabiendas	a sabiendas
 baruar	barbar
 batei	batey
 balsaminacea	Balsaminaceae
@@ -2035,14 +2126,18 @@ escuro	oscuro
 escuros	oscuros
 escusar	excusar
 estropezar	tropezar
+enduresido	endurecido
 emendar	enmendar
 enhumedecer	humedecer
+estendida	extendida
 expremir	exprimir
 haverse	haberse
 itropezar	tropezar
 logar	lograr
 mesclar	mezclar
+mutansa	mudanza
 oluidada	olvidada
+perfection	perfección
 polir	pulir
 recebir	recibir
 rehazimiento	rehacimiento
@@ -2053,7 +2148,110 @@ devisar	divisar
 veer	ver
 zenith	zenit
 zerro	cerro
+acara	a cara
+amanera	a manera
+arregasarse	arregazarse
+ayuntarase	ayuntarse
+cónjunctión	conjunción
+destamanera	de esta manera
+delque	del que
+deti	de ti
+desuentura	desventura
+desuenturado	desventurado
+enello	en ello
+enellos	en ellos
+enlugar	en lugar
+emmarañar	enmarañar
+envejeserse	envejecerse
+flore	flores
+alhombra	alfombra
+almoada	almohada
+almidon	almidón
+admirandose	admirándose
+añadio	añadió
+atreuer	atrever
+atreuerseme	atrevérseme
+atreuera	atreverá
+caveza	cabeza
+cavellera	cabellera
+cavello	cabello
+cavellos	cabellos
+caida	caída
+cayo	cayó
+colchon	colchón
+cubrén	cubren
+delicto	delito
+diciplina	disciplina
+diciplinado	disciplinado
+illustre	ilustre
+impropriamente	impropiamente
+inaduertencia	inadvertencia
+interjection	interjección
+interogatiue	interrogativo
+cometio	cometió
+conexo	conejo
+descobrir	descubrir
+descobrirse	descubrirse
+descubrise	descubrirse
+delvando	del bando
+desuergonzar	desvergonzar
+desuergonzarse	desvergonzarse
+deotro	de otro
+enlasado	enlazado
+escripto	escrito
+frias	frías
+hacaydo	ha caído
+huyo	huyó
+moyera	mollera
+odelo	o de lo
+oguai	o guay
+parred	pared
+pargamino	pergamino
+parese	parece
+perzona	persona
+perzonas	personas
+pequenas	pequeñas
+pequenitos	pequeñitos
+phrase	frase
+preteritos	pretéritos
+propriamente	propiamente
+pénsar	pensar
+poniendose	poniéndose
+procurandolo	procurándolo
+saver	saber
+sele	se le
+simiénte	simiente
+slen	salen
+sobrel	sobre el
+solto	soltó
+sequexa	se queja
+sentenciado	sentenciado
+séntenciado	sentenciado
+támbien	también
+estan	están
+vejesuela	vejezuela
+vejes	vejez
+verguenzas	vergüenzas
+vestimienteo	vestimiento
+virhuelas	viruelas
+zarna	sarna
+ansi	así
+bezar	besar
+hermitaño	ermitaño
+selezte	celeste
+sonrie	sonríe
+vando	bando
+vanda	banda
+vandero	bandero
+porsu	por su
 ó	o
+aca	acá
+alla	allá
+alli	allí
+aqui	aquí
+aculla	acullá
+desu	de su
+desus	de sus
 """
 
 
@@ -2107,6 +2305,15 @@ def clean(value: str, source: str) -> tuple[str, list[str]]:
 
     for pattern, replacement, reason in PHRASE_REPLACEMENTS:
         updated = pattern.sub(lambda match: preserve_case(match.group(0), replacement), new)
+        if updated != new:
+            new = updated
+            reasons.append(reason)
+
+    for pattern, replacement, reason in EXPAND_REPLACEMENTS:
+        updated = pattern.sub(
+            lambda match: preserve_case(match.group(0), match.expand(replacement)),
+            new,
+        )
         if updated != new:
             new = updated
             reasons.append(reason)

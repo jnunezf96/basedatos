@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import re
 import unicodedata
 from collections import Counter, defaultdict
@@ -14,6 +15,8 @@ LEXICON_ROOT = ROOT / "resources" / "dictionaries" / "rla-es-2.9" / "ortografia"
 REVIEW_PATH = ROOT / "scripts" / "non_wimmer_spellcheck_suggestion_review.tsv"
 OUT_PATH = ROOT / "scripts" / "non_wimmer_rla_lexicon_review.tsv"
 SUMMARY_PATH = ROOT / "scripts" / "non_wimmer_rla_lexicon_review_summary.txt"
+ACCOUNTING_PATH = ROOT / "scripts" / "non_wimmer_spellcheck_accounting.json"
+STRICT = os.environ.get("STRICT") == "1"
 
 LETTER = "A-Za-zÁÉÍÓÚÜÑáéíóúüñÇç"
 
@@ -87,6 +90,11 @@ FORCE_OLD_SPANISH_REVIEW_TOKENS = {
     "cuzilla",
     "embizmador",
     "omezillo",
+}
+
+OPEN_REVIEW_BUCKETS = {
+    "accent_review",
+    "old_spanish_review",
 }
 
 TAXONOMY_WORD_RE = re.compile(
@@ -364,6 +372,54 @@ def review_bucket(row: dict[str, str]) -> tuple[str, str]:
     return "old_spanish_review", "not in RLA and not subtracted by heuristic"
 
 
+def compact_row(row: dict[str, str]) -> dict[str, object]:
+    return {
+        "token": row["token"],
+        "count": int(row["count"]),
+        "source": row["source"],
+        "lemma": row["lemma"],
+        "translation": row["translation"],
+        "suggestion": row["guess"],
+        "relation": row["relation"],
+        "rla_status": row["rla_status"],
+        "rla_match": row["rla_match"],
+        "review_bucket": row["review_bucket"],
+        "bucket_reason": row["bucket_reason"],
+    }
+
+
+def write_accounting(
+    rows: list[dict[str, str]],
+    bucket_counts: Counter[str],
+    bucket_occurrence_counts: Counter[str],
+) -> list[dict[str, str]]:
+    open_rows = [row for row in rows if row["review_bucket"] in OPEN_REVIEW_BUCKETS]
+    accounted_rows = [row for row in rows if row["review_bucket"] not in OPEN_REVIEW_BUCKETS]
+    accounting = {
+        "scope": "Traducción, excluding 2021 Wimmer, 1992 Karttunen, V94 Diccionario Global SNP",
+        "purpose": "Account for spellcheck/RLA flags after high-confidence orthography and context passes.",
+        "open_review_buckets": sorted(OPEN_REVIEW_BUCKETS),
+        "review_rows": len(rows),
+        "review_occurrences": sum(int(row["count"]) for row in rows),
+        "open_review_rows": len(open_rows),
+        "open_review_occurrences": sum(int(row["count"]) for row in open_rows),
+        "accounted_rows": len(accounted_rows),
+        "accounted_occurrences": sum(int(row["count"]) for row in accounted_rows),
+        "buckets": {
+            bucket: {
+                "rows": bucket_counts[bucket],
+                "occurrences": bucket_occurrence_counts[bucket],
+                "open": bucket in OPEN_REVIEW_BUCKETS,
+            }
+            for bucket in sorted(bucket_counts)
+        },
+        "tokens": [compact_row(row) for row in rows],
+        "open_tokens": [compact_row(row) for row in open_rows],
+    }
+    ACCOUNTING_PATH.write_text(json.dumps(accounting, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return open_rows
+
+
 def main() -> None:
     exact, accentless, _files = load_lexicon()
 
@@ -449,10 +505,15 @@ def main() -> None:
         for example in examples[status]:
             lines.append("  " + json.dumps(example, ensure_ascii=False))
     SUMMARY_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    open_rows = write_accounting(rows, bucket_counts, bucket_occurrence_counts)
 
     print(f"review={OUT_PATH}")
     print(f"summary={SUMMARY_PATH}")
+    print(f"accounting={ACCOUNTING_PATH}")
     print(f"review_rows={len(rows)}")
+    print(f"open_review_rows={len(open_rows)}")
+    if STRICT and open_rows:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
