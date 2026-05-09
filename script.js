@@ -2349,8 +2349,16 @@ function getDominantLemmaFilter(filters = activeFilters) {
   return candidates.length === 1 ? candidates[0] : null;
 }
 
+function hasActiveFilterChips(filters = activeFilters) {
+  return (filters || []).some(filter =>
+    filter.type !== "fuenteSet" &&
+    filter.owner !== FUENTE_OWNER &&
+    filter.owner !== "f1"
+  );
+}
+
 function isUnfilteredBrowseState(filters = activeFilters) {
-  return !(filters && filters.length) && selectedFuentes.size === FUENTE_OPTIONS.length;
+  return !hasActiveFilterChips(filters);
 }
 
 function buildRankingContext(rows) {
