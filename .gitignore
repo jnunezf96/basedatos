@@ -3,3 +3,13 @@ __pycache__/
 .DS_Store
 data/data.jsonl.bak*.gz
 .claude/
+tools/
+scripts/spanish_*_inventory.jsonl
+scripts/spanish_*_report.jsonl
+scripts/spanish_*_review.tsv
+scripts/spanish_*_samples.jsonl
+scripts/spanish_*_spellcheck.jsonl
+scripts/spanish_*_spellcheck.tsv
+scripts/spanish_*_suggestions.jsonl
+scripts/spanish_*_summary.txt
+scripts/spanish_*_tokens.txt
