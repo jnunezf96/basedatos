@@ -131,7 +131,7 @@ CURATED_GLOSSES: dict[str, str] = {
     "premir": "apretar u oprimir",
     "raigar": "arraigar",
     "rebatar": "arrebatar",
-    "reguizcar": "hacer cosquillas o burlas",
+    "reguizcar": "cosquillar o mofar",
     "remocecer": "rejuvenecer",
     "rufianear": "hacer vida de rufián",
     "sangrentar": "ensangrentar",

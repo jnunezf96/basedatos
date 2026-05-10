@@ -4295,6 +4295,7 @@ function reverseOsExpand(str) {
   for (let i = 0; i < str.length; i++) {
     const ch = str[i];
     if (ch === "b") result += "[bv]";
+    else if (ch === "j") result += "[jx]";
     else if (ch === "f") result += "(?:f|ph)";
     else if (ch === "t") result += "(?:t|th)";
     else if (ch === "c") result += "(?:c|qu)";
@@ -4303,6 +4304,44 @@ function reverseOsExpand(str) {
     else result += escapeRegex(ch);
   }
   return result;
+}
+
+function reverseOsExpandPatternSource(src) {
+  const source = String(src || "");
+  let out = "";
+  let escaped = false;
+  let inClass = false;
+  for (const ch of source) {
+    if (escaped) {
+      out += ch;
+      escaped = false;
+      continue;
+    }
+    if (ch === "\\") {
+      out += ch;
+      escaped = true;
+      continue;
+    }
+    if (inClass) {
+      out += ch;
+      if (ch === "]") inClass = false;
+      continue;
+    }
+    if (ch === "[") {
+      out += ch;
+      inClass = true;
+      continue;
+    }
+    if (ch === "b") out += "[bv]";
+    else if (ch === "j") out += "[jx]";
+    else if (ch === "f") out += "(?:f|ph)";
+    else if (ch === "t") out += "(?:t|th)";
+    else if (ch === "c") out += "(?:c|qu)";
+    else if (ch === "n") out += "(?:n|nn)";
+    else if (ch === "s") out += "(?:s|ss)";
+    else out += ch;
+  }
+  return out;
 }
 
 function buildOsHighlightRegex(filters) {
@@ -4454,8 +4493,17 @@ function buildHighlightRegex(filters) {
     if (andParts && andParts.length) {
       if (accentSensitiveMode) isAccentSensitive = true;
       andParts.forEach(p => {
-        const expanded = convertWildcardPatternAllowRegex(expandVCPlaceholders(p), { field: filter.field });
-        if (expanded) sources.push(accentSensitiveMode ? expanded : normalizePatternSource(expanded));
+        const sourcePart = (!accentSensitiveMode && oldSpanishMode)
+          ? normalizeOldSpanishPatternText(p)
+          : p;
+        const expanded = convertWildcardPatternAllowRegex(expandVCPlaceholders(sourcePart), { field: filter.field });
+        if (expanded) {
+          let adjusted = accentSensitiveMode ? expanded : normalizePatternSource(expanded);
+          if (!accentSensitiveMode && oldSpanishMode) {
+            adjusted = reverseOsExpandPatternSource(adjusted);
+          }
+          sources.push(adjusted);
+        }
       });
       return;
     }
@@ -4492,7 +4540,11 @@ function buildHighlightRegex(filters) {
     const adjusted = parsed.accentSensitive
       ? relaxed.toLowerCase()
       : normalizePatternSource(relaxed);
-    sources.push(adjusted);
+    sources.push(
+      !parsed.accentSensitive && oldSpanishMode
+        ? reverseOsExpandPatternSource(adjusted)
+        : adjusted
+    );
   });
   if (!sources.length) return null;
   try {

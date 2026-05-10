@@ -36,7 +36,61 @@ function normalizeOldSpanish(str) {
     .replace(/qu/g, "c")
     .replace(/nn/g, "n")
     .replace(/ss/g, "s")
+    .replace(/x/g, "j")
     .replace(/v/g, "b");
+}
+
+function normalizeOldSpanishPatternText(str) {
+  if (!str) return str;
+  let out = "";
+  let literal = "";
+  let escaped = false;
+  let inClass = false;
+  let inBrace = false;
+
+  const flushLiteral = () => {
+    if (!literal) return;
+    out += normalizeOldSpanish(normalizeString(literal));
+    literal = "";
+  };
+
+  for (const ch of String(str)) {
+    if (escaped) {
+      literal += ch;
+      escaped = false;
+      continue;
+    }
+    if (ch === "\\") {
+      literal += ch;
+      escaped = true;
+      continue;
+    }
+    if (inClass) {
+      out += ch;
+      if (ch === "]") inClass = false;
+      continue;
+    }
+    if (inBrace) {
+      out += ch;
+      if (ch === "}") inBrace = false;
+      continue;
+    }
+    if (ch === "[") {
+      flushLiteral();
+      out += ch;
+      inClass = true;
+      continue;
+    }
+    if (ch === "{") {
+      flushLiteral();
+      out += ch;
+      inBrace = true;
+      continue;
+    }
+    literal += ch;
+  }
+  flushLiteral();
+  return out;
 }
 
 const FORMATTING_REGEX = /[^\p{L}\p{N}\s]/u;
@@ -346,11 +400,12 @@ function parseFilterValue(rawValue, mode, options = {}) {
     text = text.replace(/\\-/g, "-").trim();
     if (!text) return;
 
-    // Normalize the query text to match against the appropriate candidate:
-    // - Plain queries (no accents): full normalization → accent-blind matching
-    // - Accented queries: lowercase only → accent-specific matching
-    // Skip normalization if the text uses {VC} placeholders or character classes.
-    if (!text.includes("{") && !text.includes("[")) {
+    // Normalize the query text to match against the appropriate candidate.
+    // In old-Spanish mode, normalize literal portions even around wildcards
+    // and {VC} placeholders so x behaves like modern j in filters.
+    if (!queryHasAccents && oldSpanishMode) {
+      text = normalizeOldSpanishPatternText(text);
+    } else if (!text.includes("{") && !text.includes("[")) {
       text = queryHasAccents ? text.normalize("NFC").toLowerCase() : normalizeString(text);
     }
 

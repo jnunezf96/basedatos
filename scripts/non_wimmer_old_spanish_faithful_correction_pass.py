@@ -173,7 +173,7 @@ TRANSLATIONS = {
     "1765-cortes-y-zedeno:001762": "Trompillar (arcaico: trompicar o hacer tropezar).",
     "1765-cortes-y-zedeno:002719": "Trompillar (arcaico: trompicar o hacer tropezar).",
     "1765-cortes-y-zedeno:002926": "Desparar (arcaico: disparar) tiro.",
-    "1765-cortes-y-zedeno:003581": "Coxquear (arcaico: hacer cosquillas).",
+    "1765-cortes-y-zedeno:003581": "cosquillear, hacer cosquillas",
     "1780-bnf-361:000654": "Embermejecerse (arcaico: enrojecerse).",
     "1780-bnf-361:001107": "Embermejecido (arcaico: enrojecido).",
     "1780-bnf-361:004732": "Flores poner en alguna parte o enrosar algo (arcaico: adornar algo con flores).",
