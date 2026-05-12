@@ -235,6 +235,8 @@ const LETTER_WILDCARD_PATTERN = "[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]";
 const NAHUATL_GRAPHEME_DIGRAPHS = "ch|tz|hu|uh|qu|cu|uc|ll|rr|gu";
 const NAHUATL_GRAPHEME_PATTERN = `(?:${NAHUATL_GRAPHEME_DIGRAPHS}|(?!${NAHUATL_GRAPHEME_DIGRAPHS})[A-Za-z\u00C0-\u024F\u1E00-\u1EFF])`;
 const NAHUATL_GRAPHEME_FIELDS = new Set(["Texto estandarizado", "Escritura original", "Comentario"]);
+const REDUPLICATION_VOWELS = /[aeiouáâãäàāéêëèēíîïìīóôõöòōúûüùýÿ]/i;
+let reduplicationMarkerCounter = 0;
 
 function getWildcardUnit(options = {}) {
   return NAHUATL_GRAPHEME_FIELDS.has(options.field) ? NAHUATL_GRAPHEME_PATTERN : LETTER_WILDCARD_PATTERN;
@@ -337,6 +339,165 @@ function expandReduplication(value, options = {}) {
   return `(?:${escPrefix}){2}${restBody}`;
 }
 
+function expandReduplicationMarkers(value, options = {}) {
+  const source = String(value || "");
+  if (!source.includes("{R}")) return null;
+
+  let out = "";
+  let i = 0;
+  while (i < source.length) {
+    const markerIdx = findNextReduplicationMarker(source, i);
+    if (markerIdx === -1) {
+      out += expandPatternSegmentForRegex(source.slice(i), options);
+      break;
+    }
+    out += expandPatternSegmentForRegex(source.slice(i, markerIdx), options);
+    const target = readReduplicationMarkerTarget(source, markerIdx + 3);
+    if (!target) return null;
+    const targetBody = expandPatternSegmentForRegex(target.target, options);
+    if (!targetBody) return null;
+    const infixBody = target.infixBody ?? expandPatternSegmentForRegex(target.infix, options);
+    const groupName = `r${++reduplicationMarkerCounter}`;
+    out += `(?<${groupName}>${targetBody})${infixBody}\\k<${groupName}>`;
+    i = target.end;
+  }
+  return out || null;
+}
+
+function findNextReduplicationMarker(value, startIdx = 0) {
+  for (let i = startIdx; i < value.length; i++) {
+    if (value.startsWith("{R}", i) && !isEscapedAt(value, i)) return i;
+  }
+  return -1;
+}
+
+function expandPatternSegmentForRegex(segment, options = {}) {
+  if (!segment) return "";
+  return convertWildcardPatternAllowRegex(expandVCPlaceholders(segment), options);
+}
+
+function readReduplicationMarkerTarget(value, startIdx) {
+  const brace = findNextBracePlaceholder(value, startIdx);
+  if (brace) {
+    const prefix = value.slice(startIdx, brace.start);
+    const optionalH = parseOptionalReduplicationHInfix(prefix);
+    if (optionalH) {
+      return {
+        infix: prefix,
+        infixBody: optionalH.body,
+        target: brace.raw,
+        end: brace.end
+      };
+    }
+    if (!REDUPLICATION_VOWELS.test(prefix)) {
+      return {
+        infix: prefix,
+        target: brace.raw,
+        end: brace.end
+      };
+    }
+  }
+
+  const literal = readLiteralReduplicationTarget(value, startIdx, brace ? brace.start : value.length);
+  if (literal) return literal;
+  if (brace) {
+    return {
+      infix: value.slice(startIdx, brace.start),
+      target: brace.raw,
+      end: brace.end
+    };
+  }
+  return null;
+}
+
+function findNextBracePlaceholder(value, startIdx) {
+  for (let i = startIdx; i < value.length; i++) {
+    if (value[i] !== "{" || isEscapedAt(value, i)) continue;
+    const end = value.indexOf("}", i + 1);
+    if (end === -1) return null;
+    const inner = value.slice(i + 1, end);
+    if (/^\d+([,:]\d*)?$/.test(inner) || inner === "R") {
+      i = end;
+      continue;
+    }
+    return {
+      raw: value.slice(i, end + 1),
+      start: i,
+      end: end + 1
+    };
+  }
+  return null;
+}
+
+function readLiteralReduplicationTarget(value, startIdx, stopIdx = value.length) {
+  const optionalH = readOptionalReduplicationH(value, startIdx, stopIdx);
+  if (optionalH) {
+    const afterOptionalH = readLiteralSyllable(value, optionalH.end, stopIdx);
+    if (afterOptionalH) {
+      return {
+        infix: optionalH.raw,
+        infixBody: optionalH.body,
+        target: afterOptionalH.target,
+        end: afterOptionalH.end
+      };
+    }
+  }
+  if (value[startIdx] === "h") {
+    const afterSaltillo = readLiteralSyllable(value, startIdx + 1, stopIdx);
+    if (afterSaltillo) {
+      return {
+        infix: "h",
+        target: afterSaltillo.target,
+        end: afterSaltillo.end
+      };
+    }
+  }
+  const syllable = readLiteralSyllable(value, startIdx, stopIdx);
+  return syllable ? { infix: "", target: syllable.target, end: syllable.end } : null;
+}
+
+function parseOptionalReduplicationHInfix(value) {
+  if (value === "(h)" && !isEscapedAt(value, 0)) {
+    return { raw: value, body: "(?:h)?" };
+  }
+  return null;
+}
+
+function readOptionalReduplicationH(value, startIdx, stopIdx = value.length) {
+  if (startIdx + 3 <= stopIdx && value.startsWith("(h)", startIdx) && !isEscapedAt(value, startIdx)) {
+    return {
+      raw: value.slice(startIdx, startIdx + 3),
+      body: "(?:h)?",
+      end: startIdx + 3
+    };
+  }
+  return null;
+}
+
+function readLiteralSyllable(value, startIdx, stopIdx = value.length) {
+  if (startIdx >= stopIdx) return null;
+  let escaped = false;
+  for (let i = startIdx; i < stopIdx; i++) {
+    const ch = value[i];
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+    if (ch === "\\") {
+      escaped = true;
+      continue;
+    }
+    if ("{}()[\\]|^$*+?.".includes(ch)) return null;
+    if (REDUPLICATION_VOWELS.test(ch)) {
+      return {
+        target: value.slice(startIdx, i + 1),
+        end: i + 1
+      };
+    }
+  }
+  return null;
+}
+
 function parseFilterValue(rawValue, mode, options = {}) {
   const cleaned = rawValue == null ? "" : String(rawValue);
   const literalRegex = cleaned.match(/^\/(.+)\/([gimsuy]*)$/);
@@ -415,12 +576,17 @@ function parseFilterValue(rawValue, mode, options = {}) {
       return;
     }
 
-    const expandedVC = expandVCPlaceholders(text);
-    const containsBoth = buildContainsBoth(expandedVC, options);
+    const containsBoth = buildContainsBoth(text, options);
     if (containsBoth) {
       bodies.push({ body: containsBoth, mode: m });
       return;
     }
+    const redupMarker = expandReduplicationMarkers(text, options);
+    if (redupMarker) {
+      bodies.push({ body: redupMarker, mode: m });
+      return;
+    }
+    const expandedVC = expandVCPlaceholders(text);
     const redup = expandReduplication(expandedVC, options);
     if (redup) {
       bodies.push({ body: redup, mode: m });
@@ -638,6 +804,17 @@ function convertWildcardPatternAllowRegex(value, options = {}) {
       i++;
       continue;
     }
+    if (ch === "(") {
+      const optionalGroup = readOptionalGroup(value, i, options);
+      if (optionalGroup) {
+        out += optionalGroup.body;
+        i = optionalGroup.end;
+        continue;
+      }
+      out += ch;
+      i++;
+      continue;
+    }
     if (ch === "?") {
       if (i > 0 && value[i - 1] === ")" && precedingGroupHasAlternatives(value, i - 1)) {
         const range = readWildcardRange(value, i + 1);
@@ -714,8 +891,8 @@ function convertWildcardPatternAllowRegex(value, options = {}) {
       i++;
       continue;
     }
-    // No escapamos metacaracteres de regex para respetar {}()[]| ya presentes
-    if ("](){}|".includes(ch)) {
+    // No escapamos metacaracteres de regex para respetar ){}[]| ya presentes
+    if (")]{}|".includes(ch)) {
       out += ch;
       i++;
       continue;
@@ -724,6 +901,54 @@ function convertWildcardPatternAllowRegex(value, options = {}) {
     i++;
   }
   return out;
+}
+
+function readOptionalGroup(value, startIdx, options = {}) {
+  const closeIdx = findMatchingGroupClose(value, startIdx);
+  if (closeIdx === -1) return null;
+  if (value[closeIdx + 1] === "?") return null;
+  if (value[closeIdx + 1] === "\\" && /\d/.test(value[closeIdx + 2] || "")) return null;
+  const inner = value.slice(startIdx + 1, closeIdx);
+  if (!inner || /^\?[:=!<]/.test(inner) || splitTopLevel(inner, "|").length > 1) return null;
+  const body = convertWildcardPatternAllowRegex(expandVCPlaceholders(inner), options);
+  return {
+    body: `(?:${body})?`,
+    end: closeIdx + 1
+  };
+}
+
+function findMatchingGroupClose(value, openIdx) {
+  let inClass = false;
+  let escape = false;
+  let depth = 0;
+  for (let i = openIdx; i < value.length; i++) {
+    const ch = value[i];
+    if (escape) {
+      escape = false;
+      continue;
+    }
+    if (ch === "\\") {
+      escape = true;
+      continue;
+    }
+    if (inClass) {
+      if (ch === "]") inClass = false;
+      continue;
+    }
+    if (ch === "[") {
+      inClass = true;
+      continue;
+    }
+    if (ch === "(") {
+      depth++;
+      continue;
+    }
+    if (ch === ")" && depth > 0) {
+      depth--;
+      if (depth === 0) return i;
+    }
+  }
+  return -1;
 }
 
 function isEscapedAt(value, idx) {
@@ -850,7 +1075,8 @@ function buildContainsBoth(text, options = {}) {
   const parts = splitTopLevel(inner, "||");
   if (parts.length < 2) return null;
   const lookaheads = parts.map(p => {
-    const body = convertWildcardPatternAllowRegex(expandVCPlaceholders(p), options);
+    const body = expandReduplicationMarkers(p, options)
+      || convertWildcardPatternAllowRegex(expandVCPlaceholders(p), options);
     return `(?=.*${body})`;
   });
   return `${lookaheads.join("")}.*`;

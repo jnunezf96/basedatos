@@ -1,9 +1,12 @@
+const COMENTARIO_CONTROL_WIDTH = 44;
+const FIXED_CONTROL_COLUMNS = new Set(["Comentario"]);
+
 const TABLE_FIELDS = [
   { key: "Texto estandarizado", label: "Edición", defaultWidth: 108 },
   { key: "Escritura original", label: "Original", defaultWidth: 108 },
   { key: "Traducción", label: "Traducción", defaultWidth: 220 },
   { key: "Fuente", label: "Fuente", defaultWidth: 96 },
-  { key: "Comentario", label: "Comentario", defaultWidth: 220 }
+  { key: "Comentario", label: "Comentario", defaultWidth: COMENTARIO_CONTROL_WIDTH }
 ];
 const DEFAULT_COLUMN_ORDER = TABLE_FIELDS.map(field => field.key);
 const COLUMN_CONTROL_ORDER = DEFAULT_COLUMN_ORDER.slice();
@@ -175,9 +178,10 @@ const I18N = {
     "filter.title": "Filtro",
     "filter.help": "Ayuda de filtros",
     "label.column": "Columna",
-    "label.scope": "Casilla",
-    "scope.whole": "Toda",
+    "label.scope": "Alcance",
+    "scope.whole": "Casilla",
     "scope.word": "Palabra",
+    "scope.phrase": "Frase",
     "field.grafia.short": "edición",
     "field.paleografia.short": "original",
     "field.traduccion.short": "traducción",
@@ -251,6 +255,8 @@ const I18N = {
     "rx.reduplication": "Reduplicación",
     "rx.redup.desc": "→ <em>pe</em>pech… (hasta 1ª vocal)",
     "rx.redup.ex2": "→ <em>tla</em>tlal…",
+    "rx.redup.marker": "→ <em>pahpaqui</em> (duplica el siguiente bloque)",
+    "rx.redup.optionalH": "→ <em>papaqui</em> / <em>pahpaqui</em>",
     "rx.repeat.same.grapheme": "mismo grafema repetido",
     "rx.repeat.same.cv": "misma sílaba CV repetida",
     "rx.literal": "Regex literal",
@@ -409,11 +415,16 @@ const I18N = {
     "accent.strict": "Exacto",
     "logic.and": "Y",
     "logic.or": "O",
-    "chips.zone.and": "Y",
-    "chips.zone.or": "O",
+    "chips.zone.and": "×",
+    "chips.zone.or": "÷",
     "chips.clearAll": "Limpiar todo",
     "chips.removeFilter": "Quitar filtro",
     "chips.applied": "Filtros aplicados",
+    "chips.scope.whole.code": "C",
+    "chips.scope.word.code": "P",
+    "chips.scope.phrase.code": "F",
+    "comentario.expandRow": "Abrir comentario",
+    "comentario.collapseRow": "Cerrar comentario",
     "session.new": "Nueva búsqueda",
     "session.close": "Cerrar búsqueda",
     "sort.childHint": "Orden dentro de cada lema",
@@ -595,8 +606,9 @@ const I18N = {
     "filter.help": "Filter help",
     "label.column": "Column",
     "label.scope": "Search in",
-    "scope.whole": "All",
+    "scope.whole": "Cell",
     "scope.word": "Word",
+    "scope.phrase": "Phrase",
     "field.grafia.short": "edition",
     "field.paleografia.short": "original",
     "field.traduccion.short": "translation",
@@ -670,6 +682,8 @@ const I18N = {
     "rx.reduplication": "Reduplication",
     "rx.redup.desc": "→ <em>pe</em>pech… (up to first vowel)",
     "rx.redup.ex2": "→ <em>tla</em>tlal…",
+    "rx.redup.marker": "→ <em>pahpaqui</em> (repeats the next block)",
+    "rx.redup.optionalH": "→ <em>papaqui</em> / <em>pahpaqui</em>",
     "rx.repeat.same.grapheme": "same grapheme repeated",
     "rx.repeat.same.cv": "same CV syllable repeated",
     "rx.literal": "Literal regex",
@@ -828,11 +842,16 @@ const I18N = {
     "accent.strict": "Exact",
     "logic.and": "AND",
     "logic.or": "OR",
-    "chips.zone.and": "AND",
-    "chips.zone.or": "OR",
+    "chips.zone.and": "×",
+    "chips.zone.or": "÷",
     "chips.clearAll": "Clear all",
     "chips.removeFilter": "Remove filter",
     "chips.applied": "Applied filters",
+    "chips.scope.whole.code": "C",
+    "chips.scope.word.code": "W",
+    "chips.scope.phrase.code": "P",
+    "comentario.expandRow": "Open comment",
+    "comentario.collapseRow": "Close comment",
     "session.new": "New search",
     "session.close": "Close search",
     "sort.childHint": "Order within each lemma",
@@ -876,13 +895,52 @@ let sessionCounter = 1;
 let sessions = [{ id: "s1", filters: [], order: [], groupCounter: 0 }];
 let currentSessionId = "s1";
 
-const FIELD_SHORT = {
-  "Escritura original": "Orig.",
-  "Texto estandarizado": "Ed.",
-  "Traducción": "Trad.",
-  "Comentario": "Com.",
+const FIELD_SHORT_BY_LANG = {
+  es: {
+    "Escritura original": "Orig.",
+    "Texto estandarizado": "Ed.",
+    "Traducción": "Trad.",
+    "Comentario": "Com.",
+  },
+  en: {
+    "Escritura original": "Orig.",
+    "Texto estandarizado": "Ed.",
+    "Traducción": "Tr.",
+    "Comentario": "Com.",
+  }
 };
-const MODE_SYMBOL = { exact: "=", starts: "^", any: "~", ends: "$" };
+
+function fieldShortLabel(field) {
+  const dict = FIELD_SHORT_BY_LANG[currentLang] || FIELD_SHORT_BY_LANG.es;
+  return dict[field] || FIELD_SHORT_BY_LANG.es[field] || field;
+}
+
+function chipScopeCodeForFilter(filter) {
+  const scope = normalizeScope(filter.scope || "whole");
+  if (scope === "whole") return t("chips.scope.whole.code");
+  if (scope === "phrase") return t("chips.scope.phrase.code");
+  return t("chips.scope.word.code");
+}
+
+function chipPartMarkup(filter, display) {
+  const scope = chipScopeCodeForFilter(filter);
+  const value = compactQuoteValue(display);
+  let body;
+  if (filter.mode === "starts") body = `${value}+`;
+  else if (filter.mode === "any") body = `+${value}+`;
+  else if (filter.mode === "ends") body = `+${value}`;
+  else body = value;
+  return `${filter.negate ? "-" : ""}${scope}(${body})`;
+}
+
+function compactQuoteValue(value) {
+  const escaped = escapeHtml(String(value ?? "")
+    .replace(/\\/g, "\\\\")
+    .replace(/'/g, "\\'")
+    .replace(/_/g, "\\_")
+    .replace(/\s+/g, "_"));
+  return `'${escaped}'`;
+}
 
 function escapeHtml(str) {
   return String(str ?? "")
@@ -1094,7 +1152,6 @@ let activeCardIndex = 0;
 const expandedComments = new Set();
 const expandableComments = new Set();
 const commentAnchors = new Map();
-const pendingComentarioSync = new WeakMap();
 let currentLang = "es";
 let dataLoadFailed = false;
 let lastPairResults = null;
@@ -1549,29 +1606,26 @@ function renderActiveFilterChips() {
     const fieldNames = filters.flatMap(f => (
       Array.isArray(f.fields) && f.fields.length ? f.fields : [f.field]
     )).filter(Boolean);
-    const fieldLabels = [...new Set(fieldNames.map(field => FIELD_SHORT[field] || field))];
+    const fieldLabels = [...new Set(fieldNames.map(fieldShortLabel))];
     const mixedFields = fieldLabels.length > 1;
     const fieldLabel = fieldLabels.join("/");
-    const scopes = [...new Set(filters.map(f => f.scope || "whole"))];
-    const scopeBadge = scopes.length === 1 && scopes[0] === "word" ? " W" : "";
+    const partJoiner = logic === "OR" ? "÷" : "×";
 
     const parts = filters.map(f => {
-      const sym = MODE_SYMBOL[f.mode] || f.mode;
-      const sign = f.negate ? "−" : "+";
       const val = String(f.value);
       const display = val.length > 16 ? val.slice(0, 14) + "…" : val;
       const partFields = Array.isArray(f.fields) && f.fields.length ? f.fields : [f.field];
-      const partFieldLabel = partFields.map(field => FIELD_SHORT[field] || field).join("/");
+      const partFieldLabel = partFields.map(fieldShortLabel).join("/");
       const fieldPrefix = mixedFields && filters.length > 1 ? `${escapeHtml(partFieldLabel)}:` : "";
-      return `<span class="chip-part ${f.negate ? "chip-part-excl" : ""}">${fieldPrefix}${sym}${sign}&thinsp;"${escapeHtml(display)}"</span>`;
-    }).join('<span class="chip-dot"> · </span>');
+      return `<span class="chip-part ${f.negate ? "chip-part-excl" : ""}">${fieldPrefix}${chipPartMarkup(f, display)}</span>`;
+    }).join(`<span class="chip-dot"> ${partJoiner} </span>`);
 
     const chip = document.createElement("span");
     chip.className = "filter-chip chip-group";
     chip.dataset.groupId = groupId;
     if (groupId === editingGroupId) chip.classList.add("chip-editing");
     chip.innerHTML =
-      `<span class="chip-label"><span class="chip-field">${escapeHtml(fieldLabel + scopeBadge)}</span> ${parts}</span>` +
+      `<span class="chip-label"><span class="chip-field">${escapeHtml(fieldLabel)}</span> ${parts}</span>` +
       `<button type="button" class="chip-remove" aria-label="${escapeHtml(t("chips.removeFilter"))}">×</button>`;
 
     return chip;
@@ -2578,12 +2632,14 @@ function renderTable(rows, totalCount) {
   } else {
     let stripeIdx = 0;
     rows.forEach(row => {
-      const { tr, comentarioMeta, translationMeasureEl } = buildDataRow(row);
+      const { tr, comentarioMeta } = buildDataRow(row);
       if (stripeIdx % 2 === 0) tr.classList.add("stripe-alt");
       stripeIdx++;
       tbody.appendChild(tr);
-      appendMobileDetailRowAfter(tr, row);
-      if (comentarioMeta) syncComentarioCell(comentarioMeta, translationMeasureEl);
+      let anchor = appendMobileDetailRowAfter(tr, row);
+      if (comentarioMeta && syncComentarioCell(comentarioMeta)) {
+        anchor = appendComentarioDetailRowAfter(anchor, row);
+      }
     });
   }
 
@@ -2601,7 +2657,6 @@ function buildDataRow(row) {
   const rowId = getMobileRowId(row);
   if (row.record_id) tr.dataset.recordId = row.record_id;
   if (rowId) tr.dataset.mobileRowId = rowId;
-  let translationMeasureEl = null;
   let comentarioMeta = null;
   let mobileToggleAttached = false;
 
@@ -2652,6 +2707,7 @@ function buildDataRow(row) {
             const center = rect.top + rect.height / 2 + scrollTop;
             commentAnchors.set(row._rid, { scrollY: scrollTop, center });
             setCommentExpanded(row._rid, content, btn, true);
+            appendComentarioDetailRowAfter(tr, row);
           }
           updateComentarioToggleButton(lastRenderRows);
         });
@@ -2666,7 +2722,6 @@ function buildDataRow(row) {
         content.className = "traduccion-text";
         content.innerHTML = applyHighlights(raw, field.key);
         td.appendChild(content);
-        translationMeasureEl = content;
       } else {
         td.innerHTML = applyHighlights(raw, field.key);
       }
@@ -2678,7 +2733,7 @@ function buildDataRow(row) {
     tr.appendChild(td);
   });
 
-  return { tr, comentarioMeta, translationMeasureEl };
+  return { tr, comentarioMeta };
 }
 
 function getMobileRowId(row) {
@@ -2758,6 +2813,11 @@ function setMobileRowToggleState(rowTr, expanded) {
   btn.setAttribute("aria-label", t(expanded ? "table.rowDetail.close" : "table.rowDetail.open"));
 }
 
+function getVisibleTableColumnCount() {
+  const visible = TABLE_FIELDS.filter(field => !hiddenColumns.has(field.key)).length;
+  return Math.max(1, visible || TABLE_FIELDS.length);
+}
+
 function buildMobileDetailRow(row) {
   const tr = document.createElement("tr");
   tr.className = "mobile-row-detail-row";
@@ -2821,6 +2881,47 @@ function appendMobileDetailRowAfter(anchorRow, row) {
   }
   anchorRow.after(detailRow);
   setMobileRowToggleState(anchorRow, true);
+  return detailRow;
+}
+
+function buildComentarioDetailRow(row) {
+  const tr = document.createElement("tr");
+  tr.className = "comentario-detail-row";
+  if (row.record_id) tr.dataset.recordId = row.record_id;
+  tr.dataset.commentRowId = String(row._rid ?? "");
+
+  const td = document.createElement("td");
+  td.className = "comentario-detail-cell";
+  td.colSpan = getVisibleTableColumnCount();
+
+  const detail = document.createElement("div");
+  detail.className = "comentario-detail";
+  detail.innerHTML = applyHighlights(getDisplayValue(row, "Comentario"), "Comentario");
+
+  td.appendChild(detail);
+  tr.appendChild(td);
+  return tr;
+}
+
+function removeComentarioDetailRow(rowId) {
+  const key = String(rowId ?? "");
+  document.querySelectorAll("#dataTable tbody tr.comentario-detail-row").forEach(row => {
+    if (row.dataset.commentRowId === key) row.remove();
+  });
+}
+
+function appendComentarioDetailRowAfter(anchorRow, row) {
+  if (!anchorRow || !row || !expandedComments.has(row._rid)) return anchorRow;
+  removeComentarioDetailRow(row._rid);
+  const detailRow = buildComentarioDetailRow(row);
+  if (anchorRow.classList.contains("lemma-detail-row")) {
+    detailRow.classList.add("lemma-detail-row");
+    if (anchorRow.dataset.lemma) detailRow.dataset.lemma = anchorRow.dataset.lemma;
+  }
+  if (anchorRow.classList.contains("stripe-alt")) {
+    detailRow.classList.add("stripe-alt");
+  }
+  anchorRow.after(detailRow);
   return detailRow;
 }
 
@@ -2954,7 +3055,16 @@ function setTableScroll(y, behavior = "auto") {
 }
 
 function getColumnWidth(fieldKey) {
+  if (isFixedControlColumn(fieldKey)) return getColumnMinWidth(fieldKey);
   return columnWidths.get(fieldKey) || TABLE_FIELDS.find(field => field.key === fieldKey)?.defaultWidth || 140;
+}
+
+function isFixedControlColumn(fieldKey) {
+  return FIXED_CONTROL_COLUMNS.has(fieldKey);
+}
+
+function getColumnMinWidth(fieldKey) {
+  return fieldKey === "Comentario" ? COMENTARIO_CONTROL_WIDTH : 70;
 }
 
 function isPhoneViewport() {
@@ -3064,7 +3174,7 @@ function ensureColumnHiddenStyles() {
   TABLE_FIELDS.forEach((_, idx) => {
     style.textContent += `#dataTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
       `#dataTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
-      `#dataTable.col-hidden-${idx} tbody tr:not(.mobile-row-detail-row) td:nth-child(${idx + 1}) { display: none; }\n`;
+      `#dataTable.col-hidden-${idx} tbody tr:not(.mobile-row-detail-row):not(.comentario-detail-row) td:nth-child(${idx + 1}) { display: none; }\n`;
   });
   document.head.appendChild(style);
 }
@@ -3162,12 +3272,13 @@ function renderColumnControls() {
     actions.appendChild(orderGroup);
 
     const width = getColumnWidth(field.key);
+    const fixedWidth = isFixedControlColumn(field.key);
     const widthGroup = document.createElement("div");
     widthGroup.className = "column-action-set column-action-set--width";
-    widthGroup.appendChild(buildColumnIconButton("−", "columns.narrower", isPhoneViewport() || width <= 70, () => {
+    widthGroup.appendChild(buildColumnIconButton("−", "columns.narrower", isPhoneViewport() || fixedWidth || width <= getColumnMinWidth(field.key), () => {
       adjustColumnWidth(field.key, -20);
     }));
-    widthGroup.appendChild(buildColumnIconButton("+", "columns.wider", isPhoneViewport() || width >= 520, () => {
+    widthGroup.appendChild(buildColumnIconButton("+", "columns.wider", isPhoneViewport() || fixedWidth || width >= 520, () => {
       adjustColumnWidth(field.key, 20);
     }));
     actions.appendChild(widthGroup);
@@ -3240,7 +3351,8 @@ function moveColumnByStep(fieldKey, step) {
 
 function adjustColumnWidth(fieldKey, delta) {
   if (isPhoneViewport()) return;
-  const next = Math.max(70, Math.min(520, getColumnWidth(fieldKey) + delta));
+  if (isFixedControlColumn(fieldKey)) return;
+  const next = Math.max(getColumnMinWidth(fieldKey), Math.min(520, getColumnWidth(fieldKey) + delta));
   columnWidths.set(fieldKey, next);
   applyColumnControlStateChange({ renderRows: false });
 }
@@ -3260,14 +3372,21 @@ function resetColumnControls() {
 }
 
 function syncColumnLayout() {
-  const visibleWidth = TABLE_FIELDS.reduce((sum, field, idx) => {
+  const visibleWidth = TABLE_FIELDS.reduce((sum, field) => {
     return hiddenColumns.has(field.key) ? sum : sum + getColumnWidth(field.key);
   }, 0);
   const isPhone = isPhoneViewport();
-  const minWidth = isPhone ? 0 : Math.max(TABLE_MIN_WIDTH, visibleWidth);
   const firstVisibleIdx = TABLE_FIELDS.findIndex(f => !hiddenColumns.has(f.key));
   const table = getBodyTable();
   if (table) {
+    const hasFlexibleVisibleColumns = TABLE_FIELDS.some(field => (
+      !hiddenColumns.has(field.key) && !isFixedControlColumn(field.key)
+    ));
+    const wrapperWidth = Math.ceil(table.parentElement?.clientWidth || 0);
+    const layoutWidth = isPhone || !hasFlexibleVisibleColumns
+      ? visibleWidth
+      : Math.max(TABLE_MIN_WIDTH, visibleWidth, wrapperWidth);
+    const layoutWidths = getLayoutColumnWidths(layoutWidth, visibleWidth);
     let colgroup = table.querySelector("colgroup");
     if (!colgroup) {
       colgroup = document.createElement("colgroup");
@@ -3276,14 +3395,15 @@ function syncColumnLayout() {
     colgroup.innerHTML = "";
     TABLE_FIELDS.forEach((field, idx) => {
       const col = document.createElement("col");
-      const width = getColumnWidth(field.key);
+      col.dataset.field = field.key;
+      const width = layoutWidths.get(field.key) || getColumnWidth(field.key);
       col.style.width = `${width}px`;
       col.style.minWidth = `${width}px`;
       colgroup.appendChild(col);
       table.classList.toggle(`col-hidden-${idx}`, hiddenColumns.has(field.key));
     });
-    table.style.width = "100%";
-    table.style.minWidth = isPhone ? "" : `${minWidth}px`;
+    table.style.width = isPhone ? "100%" : `${layoutWidth}px`;
+    table.style.minWidth = isPhone ? "" : `${layoutWidth}px`;
     table.querySelectorAll("thead th.mobile-th-anchor")
       .forEach(th => th.classList.remove("mobile-th-anchor"));
     let mobileAnchorTh = null;
@@ -3296,6 +3416,29 @@ function syncColumnLayout() {
     }
     syncTableHeaderActionSlots(table, mobileAnchorTh, isPhone);
   }
+}
+
+function getLayoutColumnWidths(layoutWidth, visibleWidth) {
+  const widths = new Map(TABLE_FIELDS.map(field => [field.key, getColumnWidth(field.key)]));
+  const extra = Math.max(0, layoutWidth - visibleWidth);
+  if (!extra) return widths;
+
+  const flexible = TABLE_FIELDS.filter(field => (
+    !hiddenColumns.has(field.key) && !isFixedControlColumn(field.key)
+  ));
+  if (!flexible.length) return widths;
+
+  const totalWeight = flexible.reduce((sum, field) => sum + Math.max(1, widths.get(field.key) || 1), 0);
+  let remaining = extra;
+  flexible.forEach((field, idx) => {
+    const base = widths.get(field.key) || 0;
+    const share = idx === flexible.length - 1
+      ? remaining
+      : Math.floor(extra * Math.max(1, base) / totalWeight);
+    widths.set(field.key, base + share);
+    remaining -= share;
+  });
+  return widths;
 }
 
 function syncTableHeaderActionSlots(table, mobileAnchorTh, isPhone) {
@@ -3370,63 +3513,32 @@ function shuffleArray(arr) {
   return arr;
 }
 
-function getComentarioLineHeight(el) {
-  const computed = window.getComputedStyle(el);
-  const lineHeight = parseFloat(computed.lineHeight);
-  const fontSize = parseFloat(computed.fontSize);
-  if (Number.isFinite(lineHeight)) return lineHeight;
-  if (Number.isFinite(fontSize)) return fontSize * 1.35;
-  return 18;
-}
-
-function getComentarioClampHeight(commentEl, translationEl) {
-  const translationHeight = Math.ceil(translationEl?.scrollHeight || translationEl?.clientHeight || 0);
-  const lineHeight = getComentarioLineHeight(commentEl);
-  const slack = Math.max(2, Math.round(lineHeight * 0.12));
-  const baseHeight = translationHeight > 0 ? translationHeight : 120;
-  return { lineHeight, clampHeight: baseHeight + slack };
-}
-
-function isComentarioExpandable(commentEl, clampHeight, lineHeight) {
-  const maxH = `${clampHeight}px`;
-  commentEl.style.setProperty("--comentario-max-height", maxH);
-  commentEl.dataset.maxHeight = maxH;
-  const wasCollapsed = commentEl.classList.contains("collapsed");
-  commentEl.classList.add("collapsed");
-  const visibleHeight = Math.ceil(commentEl.clientHeight || clampHeight);
-  const naturalHeight = Math.ceil(commentEl.scrollHeight);
-  if (!wasCollapsed) {
-    commentEl.classList.remove("collapsed");
-  }
-  const hiddenHeight = Math.max(0, naturalHeight - visibleHeight);
-  const meaningfulOverflow = Math.max(10, Math.round(lineHeight * 0.8));
-  return hiddenHeight >= meaningfulOverflow;
-}
-
 function setCommentExpanded(rowId, contentEl, btnEl, expanded) {
   if (expanded) {
     expandedComments.add(rowId);
-    contentEl.classList.remove("collapsed");
+    contentEl.classList.add("collapsed");
     btnEl.textContent = "−";
+    btnEl.setAttribute("aria-expanded", "true");
+    btnEl.title = t("comentario.collapseRow");
+    btnEl.setAttribute("aria-label", t("comentario.collapseRow"));
+    contentEl.closest(".comentario-cell")?.classList.add("comentario-cell--expanded");
     return;
   }
   expandedComments.delete(rowId);
   commentAnchors.delete(rowId);
+  removeComentarioDetailRow(rowId);
   contentEl.classList.add("collapsed");
   btnEl.textContent = "+";
+  btnEl.setAttribute("aria-expanded", "false");
+  btnEl.title = t("comentario.expandRow");
+  btnEl.setAttribute("aria-label", t("comentario.expandRow"));
+  contentEl.closest(".comentario-cell")?.classList.remove("comentario-cell--expanded");
 }
 
-function syncComentarioCell(meta, translationEl) {
+function syncComentarioCell(meta) {
   const { rowId, content, btn } = meta;
-  const { lineHeight, clampHeight } = getComentarioClampHeight(content, translationEl);
-  const expandable = isComentarioExpandable(content, clampHeight, lineHeight);
-  if (!expandable) {
-    setCommentExpanded(rowId, content, btn, false);
-    content.classList.remove("collapsed");
-    btn.remove();
-    return false;
-  }
   expandableComments.add(rowId);
+  content.closest(".comentario-cell")?.classList.add("comentario-cell--detail-ready");
   setCommentExpanded(rowId, content, btn, expandedComments.has(rowId));
   return true;
 }
@@ -3469,20 +3581,6 @@ function getVisibleLemmas() {
   if (tableViewMode !== "lemmas") return [];
   const rendered = getRenderedLemmaNames();
   return rendered.length ? rendered : getPagedLemmaNames();
-}
-
-function flushPendingSyncsInChunks(pendingList, chunkSize = 40) {
-  if (!pendingList.length) return;
-  let i = 0;
-  const step = () => {
-    const end = Math.min(i + chunkSize, pendingList.length);
-    for (; i < end; i++) {
-      const p = pendingList[i];
-      syncComentarioCell(p.comentarioMeta, p.translationMeasureEl);
-    }
-    if (i < pendingList.length) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
 }
 
 function toggleVisibleListRows() {
@@ -4234,12 +4332,16 @@ function applyHighlights(rawValue, fieldKey) {
   const allFilters = getHighlightFiltersForField(fieldKey);
   if (!allFilters.length) return val;
 
+  const phraseFilters = allFilters.filter(f => normalizeScope(f.scope) === "phrase" && !f.negate);
   const wordFilters = allFilters.filter(f => normalizeScope(f.scope) === "word");
-  const cellFilters = allFilters.filter(f => normalizeScope(f.scope) !== "word" && !f.negate);
+  const cellFilters = allFilters.filter(f => normalizeScope(f.scope) === "whole" && !f.negate);
 
   let rendered = val;
 
-  // Word scope first: wraps complete tokens before cell-scope can split them.
+  if (phraseFilters.length) {
+    rendered = applyPhraseHighlights(rendered, phraseFilters);
+  }
+
   if (wordFilters.length) {
     const segments = rendered.split(/(<[^>]+>|\s+)/g);
     rendered = segments
@@ -4277,6 +4379,154 @@ function applyHighlights(rawValue, fieldKey) {
   }
 
   return rendered;
+}
+
+function applyPhraseHighlights(value, filters) {
+  const parts = String(value || "").split(/(<[^>]+>)/g);
+  return parts
+    .map(part => /^<[^>]+>$/.test(part) ? part : highlightPhraseTextSegment(part, filters))
+    .join("");
+}
+
+function highlightPhraseTextSegment(text, filters) {
+  if (!text || !filters.length) return text || "";
+  const spans = [];
+  filters.forEach(filter => {
+    spans.push(...collectPhraseHighlightSpans(text, filter, "hl"));
+    if (oldSpanishMode) {
+      spans.push(...collectPhraseHighlightSpans(text, filter, "hl-os", { oldSpanish: true }));
+    }
+  });
+  return wrapHighlightSpans(text, spans);
+}
+
+function collectPhraseHighlightSpans(text, filter, className, options = {}) {
+  const query = buildFilterQuery(filter);
+  const phraseQuery = queryMatchesMultiWordPhrase(query, filter.mode, query.allowLoose)
+    ? query
+    : buildLiteralPhraseQuery(filter, query);
+  if (phraseQuery) {
+    return collectPhraseSequenceSpans(text, filter, phraseQuery, className, options);
+  }
+  if (queryUsesPhraseWindowRegex(query)) {
+    return collectPhraseRegexWindowSpans(text, filter, query, className, options);
+  }
+  return collectPhraseTokenSpans(text, filter, query, className, options);
+}
+
+function collectPhraseSequenceSpans(text, filter, query, className, options = {}) {
+  const useLoose = query.allowLoose;
+  const queryWords = splitSearchWords(useLoose ? query.loose : query.strict);
+  if (queryWords.length < 2) return [];
+
+  const tokens = tokenizeHighlightWords(text)
+    .map(token => ({
+      ...token,
+      candidate: normalizeHighlightToken(token.raw, query, useLoose, options)
+    }))
+    .filter(token => token.candidate);
+  if (tokens.length < queryWords.length) return [];
+
+  const spans = [];
+  const mode = query.effectiveMode || filter.mode;
+  for (let i = 0; i <= tokens.length - queryWords.length; i++) {
+    const windowTokens = tokens.slice(i, i + queryWords.length);
+    const candidates = windowTokens.map(token => token.candidate);
+    if (wordSequenceMatchesMode(candidates, queryWords, mode)) {
+      spans.push({
+        start: windowTokens[0].start,
+        end: windowTokens[windowTokens.length - 1].end,
+        className
+      });
+    }
+  }
+  return spans;
+}
+
+function collectPhraseRegexWindowSpans(text, filter, query, className, options = {}) {
+  const useLoose = query.allowLoose;
+  const tokens = tokenizeHighlightWords(text)
+    .map(token => ({
+      ...token,
+      raw: normalizeHighlightToken(token.raw, query, false, options),
+      loose: normalizeHighlightToken(token.raw, query, true, options)
+    }))
+    .filter(token => token.raw || token.loose);
+  return findPhraseWindowMatches(tokens, filter, query, useLoose, { firstPerStart: true })
+    .map(match => {
+      const first = match.words[0];
+      const last = match.words[match.words.length - 1];
+      return {
+        start: first.start,
+        end: last.end,
+        className
+      };
+    });
+}
+
+function collectPhraseTokenSpans(text, filter, query, className, options = {}) {
+  const useLoose = query.allowLoose;
+  return tokenizeHighlightWords(text)
+    .filter(token => {
+      const candidate = normalizeHighlightToken(token.raw, query, useLoose, options);
+      return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
+    })
+    .map(token => ({ start: token.start, end: token.end, className }));
+}
+
+function tokenizeHighlightWords(text) {
+  const tokens = [];
+  const rx = /\S+/g;
+  let match;
+  while ((match = rx.exec(text)) !== null) {
+    tokens.push({
+      raw: match[0],
+      start: match.index,
+      end: rx.lastIndex
+    });
+  }
+  return tokens;
+}
+
+function normalizeHighlightToken(raw, query, useLoose, options = {}) {
+  let base;
+  if (options.oldSpanish) {
+    base = normalizeOldSpanish(normalizeString(raw));
+  } else {
+    base = query.accentSensitive
+      ? String(raw || "").normalize("NFC").toLowerCase()
+      : normalizeString(raw);
+  }
+  return useLoose
+    ? collapseWhitespace(stripPunctuationCharacters(base))
+    : base;
+}
+
+function wrapHighlightSpans(text, spans) {
+  if (!spans.length) return text;
+  const ordered = spans
+    .filter(span => span && span.end > span.start)
+    .sort((a, b) => (
+      a.start - b.start ||
+      highlightClassPriority(a.className) - highlightClassPriority(b.className) ||
+      b.end - a.end
+    ));
+  let result = "";
+  let cursor = 0;
+  ordered.forEach(span => {
+    const start = Math.max(0, Math.min(text.length, span.start));
+    const end = Math.max(0, Math.min(text.length, span.end));
+    if (start < cursor || end <= start) return;
+    result += text.slice(cursor, start);
+    result += `<mark class="${span.className}">${text.slice(start, end)}</mark>`;
+    cursor = end;
+  });
+  result += text.slice(cursor);
+  return result;
+}
+
+function highlightClassPriority(className) {
+  return className === "hl" ? 0 : 1;
 }
 
 function getHighlightFiltersForField(fieldKey) {
@@ -4496,7 +4746,8 @@ function buildHighlightRegex(filters) {
         const sourcePart = (!accentSensitiveMode && oldSpanishMode)
           ? normalizeOldSpanishPatternText(p)
           : p;
-        const expanded = convertWildcardPatternAllowRegex(expandVCPlaceholders(sourcePart), { field: filter.field });
+        const expanded = expandReduplicationMarkers(sourcePart, { field: filter.field })
+          || convertWildcardPatternAllowRegex(expandVCPlaceholders(sourcePart), { field: filter.field });
         if (expanded) {
           let adjusted = accentSensitiveMode ? expanded : normalizePatternSource(expanded);
           if (!accentSensitiveMode && oldSpanishMode) {
@@ -4646,8 +4897,10 @@ function tokenMatchesWordFilters(token, filters) {
       try {
         const adjSrc = query.accentSensitive ? src.toLowerCase() : normalizePatternSource(src);
         const adjRx = adjSrc === src ? query.strictRegex : new RegExp(adjSrc, query.strictRegex.flags);
+        adjRx.lastIndex = 0;
         return adjRx.test(candidate);
       } catch {
+        query.strictRegex.lastIndex = 0;
         return query.strictRegex.test(candidate);
       }
     }
@@ -5437,7 +5690,7 @@ function renderLemmasIntoTbody(tbody, totalCount) {
 function appendLemmaDetailRowsAfter(anchorRow, item, stripe) {
   let anchor = anchorRow;
   item.rows.forEach(row => {
-    const { tr, comentarioMeta, translationMeasureEl } = buildDataRow(row);
+    const { tr, comentarioMeta } = buildDataRow(row);
     tr.classList.add("lemma-detail-row");
     tr.dataset.lemma = item.lemma;
     if (stripe) tr.classList.add("stripe-alt");
@@ -5451,7 +5704,9 @@ function appendLemmaDetailRowsAfter(anchorRow, item, stripe) {
     anchor.after(tr);
     anchor = tr;
     anchor = appendMobileDetailRowAfter(anchor, row);
-    if (comentarioMeta) syncComentarioCell(comentarioMeta, translationMeasureEl);
+    if (comentarioMeta && syncComentarioCell(comentarioMeta)) {
+      anchor = appendComentarioDetailRowAfter(anchor, row);
+    }
   });
 }
 
@@ -6360,8 +6615,8 @@ const FIELD_CODE_OUT = {
 const FIELD_CODE_IN = Object.fromEntries(
   Object.entries(FIELD_CODE_OUT).map(([k, v]) => [v, k])
 );
-const SCOPE_CODE_OUT = { whole: "t", word: "w" };
-const SCOPE_CODE_IN = { t: "whole", w: "word" };
+const SCOPE_CODE_OUT = { whole: "c", word: "w", phrase: "p" };
+const SCOPE_CODE_IN = { t: "whole", c: "whole", w: "word", p: "phrase" };
 const MODE_CODE_OUT = { exact: "e", starts: "s", any: "a", ends: "d" };
 const MODE_CODE_IN = { e: "exact", s: "starts", a: "any", d: "ends" };
 
@@ -6450,13 +6705,18 @@ function serializeQueryHash() {
     const f0 = g.filters[0];
     const fieldCode = FIELD_CODE_OUT[f0.field];
     if (!fieldCode) return "";
-    const scopeCode = SCOPE_CODE_OUT[normalizeScope(f0.scope)] || "t";
+    const groupScope = normalizeScope(f0.scope);
+    const scopeCode = SCOPE_CODE_OUT[groupScope] || "c";
     const logicCode = g.logic === "OR" ? "O" : "A";
     const inputs = g.filters.map(f => {
       const m = MODE_CODE_OUT[f.mode] || "a";
       const n = f.negate ? "1" : "0";
+      const inputScope = normalizeScope(f.scope);
+      const inputScopePrefix = inputScope !== groupScope
+        ? `${SCOPE_CODE_OUT[inputScope] || "c"}:`
+        : "";
       const raw = typeof f.value === "string" ? f.value : "";
-      return `${m}:${n}:${encodeURIComponent(raw)}`;
+      return `${m}:${n}:${inputScopePrefix}${encodeURIComponent(raw)}`;
     }).join("|");
     return `${logicCode}:${fieldCode}:${scopeCode}:${inputs}`;
   }).filter(Boolean);
@@ -6565,22 +6825,28 @@ function parseGroupSpec(spec) {
   const scope = SCOPE_CODE_IN[parts[2]] || "whole";
   if (!field) return null;
   const inputsStr = parts.slice(3).join(":");
-  const inputs = inputsStr.split("|").map(parseInputSpec).filter(Boolean);
+  const inputs = inputsStr.split("|").map(spec => parseInputSpec(spec, scope)).filter(Boolean);
   if (!inputs.length) return null;
   return { logic, field, scope, inputs };
 }
 
-function parseInputSpec(spec) {
+function parseInputSpec(spec, defaultScope = "whole") {
   if (!spec) return null;
   const parts = spec.split(":");
   if (parts.length < 3) return null;
   const mode = MODE_CODE_IN[parts[0]];
   if (!mode) return null;
   const negate = parts[1] === "1";
+  let scope = defaultScope;
+  let valueStartIdx = 2;
+  if (parts.length >= 4 && SCOPE_CODE_IN[parts[2]]) {
+    scope = SCOPE_CODE_IN[parts[2]];
+    valueStartIdx = 3;
+  }
   let value;
-  try { value = decodeURIComponent(parts.slice(2).join(":")); } catch { return null; }
+  try { value = decodeURIComponent(parts.slice(valueStartIdx).join(":")); } catch { return null; }
   if (!value) return null;
-  return { mode, negate, value };
+  return { mode, negate, value, scope };
 }
 
 function applyParsedState(state) {
@@ -6594,12 +6860,13 @@ function applyParsedState(state) {
 
     state.groups.forEach(g => {
       const groupId = `group_${++groupCounter}`;
-      const wordGroupId = (g.scope === "word" && g.logic === "AND") ? groupId : null;
       g.inputs.forEach(inp => {
+        const inputScope = inp.scope || g.scope;
+        const wordGroupId = (inputScope === "word" && g.logic === "AND") ? groupId : null;
         const extras = wordGroupId
           ? { owner: groupId, wordGroupId }
           : { owner: groupId };
-        appendFilter(g.field, inp.mode, inp.value, g.logic, inp.negate, g.scope, extras);
+        appendFilter(g.field, inp.mode, inp.value, g.logic, inp.negate, inputScope, extras);
       });
       groupOrder.push({ id: groupId, logic: g.logic });
     });

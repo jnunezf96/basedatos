@@ -489,7 +489,7 @@ td[data-field="Comentario"] small {
   font-size: 0.92em;
 }
 
-/* Fuente más estrecha, Comentario más ancha */
+/* Comentario is a compact control column; full text opens below the row. */
 th[data-field="Escritura original"],
 td:nth-child(1),
 th[data-field="Texto estandarizado"],
@@ -500,10 +500,47 @@ td:nth-child(4) {
 }
 
 th[data-field="Traducción"],
-td:nth-child(3),
-th[data-field="Comentario"],
-td:nth-child(5) {
+td:nth-child(3) {
   width: 220px;
+}
+
+th[data-field="Comentario"],
+td[data-field="Comentario"] {
+  width: 44px;
+  min-width: 44px;
+  max-width: 44px;
+}
+
+th[data-field="Comentario"] {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+th[data-field="Comentario"] .header-bar {
+  justify-content: center;
+  gap: 0;
+}
+
+th[data-field="Comentario"] .header-bar > span {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+th[data-field="Comentario"] .sort-btn {
+  display: none;
+}
+
+th[data-field="Comentario"] .header-actions {
+  justify-content: center;
+  gap: 0;
+  width: 100%;
 }
 
 .mobile-row-toggle,
@@ -835,7 +872,7 @@ td:nth-child(5) {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 4px;
   padding: 0;
 }
 
@@ -855,7 +892,7 @@ td:nth-child(5) {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .chips-zone-label {
@@ -899,13 +936,13 @@ td:nth-child(5) {
 .filter-chip {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 4px 5px 4px 10px;
+  gap: 4px;
+  padding: 3px 4px 3px 8px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 500;
-  line-height: 1.3;
-  max-width: 260px;
+  line-height: 1.15;
+  max-width: min(420px, 100%);
   transition: box-shadow 0.15s;
 }
 
@@ -930,12 +967,12 @@ td:nth-child(5) {
 
 .chip-field {
   font-weight: 600;
-  margin-right: 4px;
+  margin-right: 3px;
 }
 
 .chip-part {
   font-family: ui-monospace, "Cascadia Code", "Fira Mono", monospace;
-  font-size: 11px;
+  font-size: 10.5px;
 }
 
 .chip-part-excl {
@@ -982,13 +1019,13 @@ td:nth-child(5) {
   border: none;
   cursor: pointer;
   padding: 0;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1;
   color: inherit;
   opacity: 0.55;
@@ -1036,7 +1073,9 @@ td:nth-child(5) {
 
 .comentario-cell {
   position: relative;
-  padding-right: 44px;
+  padding: 4px;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .traduccion-text,
@@ -1056,13 +1095,21 @@ td:nth-child(5) {
   overflow: hidden;
 }
 
+.comentario-cell--detail-ready .comentario-text.collapsed {
+  display: none;
+}
+
+.comentario-cell--expanded .comentario-text {
+  display: none;
+}
+
 .comentario-toggle {
-  position: absolute;
-  top: 0;
-  right: 9px;
-  height: 100%;
+  position: static;
+  width: 28px;
+  height: 28px;
   min-width: 28px;
-  padding: 0 10px;
+  padding: 0;
+  margin: 0 auto;
   border: 1px solid #c7cffa;
   border-radius: 999px;
   background: transparent;
@@ -1080,6 +1127,40 @@ td:nth-child(5) {
 .comentario-toggle:hover {
   background: #eef2ff;
   border-color: #a8b3f5;
+}
+
+.comentario-toggle[aria-expanded="true"] {
+  background: #eef2ff;
+  border-color: #a8b3f5;
+}
+
+#dataTable tbody tr.comentario-detail-row > td.comentario-detail-cell {
+  width: auto;
+  padding: 0;
+  border-bottom: 1px solid #dfe4fb;
+  background: #f8faff;
+}
+
+.comentario-detail {
+  position: sticky;
+  left: 0;
+  box-sizing: border-box;
+  width: min(100%, calc(100vw - 48px));
+  max-width: calc(100vw - 48px);
+  padding: 10px 12px 12px;
+  border-left: 4px solid #c7cffa;
+  color: #20284d;
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.comentario-detail * {
+  margin-top: 0;
+}
+
+.comentario-detail *:last-child {
+  margin-bottom: 0;
 }
 
 .tab-panel {
@@ -3041,6 +3122,10 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     display: table-row;
   }
 
+  #dataTable tbody tr.comentario-detail-row {
+    display: none !important;
+  }
+
   #dataTable tbody tr.mobile-row-detail-row > td.mobile-row-detail-cell {
     width: auto;
     padding: 0;
@@ -3493,15 +3578,19 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   /* ── Active filter chips: bigger remove targets ── */
   .filter-chip {
-    padding: 6px 6px 6px 12px;
-    font-size: 13px;
+    padding: 5px 5px 5px 10px;
+    font-size: 12px;
     max-width: 100%;
   }
 
+  .chip-part {
+    font-size: 10.5px;
+  }
+
   .chip-remove {
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
+    width: 24px;
+    height: 24px;
+    font-size: 15px;
   }
 
   .chip-clear-all {
@@ -3701,6 +3790,12 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
   #dataTable colgroup { display: none; }
   .table-scroll { overflow-x: hidden; }
+  #dataTable th[data-field="Comentario"],
+  #dataTable td[data-field="Comentario"] {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+  }
 
   #dataTable thead th { display: none !important; }
   #dataTable thead th.mobile-th-anchor { display: table-cell !important; width: auto; }
@@ -3714,9 +3809,9 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     padding: 0 6px;
   }
 
-  #dataTable tbody tr:not(.mobile-row-detail-row):not(.lemma-group-row) > td { display: none !important; }
-  #dataTable tbody tr:not(.mobile-row-detail-row):not(.lemma-group-row) > td.mobile-row-anchor-cell,
-  #dataTable tbody tr:not(.mobile-row-detail-row):not(.lemma-group-row) > td.table-empty {
+  #dataTable tbody tr:not(.mobile-row-detail-row):not(.comentario-detail-row):not(.lemma-group-row) > td { display: none !important; }
+  #dataTable tbody tr:not(.mobile-row-detail-row):not(.comentario-detail-row):not(.lemma-group-row) > td.mobile-row-anchor-cell,
+  #dataTable tbody tr:not(.mobile-row-detail-row):not(.comentario-detail-row):not(.lemma-group-row) > td.table-empty {
     display: table-cell !important;
     width: auto;
   }

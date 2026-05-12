@@ -14,7 +14,8 @@ DATA_PATH = ROOT / "data" / "data.jsonl.gz"
 REPORT_PATH = ROOT / "scripts" / "translation_quotes_terminal_period_report.jsonl"
 
 QUOTE_SOURCE = "1580 Sahagún/Máynez"
-FIELDS = ("Traducción", "Traducción (es)")
+TRANSLATION_FIELDS = ("Traducción", "Traducción (es)")
+FIELDS = ("Traducción", "Traducción (es)", "Comentario", "Comentario (es)")
 TERMINAL_PERIOD_SKIP_SOURCES = {"1992 Karttunen"}
 
 PROTECTED_FINAL_ABBREVIATIONS = {
@@ -30,6 +31,15 @@ PROTECTED_FINAL_ABBREVIATIONS = {
     "v.",
     "vs.",
 }
+
+INTRAWARD_QUOTE_REPLACEMENTS = (
+    ('"En el templo de las mujer"es', '"En el templo de las mujeres"'),
+    ('mujer"es', "mujeres"),
+    ('d"une', "d'une"),
+    ("d&quot;une", "d'une"),
+    ("le&quot;y&quot;", 'le "y"'),
+    ("de&quot;camohpâltic&quot;", 'de "camohpâltic"'),
+)
 
 
 def remove_terminal_period(value: str) -> tuple[str, bool]:
@@ -77,15 +87,33 @@ def remove_outer_quotes(value: str) -> tuple[str, bool]:
     return value[:start] + value[start + 1 : end - 1] + value[end:], True
 
 
-def clean(row: dict, field: str) -> tuple[str, list[str]]:
+def repair_intraword_quotes(value: str) -> tuple[str, bool]:
+    if not value:
+        return value, False
+
+    text = value
+    for old, new in INTRAWARD_QUOTE_REPLACEMENTS:
+        text = text.replace(old, new)
+
+    return text, text != value
+
+
+def clean(row: dict, field: str, *, only_intraword_quotes: bool = False) -> tuple[str, list[str]]:
     value = row.get(field)
     if not isinstance(value, str) or not value:
         return value or "", []
 
     reasons: list[str] = []
     text = value
-    if row.get("Fuente") not in TERMINAL_PERIOD_SKIP_SOURCES:
-        text, changed = remove_terminal_period(value)
+    text, changed = repair_intraword_quotes(text)
+    if changed:
+        reasons.append("intraword_quote")
+
+    if only_intraword_quotes:
+        return text, reasons
+
+    if field in TRANSLATION_FIELDS and row.get("Fuente") not in TERMINAL_PERIOD_SKIP_SOURCES:
+        text, changed = remove_terminal_period(text)
         if changed:
             reasons.append("terminal_period")
 
@@ -119,6 +147,11 @@ def write_rows(rows: list[dict]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--apply", action="store_true", help="write changes to data/data.jsonl.gz")
+    parser.add_argument(
+        "--only-intraword-quotes",
+        action="store_true",
+        help="repair quote marks embedded in words without running terminal punctuation cleanup",
+    )
     args = parser.parse_args()
 
     rows = iter_rows()
@@ -129,7 +162,7 @@ def main() -> None:
             old = row.get(field)
             if not isinstance(old, str) or not old:
                 continue
-            new, reasons = clean(row, field)
+            new, reasons = clean(row, field, only_intraword_quotes=args.only_intraword_quotes)
             if new == old:
                 continue
             report.append(

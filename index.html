@@ -20,7 +20,7 @@
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=publish-ready-57" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-82" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -302,10 +302,11 @@
           </div>
         </div>
         <div class="filter-row scopes">
-          <span class="label" data-i18n="label.scope">Casilla</span>
+          <span class="label" data-i18n="label.scope">Alcance</span>
           <div class="pill-group scope-group">
             <button type="button" class="pill scope-btn active" data-scope="word" data-i18n="scope.word" data-i18n-placeholder-label="scope.word" data-placeholder-label="Palabra">Palabra</button>
-            <button type="button" class="pill scope-btn" data-scope="whole" data-i18n="scope.whole" data-i18n-placeholder-label="scope.whole" data-placeholder-label="Toda">Toda</button>
+            <button type="button" class="pill scope-btn" data-scope="phrase" data-i18n="scope.phrase" data-i18n-placeholder-label="scope.phrase" data-placeholder-label="Frase">Frase</button>
+            <button type="button" class="pill scope-btn" data-scope="whole" data-i18n="scope.whole" data-i18n-placeholder-label="scope.whole" data-placeholder-label="Casilla">Casilla</button>
           </div>
         </div>
         <div class="filter-grid">
@@ -439,7 +440,7 @@
             <div class="rx-row"><code>*</code><span data-i18n="rx.star1">1 o más letras</span></div>
             <div class="rx-row"><code>**</code><span data-i18n="rx.star2">2 o más letras</span></div>
             <div class="rx-row"><code>?{2,4}</code><span data-i18n="rx.range">2 a 4 letras</span></div>
-            <div class="rx-row"><code>(i)?</code><span data-i18n="rx.optional.literal">cero o una i</span></div>
+            <div class="rx-row"><code>(i)</code><span data-i18n="rx.optional.literal">cero o una i</span></div>
             <div class="rx-row rx-note" data-i18n="rx.grapheme.note">En Edición, Original y Comentario, ? cuenta ch/tz/qu/etc. como un grafema</div>
           </div>
 
@@ -481,7 +482,9 @@
             <div class="rx-title" data-i18n="rx.reduplication">Reduplicación</div>
             <div class="rx-row"><code>+pech</code><span data-i18n-html="rx.redup.desc">→ <em>pe</em>pech… (hasta 1ª vocal)</span></div>
             <div class="rx-row"><code>+tlal</code><span data-i18n-html="rx.redup.ex2">→ <em>tla</em>tlal…</span></div>
-            <div class="rx-row"><code>(?)\1</code><span data-i18n="rx.repeat.same.grapheme">mismo grafema repetido</span></div>
+            <div class="rx-row"><code>{R}h{CV}qui</code><span data-i18n-html="rx.redup.marker">→ <em>pahpaqui</em> (duplica el siguiente bloque)</span></div>
+            <div class="rx-row"><code>{R}(h)paqui</code><span data-i18n-html="rx.redup.optionalH">→ <em>papaqui</em> / <em>pahpaqui</em></span></div>
+            <div class="rx-row"><code>(?{1})\1</code><span data-i18n="rx.repeat.same.grapheme">mismo grafema repetido</span></div>
             <div class="rx-row"><code>({C}{V})\1</code><span data-i18n="rx.repeat.same.cv">misma sílaba CV repetida</span></div>
           </div>
 
@@ -781,8 +784,8 @@
   </main> <!-- .app-shell -->
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="data.js?v=publish-ready-57"></script>
-<script src="filters.js?v=publish-ready-57"></script>
-  <script src="script.js?v=publish-ready-57"></script>
+<script src="data.js?v=publish-ready-82"></script>
+<script src="filters.js?v=publish-ready-82"></script>
+  <script src="script.js?v=publish-ready-82"></script>
 </body>
 </html>
