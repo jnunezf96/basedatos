@@ -802,6 +802,20 @@ th[data-field="Comentario"] .header-actions {
   background: #fbfcff;
 }
 
+#dataTable tbody tr.comentario-row-pressable > td {
+  user-select: text;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #dataTable tbody tr.comentario-row-pressable {
+    cursor: pointer;
+  }
+
+  #dataTable tbody tr.comentario-row-pressable:hover > td {
+    background: #f4f7ff;
+  }
+}
+
 .table-empty {
   text-align: center;
   padding: 30px 0;

@@ -1,4 +1,5 @@
 const COMENTARIO_CONTROL_WIDTH = 44;
+const COMENTARIO_ROW_PRESS_DELAY_MS = 220;
 const FIXED_CONTROL_COLUMNS = new Set(["Comentario"]);
 
 const TABLE_FIELDS = [
@@ -2678,38 +2679,7 @@ function buildDataRow(row) {
         btn.className = "comentario-toggle";
         btn.addEventListener("click", e => {
           e.stopPropagation();
-          if (!expandableComments.has(row._rid)) return;
-          const isExpanded = expandedComments.has(row._rid);
-          if (isExpanded) {
-            const anchor = commentAnchors.get(row._rid);
-            setCommentExpanded(row._rid, content, btn, false);
-            if (anchor) {
-              requestAnimationFrame(() => {
-                const w = getTableWrapper();
-                const rect = btn.getBoundingClientRect();
-                const scrollTop = getTableScrollTop();
-                const centerNow = rect.top + rect.height / 2 + scrollTop;
-                const anchorCenter = anchor.center;
-                const viewTop = scrollTop;
-                const viewH = w ? w.clientHeight : window.innerHeight;
-                const viewBottom = viewTop + viewH;
-                if (anchorCenter < viewTop || anchorCenter > viewBottom) {
-                  setTableScroll(anchorCenter - viewH * 0.5, "smooth");
-                } else {
-                  const delta = centerNow - anchorCenter;
-                  if (Math.abs(delta) > 1 && w) w.scrollBy({ top: delta, behavior: "smooth" });
-                }
-              });
-            }
-          } else {
-            const rect = btn.getBoundingClientRect();
-            const scrollTop = getTableScrollTop();
-            const center = rect.top + rect.height / 2 + scrollTop;
-            commentAnchors.set(row._rid, { scrollY: scrollTop, center });
-            setCommentExpanded(row._rid, content, btn, true);
-            appendComentarioDetailRowAfter(tr, row);
-          }
-          updateComentarioToggleButton(lastRenderRows);
+          toggleComentarioForRow(row, tr, content, btn, btn);
         });
         td.appendChild(content);
         td.appendChild(btn);
@@ -2732,6 +2702,8 @@ function buildDataRow(row) {
     }
     tr.appendChild(td);
   });
+
+  if (comentarioMeta) attachComentarioRowPress(tr, row, comentarioMeta);
 
   return { tr, comentarioMeta };
 }
@@ -2923,6 +2895,140 @@ function appendComentarioDetailRowAfter(anchorRow, row) {
   }
   anchorRow.after(detailRow);
   return detailRow;
+}
+
+function getComentarioDetailAnchor(rowTr, row) {
+  const rowId = getMobileRowId(row);
+  const next = rowTr?.nextElementSibling;
+  if (next?.classList.contains("mobile-row-detail-row") && next.dataset.mobileRowId === rowId) {
+    return next;
+  }
+  return rowTr;
+}
+
+function toggleComentarioForRow(row, rowTr, content, btn, originEl = rowTr) {
+  if (!row || !rowTr || !content || !btn || !expandableComments.has(row._rid)) return;
+  const isExpanded = expandedComments.has(row._rid);
+  if (isExpanded) {
+    const anchor = commentAnchors.get(row._rid);
+    setCommentExpanded(row._rid, content, btn, false);
+    if (anchor) restoreCommentPressAnchor(anchor, originEl || rowTr);
+  } else {
+    const rect = (originEl || rowTr).getBoundingClientRect();
+    const scrollTop = getTableScrollTop();
+    const center = rect.top + rect.height / 2 + scrollTop;
+    commentAnchors.set(row._rid, { scrollY: scrollTop, center });
+    setCommentExpanded(row._rid, content, btn, true);
+    appendComentarioDetailRowAfter(getComentarioDetailAnchor(rowTr, row), row);
+  }
+  updateComentarioToggleButton(lastRenderRows);
+}
+
+function restoreCommentPressAnchor(anchor, originEl) {
+  requestAnimationFrame(() => {
+    const w = getTableWrapper();
+    const rect = originEl?.getBoundingClientRect?.();
+    if (!rect) return;
+    const scrollTop = getTableScrollTop();
+    const centerNow = rect.top + rect.height / 2 + scrollTop;
+    const anchorCenter = anchor.center;
+    const viewTop = scrollTop;
+    const viewH = w ? w.clientHeight : window.innerHeight;
+    const viewBottom = viewTop + viewH;
+    if (anchorCenter < viewTop || anchorCenter > viewBottom) {
+      setTableScroll(anchorCenter - viewH * 0.5, "smooth");
+    } else {
+      const delta = centerNow - anchorCenter;
+      if (Math.abs(delta) > 1 && w) w.scrollBy({ top: delta, behavior: "smooth" });
+    }
+  });
+}
+
+function attachComentarioRowPress(rowTr, row, meta) {
+  rowTr.classList.add("comentario-row-pressable");
+  let press = null;
+  let clickTimer = 0;
+
+  rowTr.addEventListener("pointerdown", event => {
+    if (!canStartComentarioRowPress(event, rowTr)) {
+      press = null;
+      return;
+    }
+    press = {
+      x: event.clientX,
+      y: event.clientY,
+      pointerId: event.pointerId,
+      hadSelection: hasTextSelectionInside(rowTr),
+      moved: false
+    };
+  });
+
+  rowTr.addEventListener("pointermove", event => {
+    if (!press || press.pointerId !== event.pointerId) return;
+    if (Math.hypot(event.clientX - press.x, event.clientY - press.y) > 6) {
+      press.moved = true;
+    }
+  });
+
+  rowTr.addEventListener("pointercancel", () => {
+    press = null;
+    if (clickTimer) {
+      clearTimeout(clickTimer);
+      clickTimer = 0;
+    }
+  });
+
+  rowTr.addEventListener("click", event => {
+    if (!press) return;
+    const candidate = press;
+    press = null;
+    if (!canFinishComentarioRowPress(event, rowTr, candidate)) return;
+    if (clickTimer) clearTimeout(clickTimer);
+    clickTimer = window.setTimeout(() => {
+      clickTimer = 0;
+      if (!rowTr.isConnected) return;
+      if (hasTextSelectionInside(rowTr)) return;
+      toggleComentarioForRow(row, rowTr, meta.content, meta.btn, rowTr);
+    }, COMENTARIO_ROW_PRESS_DELAY_MS);
+  });
+
+  rowTr.addEventListener("dblclick", () => {
+    press = null;
+    if (clickTimer) {
+      clearTimeout(clickTimer);
+      clickTimer = 0;
+    }
+  });
+}
+
+function canStartComentarioRowPress(event, rowTr) {
+  if (isPhoneViewport()) return false;
+  if (event.button !== 0 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return false;
+  if (closestElement(event.target, "button, a, input, select, textarea, [contenteditable], [role='button']")) {
+    return false;
+  }
+  return rowTr.contains(event.target);
+}
+
+function canFinishComentarioRowPress(event, rowTr, press) {
+  if (isPhoneViewport()) return false;
+  if (event.detail > 1 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return false;
+  if (press.moved || press.hadSelection) return false;
+  if (closestElement(event.target, "button, a, input, select, textarea, [contenteditable], [role='button']")) {
+    return false;
+  }
+  return !hasTextSelectionInside(rowTr);
+}
+
+function closestElement(target, selector) {
+  const el = target?.nodeType === Node.ELEMENT_NODE ? target : target?.parentElement;
+  return el?.closest?.(selector) || null;
+}
+
+function hasTextSelectionInside(root) {
+  const selection = window.getSelection?.();
+  if (!selection || selection.isCollapsed || !String(selection.toString()).trim()) return false;
+  return root.contains(selection.anchorNode) || root.contains(selection.focusNode);
 }
 
 function toggleMobileRowDetail(rowTr) {
