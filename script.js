@@ -305,6 +305,8 @@ const I18N = {
     "study.reveal": "Mostrar",
     "study.flip": "Voltear",
     "study.next": "Siguiente",
+    "study.fullscreen": "Pantalla completa",
+    "study.fullscreen.exit": "Salir pantalla completa",
     "study.again": "Otra vez",
     "study.hard": "Difícil",
     "study.good": "Bien",
@@ -747,6 +749,8 @@ const I18N = {
     "study.reveal": "Show",
     "study.flip": "Flip",
     "study.next": "Next",
+    "study.fullscreen": "Full screen",
+    "study.fullscreen.exit": "Exit full screen",
     "study.again": "Again",
     "study.hard": "Hard",
     "study.good": "Good",
@@ -1207,6 +1211,7 @@ let studyMode = "study";
 let studyViewMode = "flip";
 let studyStats = { seen: 0, again: 0, hard: 0, good: 0, easy: 0 };
 let studyEmptyMessageKey = "study.empty";
+let studyFullscreenFallback = false;
 let lastRankingSummary = null;
 let tableViewMode = "rows"; // "rows" | "lemmas"
 let lastLemmaItems = [];
@@ -1361,6 +1366,7 @@ function mobileIconMarkup(iconId, extraClass = "") {
 
 function setButtonState(btn, key, iconId) {
   if (!btn || !key) return;
+  if ("i18n" in btn.dataset) btn.dataset.i18n = key;
   setTranslatedText(btn, key);
   if ("i18nAriaLabel" in btn.dataset) btn.dataset.i18nAriaLabel = key;
   if ("i18nTitle" in btn.dataset) btn.dataset.i18nTitle = key;
@@ -6665,6 +6671,72 @@ function setStudyText(id, text) {
   if (el) el.textContent = text;
 }
 
+function getStudyFullscreenTarget() {
+  return document.querySelector("#studyPanel .study-card");
+}
+
+function isStudyFullscreenActive() {
+  const target = getStudyFullscreenTarget();
+  return studyFullscreenFallback || (target && document.fullscreenElement === target);
+}
+
+function setStudyFullscreenFallback(active) {
+  const target = getStudyFullscreenTarget();
+  studyFullscreenFallback = Boolean(active);
+  document.body.classList.toggle("study-fullscreen-active", studyFullscreenFallback);
+  if (target) target.classList.toggle("study-card--fullscreen", studyFullscreenFallback);
+  syncStudyFullscreenButton();
+}
+
+function syncStudyFullscreenButton() {
+  const fullscreenBtn = document.getElementById("studyFullscreenBtn");
+  if (!fullscreenBtn) return;
+  const active = isStudyFullscreenActive();
+  setButtonState(
+    fullscreenBtn,
+    active ? "study.fullscreen.exit" : "study.fullscreen",
+    active ? "icon-fullscreen-exit" : "icon-fullscreen"
+  );
+  fullscreenBtn.setAttribute("aria-pressed", active ? "true" : "false");
+}
+
+async function enterStudyFullscreen() {
+  const target = getStudyFullscreenTarget();
+  if (!target) return;
+  if (target.requestFullscreen) {
+    try {
+      await target.requestFullscreen();
+      setStudyFullscreenFallback(false);
+      syncStudyFullscreenButton();
+      return;
+    } catch (err) {
+      // Local file contexts can reject fullscreen; use the same visual mode without the browser API.
+    }
+  }
+  setStudyFullscreenFallback(true);
+}
+
+async function exitStudyFullscreen() {
+  if (document.fullscreenElement && document.exitFullscreen) {
+    try {
+      await document.exitFullscreen();
+    } catch (err) {
+      // Keep the UI synchronized even if the browser rejects exitFullscreen.
+    }
+  }
+  setStudyFullscreenFallback(false);
+  syncStudyFullscreenButton();
+}
+
+function toggleStudyFullscreen() {
+  if (isStudyFullscreenActive()) exitStudyFullscreen();
+  else enterStudyFullscreen();
+}
+
+function handleStudyFullscreenKeydown(event) {
+  if (event.key === "Escape" && studyFullscreenFallback) exitStudyFullscreen();
+}
+
 function renderStudyCard() {
   const current = getCurrentStudyCard();
   const isDone = studyDeck.length > 0 && studyIndex >= studyDeck.length;
@@ -6853,6 +6925,7 @@ function setupStudyMode() {
   const resetBtn = document.getElementById("studyResetBtn");
   const revealBtn = document.getElementById("studyRevealBtn");
   const nextBtn = document.getElementById("studyNextBtn");
+  const fullscreenBtn = document.getElementById("studyFullscreenBtn");
   const faceEl = document.querySelector(".study-face");
   document.querySelectorAll(".study-mode-btn[data-study-mode]").forEach(btn => {
     btn.addEventListener("click", () => setStudyMode(btn.dataset.studyMode));
@@ -6864,10 +6937,13 @@ function setupStudyMode() {
   if (resetBtn) resetBtn.addEventListener("click", resetStudyDeck);
   if (revealBtn) revealBtn.addEventListener("click", turnStudyCard);
   if (nextBtn) nextBtn.addEventListener("click", advanceStudyCard);
+  if (fullscreenBtn) fullscreenBtn.addEventListener("click", toggleStudyFullscreen);
   if (faceEl) {
     faceEl.addEventListener("click", handleStudyFaceClick);
     faceEl.addEventListener("keydown", handleStudyFaceKeydown);
   }
+  document.addEventListener("fullscreenchange", syncStudyFullscreenButton);
+  document.addEventListener("keydown", handleStudyFullscreenKeydown);
   document.querySelectorAll(".study-grade-btn[data-study-grade]").forEach(btn => {
     btn.addEventListener("click", () => gradeStudyCard(btn.dataset.studyGrade));
   });
@@ -6877,6 +6953,7 @@ function setupStudyMode() {
   });
   syncStudyModeButtons();
   syncStudyViewButtons();
+  syncStudyFullscreenButton();
   updateStudyScope();
   renderStudyCard();
 }

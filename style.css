@@ -2335,12 +2335,59 @@ th[data-field="Comentario"] .header-actions {
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
+  padding-top: 2px;
 }
 
 .study-actions .btn[disabled] {
   cursor: not-allowed;
   opacity: 0.48;
   box-shadow: none;
+}
+
+body.study-fullscreen-active {
+  overflow: hidden;
+}
+
+.study-card:fullscreen,
+body.study-fullscreen-active .study-card--fullscreen {
+  box-sizing: border-box;
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  margin: 0;
+  padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+  overflow: auto;
+  border-radius: 0;
+  background: #fff;
+}
+
+body.study-fullscreen-active .study-card--fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+}
+
+.study-card:fullscreen .study-stage,
+body.study-fullscreen-active .study-card--fullscreen .study-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  grid-template-rows: auto auto minmax(260px, 1fr);
+}
+
+.study-card:fullscreen .study-face,
+body.study-fullscreen-active .study-card--fullscreen .study-face {
+  align-content: center;
+  min-height: min(62vh, 620px);
+}
+
+.study-card:fullscreen .study-front,
+body.study-fullscreen-active .study-card--fullscreen .study-front {
+  font-size: clamp(1.45rem, 4vw, 3rem);
+}
+
+.study-card:fullscreen .study-back,
+body.study-fullscreen-active .study-card--fullscreen .study-back {
+  font-size: clamp(1rem, 2vw, 1.35rem);
 }
 
 .study-grade-btn[data-study-grade="again"] {

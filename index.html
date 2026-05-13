@@ -98,12 +98,11 @@
       <path d="m13.4 14.4 1.5 1.5 2.8-3.3" />
     </symbol>
     <symbol id="icon-card-flip" viewBox="0 0 24 24">
-      <rect x="5" y="6" width="12" height="10" rx="2" />
-      <path d="M8 10h6" />
-      <path d="M8 13h3" />
-      <path d="M17 8h1.5a2.5 2.5 0 0 1 0 5H18" />
-      <path d="m19 10.5 2 2-2 2" />
-      <path d="M7 18h8" />
+      <rect x="5" y="6" width="11" height="9" rx="2" />
+      <path d="M8 10h5" />
+      <path d="M8 12.5h3" />
+      <path d="M8 18h8.5a3.5 3.5 0 0 0 0-7H16" />
+      <path d="m18 8.5-2 2 2 2" />
     </symbol>
     <symbol id="icon-eye" viewBox="0 0 24 24">
       <path d="M3.5 12s3.2-5.5 8.5-5.5 8.5 5.5 8.5 5.5-3.2 5.5-8.5 5.5S3.5 12 3.5 12Z" />
@@ -112,6 +111,18 @@
     <symbol id="icon-next" viewBox="0 0 24 24">
       <path d="M5 12h13" />
       <path d="m14 7 5 5-5 5" />
+    </symbol>
+    <symbol id="icon-fullscreen" viewBox="0 0 24 24">
+      <path d="M8 4H4v4" />
+      <path d="M16 4h4v4" />
+      <path d="M20 16v4h-4" />
+      <path d="M4 16v4h4" />
+    </symbol>
+    <symbol id="icon-fullscreen-exit" viewBox="0 0 24 24">
+      <path d="M9 4v5H4" />
+      <path d="M15 4v5h5" />
+      <path d="M20 15h-5v5" />
+      <path d="M4 15h5v5" />
     </symbol>
     <symbol id="icon-rows" viewBox="0 0 24 24">
       <path d="M6 7h12" />
@@ -580,10 +591,6 @@
       <div class="sources-card study-card">
         <div class="sources-head">
           <h3 data-i18n="study.title">Tarjetas</h3>
-          <div class="sources-actions">
-            <button type="button" class="btn primary mobile-icon-btn" id="studyBuildBtn" data-i18n="study.build" data-i18n-aria-label="study.build" data-i18n-title="study.build"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-flashcard"></use></svg><span class="btn-label mobile-icon-label">Crear mazo</span></button>
-            <button type="button" class="btn ghost mobile-icon-btn" id="studyResetBtn" data-i18n="study.reset" data-i18n-aria-label="study.reset" data-i18n-title="study.reset"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-reset"></use></svg><span class="btn-label mobile-icon-label">Reiniciar</span></button>
-          </div>
         </div>
         <p class="study-hint" data-i18n="study.hint">Crea un mazo desde los resultados actuales; cada tarjeta usa Edición y Traducción.</p>
         <div class="study-controls">
@@ -644,6 +651,9 @@
             <div class="study-meta" id="studyMeta"></div>
           </div>
           <div class="study-actions">
+            <button type="button" class="btn primary mobile-icon-btn" id="studyBuildBtn" data-i18n="study.build" data-i18n-aria-label="study.build" data-i18n-title="study.build"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-flashcard"></use></svg><span class="btn-label mobile-icon-label">Crear mazo</span></button>
+            <button type="button" class="btn ghost mobile-icon-btn" id="studyResetBtn" data-i18n="study.reset" data-i18n-aria-label="study.reset" data-i18n-title="study.reset"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-reset"></use></svg><span class="btn-label mobile-icon-label">Reiniciar</span></button>
+            <button type="button" class="btn ghost mobile-icon-btn" id="studyFullscreenBtn" data-i18n="study.fullscreen" data-i18n-aria-label="study.fullscreen" data-i18n-title="study.fullscreen" aria-pressed="false"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-fullscreen"></use></svg><span class="btn-label mobile-icon-label">Pantalla completa</span></button>
             <button type="button" class="btn primary mobile-icon-btn" id="studyRevealBtn" data-i18n="study.flip" data-i18n-aria-label="study.flip" data-i18n-title="study.flip"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-card-flip"></use></svg><span class="btn-label mobile-icon-label">Voltear</span></button>
             <button type="button" class="btn ghost study-grade-btn" data-study-grade="again" data-i18n="study.again">Otra vez</button>
             <button type="button" class="btn ghost study-grade-btn" data-study-grade="hard" data-i18n="study.hard">Difícil</button>
