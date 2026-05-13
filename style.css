@@ -2149,6 +2149,39 @@ th[data-field="Comentario"] .header-actions {
   min-height: 28px;
 }
 
+.study-mode-control {
+  gap: 10px;
+}
+
+.study-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid #d5daf8;
+  border-radius: 999px;
+  background: #f7f9ff;
+}
+
+.study-mode-btn {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #4b5275;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  min-height: 26px;
+  padding: 0 10px;
+}
+
+.study-mode-btn.active {
+  background: #4c6ef5;
+  color: #fff;
+  box-shadow: 0 1px 3px rgba(76, 110, 245, 0.24);
+}
+
 .study-stage {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -2184,12 +2217,48 @@ th[data-field="Comentario"] .header-actions {
 .study-face {
   display: grid;
   gap: 10px;
+  justify-items: center;
   min-height: 210px;
   padding: 18px;
   border: 1px solid #dfe4ff;
   border-radius: 8px;
   background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.study-face--pressable {
+  cursor: pointer;
+  transition: border-color 0.14s ease, box-shadow 0.14s ease, transform 0.14s ease;
+}
+
+.study-face--pressable:hover,
+.study-face--pressable:focus-visible {
+  border-color: #c7d0ff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), 0 2px 8px rgba(76, 110, 245, 0.12);
+  outline: none;
+}
+
+.study-face--pressable:active {
+  transform: translateY(1px);
+}
+
+.study-face--two-sided {
+  align-content: center;
+  min-height: 240px;
+  padding: 24px;
+  text-align: center;
+}
+
+.study-face--two-sided .study-front {
+  align-self: center;
+}
+
+.study-face--one-sided {
+  align-content: center;
+  gap: 10px;
+  min-height: 240px;
+  padding: 24px;
+  text-align: center;
 }
 
 .study-face-label {
@@ -2211,8 +2280,13 @@ th[data-field="Comentario"] .header-actions {
 .study-back-wrap {
   display: grid;
   gap: 6px;
+  justify-items: center;
   padding-top: 8px;
   border-top: 1px solid #e3e8ff;
+}
+
+.study-back-wrap[hidden] {
+  display: none !important;
 }
 
 .study-back {
@@ -2856,6 +2930,16 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   .study-face {
     min-height: 190px;
     padding: 14px;
+  }
+
+  .study-face--two-sided {
+    min-height: 210px;
+    padding: 18px;
+  }
+
+  .study-face--one-sided {
+    min-height: 210px;
+    padding: 18px;
   }
 
   .study-front {

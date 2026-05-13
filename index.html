@@ -20,7 +20,7 @@
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=publish-ready-83" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-99" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -260,10 +260,6 @@
               <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-filter"></use></svg>
               <span class="btn-label mobile-icon-label" data-i18n="tab.filters">Filtros</span>
             </button>
-            <button type="button" role="tab" id="tab-reversePanel" class="tab-btn mobile-icon-btn" data-tab="reversePanel" aria-selected="false" aria-controls="reversePanel" tabindex="-1" data-i18n-aria-label="tab.reverse" data-i18n-title="tab.reverse">
-              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-guided-filter"></use></svg>
-              <span class="btn-label mobile-icon-label" data-i18n="tab.reverse">Guiados</span>
-            </button>
             <button type="button" role="tab" id="tab-regexPanel" class="tab-btn mobile-icon-btn" data-tab="regexPanel" aria-selected="false" aria-controls="regexPanel" tabindex="-1" data-i18n-aria-label="tab.regex" data-i18n-title="tab.regex">
               <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-regex"></use></svg>
               <span class="btn-label mobile-icon-label" data-i18n="tab.regex">Regex</span>
@@ -274,7 +270,7 @@
             </button>
             <button type="button" role="tab" id="tab-studyPanel" class="tab-btn mobile-icon-btn" data-tab="studyPanel" aria-selected="false" aria-controls="studyPanel" tabindex="-1" data-i18n-aria-label="tab.study" data-i18n-title="tab.study">
               <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-flashcard"></use></svg>
-              <span class="btn-label mobile-icon-label" data-i18n="tab.study">Estudio</span>
+              <span class="btn-label mobile-icon-label" data-i18n="tab.study">Tarjetas</span>
             </button>
           </nav>
         </div>
@@ -403,31 +399,6 @@
         </div>
       </section>
 
-      <!-- ── Panel: Guided filters ── -->
-      <section class="tab-panel" id="reversePanel" role="tabpanel" aria-labelledby="tab-reversePanel">
-      <div class="sources-card reverse-card">
-        <div class="sources-head">
-          <h3 data-i18n="reverse.title">Filtros guiados</h3>
-        </div>
-        <p class="reverse-hint" data-i18n="reverse.hint">Elige una relación: en qué columna buscas y qué columna quieres ver como resultado.</p>
-        <div class="reverse-presets" aria-label="Relaciones entre columnas:" data-i18n-aria-label="reverse.presets">
-          <span class="reverse-presets-label" data-i18n="reverse.presets">Relaciones entre columnas:</span>
-          <div class="reverse-presets-list" id="reversePresetsList"></div>
-        </div>
-        <p id="reverseObjective" class="reverse-objective" data-i18n="reverse.objective.translationToEdition">Relación: escribe una palabra que aparece en Traducción; la tabla presenta todos los lemas de Edición asociados.</p>
-        <div class="reverse-controls">
-          <input type="text" id="reverseInput" class="reverse-input" autocomplete="off" spellcheck="false" aria-describedby="reverseObjective" data-i18n-aria-label="reverse.inputLabel" data-i18n-placeholder="reverse.placeholder.translationToEdition" aria-label="Texto para el objetivo" placeholder="Palabra en traducción, ej. agua" />
-          <div class="reverse-field-toggle">
-            <label class="reverse-field-opt icon-option"><input type="checkbox" id="reverseIncludeComment" /><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-comment"></use></svg><span data-i18n="reverse.includeComment">Incluir Comentario</span></label>
-          </div>
-          <div class="reverse-actions">
-            <button type="button" class="btn primary mobile-icon-btn" id="reverseSubmit" data-i18n="reverse.submit" data-i18n-aria-label="reverse.submit" data-i18n-title="reverse.submit"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-search"></use></svg><span class="btn-label mobile-icon-label">Buscar</span></button>
-            <button type="button" class="btn ghost mobile-icon-btn" id="reverseClear" data-i18n="action.clear" data-i18n-aria-label="action.clear" data-i18n-title="action.clear"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-clear"></use></svg><span class="btn-label mobile-icon-label">Vaciar</span></button>
-          </div>
-        </div>
-      </div>
-      </section>
-
       <!-- ── Panel: Regex ── -->
       <section class="tab-panel" id="regexPanel" role="tabpanel" aria-labelledby="tab-regexPanel">
       <div class="sources-card rx-card">
@@ -435,12 +406,13 @@
 
           <div class="rx-block">
             <div class="rx-title" data-i18n="rx.wildcards">Comodines</div>
-            <div class="rx-row"><code>?</code><span data-i18n="rx.q1">1 letra cualquiera</span></div>
-            <div class="rx-row"><code>??</code><span data-i18n="rx.q2">exactamente 2 letras</span></div>
-            <div class="rx-row"><code>*</code><span data-i18n="rx.star1">1 o más letras</span></div>
-            <div class="rx-row"><code>**</code><span data-i18n="rx.star2">2 o más letras</span></div>
-            <div class="rx-row"><code>?{2,4}</code><span data-i18n="rx.range">2 a 4 letras</span></div>
-            <div class="rx-row"><code>(i)</code><span data-i18n="rx.optional.literal">cero o una i</span></div>
+            <div class="rx-row"><code>?</code><span data-i18n="rx.q1">1 grafema cualquiera</span></div>
+            <div class="rx-row"><code>(?)</code><span data-i18n="rx.optional.any">grafema opcional</span></div>
+            <div class="rx-row"><code>(h)</code><span data-i18n="rx.optional.literal">h opcional</span></div>
+            <div class="rx-row"><code>??</code><span data-i18n="rx.q2">exactamente 2 grafemas</span></div>
+            <div class="rx-row"><code>*</code><span data-i18n="rx.star1">1 o más grafemas</span></div>
+            <div class="rx-row"><code>**</code><span data-i18n="rx.star2">2 o más grafemas</span></div>
+            <div class="rx-row"><code>?{2,4}</code><span data-i18n="rx.range">2 a 4 grafemas</span></div>
             <div class="rx-row rx-note" data-i18n="rx.grapheme.note">En Edición, Original y Comentario, ? cuenta ch/tz/qu/etc. como un grafema</div>
           </div>
 
@@ -451,7 +423,7 @@
             <div class="rx-row"><code>pato|pata</code><span data-i18n="rx.alt.pipe">equivalente (nivel superior)</span></div>
             <div class="rx-row"><code>\|</code><span data-i18n="rx.alt.escape">barra literal</span></div>
             <div class="rx-row"><code>\? \* \(</code><span data-i18n="rx.escape.meta">signos literales</span></div>
-            <div class="rx-row"><code>(c|qu)*</code><span data-i18n="rx.alt.wildcard.after">c/qu + letras</span></div>
+            <div class="rx-row"><code>(c|qu)*</code><span data-i18n="rx.alt.wildcard.after">c/qu + grafemas</span></div>
             <div class="rx-row"><code>"in tla"</code><span data-i18n="rx.phrase.exact">frase exacta</span></div>
           </div>
 
@@ -466,7 +438,6 @@
             <div class="rx-row"><code>{P}</code><span data-i18n="rx.cv.p">oclusiva (p, t, c, ch, tz…)</span></div>
             <div class="rx-row"><code>{A}</code><span data-i18n="rx.cv.a">cualquier letra</span></div>
             <div class="rx-row"><code>{CVC}</code><span data-i18n="rx.cv.pattern">patrón C‑V‑C</span></div>
-            <div class="rx-row"><code>{C?VC}</code><span data-i18n="rx.cv.optional">C inicial opcional</span></div>
             <div class="rx-row"><code>{CVC}+</code><span data-i18n="rx.cv.repeat">una o más sílabas</span></div>
             <div class="rx-row"><code>{CVC}{2}</code><span data-i18n="rx.cv.count">exactamente 2 sílabas</span></div>
             <div class="rx-row rx-note" data-i18n="rx.cv.note">Solo activo dentro de llaves { }</div>
@@ -480,10 +451,12 @@
 
           <div class="rx-block">
             <div class="rx-title" data-i18n="rx.reduplication">Reduplicación</div>
-            <div class="rx-row"><code>+pech</code><span data-i18n-html="rx.redup.desc">→ <em>pe</em>pech… (hasta 1ª vocal)</span></div>
-            <div class="rx-row"><code>+tlal</code><span data-i18n-html="rx.redup.ex2">→ <em>tla</em>tlal…</span></div>
-            <div class="rx-row"><code>{R}h{CV}qui</code><span data-i18n-html="rx.redup.marker">→ <em>pahpaqui</em> (duplica el siguiente bloque)</span></div>
+            <div class="rx-row"><code>{R}paqui</code><span data-i18n-html="rx.redup.simple">→ <em>papaqui</em></span></div>
+            <div class="rx-row"><code>{R}hpaqui</code><span data-i18n-html="rx.redup.infix">→ <em>pahpaqui</em></span></div>
             <div class="rx-row"><code>{R}(h)paqui</code><span data-i18n-html="rx.redup.optionalH">→ <em>papaqui</em> / <em>pahpaqui</em></span></div>
+            <div class="rx-row"><code>({R})ahuia</code><span data-i18n-html="rx.redup.optionalMarker">→ <em>ahuia</em> / <em>aahuia</em></span></div>
+            <div class="rx-row"><code>{R}h{CV}qui</code><span data-i18n-html="rx.redup.marker">→ <em>pahpaqui</em> por patrón</span></div>
+            <div class="rx-row rx-note" data-i18n="rx.redup.note">{R} duplica el siguiente bloque; (h) permite h opcional</div>
             <div class="rx-row"><code>(?{1})\1</code><span data-i18n="rx.repeat.same.grapheme">mismo grafema repetido</span></div>
             <div class="rx-row"><code>({C}{V})\1</code><span data-i18n="rx.repeat.same.cv">misma sílaba CV repetida</span></div>
           </div>
@@ -544,7 +517,7 @@
       </div>
       </section>
 
-      <!-- ── Panel: Estudio ── -->
+      <!-- ── Panel: Tarjetas ── -->
       <section class="tab-panel" id="studyPanel" role="tabpanel" aria-labelledby="tab-studyPanel">
       <div class="sources-card study-card">
         <div class="sources-head">
@@ -556,6 +529,20 @@
         </div>
         <p class="study-hint" data-i18n="study.hint">Crea un mazo desde los resultados actuales; cada tarjeta usa Edición y Traducción.</p>
         <div class="study-controls">
+          <div class="study-control study-mode-control">
+            <span data-i18n="study.mode">Modo</span>
+            <span class="study-mode-toggle" role="group" aria-label="Modo" data-i18n-aria-label="study.mode">
+              <button type="button" class="study-mode-btn active" data-study-mode="study" aria-pressed="true" data-i18n="study.mode.study">Estudio</button>
+              <button type="button" class="study-mode-btn" data-study-mode="exam" aria-pressed="false" data-i18n="study.mode.exam">Examen</button>
+            </span>
+          </div>
+          <div class="study-control study-mode-control" id="studyViewControl">
+            <span data-i18n="study.view">Tarjeta</span>
+            <span class="study-mode-toggle" role="group" aria-label="Tarjeta" data-i18n-aria-label="study.view">
+              <button type="button" class="study-mode-btn active" data-study-view="flip" aria-pressed="true" data-i18n="study.view.flip">2 caras</button>
+              <button type="button" class="study-mode-btn" data-study-view="both" aria-pressed="false" data-i18n="study.view.both">1 cara</button>
+            </span>
+          </div>
           <label class="study-control">
             <span data-i18n="study.direction">Dirección</span>
             <select id="studyDirection">
@@ -599,11 +586,12 @@
             <div class="study-meta" id="studyMeta"></div>
           </div>
           <div class="study-actions">
-            <button type="button" class="btn primary mobile-icon-btn" id="studyRevealBtn" data-i18n="study.reveal" data-i18n-aria-label="study.reveal" data-i18n-title="study.reveal"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-question"></use></svg><span class="btn-label mobile-icon-label">Mostrar</span></button>
+            <button type="button" class="btn primary mobile-icon-btn" id="studyRevealBtn" data-i18n="study.flip" data-i18n-aria-label="study.flip" data-i18n-title="study.flip"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-swap-horizontal"></use></svg><span class="btn-label mobile-icon-label">Voltear</span></button>
             <button type="button" class="btn ghost study-grade-btn" data-study-grade="again" data-i18n="study.again">Otra vez</button>
             <button type="button" class="btn ghost study-grade-btn" data-study-grade="hard" data-i18n="study.hard">Difícil</button>
             <button type="button" class="btn ghost study-grade-btn" data-study-grade="good" data-i18n="study.good">Bien</button>
             <button type="button" class="btn ghost study-grade-btn" data-study-grade="easy" data-i18n="study.easy">Fácil</button>
+            <button type="button" class="btn primary" id="studyNextBtn" data-i18n="study.next" data-i18n-aria-label="study.next" data-i18n-title="study.next" hidden>Siguiente</button>
           </div>
           <div class="study-progress" id="studyProgress"></div>
         </div>
@@ -784,8 +772,8 @@
   </main> <!-- .app-shell -->
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="data.js?v=publish-ready-83"></script>
-<script src="filters.js?v=publish-ready-83"></script>
-  <script src="script.js?v=publish-ready-83"></script>
+<script src="data.js?v=publish-ready-99"></script>
+<script src="filters.js?v=publish-ready-99"></script>
+  <script src="script.js?v=publish-ready-99"></script>
 </body>
 </html>

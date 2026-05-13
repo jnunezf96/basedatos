@@ -351,6 +351,18 @@ function expandReduplicationMarkers(value, options = {}) {
       out += expandPatternSegmentForRegex(source.slice(i), options);
       break;
     }
+    const optionalGroup = readOptionalReduplicationMarkerGroup(source, markerIdx);
+    if (optionalGroup) {
+      out += expandPatternSegmentForRegex(source.slice(i, optionalGroup.openIdx), options);
+      const target = readReduplicationMarkerTarget(source, optionalGroup.end);
+      if (!target) return null;
+      const targetBody = expandPatternSegmentForRegex(target.target, options);
+      if (!targetBody) return null;
+      const groupName = `r${++reduplicationMarkerCounter}`;
+      out += `(?:(?<${groupName}>${targetBody})${optionalGroup.infixBody})?`;
+      i = optionalGroup.end;
+      continue;
+    }
     out += expandPatternSegmentForRegex(source.slice(i, markerIdx), options);
     const target = readReduplicationMarkerTarget(source, markerIdx + 3);
     if (!target) return null;
@@ -362,6 +374,28 @@ function expandReduplicationMarkers(value, options = {}) {
     i = target.end;
   }
   return out || null;
+}
+
+function readOptionalReduplicationMarkerGroup(value, markerIdx) {
+  const openIdx = markerIdx - 1;
+  if (openIdx < 0 || value[openIdx] !== "(" || isEscapedAt(value, openIdx)) return null;
+  const closeIdx = findMatchingGroupClose(value, openIdx);
+  if (closeIdx === -1 || closeIdx < markerIdx + 3) return null;
+  const inner = value.slice(openIdx + 1, closeIdx);
+  if (!inner.startsWith("{R}") || isEscapedAt(inner, 0)) return null;
+  const tail = inner.slice(3);
+  if (splitTopLevel(tail, "|").length > 1) return null;
+  if (!tail) {
+    return { openIdx, end: closeIdx + 1, infix: "", infixBody: "" };
+  }
+  const optionalH = parseOptionalReduplicationHInfix(tail);
+  if (optionalH) {
+    return { openIdx, end: closeIdx + 1, infix: tail, infixBody: optionalH.body };
+  }
+  if (tail === "h" && !isEscapedAt(tail, 0)) {
+    return { openIdx, end: closeIdx + 1, infix: tail, infixBody: "h" };
+  }
+  return null;
 }
 
 function findNextReduplicationMarker(value, startIdx = 0) {
