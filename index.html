@@ -112,6 +112,10 @@
       <path d="M5 12h13" />
       <path d="m14 7 5 5-5 5" />
     </symbol>
+    <symbol id="icon-previous" viewBox="0 0 24 24">
+      <path d="M19 12H6" />
+      <path d="m10 7-5 5 5 5" />
+    </symbol>
     <symbol id="icon-fullscreen" viewBox="0 0 24 24">
       <path d="M8 4H4v4" />
       <path d="M16 4h4v4" />
@@ -471,6 +475,9 @@
       <!-- ── Panel: Regex ── -->
       <section class="tab-panel" id="regexPanel" role="tabpanel" aria-labelledby="tab-regexPanel">
       <div class="sources-card rx-card">
+        <div class="sources-head">
+          <h3 data-i18n="regex.title">Mini-language</h3>
+        </div>
         <div class="rx-grid">
 
           <div class="rx-block">
@@ -596,16 +603,16 @@
           <div class="study-controls">
             <div class="study-control study-mode-control">
               <span data-i18n="study.mode">Modo</span>
-              <span class="study-mode-toggle" role="group" aria-label="Modo" data-i18n-aria-label="study.mode">
-                <button type="button" class="study-mode-btn active" data-study-mode="study" aria-pressed="true" data-i18n="study.mode.study">Estudio</button>
-                <button type="button" class="study-mode-btn" data-study-mode="exam" aria-pressed="false" data-i18n="study.mode.exam">Examen</button>
+              <span class="study-mode-toggle pill-group" role="group" aria-label="Modo" data-i18n-aria-label="study.mode">
+                <button type="button" class="study-mode-btn pill active" data-study-mode="study" aria-pressed="true" data-i18n="study.mode.study">Estudio</button>
+                <button type="button" class="study-mode-btn pill" data-study-mode="exam" aria-pressed="false" data-i18n="study.mode.exam">Examen</button>
               </span>
             </div>
             <div class="study-control study-mode-control" id="studyViewControl">
               <span data-i18n="study.view">Tarjeta</span>
-              <span class="study-mode-toggle" role="group" aria-label="Tarjeta" data-i18n-aria-label="study.view">
-                <button type="button" class="study-mode-btn active" data-study-view="flip" aria-pressed="true" data-i18n="study.view.flip">2 caras</button>
-                <button type="button" class="study-mode-btn" data-study-view="both" aria-pressed="false" data-i18n="study.view.both">1 cara</button>
+              <span class="study-mode-toggle pill-group" role="group" aria-label="Tarjeta" data-i18n-aria-label="study.view">
+                <button type="button" class="study-mode-btn pill active" data-study-view="flip" aria-pressed="true" data-i18n="study.view.flip">2 caras</button>
+                <button type="button" class="study-mode-btn pill" data-study-view="both" aria-pressed="false" data-i18n="study.view.both">1 cara</button>
               </span>
             </div>
             <label class="study-control">
@@ -664,6 +671,7 @@
               <button type="button" class="btn ghost study-grade-btn" data-study-grade="hard" data-i18n="study.hard">Difícil</button>
               <button type="button" class="btn ghost study-grade-btn" data-study-grade="good" data-i18n="study.good">Bien</button>
               <button type="button" class="btn ghost study-grade-btn" data-study-grade="easy" data-i18n="study.easy">Fácil</button>
+              <button type="button" class="btn ghost mobile-icon-btn mobile-label-on" id="studyPrevBtn" data-i18n="study.previous" data-i18n-aria-label="study.previous" data-i18n-title="study.previous"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-previous"></use></svg><span class="btn-label mobile-icon-label">Anterior</span></button>
               <button type="button" class="btn primary mobile-icon-btn mobile-label-on" id="studyNextBtn" data-i18n="study.next" data-i18n-aria-label="study.next" data-i18n-title="study.next" hidden><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-next"></use></svg><span class="btn-label mobile-icon-label">Siguiente</span></button>
             </div>
             <div class="study-progress" id="studyProgress"></div>

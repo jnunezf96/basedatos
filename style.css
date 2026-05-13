@@ -1468,7 +1468,8 @@ th[data-field="Comentario"] .header-actions {
 .filter-side-choice:focus-visible,
 .column-reset-btn:focus-visible,
 .export-menu-item:focus-visible,
-.chip-clear-all:focus-visible {
+.chip-clear-all:focus-visible,
+.study-mode-btn:focus-visible {
   outline: 2px solid #4c6ef5;
   outline-offset: 2px;
 }
@@ -1750,12 +1751,18 @@ th[data-field="Comentario"] .header-actions {
 
 .sources-card {
   background: #fff;
-  border-radius: 0 12px 12px 12px;
-  padding: 12px 14px;
-  box-shadow: 0 8px 20px rgba(20, 42, 120, 0.07);
+  border-radius: 0 14px 14px 14px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 22px rgba(20, 42, 120, 0.08);
   border: 1px solid #e5e9ff;
   border-top-color: #eef1ff;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  overflow: visible;
+  z-index: 1;
 }
 
 .sources-head {
@@ -1763,17 +1770,28 @@ th[data-field="Comentario"] .header-actions {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eef0fc;
 }
 
 .sources-head h3 {
   margin: 0;
-  color: #1b2589;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #a0a8cc;
 }
 
 .sources-actions {
   display: flex;
   gap: 8px;
+}
+
+.sources-actions .btn {
+  min-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .fuente-section {
@@ -1957,14 +1975,6 @@ th[data-field="Comentario"] .header-actions {
 }
 
 /* ── Regex reference grid ─────────────────────────────────── */
-.rx-card {
-  padding: 10px 12px;
-}
-
-.rx-card .sources-head {
-  margin-bottom: 8px;
-}
-
 .rx-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -1972,10 +1982,10 @@ th[data-field="Comentario"] .header-actions {
 }
 
 .rx-block {
-  background: #f8f9ff;
-  border: 1px solid #e5e9ff;
+  background: #fafbff;
+  border: 1px solid #eef0fc;
   border-radius: 10px;
-  padding: 9px 11px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1986,11 +1996,11 @@ th[data-field="Comentario"] .header-actions {
 }
 
 .rx-title {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #3b5bdb;
+  color: #7d86b4;
   margin-bottom: 3px;
   display: flex;
   align-items: baseline;
@@ -2017,7 +2027,7 @@ th[data-field="Comentario"] .header-actions {
 .rx-row code {
   font-family: ui-monospace, "Cascadia Code", "Fira Mono", monospace;
   font-size: 11px;
-  background: #e8edff;
+  background: #fff;
   color: #1a2468;
   padding: 1px 5px;
   border-radius: 4px;
@@ -2035,7 +2045,7 @@ th[data-field="Comentario"] .header-actions {
 .rx-row span em { color: #1a2468; font-style: normal; font-weight: 600; }
 .rx-row span code {
   font-size: 10px;
-  background: #e8edff;
+  background: #fff;
   color: #1a2468;
   padding: 0 3px;
   border-radius: 3px;
@@ -2052,7 +2062,7 @@ th[data-field="Comentario"] .header-actions {
 
 .rx-note code {
   font-style: normal;
-  background: #e8edff;
+  background: #fff;
   color: #1a2468;
   padding: 0 3px;
   border-radius: 3px;
@@ -2063,9 +2073,12 @@ th[data-field="Comentario"] .header-actions {
 .pair-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 9px 14px;
   align-items: center;
-  margin-bottom: 12px;
+  border: 1px solid #eef0fc;
+  border-radius: 10px;
+  padding: 10px;
+  background: #fafbff;
 }
 
 .pair-control {
@@ -2076,9 +2089,18 @@ th[data-field="Comentario"] .header-actions {
   color: #2c345b;
 }
 
+.pair-control > span:first-child:not(.pair-separator),
+.study-control > span:first-child {
+  font-size: 11px;
+  font-weight: 500;
+  color: #a0a8cc;
+  letter-spacing: 0.2px;
+}
+
 .pair-control select {
-  padding: 4px 6px;
-  border-radius: 6px;
+  min-height: 28px;
+  padding: 4px 7px;
+  border-radius: 7px;
   border: 1px solid #d5daf8;
   font-size: 13px;
   background: #fff;
@@ -2086,8 +2108,9 @@ th[data-field="Comentario"] .header-actions {
 
 .pair-control input[type="text"] {
   width: 64px;
-  padding: 4px 6px;
-  border-radius: 6px;
+  min-height: 28px;
+  padding: 4px 7px;
+  border-radius: 7px;
   border: 1px solid #d5daf8;
   font-size: 13px;
   background: #fff;
@@ -2153,28 +2176,37 @@ th[data-field="Comentario"] .header-actions {
 }
 
 .study-controls {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 8px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 14px;
   align-items: center;
+  border: 1px solid #eef0fc;
+  border-radius: 10px;
+  padding: 10px;
+  background: #fafbff;
 }
 
 .study-control {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 8px;
-  min-width: 0;
   min-height: 30px;
   font-size: 13px;
   color: #2c345b;
 }
 
+.study-control:not(.study-control--inline):not(.study-mode-control) {
+  flex: 0 1 270px;
+}
+
 .study-control select {
-  min-width: 0;
-  padding: 5px 8px;
+  flex: 1 1 auto;
+  min-width: 130px;
+  min-height: 28px;
+  padding: 4px 7px;
   border: 1px solid #d5daf8;
-  border-radius: 6px;
+  border-radius: 7px;
   background: #fff;
   color: #1b2354;
   font-size: 13px;
@@ -2183,6 +2215,13 @@ th[data-field="Comentario"] .header-actions {
 .study-control--inline {
   justify-content: flex-start;
   min-height: 28px;
+}
+
+.study-control--inline span {
+  font-size: 13px;
+  font-weight: 400;
+  color: #2c345b;
+  letter-spacing: 0;
 }
 
 .study-mode-control {
@@ -2194,28 +2233,34 @@ th[data-field="Comentario"] .header-actions {
   align-items: center;
   gap: 2px;
   padding: 2px;
-  border: 1px solid #d5daf8;
+  border: 0;
   border-radius: 999px;
-  background: #f7f9ff;
+  background: #eaeefc;
+  color: #3b56d6;
 }
 
 .study-mode-btn {
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: #4b5275;
+  color: #5d6797;
   cursor: pointer;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1;
-  min-height: 26px;
-  padding: 0 10px;
+  min-height: 0;
+  padding: 4px 12px;
+  transition: background 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.study-mode-btn:not(.active):hover {
+  color: #4c6ef5;
 }
 
 .study-mode-btn.active {
-  background: #4c6ef5;
-  color: #fff;
-  box-shadow: 0 1px 3px rgba(76, 110, 245, 0.24);
+  background: #fff;
+  color: #2c345b;
+  box-shadow: 0 1px 2px rgba(26, 36, 104, 0.12);
 }
 
 .study-stage {
@@ -2398,39 +2443,25 @@ th[data-field="Comentario"] .header-actions {
   text-align: right;
 }
 
-.study-card--active .study-controls {
-  gap: 6px 8px;
-}
-
-.study-card--active .study-control {
-  min-height: 26px;
-  font-size: 12px;
-}
-
-.study-card--active .study-mode-btn {
-  min-height: 24px;
-  padding: 0 8px;
-}
-
-.study-card--active .study-control select {
-  padding: 4px 7px;
-}
-
 .study-card--active #studyRevealBtn,
 .study-card--active .study-grade-btn {
   order: 1;
 }
 
-.study-card--active #studyNextBtn {
+.study-card--active #studyPrevBtn {
   order: 2;
 }
 
-.study-card--active #studyResetBtn {
+.study-card--active #studyNextBtn {
   order: 3;
 }
 
-.study-card--active #studyBuildBtn {
+.study-card--active #studyResetBtn {
   order: 4;
+}
+
+.study-card--active #studyBuildBtn {
+  order: 5;
 }
 
 .study-actions .btn[disabled] {
@@ -3605,12 +3636,14 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   /* ── Filter card: compact phone layout ── */
-  .filter-card {
+  .filter-card,
+  .sources-card {
     padding: 8px 12px;
     gap: 7px;
   }
 
-  .filter-card-head {
+  .filter-card-head,
+  .sources-head {
     padding-bottom: 0;
     border-bottom: 0;
   }

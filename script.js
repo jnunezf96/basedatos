@@ -305,6 +305,7 @@ const I18N = {
     "study.reset": "Reiniciar",
     "study.reveal": "Mostrar",
     "study.flip": "Voltear",
+    "study.previous": "Anterior",
     "study.next": "Siguiente",
     "study.fullscreen": "Pantalla completa",
     "study.fullscreen.exit": "Salir pantalla completa",
@@ -750,6 +751,7 @@ const I18N = {
     "study.reset": "Restart",
     "study.reveal": "Show",
     "study.flip": "Flip",
+    "study.previous": "Previous",
     "study.next": "Next",
     "study.fullscreen": "Full screen",
     "study.fullscreen.exit": "Exit full screen",
@@ -6773,6 +6775,7 @@ function renderStudyCard() {
   const backWrap = document.getElementById("studyBackWrap");
   const buildBtn = document.getElementById("studyBuildBtn");
   const revealBtn = document.getElementById("studyRevealBtn");
+  const prevBtn = document.getElementById("studyPrevBtn");
   const nextBtn = document.getElementById("studyNextBtn");
   const resetBtn = document.getElementById("studyResetBtn");
   const gradeBtns = document.querySelectorAll(".study-grade-btn");
@@ -6841,7 +6844,13 @@ function renderStudyCard() {
     const showBackPanel = isDone || (current && (isStudyBothMode || (isExamMode && studyAnswerVisible)));
     backWrap.hidden = !showBackPanel;
   }
+  if (prevBtn) {
+    setButtonState(prevBtn, "study.previous", "icon-previous");
+    prevBtn.hidden = isExamMode;
+    prevBtn.disabled = !studyDeck.length || studyIndex <= 0;
+  }
   if (nextBtn) {
+    setButtonState(nextBtn, "study.next", "icon-next");
     nextBtn.hidden = isExamMode;
     nextBtn.disabled = !current || isDone;
   }
@@ -6892,10 +6901,8 @@ function advanceStudyCard() {
 }
 
 function previousStudyCard() {
-  const current = getCurrentStudyCard();
-  if (!current || getStudyMode() !== "study") return;
-  if (studyIndex <= 0) return;
-  studyIndex -= 1;
+  if (getStudyMode() !== "study" || !studyDeck.length || studyIndex <= 0) return;
+  studyIndex = Math.min(studyIndex - 1, studyDeck.length - 1);
   resetStudyAnswerState();
   renderStudyCard();
 }
@@ -6963,6 +6970,7 @@ function setupStudyMode() {
   const buildBtn = document.getElementById("studyBuildBtn");
   const resetBtn = document.getElementById("studyResetBtn");
   const revealBtn = document.getElementById("studyRevealBtn");
+  const prevBtn = document.getElementById("studyPrevBtn");
   const nextBtn = document.getElementById("studyNextBtn");
   const fullscreenBtn = document.getElementById("studyFullscreenToggleBtn");
   const fullscreenExitBtn = document.getElementById("studyFullscreenExitBtn");
@@ -6976,6 +6984,7 @@ function setupStudyMode() {
   if (buildBtn) buildBtn.addEventListener("click", buildStudyDeck);
   if (resetBtn) resetBtn.addEventListener("click", resetStudyDeck);
   if (revealBtn) revealBtn.addEventListener("click", turnStudyCard);
+  if (prevBtn) prevBtn.addEventListener("click", previousStudyCard);
   if (nextBtn) nextBtn.addEventListener("click", advanceStudyCard);
   if (fullscreenBtn) fullscreenBtn.addEventListener("click", toggleStudyFullscreen);
   if (fullscreenExitBtn) fullscreenExitBtn.addEventListener("click", exitStudyFullscreen);
