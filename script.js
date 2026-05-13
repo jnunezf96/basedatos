@@ -1350,9 +1350,13 @@ function setInlineLabelText(el, text) {
   else el.textContent = text;
 }
 
+function spriteIconMarkup(iconId, className = "inline-icon") {
+  return `<svg class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#${iconId}"></use></svg>`;
+}
+
 function mobileIconMarkup(iconId, extraClass = "") {
   const className = extraClass ? `mobile-icon ${extraClass}` : "mobile-icon";
-  return `<svg class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#${iconId}"></use></svg>`;
+  return spriteIconMarkup(iconId, className);
 }
 
 function setButtonState(btn, key, iconId) {
@@ -3075,6 +3079,13 @@ function hasTextSelectionInside(root) {
   return root.contains(selection.anchorNode) || root.contains(selection.focusNode);
 }
 
+function hasActiveTextSelection(root = document.body) {
+  const selection = window.getSelection?.();
+  if (!selection || selection.isCollapsed || !String(selection.toString()).trim()) return false;
+  if (!root || root === document || root === document.body) return true;
+  return root.contains(selection.anchorNode) || root.contains(selection.focusNode);
+}
+
 function toggleMobileRowDetail(rowTr) {
   if (!rowTr || rowTr.classList.contains("mobile-row-detail-row")) return;
   const rowId = rowTr.dataset.mobileRowId;
@@ -4181,12 +4192,11 @@ function updateSortIndicators() {
     const idx = sortKeys.findIndex(k => k.field === field);
     const headerSpan = btn.closest(".header-bar")?.querySelector("span");
     const fieldLabel = headerSpan?.textContent.trim() || field;
-    btn.textContent = "";
+    btn.replaceChildren();
     btn.classList.remove("sort-child");
     if (idx !== -1) {
       const dir = sortKeys[idx].dir;
-      const arrow = dir === "asc" ? "↑" : "↓";
-      btn.textContent = arrow;
+      btn.insertAdjacentHTML("afterbegin", spriteIconMarkup(dir === "asc" ? "icon-sort-up" : "icon-sort-down", "sort-icon"));
       const dirLabel = dir === "asc" ? t("sort.asc") : t("sort.desc");
       btn.setAttribute("aria-label", `${t("sort.by")} ${fieldLabel}, ${dirLabel}`);
       btn.setAttribute("aria-pressed", "true");
@@ -4203,7 +4213,7 @@ function updateSortIndicators() {
         btn.appendChild(badge);
       }
     } else {
-      btn.textContent = "⇅";
+      btn.insertAdjacentHTML("afterbegin", spriteIconMarkup("icon-sort", "sort-icon"));
       btn.title = "";
       btn.setAttribute("aria-label", `${t("sort.by")} ${fieldLabel}`);
       btn.setAttribute("aria-pressed", "false");
@@ -5392,7 +5402,7 @@ function buildLemmaGroupRow(item) {
       action.type = "button";
       action.className = "browse-compare-btn";
       action.dataset.browseCompare = item.lemma;
-      action.textContent = t("browse.compare");
+      action.innerHTML = `${spriteIconMarkup("icon-isolate", "inline-icon browse-compare-icon")}<span class="btn-label">${escapeHtml(t("browse.compare"))}</span>`;
       wrap.appendChild(action);
 
       td.appendChild(wrap);
@@ -5741,6 +5751,7 @@ function setupEdicionCellClick() {
     const tr = cell.closest("tr");
     if (!tr) return;
     if (tr.classList.contains("lemma-group-row")) {
+      if (hasActiveTextSelection(tr)) return;
       toggleLemmaExpansion(tr, tr.dataset.lemma || "");
       return;
     }
@@ -5748,6 +5759,7 @@ function setupEdicionCellClick() {
     if (cell.classList.contains("mobile-row-anchor-cell")
         && window.matchMedia
         && window.matchMedia("(max-width: 640px)").matches
+        && !hasActiveTextSelection(cell)
         && !e.target.closest("button, a, input, select, textarea, mark")) {
       toggleMobileRowDetail(tr);
     }
@@ -6730,7 +6742,7 @@ function renderStudyCard() {
     nextBtn.disabled = !current || isDone;
   }
   if (revealBtn) {
-    setButtonState(revealBtn, isExamMode ? "study.reveal" : "study.flip", isExamMode ? "icon-question" : "icon-swap-horizontal");
+    setButtonState(revealBtn, isExamMode ? "study.reveal" : "study.flip", isExamMode ? "icon-eye" : "icon-card-flip");
     revealBtn.hidden = isStudyBothMode;
     revealBtn.disabled = !current || isDone || (isExamMode && studyAnswerVisible);
   }
@@ -6787,6 +6799,7 @@ function activateStudyFaceCenter() {
 function handleStudyFaceClick(event) {
   const current = getCurrentStudyCard();
   if (!current || getStudyMode() !== "study") return;
+  if (hasActiveTextSelection(event.currentTarget)) return;
   const rect = event.currentTarget.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const zone = x / rect.width;
@@ -7312,6 +7325,8 @@ function setupLongPressCopy() {
     if (e.pointerType === "mouse") return;
     const cell = e.target.closest("td");
     if (!cell) return;
+    // Let iOS/Android own long-press selection and the native copy menu.
+    if (cell.closest("#dataTable")) return;
     if (e.target.closest(".mobile-row-toggle, button, a, input, select, textarea")) return;
     firedCopy = false;
     pressStart = { x: e.clientX, y: e.clientY };

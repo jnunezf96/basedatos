@@ -478,6 +478,20 @@ td {
   line-height: 1.32;
 }
 
+#dataTable tbody td,
+#dataTable tbody td mark,
+.traduccion-text,
+.comentario-text,
+.comentario-detail,
+.mobile-row-detail,
+.study-face,
+.study-front,
+.study-back,
+.study-meta {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 td br {
   content: "";
   display: block;
@@ -1676,6 +1690,18 @@ th[data-field="Comentario"] .header-actions {
   flex-shrink: 0;
 }
 
+.inline-icon,
+.sort-icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.sort-icon {
+  display: block;
+}
+
 .btn-label {
   display: inline-block;
 }
@@ -2748,7 +2774,9 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 }
 
 .browse-compare-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   margin-left: 8px;
   font-size: 11px;
   font-weight: 600;
