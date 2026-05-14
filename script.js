@@ -289,6 +289,7 @@ const I18N = {
     "study.view": "Tarjeta",
     "study.view.flip": "2 caras",
     "study.view.both": "1 cara",
+    "study.deck": "Mazo",
     "study.face.flip": "Voltear tarjeta",
     "study.face.next": "Siguiente tarjeta",
     "study.face.zones.flip": "Izquierda: anterior · centro: voltear · derecha: siguiente",
@@ -296,10 +297,11 @@ const I18N = {
     "study.direction": "Dirección",
     "study.direction.nt": "Edición → Traducción",
     "study.direction.tn": "Traducción → Edición",
+    "study.theme": "Tema",
+    "study.theme.all": "Todos",
     "study.limit": "Cartas",
+    "study.limit.choose": "Elegir cantidad",
     "study.useFilters": "Usar resultados actuales",
-    "study.shortOnly": "Preferir definiciones cortas",
-    "study.shuffle": "Mezclar",
     "study.build": "Crear mazo",
     "study.rebuild": "Recrear mazo",
     "study.reset": "Reiniciar",
@@ -735,6 +737,7 @@ const I18N = {
     "study.view": "Card",
     "study.view.flip": "2-sided",
     "study.view.both": "1-sided",
+    "study.deck": "Deck",
     "study.face.flip": "Flip card",
     "study.face.next": "Next card",
     "study.face.zones.flip": "Left: previous · center: flip · right: next",
@@ -742,10 +745,11 @@ const I18N = {
     "study.direction": "Direction",
     "study.direction.nt": "Edition → Translation",
     "study.direction.tn": "Translation → Edition",
+    "study.theme": "Theme",
+    "study.theme.all": "All",
     "study.limit": "Cards",
+    "study.limit.choose": "Choose amount",
     "study.useFilters": "Use current results",
-    "study.shortOnly": "Prefer short definitions",
-    "study.shuffle": "Shuffle",
     "study.build": "Build deck",
     "study.rebuild": "Rebuild deck",
     "study.reset": "Restart",
@@ -1438,6 +1442,7 @@ function applyTranslations() {
   });
 
   document.title = t("title");
+  updateStudyThemeLabels();
   updatePageSizeLabel();
 }
 
@@ -6218,6 +6223,210 @@ const STUDY_PROMPT_NOISE_WORDS = new Set([
   "sur", "un", "una", "une", "v", "ver", "voir"
 ]);
 
+const STUDY_THEME_PRESETS = [
+  ["aging", "Aging (People, Things)", ["anciano", "anciana", "viejo", "vieja", "vejez", "edad", "antepasado", "abuelo", "abuela", "nacer", "nacimiento", "parir", "mayor", "menor", "primogénito", "antiguo", "huehue"]],
+  ["agriculture", "Agriculture, Gardens, Stockraising", ["agricultura", "cultivar", "sembrar", "sementera", "milpa", "huerta", "jardín", "cosecha", "arar", "labrar", "planta", "maíz", "frijol", "chile", "algodón", "ganado", "pastor", "oveja", "vaca", "caballo"]],
+  ["alcohol", "Alcohol, Hallucinogens", ["alcohol", "vino", "pulque", "octli", "bebida", "borracho", "embriagar", "ebrio", "hongo", "seta", "alucinar", "visión", "sueño"]],
+  ["anatomy", "Anatomy", ["cuerpo", "cabeza", "rostro", "cara", "ojo", "oreja", "nariz", "boca", "diente", "lengua", "mano", "pie", "brazo", "pierna", "corazón", "sangre", "hueso", "carne", "piel", "vientre"]],
+  ["animals", "Animals, Bugs, Insects, Reptiles, Fish, etc.", ["animal", "ave", "pájaro", "perro", "venado", "conejo", "serpiente", "pez", "pescado", "insecto", "gusano", "mosca", "hormiga", "mariposa", "jaguar", "coyote", "tortuga", "rana", "sapo", "lagarto"]],
+  ["appearance", "Appearance", ["apariencia", "parecer", "rostro", "cara", "hermoso", "hermosa", "feo", "fea", "alto", "bajo", "gordo", "flaco", "cabello", "barba", "calvo", "color"]],
+  ["architecture", "Architecture, Construction, Buildings", ["casa", "edificio", "templo", "iglesia", "palacio", "pared", "muro", "techo", "puerta", "escalera", "construir", "obra", "cimiento", "piedra", "adobe", "cal"]],
+  ["art_crafts", "Art, Crafts", ["arte", "oficio", "pintar", "pintura", "dibujar", "labrar", "tejer", "bordar", "pluma", "artesano", "escultura", "cantar", "música", "cerámica"]],
+  ["behavior", "Behavior, Personality", ["conducta", "comportamiento", "costumbre", "bueno", "malo", "soberbio", "humilde", "perezoso", "diligente", "valiente", "cobarde", "loco", "prudente", "sabio", "necio", "enojado"]],
+  ["beverages", "Beverages", ["bebida", "beber", "agua", "atole", "chocolate", "cacao", "pulque", "vino", "caldo", "jarro", "jarra", "vaso"]],
+  ["directions_cosmos", "Cardinal Directions, Cosmos", ["norte", "sur", "oriente", "poniente", "este", "oeste", "arriba", "abajo", "centro", "cielo", "mundo", "universo", "tlalticpac", "mictlan"]],
+  ["celestial", "Celestial Phenomena", ["sol", "luna", "estrella", "cometa", "eclipse", "cielo", "rayo", "relámpago", "trueno", "amanecer", "anochecer"]],
+  ["ceramics", "Ceramics, Pottery", ["barro", "cerámica", "olla", "cántaro", "jarro", "jarra", "plato", "vasija", "cajete", "comal", "alfarero", "alfarería"]],
+  ["children", "Children, Childhood, Adolescence", ["niño", "niña", "muchacho", "muchacha", "bebé", "hijo", "hija", "infante", "criar", "nacer", "juventud", "adolescente"]],
+  ["chocolate", "Chocolate, Cocoa, Cacao", ["chocolate", "cacao", "cocoa", "cacahuate", "bebida de cacao", "almendra", "mercado", "moneda"]],
+  ["cleanliness", "Cleanliness, Orderliness (or lack of)", ["limpiar", "limpio", "sucio", "lavar", "bañar", "barrer", "escoba", "orden", "desorden", "basura", "lodo", "polvo", "excremento"]],
+  ["colors", "Colors", ["color", "blanco", "negro", "rojo", "amarillo", "verde", "azul", "pardo", "moreno", "claro", "oscuro", "teñir", "pintado"]],
+  ["corn", "Corn, Maize", ["maíz", "mazorca", "elote", "milpa", "tamal", "tortilla", "nixtamal", "atole", "grano", "cintli", "centli"]],
+  ["crime", "Crime, Punishment", ["delito", "crimen", "culpa", "castigo", "pena", "azotar", "matar", "hurtar", "robar", "ladrón", "adulterio", "cárcel", "justicia"]],
+  ["death", "Death", ["muerte", "morir", "muerto", "difunto", "cadáver", "enterrar", "sepultura", "mictlan", "matar", "llorar", "duelo"]],
+  ["dreams", "Dreams, Visions", ["sueño", "soñar", "visión", "visiones", "aparecer", "fantasma", "augurio", "adivinar", "presagio"]],
+  ["education", "Education", ["enseñar", "aprender", "maestro", "discípulo", "escuela", "educar", "doctrina", "instruir", "leer", "escribir", "saber"]],
+  ["emotions", "Emotions", ["alegría", "tristeza", "enojo", "ira", "miedo", "temor", "amor", "odio", "vergüenza", "ansia", "dolor", "contento", "llorar", "reír"]],
+  ["family", "Family, Kinship, Descent", ["familia", "padre", "madre", "hijo", "hija", "hermano", "hermana", "abuelo", "abuela", "pariente", "linaje", "descendencia", "esposo", "esposa", "yerno", "suegro"]],
+  ["feathers", "Feathers", ["pluma", "plumaje", "ave", "quetzal", "penacho", "abanico", "adornar", "tocado"]],
+  ["fire_tobacco_incense", "Fire, Tobacco, Incense", ["fuego", "lumbre", "quemar", "humo", "tabaco", "incienso", "copal", "pipa", "brasero", "ceniza"]],
+  ["flowers", "Flowers", ["flor", "flores", "xochitl", "xóchitl", "florecer", "rosa", "jardín", "guirnalda"]],
+  ["food", "Food, Eating, Cooking", ["comida", "comer", "cocinar", "guisar", "hambre", "tamal", "tortilla", "maíz", "frijol", "chile", "carne", "pescado", "cena", "almuerzo", "olla"]],
+  ["friendship", "Friendship, Affection", ["amigo", "amiga", "amistad", "querer", "amar", "amor", "afecto", "compañero", "besar", "abrazo"]],
+  ["furniture", "Furniture, Household Goods", ["mueble", "cama", "silla", "mesa", "banco", "petate", "caja", "canasta", "olla", "plato", "jarra", "casa"]],
+  ["gifts_offerings", "Gifts, Offerings, Sacrificial Rites", ["don", "regalo", "ofrenda", "ofrecer", "sacrificio", "sacrificar", "tributo", "copal", "sangre", "altar"]],
+  ["health", "Health, Sickness, Wellness, Medicine", ["salud", "enfermedad", "enfermo", "curar", "medicina", "remedio", "dolor", "calentura", "herida", "sangre", "médico", "sanar"]],
+  ["history", "History, Tradition", ["historia", "tradición", "antiguo", "memoria", "relación", "crónica", "costumbre", "antepasado"]],
+  ["humor", "Humor", ["broma", "burla", "burlar", "reír", "risa", "chiste", "jugar", "teasing", "adivinanza", "gracia"]],
+  ["hunting_fishing", "Hunting or Fishing", ["cazar", "caza", "pescador", "pescar", "red", "anzuelo", "venado", "conejo", "pez", "pescado", "flecha"]],
+  ["imperialism_indigenous", "Imperialism (Indigenous)", ["imperio", "conquista", "tributo", "mercader", "guerra", "señor", "señorío", "vasallo", "mexica", "tenochca", "provincia"]],
+  ["imperialism_spanish", "Imperialism (Spanish)", ["español", "castellano", "rey", "virrey", "obispo", "alcalde", "encomienda", "conquista", "cristiano", "iglesia"]],
+  ["jewelry", "Jewelry, Adornment, Accouterments", ["joya", "adorno", "collar", "cuenta", "orejera", "nariguera", "anillo", "pluma", "penacho", "turquesa", "jade", "oro", "plata"]],
+  ["labor", "Labor, Work, Labor Concerns", ["trabajo", "trabajar", "labor", "servir", "servicio", "cargar", "jornal", "oficio", "obrero", "esclavo", "macehual"]],
+  ["land_tenure", "Land Tenure", ["tierra", "heredad", "posesión", "dueño", "propiedad", "lindero", "mojón", "campo", "solar", "sembradura"]],
+  ["landscape", "Landscape Features", ["monte", "cerro", "valle", "río", "lago", "laguna", "barranca", "cueva", "piedra", "camino", "tierra", "llano", "bosque"]],
+  ["leather", "Leather", ["cuero", "piel", "badana", "zapato", "sandalia", "correa", "silla", "tambor"]],
+  ["legal", "Legal Matters, Documents", ["ley", "legal", "justicia", "juez", "pleito", "testigo", "escritura", "documento", "carta", "firmar", "notario", "castigo"]],
+  ["marine", "Marine, Maritime, Lacustrine", ["agua", "mar", "lago", "laguna", "río", "canoa", "barca", "pescado", "pez", "concha", "caracol", "sal", "atl"]],
+  ["markets", "Markets, Commerce, Economy", ["mercado", "tianguis", "comprar", "vender", "precio", "mercader", "comercio", "dinero", "pagar", "deuda", "producto"]],
+  ["measurements", "Measurements, Quantities", ["medida", "medir", "cantidad", "peso", "pesar", "grande", "pequeño", "largo", "ancho", "mucho", "poco", "número"]],
+  ["metals", "Metals, Mining", ["metal", "oro", "plata", "cobre", "hierro", "minar", "mina", "campana", "cuchillo", "hacha", "clavo"]],
+  ["metaphors", "Metaphors, Proverbs, Riddles", ["metáfora", "proverbio", "refrán", "adivinanza", "riddle", "huehuetlatolli", "dicho", "comparación"]],
+  ["money", "Money, Coins, Wealth", ["dinero", "moneda", "real", "peso", "riqueza", "rico", "pobre", "pagar", "deuda", "precio", "cacao", "tributo"]],
+  ["music", "Music, Song, Dance", ["música", "cantar", "canto", "canción", "baile", "danza", "bailar", "tambor", "flauta", "poesía"]],
+  ["nahuales", "Nahuales, Sorcery, Divining", ["nahual", "hechizo", "hechicero", "brujo", "brujería", "adivinar", "sortilegio", "augurio", "encantar", "sueño"]],
+  ["names_people", "Names (for people, deities)", ["nombre", "llamar", "dios", "diosa", "teotl", "persona", "apellido", "sobrenombre", "santo"]],
+  ["names_places", "Names (places)", ["lugar", "pueblo", "ciudad", "topónimo", "nombre de lugar", "altepetl", "cerro", "río", "tierra"]],
+  ["numbers_math", "Numbers, Math", ["número", "contar", "cuenta", "uno", "dos", "tres", "cuatro", "cinco", "veinte", "sumar", "partir", "mitad"]],
+  ["occupations", "Occupations, Responsibilities", ["oficio", "ocupación", "cargo", "responsable", "maestro", "mercader", "sacerdote", "juez", "gobernador", "pescador", "cazador"]],
+  ["origins", "Origins (human, ethnic, towns)", ["origen", "nacer", "fundar", "fundación", "linaje", "descendencia", "pueblo", "gente", "raza", "nación"]],
+  ["orthography_r_l", "Orthography of note (use of \"r\" for l)", ["ortografía", "letra r", "letra l", "escribir", "grafía", "r por l"]],
+  ["paper", "Paper", ["papel", "amatl", "libro", "carta", "escritura", "pintura", "documento", "hoja"]],
+  ["philosophy", "Philosophy", ["filosofía", "pensar", "pensamiento", "saber", "sabiduría", "verdad", "razón", "alma", "vida", "mundo"]],
+  ["plants", "Plants, Trees, Flora", ["planta", "árbol", "hierba", "flor", "raíz", "hoja", "fruto", "semilla", "bosque", "madera", "milpa"]],
+  ["politics", "Politics, Power, Governance", ["poder", "gobierno", "gobernar", "señor", "rey", "principal", "mandar", "mando", "cargo", "palacio", "consejo"]],
+  ["protest", "Protest, Resistance", ["resistir", "resistencia", "protesta", "rebelar", "rebelión", "contradecir", "oponer", "pelear", "negar"]],
+  ["race_identity", "Race, Ethnicity, Identity", ["gente", "nación", "raza", "linaje", "español", "indio", "mestizo", "mexicano", "chichimeca", "otomí", "tlaxcalteca"]],
+  ["religion_christian", "Religion (Christian)", ["cristiano", "dios", "iglesia", "misa", "santo", "santa", "cruz", "pecado", "confesar", "bautismo", "obispo", "sacerdote"]],
+  ["religion_indigenous_christianity", "Religion (Indigenous Christianty)", ["cristiano", "indígena", "dios", "teotl", "santo", "ofrenda", "fiesta", "iglesia", "costumbre"]],
+  ["religion_indigenous", "Religion (Indigenous)", ["dios", "diosa", "teotl", "ídolo", "templo", "ofrenda", "sacrificio", "copal", "fiesta", "ritual", "tonalli", "nahual"]],
+  ["rubber", "Rubber", ["hule", "ule", "caucho", "pelota", "juego de pelota"]],
+  ["sensory", "Sensory Perception (sound, smell, etc.)", ["ver", "mirar", "oír", "escuchar", "sonido", "olor", "oler", "sabor", "gustar", "tocar", "sentir"]],
+  ["sexuality", "Sexuality, Fertility", ["sexo", "sexual", "mujer", "hombre", "parir", "embarazo", "preñada", "fertilidad", "fornicar", "adulterio"]],
+  ["shells", "Shells", ["concha", "caracol", "tortuga", "armadillo", "cáscara", "caparazón", "mar", "laguna"]],
+  ["skins_hides", "Skins (human or animal), Hides", ["piel", "cuero", "pellejo", "cáscara", "desollar", "húmedo", "seca"]],
+  ["slavery", "Slavery", ["esclavo", "esclava", "cautivo", "servir", "servicio", "vender persona", "comprar persona"]],
+  ["snakes", "Snakes, Serpents", ["serpiente", "culebra", "víbora", "coatl", "cóatl", "reptil", "veneno"]],
+  ["social_hierarchy", "Social Hierarchy, Commoners, Elites", ["noble", "señor", "principal", "macehual", "plebeyo", "común", "elite", "vasallo", "criado"]],
+  ["sociopolitical_units", "Socio-Political Units, Cities, Towns, Neighborhoods", ["altepetl", "pueblo", "ciudad", "barrio", "calpulli", "tlaxilacalli", "chinamitl", "cabecera", "provincia"]],
+  ["speech", "Speech, Speaking, Oral Tradition", ["hablar", "decir", "palabra", "lengua", "conversar", "saludar", "preguntar", "responder", "oración", "cuento"]],
+  ["sports_games", "Sports, Games, Leisure", ["juego", "jugar", "pelota", "correr", "baile", "danza", "divertir", "trompo", "bolos", "toros"]],
+  ["stones", "Stones, Masonry", ["piedra", "mampostería", "cantera", "moler", "metate", "cal", "muro", "edificio", "jade", "turquesa"]],
+  ["technology_tools", "Technology, Tools", ["herramienta", "instrumento", "hacha", "cuchillo", "aguja", "martillo", "puente", "tubo", "canal", "casco", "corona"]],
+  ["textiles", "Textiles, Clothing", ["tela", "ropa", "vestido", "manta", "camisa", "huipil", "tejer", "hilar", "algodón", "manto", "capa", "sandalia"]],
+  ["theater", "Theater, Drama", ["teatro", "drama", "representar", "máscara", "danza", "canto", "fiesta", "farsa", "juego"]],
+  ["time_calendar", "Time, Calendar, Frequency", ["tiempo", "día", "noche", "año", "mes", "calendario", "fiesta", "ayer", "hoy", "mañana", "siempre", "frecuente"]],
+  ["transportation", "Transportation, Travel", ["camino", "viajar", "viaje", "andar", "cargar", "llevar", "canoa", "barca", "carro", "caballo", "mula", "puente"]],
+  ["tributes", "Tributes, Taxation, Service", ["tributo", "pagar", "servicio", "tax", "impuesto", "carga", "entregar", "deber", "macehual"]],
+  ["turquoise_jade", "Turquoise, Greenstone/Jade", ["turquesa", "jade", "chalchihuitl", "piedra verde", "joya", "precioso", "verde"]],
+  ["war", "War, Conflict", ["guerra", "batalla", "pelea", "enemigo", "matar", "conquistar", "soldado", "cautivo", "escudo", "arma", "flecha"]],
+  ["water", "Water", ["agua", "atl", "río", "lago", "laguna", "mar", "lluvia", "beber", "bañar", "mojar", "fuente"]],
+  ["weapons", "Weapons, Shields, Heraldry", ["arma", "escudo", "flecha", "arco", "lanza", "macana", "cuchillo", "guerra", "estandarte", "divisa"]],
+  ["weather", "Weather, Climate", ["lluvia", "llover", "viento", "nube", "trueno", "relámpago", "rayo", "calor", "frío", "helada", "sequía"]],
+  ["gender", "Women, Men, Gender", ["mujer", "hombre", "varón", "hembra", "masculino", "femenino", "esposa", "marido", "madre", "padre"]],
+  ["wood", "Wood, wooden material", ["madera", "árbol", "palo", "leña", "viga", "tabla", "bosque", "carpintero"]],
+  ["writing", "Writing, Literacy", ["escribir", "escritura", "leer", "letra", "libro", "papel", "carta", "documento", "pintar", "registrar", "firma"]]
+].map(([id, label, terms]) => ({ id, label, terms }));
+
+const STUDY_THEME_LABELS_ES = {
+  aging: "Envejecimiento (personas, cosas)",
+  agriculture: "Agricultura, jardines, ganadería",
+  alcohol: "Alcohol, alucinógenos",
+  anatomy: "Anatomía",
+  animals: "Animales, bichos, insectos, reptiles, peces, etc.",
+  appearance: "Apariencia",
+  architecture: "Arquitectura, construcción, edificios",
+  art_crafts: "Arte, oficios",
+  behavior: "Conducta, personalidad",
+  beverages: "Bebidas",
+  directions_cosmos: "Rumbos, cosmos",
+  celestial: "Fenómenos celestes",
+  ceramics: "Cerámica, alfarería",
+  children: "Niños, infancia, adolescencia",
+  chocolate: "Chocolate, cacao",
+  cleanliness: "Limpieza, orden (o falta de ellos)",
+  colors: "Colores",
+  corn: "Maíz",
+  crime: "Crimen, castigo",
+  death: "Muerte",
+  dreams: "Sueños, visiones",
+  education: "Educación",
+  emotions: "Emociones",
+  family: "Familia, parentesco, descendencia",
+  feathers: "Plumas",
+  fire_tobacco_incense: "Fuego, tabaco, incienso",
+  flowers: "Flores",
+  food: "Comida, comer, cocinar",
+  friendship: "Amistad, afecto",
+  furniture: "Muebles, bienes domésticos",
+  gifts_offerings: "Dones, ofrendas, ritos sacrificiales",
+  health: "Salud, enfermedad, medicina",
+  history: "Historia, tradición",
+  humor: "Humor",
+  hunting_fishing: "Caza o pesca",
+  imperialism_indigenous: "Imperialismo indígena",
+  imperialism_spanish: "Imperialismo español",
+  jewelry: "Joyería, adorno, atavíos",
+  labor: "Trabajo, preocupaciones laborales",
+  land_tenure: "Tenencia de la tierra",
+  landscape: "Rasgos del paisaje",
+  leather: "Cuero",
+  legal: "Asuntos legales, documentos",
+  marine: "Marino, marítimo, lacustre",
+  markets: "Mercados, comercio, economía",
+  measurements: "Medidas, cantidades",
+  metals: "Metales, minería",
+  metaphors: "Metáforas, proverbios, adivinanzas",
+  money: "Dinero, monedas, riqueza",
+  music: "Música, canto, danza",
+  nahuales: "Nahuales, hechicería, adivinación",
+  names_people: "Nombres (personas, deidades)",
+  names_places: "Nombres (lugares)",
+  numbers_math: "Números, matemáticas",
+  occupations: "Ocupaciones, responsabilidades",
+  origins: "Orígenes (humanos, étnicos, pueblos)",
+  orthography_r_l: "Ortografía notable (uso de \"r\" por l)",
+  paper: "Papel",
+  philosophy: "Filosofía",
+  plants: "Plantas, árboles, flora",
+  politics: "Política, poder, gobierno",
+  protest: "Protesta, resistencia",
+  race_identity: "Raza, etnicidad, identidad",
+  religion_christian: "Religión (cristiana)",
+  religion_indigenous_christianity: "Religión (cristianismo indígena)",
+  religion_indigenous: "Religión (indígena)",
+  rubber: "Hule",
+  sensory: "Percepción sensorial (sonido, olor, etc.)",
+  sexuality: "Sexualidad, fertilidad",
+  shells: "Conchas",
+  skins_hides: "Pieles, cueros",
+  slavery: "Esclavitud",
+  snakes: "Serpientes",
+  social_hierarchy: "Jerarquía social, comunes, élites",
+  sociopolitical_units: "Unidades sociopolíticas, ciudades, pueblos, barrios",
+  speech: "Habla, hablar, tradición oral",
+  sports_games: "Deportes, juegos, ocio",
+  stones: "Piedras, mampostería",
+  technology_tools: "Tecnología, herramientas",
+  textiles: "Textiles, ropa",
+  theater: "Teatro, drama",
+  time_calendar: "Tiempo, calendario, frecuencia",
+  transportation: "Transporte, viajes",
+  tributes: "Tributos, impuestos, servicio",
+  turquoise_jade: "Turquesa, piedra verde/jade",
+  war: "Guerra, conflicto",
+  water: "Agua",
+  weapons: "Armas, escudos, heráldica",
+  weather: "Tiempo atmosférico, clima",
+  gender: "Mujeres, hombres, género",
+  wood: "Madera",
+  writing: "Escritura, alfabetización"
+};
+const studyThemeRowCache = new WeakMap();
+const studyThemeRowMetaCache = new WeakMap();
+const studyCardInfoCache = new WeakMap();
+const STUDY_THEME_FUNCTION_TERMS = new Set([
+  "a", "al", "ante", "bajo", "cabe", "con", "contra", "de", "del", "desde",
+  "durante", "e", "el", "en", "entre", "hacia", "hasta", "la", "las", "lo",
+  "los", "mediante", "ni", "o", "para", "por", "que", "segun", "sin", "so",
+  "sobre", "tras", "u", "un", "una", "unas", "unos", "versus", "via", "y",
+  "abajo", "arriba", "dentro", "debajo", "encima", "fuera", "junto",
+  "adelante", "atras", "cerca", "lejos", "ahi", "alli", "aqui", "alla",
+  "aca", "donde", "cuando", "como", "cual", "quien",
+  "ipan", "icpac", "itic", "itech", "ixpan", "nahuac", "nepantla", "pan",
+  "tloc", "tlampa"
+]);
+
 function getStudyLeakKey(value) {
   return normalizeString(cleanStudyText(value))
     .replace(/[\u00b7'’ʼ`´-]/g, "")
@@ -6459,13 +6668,91 @@ function getStudyCardTranslation(row, lemma, direction) {
 }
 
 function getStudyLimit() {
-  const value = parseInt(document.getElementById("studyLimit")?.value || "50", 10);
-  return Number.isFinite(value) && value > 0 ? value : 50;
+  const rawValue = String(document.getElementById("studyLimit")?.value || "100").trim();
+  const value = parseInt(rawValue.replace(/[^\d]/g, ""), 10);
+  return Number.isFinite(value) && value > 0 ? value : 100;
+}
+
+function setStudyLimitMenuOpen(open) {
+  const combo = document.getElementById("studyLimitCombo");
+  const menu = document.getElementById("studyLimitMenu");
+  const toggle = document.getElementById("studyLimitToggle");
+  if (!combo || !menu || !toggle) return;
+  menu.hidden = !open;
+  combo.classList.toggle("open", open);
+  toggle.setAttribute("aria-expanded", open ? "true" : "false");
+}
+
+function setupStudyLimitCombo() {
+  const combo = document.getElementById("studyLimitCombo");
+  const input = document.getElementById("studyLimit");
+  const toggle = document.getElementById("studyLimitToggle");
+  const menu = document.getElementById("studyLimitMenu");
+  if (!combo || !input || !toggle || !menu) return;
+
+  const openMenu = () => setStudyLimitMenuOpen(true);
+  const closeMenu = () => setStudyLimitMenuOpen(false);
+
+  input.addEventListener("focus", openMenu);
+  input.addEventListener("click", openMenu);
+  input.addEventListener("input", openMenu);
+  input.addEventListener("keydown", event => {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      openMenu();
+      const firstOption = menu.querySelector("[data-study-limit-value]");
+      if (firstOption) firstOption.focus();
+    } else if (event.key === "Escape") {
+      closeMenu();
+    }
+  });
+
+  toggle.addEventListener("click", event => {
+    event.preventDefault();
+    input.focus();
+    openMenu();
+  });
+
+  menu.addEventListener("click", event => {
+    const option = event.target.closest("[data-study-limit-value]");
+    if (!option) return;
+    input.value = option.dataset.studyLimitValue;
+    input.focus();
+    closeMenu();
+  });
+
+  menu.addEventListener("keydown", event => {
+    const options = [...menu.querySelectorAll("[data-study-limit-value]")];
+    const index = options.indexOf(document.activeElement);
+    if (event.key === "Escape") {
+      input.focus();
+      closeMenu();
+    } else if (event.key === "ArrowDown") {
+      event.preventDefault();
+      options[(index + 1) % options.length]?.focus();
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      options[(index - 1 + options.length) % options.length]?.focus();
+    }
+  });
+
+  document.addEventListener("click", event => {
+    if (!combo.contains(event.target)) closeMenu();
+  });
 }
 
 function getStudyDirection() {
   const value = document.getElementById("studyDirection")?.value;
   return value === "spanishToNahuatl" ? value : "nahuatlToSpanish";
+}
+
+function getStudyThemeId() {
+  return document.getElementById("studyTheme")?.value || "";
+}
+
+function getStudyThemePreset() {
+  const id = getStudyThemeId();
+  return id ? STUDY_THEME_PRESETS.find(theme => theme.id === id) || null : null;
 }
 
 function getStudyMode() {
@@ -6514,9 +6801,126 @@ function syncStudyViewButtons() {
 }
 
 function getStudyRows() {
-  const useCurrent = document.getElementById("studyUseFilters")?.checked ?? true;
-  if (useCurrent) return Array.isArray(lastFilteredRows) ? lastFilteredRows.slice() : [];
-  return dataRows.filter(row => selectedFuentes.has(row.Fuente));
+  const useCurrent = document.getElementById("studyUseFilters")?.checked ?? false;
+  const baseRows = useCurrent
+    ? (Array.isArray(lastFilteredRows) ? lastFilteredRows.slice() : [])
+    : dataRows.filter(row => selectedFuentes.has(row.Fuente));
+  const theme = getStudyThemePreset();
+  if (!theme) return baseRows;
+  return getStudyRowsForThemeByLemma(baseRows, theme);
+}
+
+function getStudyThemeTranslationIndex(row) {
+  return getStudyThemeTextIndex(getStudyTranslation(row));
+}
+
+function getStudyThemeTextIndex(value) {
+  const text = normalizeString(cleanStudyText(value));
+  return {
+    text,
+    tokens: new Set(text.split(/[^\p{L}\p{N}]+/u).filter(Boolean))
+  };
+}
+
+function isStudyThemeTermAllowed(term) {
+  if (!term) return false;
+  if (STUDY_THEME_FUNCTION_TERMS.has(term)) return false;
+  return term.length > 1 || /\s/.test(term);
+}
+
+function getStudyThemeTerms(theme) {
+  if (!theme._normalizedTerms) {
+    theme._normalizedTerms = theme.terms
+      .map(term => normalizeString(cleanStudyText(term)).trim())
+      .filter(Boolean)
+      .filter(isStudyThemeTermAllowed)
+      .map(term => ({
+        term,
+        exact: !term.includes(" ") && term.length <= 4
+      }));
+  }
+  return theme._normalizedTerms;
+}
+
+function studyThemeTermMatchesIndex(termSpec, index) {
+  return termSpec.exact ? index.tokens.has(termSpec.term) : index.text.includes(termSpec.term);
+}
+
+function studyThemeMatchesIndex(theme, index) {
+  return getStudyThemeTerms(theme).some(term => studyThemeTermMatchesIndex(term, index));
+}
+
+function getStudyThemeIdsForRow(row) {
+  const translation = getStudyTranslation(row);
+  const cached = studyThemeRowCache.get(row);
+  if (cached && cached.translation === translation) return cached.themeIds;
+
+  const index = getStudyThemeTranslationIndex(row);
+  const themeIds = new Set();
+  if (index.text) {
+    STUDY_THEME_PRESETS.forEach(theme => {
+      if (studyThemeMatchesIndex(theme, index)) themeIds.add(theme.id);
+    });
+  }
+  studyThemeRowCache.set(row, { translation, themeIds });
+  return themeIds;
+}
+
+function getStudyThemeIdsForTranslationText(text) {
+  const index = getStudyThemeTextIndex(text);
+  const themeIds = new Set();
+  if (!index.text) return themeIds;
+  STUDY_THEME_PRESETS.forEach(theme => {
+    if (studyThemeMatchesIndex(theme, index)) themeIds.add(theme.id);
+  });
+  return themeIds;
+}
+
+function getStudyRowThemeMeta(row) {
+  const lemmaValue = getDisplayValue(row, "Texto estandarizado");
+  const translationValue = getDisplayValue(row, "Traducción");
+  const cached = studyThemeRowMetaCache.get(row);
+  if (cached && cached.lemmaValue === lemmaValue && cached.translationValue === translationValue) {
+    return cached;
+  }
+  const meta = {
+    lemmaValue,
+    translationValue,
+    lemmaKey: normalizeString(cleanStudyText(lemmaValue)),
+    translation: cleanStudyText(translationValue)
+  };
+  studyThemeRowMetaCache.set(row, meta);
+  return meta;
+}
+
+function groupStudyRowsByLemma(rows) {
+  const groups = new Map();
+  rows.forEach(row => {
+    const meta = getStudyRowThemeMeta(row);
+    const key = meta.lemmaKey;
+    if (!key) return;
+    let group = groups.get(key);
+    if (!group) {
+      group = { key, rows: [], translationText: "" };
+      groups.set(key, group);
+    }
+    group.rows.push(row);
+    if (meta.translation) group.translationText += ` ${meta.translation}`;
+  });
+  return [...groups.values()];
+}
+
+function getStudyRowsForThemeByLemma(rows, theme) {
+  const selectedRows = [];
+  groupStudyRowsByLemma(rows).forEach(group => {
+    const index = getStudyThemeTextIndex(group.translationText);
+    if (studyThemeMatchesIndex(theme, index)) selectedRows.push(...group.rows);
+  });
+  return selectedRows;
+}
+
+function studyRowMatchesTheme(row, theme) {
+  return getStudyThemeIdsForRow(row).has(theme.id);
 }
 
 function addStudyTranslation(entry, translation) {
@@ -6524,22 +6928,77 @@ function addStudyTranslation(entry, translation) {
   if (!normalized) return;
   const existing = entry.translationStats.get(normalized);
   if (existing) existing.count += 1;
-  else entry.translationStats.set(normalized, { display: translation, count: 1, normalized });
+  else entry.translationStats.set(normalized, { display: translation, count: 1, normalized, length: translation.length });
+}
+
+function getStudyCardInfo(row, direction, cache) {
+  const targetCache = cache || studyCardInfoCache;
+  const lemmaValue = getDisplayValue(row, "Texto estandarizado");
+  const translationValue = getDisplayValue(row, "Traducción");
+  const cached = targetCache.get(row);
+  const cachedMatches = cached
+    && cached.lemmaValue === lemmaValue
+    && cached.translationValue === translationValue;
+  if (cachedMatches && cached.byDirection.has(direction)) {
+    return cached.byDirection.get(direction);
+  }
+  const lemma = cleanStudyText(lemmaValue);
+  const key = normalizeString(lemma);
+  const translation = lemma ? getStudyCardTranslation(row, lemma, direction) : "";
+  const info = lemma && key && translation ? { lemma, key, translation } : null;
+  const bucket = cachedMatches ? cached : { lemmaValue, translationValue, byDirection: new Map() };
+  bucket.byDirection.set(direction, info);
+  targetCache.set(row, bucket);
+  return info;
+}
+
+function greatestCommonDivisor(a, b) {
+  let x = Math.abs(a);
+  let y = Math.abs(b);
+  while (y) {
+    const next = x % y;
+    x = y;
+    y = next;
+  }
+  return x || 1;
+}
+
+function getStudyScanStep(count) {
+  if (count <= 1) return 1;
+  let step = Math.floor(Math.random() * (count - 1)) + 1;
+  while (greatestCommonDivisor(step, count) !== 1) {
+    step = (step % (count - 1)) + 1;
+  }
+  return step;
+}
+
+function selectStudyDeckLemmaKeys(rows, direction, limit, cache) {
+  const selected = new Set();
+  if (!rows.length || !limit) return selected;
+  const offset = Math.floor(Math.random() * rows.length);
+  const step = getStudyScanStep(rows.length);
+  for (let visited = 0; visited < rows.length && selected.size < limit; visited += 1) {
+    const row = rows[(offset + (visited * step)) % rows.length];
+    const info = getStudyCardInfo(row, direction, cache);
+    if (info) selected.add(info.key);
+  }
+  return selected;
 }
 
 function buildStudyCardsFromRows(rows, options = {}) {
-  const shortOnly = !!options.shortOnly;
   const direction = options.direction || "nahuatlToSpanish";
+  const limit = Number.isFinite(options.limit) && options.limit > 0 ? Math.floor(options.limit) : 0;
+  const selectedKeys = limit ? selectStudyDeckLemmaKeys(rows, direction, limit, studyCardInfoCache) : null;
   const byLemma = new Map();
-  const sortedRows = rows.slice().sort(comparePriorityOrder);
 
-  sortedRows.forEach(row => {
+  rows.forEach(row => {
     const lemma = cleanStudyText(getDisplayValue(row, "Texto estandarizado"));
-    const translation = getStudyCardTranslation(row, lemma, direction);
-    if (!lemma || !translation) return;
-    if (shortOnly && translation.length > 180) return;
     const key = normalizeString(lemma);
-    if (!key) return;
+    if (!lemma || !key) return;
+    if (selectedKeys && !selectedKeys.has(key)) return;
+    const info = getStudyCardInfo(row, direction, studyCardInfoCache);
+    if (!info) return;
+    const { translation } = info;
     let entry = byLemma.get(key);
     if (!entry) {
       entry = {
@@ -6559,7 +7018,11 @@ function buildStudyCardsFromRows(rows, options = {}) {
     .map(entry => {
       const translations = [...entry.translationStats.values()]
         .sort((a, b) => {
+          const qualityA = getStudyTranslationLengthBucket(a.length);
+          const qualityB = getStudyTranslationLengthBucket(b.length);
+          if (qualityA !== qualityB) return qualityA - qualityB;
           if (b.count !== a.count) return b.count - a.count;
+          if (a.length !== b.length) return a.length - b.length;
           return alphaNumCollator.compare(a.normalized, b.normalized);
         })
         .slice(0, 3)
@@ -6581,17 +7044,18 @@ function buildStudyCardsFromRows(rows, options = {}) {
     .filter(Boolean);
 }
 
+function getStudyTranslationLengthBucket(length) {
+  if (length <= 180) return 0;
+  if (length <= 280) return 1;
+  return 2;
+}
+
 function countStudyPossibleCardsFromRows(rows, options = {}) {
-  const shortOnly = document.getElementById("studyShortOnly")?.checked ?? true;
   const direction = options.direction || getStudyDirection();
   const seen = new Set();
   rows.forEach(row => {
-    const lemma = cleanStudyText(getDisplayValue(row, "Texto estandarizado"));
-    const translation = getStudyCardTranslation(row, lemma, direction);
-    if (!lemma || !translation) return;
-    if (shortOnly && translation.length > 180) return;
-    const key = normalizeString(lemma);
-    if (key) seen.add(key);
+    const info = getStudyCardInfo(row, direction, studyCardInfoCache);
+    if (info) seen.add(info.key);
   });
   return seen.size;
 }
@@ -6657,13 +7121,11 @@ function getStudyProgressText() {
 function buildStudyDeck() {
   const rows = getStudyRows();
   const limit = getStudyLimit();
-  const shortOnly = document.getElementById("studyShortOnly")?.checked ?? true;
-  const shouldShuffle = document.getElementById("studyShuffle")?.checked ?? true;
   let cards = buildStudyCardsFromRows(rows, {
-    shortOnly,
+    limit,
     direction: getStudyDirection()
   });
-  if (shouldShuffle) cards = shuffleStudyCards(cards);
+  cards = shuffleStudyCards(cards);
   studyBaseDeck = cards.slice(0, limit);
   studyDeck = studyBaseDeck.slice();
   studyIndex = 0;
@@ -6671,7 +7133,6 @@ function buildStudyDeck() {
   studyEmptyMessageKey = studyDeck.length ? "study.empty" : "study.noCards";
   resetStudyStats();
   renderStudyCard();
-  updateStudyScope();
 }
 
 function resetStudyDeck() {
@@ -6966,6 +7427,45 @@ function refreshStudyModeUI() {
   renderStudyCard();
 }
 
+function populateStudyThemeSelect() {
+  const select = document.getElementById("studyTheme");
+  if (!select) return;
+  renderStudyThemeOptions(select);
+  select.dataset.populated = "true";
+}
+
+function getStudyThemeLabel(theme) {
+  if (!theme) return "";
+  if (currentLang === "es") return STUDY_THEME_LABELS_ES[theme.id] || theme.label;
+  return theme.label;
+}
+
+function getSortedStudyThemes() {
+  return STUDY_THEME_PRESETS
+    .slice()
+    .sort((a, b) => alphaNumCollator.compare(getStudyThemeLabel(a), getStudyThemeLabel(b)));
+}
+
+function renderStudyThemeOptions(select = document.getElementById("studyTheme")) {
+  if (!select) return;
+  const selectedValue = select.value || "";
+  select.querySelectorAll("option[data-study-theme-id]").forEach(option => option.remove());
+  getSortedStudyThemes().forEach(theme => {
+    const option = document.createElement("option");
+    option.value = theme.id;
+    option.dataset.studyThemeId = theme.id;
+    option.textContent = getStudyThemeLabel(theme);
+    select.appendChild(option);
+  });
+  select.value = selectedValue;
+}
+
+function updateStudyThemeLabels() {
+  const select = document.getElementById("studyTheme");
+  if (!select) return;
+  renderStudyThemeOptions(select);
+}
+
 function setupStudyMode() {
   const buildBtn = document.getElementById("studyBuildBtn");
   const resetBtn = document.getElementById("studyResetBtn");
@@ -6975,6 +7475,8 @@ function setupStudyMode() {
   const fullscreenBtn = document.getElementById("studyFullscreenToggleBtn");
   const fullscreenExitBtn = document.getElementById("studyFullscreenExitBtn");
   const faceEl = document.querySelector(".study-face");
+  populateStudyThemeSelect();
+  setupStudyLimitCombo();
   document.querySelectorAll(".study-mode-btn[data-study-mode]").forEach(btn => {
     btn.addEventListener("click", () => setStudyMode(btn.dataset.studyMode));
   });
@@ -6998,9 +7500,10 @@ function setupStudyMode() {
   document.querySelectorAll(".study-grade-btn[data-study-grade]").forEach(btn => {
     btn.addEventListener("click", () => gradeStudyCard(btn.dataset.studyGrade));
   });
-  ["studyUseFilters", "studyShortOnly", "studyDirection", "studyLimit"].forEach(id => {
+  ["studyUseFilters", "studyDirection", "studyTheme"].forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.addEventListener("change", updateStudyScope);
+    if (!el) return;
+    el.addEventListener("change", updateStudyScope);
   });
   syncStudyModeButtons();
   syncStudyViewButtons();

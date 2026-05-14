@@ -2200,7 +2200,16 @@ th[data-field="Comentario"] .header-actions {
   flex: 0 1 270px;
 }
 
-.study-control select {
+.study-theme-control {
+  flex-basis: 360px !important;
+}
+
+.study-theme-control select {
+  min-width: 220px;
+}
+
+.study-control select,
+.study-limit-input {
   flex: 1 1 auto;
   min-width: 130px;
   min-height: 28px;
@@ -2210,6 +2219,87 @@ th[data-field="Comentario"] .header-actions {
   background: #fff;
   color: #1b2354;
   font-size: 13px;
+}
+
+.study-limit-combo {
+  position: relative;
+  display: inline-flex;
+  flex: 1 1 auto;
+  min-width: 130px;
+  max-width: 120px;
+}
+
+.study-limit-combo .study-limit-input {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  padding-right: 31px;
+}
+
+.study-limit-toggle {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-left: 1px solid #d5daf8;
+  border-radius: 0 6px 6px 0;
+  background: #f5f7ff;
+  color: #2c345b;
+  cursor: pointer;
+}
+
+.study-limit-toggle::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 1.8px solid currentColor;
+  border-bottom: 1.8px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+
+.study-limit-toggle:hover,
+.study-limit-toggle:focus-visible {
+  background: #eef2ff;
+}
+
+.study-limit-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: grid;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid #d5daf8;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(35, 43, 89, 0.16);
+}
+
+.study-limit-menu[hidden] {
+  display: none;
+}
+
+.study-limit-menu button {
+  min-height: 26px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #1b2354;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.study-limit-menu button:hover,
+.study-limit-menu button:focus-visible {
+  background: #edf1ff;
 }
 
 .study-control--inline {
@@ -2226,6 +2316,12 @@ th[data-field="Comentario"] .header-actions {
 
 .study-mode-control {
   gap: 10px;
+}
+
+.study-deck-control {
+  flex: 1 1 100%;
+  width: 100%;
+  padding-top: 2px;
 }
 
 .study-mode-toggle {
@@ -2261,6 +2357,18 @@ th[data-field="Comentario"] .header-actions {
   background: #fff;
   color: #2c345b;
   box-shadow: 0 1px 2px rgba(26, 36, 104, 0.12);
+}
+
+.study-deck-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.study-deck-actions .btn {
+  min-height: 30px;
+  padding: 5px 9px;
 }
 
 .study-stage {
@@ -2443,28 +2551,29 @@ th[data-field="Comentario"] .header-actions {
   text-align: right;
 }
 
-.study-card--active #studyRevealBtn,
-.study-card--active .study-grade-btn {
+.study-card--active .study-actions #studyRevealBtn,
+.study-card--active .study-actions .study-grade-btn {
   order: 1;
 }
 
-.study-card--active #studyPrevBtn {
+.study-card--active .study-actions #studyPrevBtn {
   order: 2;
 }
 
-.study-card--active #studyNextBtn {
+.study-card--active .study-actions #studyNextBtn {
   order: 3;
 }
 
-.study-card--active #studyResetBtn {
+.study-card--active .study-actions #studyResetBtn {
   order: 4;
 }
 
-.study-card--active #studyBuildBtn {
+.study-card--active .study-actions #studyBuildBtn {
   order: 5;
 }
 
-.study-actions .btn[disabled] {
+.study-actions .btn[disabled],
+.study-deck-actions .btn[disabled] {
   cursor: not-allowed;
   opacity: 0.48;
   box-shadow: none;
@@ -3176,7 +3285,13 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     justify-content: center;
   }
 
-  .study-control select {
+  .study-deck-actions {
+    justify-content: center;
+  }
+
+  .study-control select,
+  .study-limit-combo,
+  .study-limit-input {
     width: 100%;
     max-width: none;
   }
