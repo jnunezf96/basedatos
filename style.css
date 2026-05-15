@@ -3085,12 +3085,13 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 @media (max-width: 640px) {
   :root {
     --mobile-shell-pad-top: 12px;
+    --mobile-viewport-height: 100dvh;
     --mobile-nav-height: calc(59px + env(safe-area-inset-bottom));
-    --mobile-screen-height: calc(100dvh - var(--mobile-nav-height) - var(--mobile-shell-pad-top));
+    --mobile-screen-height: max(0px, calc(var(--mobile-viewport-height) - var(--mobile-nav-height) - var(--mobile-shell-pad-top)));
   }
 
   .app-shell {
-    height: 100dvh;
+    height: var(--mobile-viewport-height);
     padding: var(--mobile-shell-pad-top) 12px var(--mobile-nav-height);
     gap: 0;
     overflow: hidden;
@@ -3124,6 +3125,21 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     overflow: hidden;
   }
 
+  .panel-tab-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: end;
+    flex: 0 0 auto;
+    gap: 6px;
+    padding: 0;
+    margin: 0 0 6px;
+  }
+
+  .session-bar {
+    width: 100%;
+    align-self: end;
+  }
+
   .tab-panel {
     min-height: 0;
   }
@@ -3144,12 +3160,18 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .panel-controls {
-    flex: 1 1 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    flex: 0 0 auto;
     gap: 6px;
     padding-bottom: 0;
   }
 
   .top-bar {
+    order: 1;
     flex: 0 0 auto;
     justify-content: flex-start;
     gap: 4px;
@@ -3226,18 +3248,26 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     display: none !important;
   }
 
-  .panel-tab-row {
-    gap: 8px;
-    padding: 0;
-    margin: 0 0 -1px;
-  }
-
   .panel-tabs {
-    flex: 0 0 auto;
-    justify-content: flex-start;
-    gap: 6px;
+    order: 2;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    min-width: 0;
+    gap: 5px;
     padding: 0;
     margin: 0;
+    overflow: visible;
+  }
+
+  .panel-tabs .tab-btn.mobile-label-on {
+    width: 100%;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .panel-tabs .tab-btn.mobile-label-on .mobile-icon-label {
+    min-width: 0;
   }
 
   .panel-tabs .tab-btn {
@@ -3421,9 +3451,83 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     transform: scale(0.97);
   }
 
+  @media (max-width: 360px), (max-height: 520px) {
+    :root {
+      --mobile-shell-pad-top: 8px;
+    }
+
+    .app-shell {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    .panel-controls {
+      grid-template-columns: 1fr;
+    }
+
+    .top-bar {
+      justify-content: flex-start;
+      order: 1;
+    }
+
+    .panel-tabs {
+      order: 2;
+    }
+
+    .scroll-nav {
+      gap: 6px;
+      padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    }
+
+    .scroll-nav-btn {
+      min-height: 38px;
+      padding: 8px 10px;
+    }
+
+    .scroll-nav-btn.mobile-label-on .mobile-icon-label {
+      display: none !important;
+    }
+  }
+
+  html[data-mobile-visual="constrained"] {
+    --mobile-shell-pad-top: 8px;
+  }
+
+  html[data-mobile-visual="constrained"] .app-shell {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  html[data-mobile-visual="constrained"] .panel-controls {
+    grid-template-columns: 1fr;
+  }
+
+  html[data-mobile-visual="constrained"] .top-bar {
+    justify-content: flex-start;
+    order: 1;
+  }
+
+  html[data-mobile-visual="constrained"] .panel-tabs {
+    order: 2;
+  }
+
+  html[data-mobile-visual="constrained"] .scroll-nav {
+    gap: 6px;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  }
+
+  html[data-mobile-visual="constrained"] .scroll-nav-btn {
+    min-height: 38px;
+    padding: 8px 10px;
+  }
+
+  html[data-mobile-visual="constrained"] .scroll-nav-btn.mobile-label-on .mobile-icon-label {
+    display: none !important;
+  }
+
   /* Leave room at the bottom of the data-panel for the sticky scroll-nav.
-     Use 100dvh so the panel tracks the browser's URL bar expand/collapse
-     instead of being sized to the largest-possible viewport. */
+     JS updates the mobile viewport/nav variables so zoom, text scaling,
+     keyboard changes, and safe-area padding do not hide panel content. */
   .data-panel {
     height: var(--mobile-screen-height);
     min-height: 0;
@@ -3465,15 +3569,21 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .panel-tab-row {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
     padding: 0;
     gap: 8px;
-    margin: 0 0 -1px;
+    margin: 0 0 6px;
+  }
+
+  .panel-controls {
+    order: 1;
   }
 
   .session-bar {
     order: 2;
-    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
   }
 
   .tab-btn {
@@ -3738,6 +3848,10 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   .filter-input,
   .reverse-input,
   .compare-input,
+  .pair-control input,
+  .pair-control select,
+  .study-limit-input,
+  .study-control select,
   .page-input,
   .sort-scope select,
   .page-size select,

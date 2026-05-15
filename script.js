@@ -1224,6 +1224,8 @@ let lastRankingSummary = null;
 let tableViewMode = "rows"; // "rows" | "lemmas"
 let lastLemmaItems = [];
 let lastLemmaPageOffsets = [0];
+let mobileViewportMetricRaf = 0;
+let mobileViewportResizeObserver = null;
 const prioritySortCache = new WeakMap();
 const FUENTE_ORDER_KEY = "nahuatl-source-order-v1";
 let fuenteOrderMode = "title"; // "title" | "year"
@@ -1281,6 +1283,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupShareButton();
   setupLongPressCopy();
   setupSwipeTabs();
+  setupMobileViewportMetrics();
   setupKeyboardAvoidance();
   setupScrollNav();
   loadCompressedJsonl(versionedAssetUrl("data/data.jsonl.gz"))
@@ -1337,6 +1340,60 @@ function setupScrollNav() {
   document.querySelectorAll(".scroll-nav-btn").forEach(btn => {
     btn.addEventListener("click", () => showScreen(btn.dataset.scroll));
   });
+}
+
+function syncMobileViewportMetrics() {
+  if (typeof window === "undefined" || typeof document === "undefined") return;
+  const root = document.documentElement;
+  if (mobileViewportMetricRaf) cancelAnimationFrame(mobileViewportMetricRaf);
+  mobileViewportMetricRaf = requestAnimationFrame(() => {
+    mobileViewportMetricRaf = 0;
+    const isMobile = !window.matchMedia || window.matchMedia("(max-width: 640px)").matches;
+    if (!isMobile) {
+      root.style.removeProperty("--mobile-viewport-height");
+      root.style.removeProperty("--mobile-nav-height");
+      delete root.dataset.mobileVisual;
+      return;
+    }
+
+    const vv = window.visualViewport;
+    const viewportHeight = vv && Number.isFinite(vv.height) ? vv.height : window.innerHeight;
+    const viewportWidth = vv && Number.isFinite(vv.width) ? vv.width : window.innerWidth;
+    if (Number.isFinite(viewportHeight) && viewportHeight > 0) {
+      root.style.setProperty("--mobile-viewport-height", `${Math.round(viewportHeight)}px`);
+    }
+    root.dataset.mobileVisual = viewportWidth < 360 || viewportHeight < 520 ? "constrained" : "normal";
+
+    const nav = document.querySelector(".scroll-nav");
+    const navVisible = nav && window.getComputedStyle(nav).display !== "none";
+    const navHeight = navVisible ? Math.ceil(nav.getBoundingClientRect().height) : 0;
+    root.style.setProperty("--mobile-nav-height", `${Math.max(0, navHeight)}px`);
+    syncSessionFolderNotch();
+  });
+}
+
+function setupMobileViewportMetrics() {
+  if (typeof window === "undefined") return;
+  syncMobileViewportMetrics();
+
+  const vv = window.visualViewport;
+  const onChange = () => syncMobileViewportMetrics();
+  window.addEventListener("resize", onChange);
+  window.addEventListener("orientationchange", onChange);
+  if (vv) {
+    vv.addEventListener("resize", onChange);
+    vv.addEventListener("scroll", onChange);
+  }
+
+  const nav = document.querySelector(".scroll-nav");
+  if (nav && "ResizeObserver" in window) {
+    mobileViewportResizeObserver = new ResizeObserver(onChange);
+    mobileViewportResizeObserver.observe(nav);
+  }
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(onChange).catch(() => {});
+  }
 }
 
 function t(key, vars = {}) {
@@ -1444,6 +1501,7 @@ function applyTranslations() {
   document.title = t("title");
   updateStudyThemeLabels();
   updatePageSizeLabel();
+  syncMobileViewportMetrics();
 }
 
 function refreshLanguageDependentUI() {
