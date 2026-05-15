@@ -7222,12 +7222,18 @@ function isStudyFullscreenActive() {
   return studyFullscreenFallback || (target && fullscreenElement === target);
 }
 
-function setStudyFullscreenFallback(active) {
+function syncStudyFullscreenState() {
   const target = getStudyFullscreenTarget();
-  studyFullscreenFallback = Boolean(active);
-  document.body.classList.toggle("study-fullscreen-active", studyFullscreenFallback);
+  const active = isStudyFullscreenActive();
+  document.body.classList.toggle("study-fullscreen-active", active);
+  document.body.classList.toggle("study-fullscreen-fallback", studyFullscreenFallback);
   if (target) target.classList.toggle("study-stage--fullscreen", studyFullscreenFallback);
   syncStudyFullscreenButton();
+}
+
+function setStudyFullscreenFallback(active) {
+  studyFullscreenFallback = Boolean(active);
+  syncStudyFullscreenState();
 }
 
 function syncStudyFullscreenButton() {
@@ -7249,8 +7255,8 @@ async function enterStudyFullscreen() {
   if (requestFullscreen) {
     try {
       await requestFullscreen.call(target);
-      setStudyFullscreenFallback(false);
-      syncStudyFullscreenButton();
+      studyFullscreenFallback = false;
+      syncStudyFullscreenState();
       return;
     } catch (err) {
       // Local file contexts can reject fullscreen; use the same visual mode without the browser API.
@@ -7279,7 +7285,7 @@ function toggleStudyFullscreen() {
 }
 
 function handleStudyFullscreenKeydown(event) {
-  if (event.key === "Escape" && studyFullscreenFallback) exitStudyFullscreen();
+  if (event.key === "Escape" && isStudyFullscreenActive()) exitStudyFullscreen();
 }
 
 function renderStudyCard() {
@@ -7552,8 +7558,8 @@ function setupStudyMode() {
     faceEl.addEventListener("click", handleStudyFaceClick);
     faceEl.addEventListener("keydown", handleStudyFaceKeydown);
   }
-  document.addEventListener("fullscreenchange", syncStudyFullscreenButton);
-  document.addEventListener("webkitfullscreenchange", syncStudyFullscreenButton);
+  document.addEventListener("fullscreenchange", syncStudyFullscreenState);
+  document.addEventListener("webkitfullscreenchange", syncStudyFullscreenState);
   document.addEventListener("keydown", handleStudyFullscreenKeydown);
   document.querySelectorAll(".study-grade-btn[data-study-grade]").forEach(btn => {
     btn.addEventListener("click", () => gradeStudyCard(btn.dataset.studyGrade));

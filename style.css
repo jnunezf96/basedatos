@@ -2583,6 +2583,19 @@ body.study-fullscreen-active {
   overflow: hidden;
 }
 
+body.study-fullscreen-active .panel-tab-row,
+body.study-fullscreen-active #studyPanel > .study-card > .sources-head,
+body.study-fullscreen-active .study-setup,
+body.study-fullscreen-active .active-filters-bar,
+body.study-fullscreen-active .data-panel,
+body.study-fullscreen-active .scroll-nav,
+body.study-fullscreen-active .column-menu-dropdown,
+body.study-fullscreen-active .export-menu-dropdown,
+body.study-fullscreen-active .study-limit-menu,
+body.study-fullscreen-active .toast {
+  display: none !important;
+}
+
 .study-stage:fullscreen,
 body.study-fullscreen-active .study-stage--fullscreen {
   box-sizing: border-box;
@@ -2591,11 +2604,14 @@ body.study-fullscreen-active .study-stage--fullscreen {
   position: relative;
   width: 100vw;
   max-width: none;
-  height: 100vh;
+  height: var(--mobile-viewport-height, 100dvh);
+  min-height: 100vh;
   margin: 0;
   padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
   overflow: auto;
   background: #fff;
+  isolation: isolate;
+  overscroll-behavior: contain;
 }
 
 .study-stage:fullscreen .study-fullscreen-icon-btn:not([hidden]),
@@ -2607,9 +2623,9 @@ body.study-fullscreen-active .study-stage--fullscreen .study-fullscreen-exit-btn
 }
 
 body.study-fullscreen-active .study-stage--fullscreen {
-  position: fixed;
-  inset: 0;
-  z-index: 1200;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483647 !important;
 }
 
 .study-stage:fullscreen .study-face,
