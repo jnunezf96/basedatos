@@ -13,3 +13,14 @@ scripts/spanish_*_spellcheck.tsv
 scripts/spanish_*_suggestions.jsonl
 scripts/spanish_*_summary.txt
 scripts/spanish_*_tokens.txt
+
+# Local Codex analysis artifacts. Existing tracked files remain tracked;
+# new generated scripts/reports stay local unless force-added deliberately.
+scripts/*.py
+scripts/*.swift
+scripts/*.jsonl
+scripts/*.tsv
+scripts/*.txt
+scripts/*.json
+scripts/*_summary.json
+scripts/*_summary.txt
