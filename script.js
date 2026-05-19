@@ -34,7 +34,7 @@ const I18N = {
     "tab.filters": "Filtros",
     "tab.sources": "Fuentes",
     "tab.regex": "Regex",
-    "tab.pairs": "Pares a/i",
+    "tab.pairs": "Pares",
     "tab.study": "Tarjetas",
     "reverse.title": "Filtros guiados",
     "reverse.hint": "Elige una relación: en qué columna buscas y qué columna quieres ver como resultado.",
@@ -196,7 +196,7 @@ const I18N = {
     "action.run": "Ejecutar",
     "action.clear": "Vaciar",
     "nav.search": "Buscar",
-    "nav.chips": "Aplicados",
+    "nav.chips": "Etiquetas",
     "nav.results": "Resultados",
     "chips.empty": "Ningún filtro aplicado todavía.",
     "placeholder.exact.incl": "es exactamente...",
@@ -264,7 +264,8 @@ const I18N = {
     "rx.literal": "Regex literal",
     "rx.lit.desc": "expresión completa entre <code>/</code>",
     "rx.lit.flags": "admite flags: i g m…",
-    "pairs.title": "Pares a/i",
+    "pairs.title": "Pares",
+    "pairs.description": "Compara formas que comparten base y cambian por sufijo, por ejemplo -i / -a.",
     "pairs.run": "Buscar pares",
     "pairs.clear": "Limpiar",
     "pairs.column": "Columna",
@@ -276,7 +277,7 @@ const I18N = {
     "pairs.useFilters": "Usar filtros actuales",
     "pairs.wordOnly": "Solo palabras",
     "pairs.summary": "Pares encontrados: {{pairs}} · Filas analizadas: {{rows}}",
-    "pairs.noResults": "No se encontraron pares a/i.",
+    "pairs.noResults": "No se encontraron pares.",
     "pairs.header.stem": "Base",
     "pairs.header.a": "Forma en -a",
     "pairs.header.i": "Forma en -i",
@@ -427,8 +428,6 @@ const I18N = {
     "sort.by": "Ordenar por",
     "sort.asc": "ascendente",
     "sort.desc": "descendente",
-    "oldspanish.toggle": "Esp. antiguo",
-    "label.oldspanish": "Ortografía",
     "label.accent": "Acento",
     "label.logic": "Combinar",
     "accent.sensitive": "Acento exacto",
@@ -482,7 +481,7 @@ const I18N = {
     "tab.filters": "Filters",
     "tab.sources": "Sources",
     "tab.regex": "Regex guide",
-    "tab.pairs": "a/i pairs",
+    "tab.pairs": "Pairs",
     "tab.study": "Cards",
     "reverse.title": "Guided filters",
     "reverse.hint": "Choose a relationship: which column to search in, and which column to show as the result.",
@@ -644,7 +643,7 @@ const I18N = {
     "action.run": "Run",
     "action.clear": "Clear",
     "nav.search": "Search",
-    "nav.chips": "Applied",
+    "nav.chips": "Labels",
     "nav.results": "Results",
     "chips.empty": "No filters applied yet.",
     "placeholder.exact.incl": "is exactly...",
@@ -712,7 +711,8 @@ const I18N = {
     "rx.literal": "Literal regex",
     "rx.lit.desc": "full expression between <code>/</code>",
     "rx.lit.flags": "supports flags: i g m…",
-    "pairs.title": "a/i pairs",
+    "pairs.title": "Pairs",
+    "pairs.description": "Compare forms that share a stem and differ by suffix, such as -i / -a.",
     "pairs.run": "Find pairs",
     "pairs.clear": "Clear",
     "pairs.column": "Column",
@@ -724,7 +724,7 @@ const I18N = {
     "pairs.useFilters": "Use current filters",
     "pairs.wordOnly": "Word only",
     "pairs.summary": "Pairs found: {{pairs}} · Rows scanned: {{rows}}",
-    "pairs.noResults": "No a/i pairs found.",
+    "pairs.noResults": "No pairs found.",
     "pairs.header.stem": "Stem",
     "pairs.header.a": "-a form",
     "pairs.header.i": "-i form",
@@ -875,8 +875,6 @@ const I18N = {
     "sort.by": "Sort by",
     "sort.asc": "ascending",
     "sort.desc": "descending",
-    "oldspanish.toggle": "Old Spanish",
-    "label.oldspanish": "Spelling",
     "label.accent": "Accent",
     "label.logic": "Combine",
     "accent.sensitive": "Exact accent",
@@ -1237,7 +1235,6 @@ document.addEventListener("DOMContentLoaded", () => {
   syncFieldPillOrder();
   setupLanguageToggle();
   setupFilterHelpToggle();
-  setupOldSpanishToggle();
   setupAccentToggle();
   setupLogicToggle();
   setupChipsBarDelegation();
@@ -1547,19 +1544,6 @@ function setupFilterHelpToggle() {
     const expanded = btn.getAttribute("aria-expanded") === "true";
     btn.setAttribute("aria-expanded", expanded ? "false" : "true");
     help.classList.toggle("site-tagline--open", !expanded);
-  });
-}
-
-function setupOldSpanishToggle() {
-  const btns = document.querySelectorAll(".old-spanish-btn");
-  btns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      oldSpanishMode = !oldSpanishMode;
-      btns.forEach(b => b.classList.toggle("active", oldSpanishMode));
-      normalizationCache = new Map();
-      if (activeFilters.length) applyFilters();
-      else updateUrlHash();
-    });
   });
 }
 
@@ -7904,9 +7888,6 @@ function applyParsedState(state) {
     if (oldSpanishMode !== desiredOldSpanish) {
       oldSpanishMode = desiredOldSpanish;
       normalizationCache = new Map();
-      document.querySelectorAll(".old-spanish-btn").forEach(b =>
-        b.classList.toggle("active", oldSpanishMode)
-      );
     }
     const desiredAccent = !!state.accent;
     if (accentSensitiveMode !== desiredAccent) {
