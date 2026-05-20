@@ -1224,6 +1224,8 @@ let lastLemmaItems = [];
 let lastLemmaPageOffsets = [0];
 let mobileViewportMetricRaf = 0;
 let mobileViewportResizeObserver = null;
+let mobileViewportBaselineHeight = 0;
+let mobileViewportBaselineWidth = 0;
 const prioritySortCache = new WeakMap();
 const FUENTE_ORDER_KEY = "nahuatl-source-order-v1";
 let fuenteOrderMode = "title"; // "title" | "year"
@@ -1350,19 +1352,42 @@ function syncMobileViewportMetrics() {
       root.style.removeProperty("--mobile-viewport-height");
       root.style.removeProperty("--mobile-nav-height");
       delete root.dataset.mobileVisual;
+      delete root.dataset.mobileKeyboard;
+      mobileViewportBaselineHeight = 0;
+      mobileViewportBaselineWidth = 0;
       return;
     }
 
     const vv = window.visualViewport;
     const viewportHeight = vv && Number.isFinite(vv.height) ? vv.height : window.innerHeight;
     const viewportWidth = vv && Number.isFinite(vv.width) ? vv.width : window.innerWidth;
+    if (
+      !mobileViewportBaselineHeight
+      || Math.abs(viewportWidth - mobileViewportBaselineWidth) > 80
+      || viewportHeight > mobileViewportBaselineHeight
+    ) {
+      mobileViewportBaselineHeight = viewportHeight;
+      mobileViewportBaselineWidth = viewportWidth;
+    }
+    const layoutHeight = Math.max(
+      window.innerHeight || 0,
+      document.documentElement.clientHeight || 0,
+      mobileViewportBaselineHeight || 0
+    );
+    const keyboardOpen = Boolean(
+      vv
+      && Number.isFinite(viewportHeight)
+      && layoutHeight > 0
+      && viewportHeight < layoutHeight * 0.78
+    );
     if (Number.isFinite(viewportHeight) && viewportHeight > 0) {
       root.style.setProperty("--mobile-viewport-height", `${Math.round(viewportHeight)}px`);
     }
+    root.dataset.mobileKeyboard = keyboardOpen ? "open" : "closed";
     root.dataset.mobileVisual = viewportWidth < 360 || viewportHeight < 520 ? "constrained" : "normal";
 
     const nav = document.querySelector(".scroll-nav");
-    const navVisible = nav && window.getComputedStyle(nav).display !== "none";
+    const navVisible = !keyboardOpen && nav && window.getComputedStyle(nav).display !== "none";
     const navHeight = navVisible ? Math.ceil(nav.getBoundingClientRect().height) : 0;
     root.style.setProperty("--mobile-nav-height", `${Math.max(0, navHeight)}px`);
     syncSessionFolderNotch();
