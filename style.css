@@ -3159,7 +3159,10 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   .panel-shell {
     height: var(--mobile-screen-height);
     min-height: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     --session-join-height: 6px;
   }
 
@@ -3184,17 +3187,15 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   .tab-panel.active {
     display: flex;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     min-height: 0;
   }
 
   .tab-panel.active > .filter-card,
   .tab-panel.active > .sources-card {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
+    flex: 0 0 auto;
+    min-height: auto;
+    overflow: visible;
   }
 
   .panel-controls {

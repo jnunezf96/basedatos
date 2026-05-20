@@ -8095,6 +8095,20 @@ function setupKeyboardAvoidance() {
     // 12px breathing room above the keyboard / below the URL bar.
     const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const behavior = reduced ? "auto" : "smooth";
+    const panelScroller = document.documentElement.dataset.mobileKeyboard === "open"
+      ? el.closest(".panel-shell")
+      : null;
+    if (panelScroller) {
+      const scrollerRect = panelScroller.getBoundingClientRect();
+      const topLimit = Math.max(top + 12, scrollerRect.top + 12);
+      const bottomLimit = Math.min(bottom - 12, scrollerRect.bottom - 12);
+      if (rect.bottom > bottomLimit) {
+        panelScroller.scrollBy({ top: rect.bottom - bottomLimit, behavior });
+      } else if (rect.top < topLimit) {
+        panelScroller.scrollBy({ top: rect.top - topLimit, behavior });
+      }
+      return;
+    }
     if (rect.bottom > bottom - 12) {
       el.scrollIntoView({ block: "center", behavior });
     } else if (rect.top < top + 12) {
