@@ -1226,6 +1226,7 @@ let mobileViewportMetricRaf = 0;
 let mobileViewportResizeObserver = null;
 let mobileViewportBaselineHeight = 0;
 let mobileViewportBaselineWidth = 0;
+let mobileNavBaselineHeight = 0;
 const prioritySortCache = new WeakMap();
 const FUENTE_ORDER_KEY = "nahuatl-source-order-v1";
 let fuenteOrderMode = "title"; // "title" | "year"
@@ -1351,25 +1352,17 @@ function syncMobileViewportMetrics() {
     if (!isMobile) {
       root.style.removeProperty("--mobile-viewport-height");
       root.style.removeProperty("--mobile-nav-height");
-      root.style.removeProperty("--mobile-keyboard-shell-height");
       delete root.dataset.mobileVisual;
       delete root.dataset.mobileKeyboard;
       mobileViewportBaselineHeight = 0;
       mobileViewportBaselineWidth = 0;
+      mobileNavBaselineHeight = 0;
       return;
     }
 
     const vv = window.visualViewport;
     const viewportHeight = vv && Number.isFinite(vv.height) ? vv.height : window.innerHeight;
     const viewportWidth = vv && Number.isFinite(vv.width) ? vv.width : window.innerWidth;
-    if (
-      !mobileViewportBaselineHeight
-      || Math.abs(viewportWidth - mobileViewportBaselineWidth) > 80
-      || viewportHeight > mobileViewportBaselineHeight
-    ) {
-      mobileViewportBaselineHeight = viewportHeight;
-      mobileViewportBaselineWidth = viewportWidth;
-    }
     const layoutHeight = Math.max(
       window.innerHeight || 0,
       document.documentElement.clientHeight || 0,
@@ -1381,22 +1374,32 @@ function syncMobileViewportMetrics() {
       && layoutHeight > 0
       && viewportHeight < layoutHeight * 0.78
     );
-    const keyboardShellHeight = keyboardOpen
-      ? Math.max(viewportHeight, layoutHeight * 0.54)
+
+    if (
+      Number.isFinite(viewportHeight)
+      && viewportHeight > 0
+      && (!keyboardOpen || !mobileViewportBaselineHeight || Math.abs(viewportWidth - mobileViewportBaselineWidth) > 80)
+    ) {
+      mobileViewportBaselineHeight = viewportHeight;
+      mobileViewportBaselineWidth = viewportWidth;
+    }
+    const stableViewportHeight = keyboardOpen && mobileViewportBaselineHeight
+      ? mobileViewportBaselineHeight
       : viewportHeight;
-    if (Number.isFinite(viewportHeight) && viewportHeight > 0) {
-      root.style.setProperty("--mobile-viewport-height", `${Math.round(viewportHeight)}px`);
+    if (Number.isFinite(stableViewportHeight) && stableViewportHeight > 0) {
+      root.style.setProperty("--mobile-viewport-height", `${Math.round(stableViewportHeight)}px`);
     }
-    if (Number.isFinite(keyboardShellHeight) && keyboardShellHeight > 0) {
-      root.style.setProperty("--mobile-keyboard-shell-height", `${Math.round(keyboardShellHeight)}px`);
-    }
-    root.dataset.mobileKeyboard = keyboardOpen ? "open" : "closed";
-    root.dataset.mobileVisual = viewportWidth < 360 || viewportHeight < 520 ? "constrained" : "normal";
 
     const nav = document.querySelector(".scroll-nav");
-    const navVisible = !keyboardOpen && nav && window.getComputedStyle(nav).display !== "none";
-    const navHeight = navVisible ? Math.ceil(nav.getBoundingClientRect().height) : 0;
+    const navVisible = nav && window.getComputedStyle(nav).display !== "none";
+    let navHeight = mobileNavBaselineHeight;
+    if (!keyboardOpen && navVisible) {
+      navHeight = Math.ceil(nav.getBoundingClientRect().height);
+      mobileNavBaselineHeight = navHeight;
+    }
     root.style.setProperty("--mobile-nav-height", `${Math.max(0, navHeight)}px`);
+    root.dataset.mobileKeyboard = keyboardOpen ? "open" : "closed";
+    root.dataset.mobileVisual = viewportWidth < 360 || stableViewportHeight < 520 ? "constrained" : "normal";
     syncSessionFolderNotch();
   });
 }
