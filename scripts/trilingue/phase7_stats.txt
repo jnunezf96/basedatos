@@ -1,6 +1,0 @@
-refinement results: 643 rows
-  revised: 98
-  unchanged: 545
-  errors: 0
-
-review.txt rewritten: 825 records

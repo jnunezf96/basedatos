@@ -5,6 +5,7 @@ data/data.jsonl.bak*.gz
 resources/dictionaries/
 .claude/
 tools/
+scripts/
 scripts/spanish_*_inventory.jsonl
 scripts/spanish_*_report.jsonl
 scripts/spanish_*_review.tsv
