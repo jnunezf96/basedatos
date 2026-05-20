@@ -1382,7 +1382,7 @@ function syncMobileViewportMetrics() {
       && viewportHeight < layoutHeight * 0.78
     );
     const keyboardShellHeight = keyboardOpen
-      ? Math.max(viewportHeight, layoutHeight * 0.5)
+      ? Math.max(viewportHeight, layoutHeight * 0.54)
       : viewportHeight;
     if (Number.isFinite(viewportHeight) && viewportHeight > 0) {
       root.style.setProperty("--mobile-viewport-height", `${Math.round(viewportHeight)}px`);
