@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 .DS_Store
 data/data.jsonl.bak*.gz
+resources/dictionaries/
 .claude/
 tools/
 scripts/spanish_*_inventory.jsonl
