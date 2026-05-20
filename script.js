@@ -1351,6 +1351,7 @@ function syncMobileViewportMetrics() {
     if (!isMobile) {
       root.style.removeProperty("--mobile-viewport-height");
       root.style.removeProperty("--mobile-nav-height");
+      root.style.removeProperty("--mobile-keyboard-shell-height");
       delete root.dataset.mobileVisual;
       delete root.dataset.mobileKeyboard;
       mobileViewportBaselineHeight = 0;
@@ -1380,8 +1381,14 @@ function syncMobileViewportMetrics() {
       && layoutHeight > 0
       && viewportHeight < layoutHeight * 0.78
     );
+    const keyboardShellHeight = keyboardOpen
+      ? Math.max(viewportHeight, layoutHeight * 0.5)
+      : viewportHeight;
     if (Number.isFinite(viewportHeight) && viewportHeight > 0) {
       root.style.setProperty("--mobile-viewport-height", `${Math.round(viewportHeight)}px`);
+    }
+    if (Number.isFinite(keyboardShellHeight) && keyboardShellHeight > 0) {
+      root.style.setProperty("--mobile-keyboard-shell-height", `${Math.round(keyboardShellHeight)}px`);
     }
     root.dataset.mobileKeyboard = keyboardOpen ? "open" : "closed";
     root.dataset.mobileVisual = viewportWidth < 360 || viewportHeight < 520 ? "constrained" : "normal";
