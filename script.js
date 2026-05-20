@@ -1227,6 +1227,7 @@ let mobileViewportResizeObserver = null;
 let mobileViewportBaselineHeight = 0;
 let mobileViewportBaselineWidth = 0;
 let mobileNavBaselineHeight = 0;
+let activeFiltersResizeObserver = null;
 const prioritySortCache = new WeakMap();
 const FUENTE_ORDER_KEY = "nahuatl-source-order-v1";
 let fuenteOrderMode = "title"; // "title" | "year"
@@ -1241,6 +1242,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupAccentToggle();
   setupLogicToggle();
   setupChipsBarDelegation();
+  setupActiveFiltersScrollSpace();
   setupSessionBar();
   setupLiveSearch();
   setStatus(t("table.status.loading"));
@@ -1340,6 +1342,30 @@ function setupScrollNav() {
   document.querySelectorAll(".scroll-nav-btn").forEach(btn => {
     btn.addEventListener("click", () => showScreen(btn.dataset.scroll));
   });
+}
+
+function syncActiveFiltersScrollSpace() {
+  const shell = document.querySelector(".app-shell");
+  const bar = document.getElementById("activeFiltersBar");
+  if (!shell || !bar) return;
+  if (bar.classList.contains("active-filters-bar--empty") || window.getComputedStyle(bar).display === "none") {
+    shell.style.setProperty("--active-filters-scroll-space", "0px");
+    return;
+  }
+  const shellStyle = window.getComputedStyle(shell);
+  const gap = Number.parseFloat(shellStyle.rowGap || shellStyle.gap) || 0;
+  const height = Math.ceil(bar.getBoundingClientRect().height + gap);
+  shell.style.setProperty("--active-filters-scroll-space", `${Math.max(0, height)}px`);
+}
+
+function setupActiveFiltersScrollSpace() {
+  syncActiveFiltersScrollSpace();
+  window.addEventListener("resize", syncActiveFiltersScrollSpace);
+  const bar = document.getElementById("activeFiltersBar");
+  if (bar && "ResizeObserver" in window) {
+    activeFiltersResizeObserver = new ResizeObserver(syncActiveFiltersScrollSpace);
+    activeFiltersResizeObserver.observe(bar);
+  }
 }
 
 function syncMobileViewportMetrics() {
@@ -1747,6 +1773,7 @@ function renderActiveFilterChips() {
   if (!groups.size) {
     bar.classList.add("active-filters-bar--empty");
     bar.innerHTML = `<div class="active-filters-empty" data-i18n="chips.empty">${t("chips.empty")}</div>`;
+    requestAnimationFrame(syncActiveFiltersScrollSpace);
     return;
   }
   bar.classList.remove("active-filters-bar--empty");
@@ -1839,6 +1866,7 @@ function renderActiveFilterChips() {
     bar.appendChild(clearAll);
   }
 
+  requestAnimationFrame(syncActiveFiltersScrollSpace);
 }
 
 // ── Session management ─────────────────────────────────────────

@@ -31,6 +31,7 @@ body {
 }
 
 .app-shell {
+  --active-filters-scroll-space: 0px;
   max-width: 1200px;
   min-height: 100dvh;
   margin: 0 auto;
@@ -296,7 +297,7 @@ body {
   flex-direction: column;
   gap: 0;
   flex: 0 0 auto;
-  height: calc(100dvh - 20px);
+  height: calc(100dvh - var(--active-filters-scroll-space));
   min-height: 560px;
   overflow: hidden;
 }
@@ -3124,12 +3125,13 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     --mobile-shell-pad-top: 12px;
     --mobile-viewport-height: 100dvh;
     --mobile-nav-height: calc(59px + env(safe-area-inset-bottom));
-    --mobile-screen-height: max(0px, calc(var(--mobile-viewport-height) - var(--mobile-nav-height) - var(--mobile-shell-pad-top)));
+    --mobile-nav-space: var(--mobile-nav-height);
+    --mobile-screen-height: max(0px, calc(var(--mobile-viewport-height) - var(--mobile-nav-space) - var(--mobile-shell-pad-top)));
   }
 
   .app-shell {
     height: var(--mobile-viewport-height);
-    padding: var(--mobile-shell-pad-top) 12px var(--mobile-nav-height);
+    padding: var(--mobile-shell-pad-top) 12px var(--mobile-nav-space);
     gap: 0;
     overflow: hidden;
   }
@@ -3566,6 +3568,10 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   html[data-mobile-keyboard="open"] .scroll-nav {
     display: none !important;
+  }
+
+  html[data-mobile-keyboard="open"] {
+    --mobile-nav-space: 0px;
   }
 
   /* Leave room at the bottom of the data-panel for the sticky scroll-nav.
