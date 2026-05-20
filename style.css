@@ -3574,6 +3574,21 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   html[data-mobile-keyboard="open"] .panel-shell {
     height: calc(var(--mobile-keyboard-shell-height) - var(--mobile-shell-pad-top) - env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  html[data-mobile-keyboard="open"] .tab-panel.active {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+
+  html[data-mobile-keyboard="open"] .tab-panel.active > .filter-card,
+  html[data-mobile-keyboard="open"] .tab-panel.active > .sources-card {
+    flex: 0 0 auto;
+    overflow: visible;
+    min-height: auto;
   }
 
   /* Leave room at the bottom of the data-panel for the sticky scroll-nav.
