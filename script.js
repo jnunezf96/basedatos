@@ -933,7 +933,7 @@ let groupOrder = []; // [{id, logic}] — preserves chip insertion order
 
 // ── Session state ──────────────────────────────────────────────
 let sessionCounter = 1;
-let sessions = [{ id: "s1", filters: [], order: [], groupCounter: 0 }];
+let sessions = [{ id: "s1", filters: [], order: [], groupCounter: 0, accentSensitive: false }];
 let currentSessionId = "s1";
 
 const FIELD_SHORT_BY_LANG = {
@@ -1622,6 +1622,8 @@ function setupAccentToggle() {
       const nextMode = btn.dataset.accent === "strict";
       if (nextMode === accentSensitiveMode) return;
       accentSensitiveMode = nextMode;
+      const session = sessions.find(s => s.id === currentSessionId);
+      if (session) session.accentSensitive = accentSensitiveMode;
       updateAccentLabels();
       if (activeFilters.length) applyFilters();
       else updateUrlHash();
@@ -1895,6 +1897,7 @@ function saveCurrentSession() {
   session.sortKeys = sortKeys.slice();
   session.sortScope = sortScope;
   session.viewMode = tableViewMode;
+  session.accentSensitive = accentSensitiveMode;
   session.expandedComments = Array.from(expandedComments);
   session.expandedLemmas = Array.from(expandedLemmas);
   session.expandedMobileRows = Array.from(expandedMobileRows);
@@ -1928,6 +1931,7 @@ function loadSession(sessionId) {
     sortKeys = (session.sortKeys ?? []).slice();
     sortScope = session.sortScope ?? "all";
     tableViewMode = session.viewMode ?? "rows";
+    accentSensitiveMode = !!session.accentSensitive;
     expandedComments.clear();
     (session.expandedComments ?? []).forEach(id => expandedComments.add(id));
     expandedLemmas.clear();
@@ -1942,6 +1946,7 @@ function loadSession(sessionId) {
   updateSortIndicators();
   updateSortScopeIndicators();
   updateViewToggleButtons();
+  updateAccentLabels();
   applyFuenteFilters({ keepOffset: true, preserveExpandState: true });
 
   const scroller = getTableScrollElement();
@@ -1952,7 +1957,14 @@ function addSession() {
   saveCurrentSession();
   sessionCounter++;
   const id = `s${sessionCounter}`;
-  const newSession = { id, filters: [], order: [], groupCounter: 0, fuentes: createDefaultFuenteSet() };
+  const newSession = {
+    id,
+    filters: [],
+    order: [],
+    groupCounter: 0,
+    fuentes: createDefaultFuenteSet(),
+    accentSensitive: false
+  };
   sessions.push(newSession);
 
   // Cancel edit, clear card
@@ -1969,6 +1981,7 @@ function addSession() {
   sortKeys = [];
   sortScope = "all";
   tableViewMode = "rows";
+  accentSensitiveMode = newSession.accentSensitive;
   expandedComments.clear();
   expandedLemmas.clear();
   expandedMobileRows.clear();
@@ -1979,6 +1992,7 @@ function addSession() {
   updateSortIndicators();
   updateSortScopeIndicators();
   updateViewToggleButtons();
+  updateAccentLabels();
   applyFuenteFilters();
 
   const scroller = getTableScrollElement();
@@ -2011,6 +2025,7 @@ function closeSession(sessionId) {
     sortKeys = (nextSession.sortKeys ?? []).slice();
     sortScope = nextSession.sortScope ?? "all";
     tableViewMode = nextSession.viewMode ?? "rows";
+    accentSensitiveMode = !!nextSession.accentSensitive;
     expandedComments.clear();
     (nextSession.expandedComments ?? []).forEach(eid => expandedComments.add(eid));
     expandedLemmas.clear();
@@ -2022,6 +2037,7 @@ function closeSession(sessionId) {
     updateSortIndicators();
     updateSortScopeIndicators();
     updateViewToggleButtons();
+    updateAccentLabels();
     applyFuenteFilters({ keepOffset: true, preserveExpandState: true });
     const scroller = getTableScrollElement();
     if (scroller) scroller.scrollTop = nextSession.scrollTop ?? 0;
@@ -7957,6 +7973,8 @@ function applyParsedState(state) {
       accentSensitiveMode = desiredAccent;
       updateAccentLabels();
     }
+    const session = sessions.find(s => s.id === currentSessionId);
+    if (session) session.accentSensitive = accentSensitiveMode;
 
     renderFuenteList();
     renderActiveFilterChips();
