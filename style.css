@@ -940,9 +940,21 @@ th[data-field="Comentario"] .header-actions {
 .active-filters-bar {
   display: flex;
   align-items: flex-start;
+  align-content: flex-start;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 4px;
-  padding: 0;
+  gap: 6px 8px;
+  width: 100%;
+  box-sizing: border-box;
+  max-height: min(22dvh, 160px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: 8px 10px;
+  border: 1px solid #e1e6fb;
+  border-radius: 10px;
+  background: #f8faff;
+  box-shadow: inset 0 1px 0 #fff;
 }
 
 .active-filters-bar--empty {
@@ -950,18 +962,22 @@ th[data-field="Comentario"] .header-actions {
 }
 
 .active-filters-empty {
-  flex: 1 1 auto;
-  padding: 18px 6px;
+  flex: 1 1 100%;
+  padding: 12px 2px;
   color: #8a93b0;
   font-size: 14px;
-  text-align: center;
+  text-align: left;
 }
 
 .chips-zone {
   display: flex;
+  flex: 0 1 auto;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px;
+  justify-content: flex-start;
+  align-content: flex-start;
+  gap: 5px;
+  min-width: 0;
 }
 
 .chips-zone-label {
@@ -998,6 +1014,7 @@ th[data-field="Comentario"] .header-actions {
 .chips-zone-divider {
   width: 1px;
   align-self: stretch;
+  min-height: 24px;
   background: #dbe0f2;
   margin: 0 4px;
 }
@@ -1006,7 +1023,7 @@ th[data-field="Comentario"] .header-actions {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 4px 3px 8px;
+  padding: 3px 4px 3px 5px;
   border-radius: 999px;
   font-size: 11.5px;
   font-weight: 500;
@@ -1025,6 +1042,12 @@ th[data-field="Comentario"] .header-actions {
 .filter-chip.chip-group:hover {
   background: #dde3fa;
   box-shadow: 0 0 0 2px rgba(76, 110, 245, 0.12);
+}
+
+.filter-chip.chip-selected {
+  background: #dce5ff;
+  border-color: #8fa2f7;
+  box-shadow: 0 0 0 2px rgba(76, 110, 245, 0.14);
 }
 
 .filter-chip.chip-editing {
@@ -1052,10 +1075,17 @@ th[data-field="Comentario"] .header-actions {
   opacity: 0.4;
 }
 
-.chip-clear-all {
-  background: transparent;
-  border: 1px solid #c7cffa;
-  color: #4c6ef5;
+.chip-actions {
+  display: inline-flex;
+  flex: 1 1 100%;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding-top: 2px;
+}
+
+.chip-action {
   border-radius: 999px;
   padding: 4px 10px;
   font-size: 11px;
@@ -1065,10 +1095,110 @@ th[data-field="Comentario"] .header-actions {
   transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
 }
 
+.chip-select-all,
+.chip-clear-selection {
+  background: #fff;
+  border: 1px solid #c7cffa;
+  color: #4c6ef5;
+}
+
+.chip-select-all:hover,
+.chip-clear-selection:hover {
+  background: #e8edff;
+  border-color: #b9c5ff;
+  color: #1b2589;
+}
+
+.chip-logic-and {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.chip-logic-and:hover {
+  background: #d1fae5;
+  border-color: #6ee7b7;
+  color: #064e3b;
+}
+
+.chip-logic-or {
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  color: #5b21b6;
+}
+
+.chip-logic-or:hover {
+  background: #ede9fe;
+  border-color: #c4b5fd;
+  color: #4c1d95;
+}
+
+.chip-clear-all {
+  background: transparent;
+  border: 1px solid #c7cffa;
+  color: #4c6ef5;
+}
+
 .chip-clear-all:hover {
   background: #fdecef;
   border-color: #f5c0cd;
   color: #9d1f4e;
+}
+
+.chip-delete-selected {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+}
+
+.chip-delete-selected:hover {
+  background: #ffedd5;
+  border-color: #fdba74;
+  color: #7c2d12;
+}
+
+.chip-select-shell {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.chip-select {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  border: 1.5px solid #8a95c9;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+}
+
+.chip-select:checked {
+  background: #4c6ef5;
+  border-color: #4c6ef5;
+}
+
+.chip-select:checked::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 1px;
+  width: 4px;
+  height: 7px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.chip-select:focus-visible {
+  outline: 2px solid #4c6ef5;
+  outline-offset: 2px;
 }
 
 .chip-label {
@@ -1498,7 +1628,9 @@ th[data-field="Comentario"] .header-actions {
 .filter-side-choice:focus-visible,
 .column-reset-btn:focus-visible,
 .export-menu-item:focus-visible,
+.chip-action:focus-visible,
 .chip-clear-all:focus-visible,
+.chip-delete-selected:focus-visible,
 .study-mode-btn:focus-visible {
   outline: 2px solid #4c6ef5;
   outline-offset: 2px;
@@ -3152,10 +3284,40 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
      (the empty-state message sits inside). */
   .app-shell[data-screen="chips"] .active-filters-bar {
     display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 10px;
     height: var(--mobile-screen-height);
+    max-height: none;
     overflow: auto;
-    align-content: flex-start;
-    padding: 8px 4px;
+    align-content: stretch;
+    padding: 10px;
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  .app-shell[data-screen="chips"] .active-filters-empty {
+    padding: 14px 4px;
+    text-align: left;
+  }
+
+  .app-shell[data-screen="chips"] .chips-zone {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .app-shell[data-screen="chips"] .chips-zone-divider {
+    width: 100%;
+    height: 1px;
+    min-height: 1px;
+    margin: 0;
+  }
+
+  .app-shell[data-screen="chips"] .chip-actions {
+    width: 100%;
+    padding-top: 4px;
+    border-top: 1px solid #e1e6fb;
   }
 
   .panel-shell {
@@ -4254,9 +4416,26 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   /* ── Active filter chips: bigger remove targets ── */
   .filter-chip {
-    padding: 5px 5px 5px 10px;
+    padding: 5px 5px 5px 6px;
     font-size: 12px;
     max-width: 100%;
+  }
+
+  .chip-select-shell {
+    width: 26px;
+    height: 26px;
+  }
+
+  .chip-select {
+    width: 16px;
+    height: 16px;
+  }
+
+  .chip-select:checked::after {
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
   }
 
   .chip-part {
@@ -4269,7 +4448,9 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     font-size: 15px;
   }
 
-  .chip-clear-all {
+  .chip-action,
+  .chip-clear-all,
+  .chip-delete-selected {
     min-height: 32px;
     padding: 6px 12px;
     font-size: 12px;

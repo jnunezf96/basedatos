@@ -438,8 +438,14 @@ const I18N = {
     "logic.or": "O",
     "chips.zone.and": "×",
     "chips.zone.or": "÷",
+    "chips.selectAll": "Seleccionar todo",
+    "chips.clearSelection": "Deseleccionar",
     "chips.clearAll": "Limpiar todo",
+    "chips.deleteSelected": "Eliminar seleccionados",
+    "chips.moveToAnd": "Mover a Y",
+    "chips.moveToOr": "Mover a O",
     "chips.removeFilter": "Quitar filtro",
+    "chips.selectFilter": "Seleccionar filtro",
     "chips.applied": "Filtros aplicados",
     "chips.scope.whole.code": "C",
     "chips.scope.word.code": "P",
@@ -885,8 +891,14 @@ const I18N = {
     "logic.or": "OR",
     "chips.zone.and": "×",
     "chips.zone.or": "÷",
+    "chips.selectAll": "Select all",
+    "chips.clearSelection": "Unselect",
     "chips.clearAll": "Clear all",
+    "chips.deleteSelected": "Delete selected",
+    "chips.moveToAnd": "Move to AND",
+    "chips.moveToOr": "Move to OR",
     "chips.removeFilter": "Remove filter",
+    "chips.selectFilter": "Select filter",
     "chips.applied": "Applied filters",
     "chips.scope.whole.code": "C",
     "chips.scope.word.code": "W",
@@ -935,6 +947,7 @@ let groupOrder = []; // [{id, logic}] — preserves chip insertion order
 let sessionCounter = 1;
 let sessions = [{ id: "s1", filters: [], order: [], groupCounter: 0, accentSensitive: false }];
 let currentSessionId = "s1";
+const selectedChipGroupIds = new Set();
 
 const FIELD_SHORT_BY_LANG = {
   es: {
@@ -1653,14 +1666,58 @@ function setupChipsBarDelegation() {
   const bar = document.getElementById("activeFiltersBar");
   if (!bar) return;
 
+  bar.addEventListener("change", e => {
+    const checkbox = e.target.closest(".chip-select");
+    if (!checkbox) return;
+    const chip = checkbox.closest("[data-group-id]");
+    if (!chip) return;
+    const groupId = chip.dataset.groupId;
+    if (checkbox.checked) selectedChipGroupIds.add(groupId);
+    else selectedChipGroupIds.delete(groupId);
+    renderActiveFilterChips();
+  });
+
   bar.addEventListener("click", e => {
+    if (e.target.closest(".chip-select-all")) {
+      selectedChipGroupIds.clear();
+      getCommittedChipGroupIds().forEach(id => selectedChipGroupIds.add(id));
+      renderActiveFilterChips();
+      return;
+    }
+
+    if (e.target.closest(".chip-clear-selection")) {
+      selectedChipGroupIds.clear();
+      renderActiveFilterChips();
+      return;
+    }
+
     // Clear-all button
     if (e.target.closest(".chip-clear-all")) {
       if (editingGroupId) cancelEdit();
       activeFilters = activeFilters.filter(f => f.owner === "f1" || f.owner === FUENTE_OWNER || f.type === "fuenteSet");
       groupOrder = [];
+      selectedChipGroupIds.clear();
       renderActiveFilterChips();
       applyFilters();
+      return;
+    }
+
+    // Delete only checked chips
+    if (e.target.closest(".chip-delete-selected")) {
+      if (!selectedChipGroupIds.size) return;
+      const ids = new Set(selectedChipGroupIds);
+      if (editingGroupId && ids.has(editingGroupId)) cancelEdit();
+      activeFilters = activeFilters.filter(f => !ids.has(f.owner));
+      groupOrder = groupOrder.filter(g => !ids.has(g.id));
+      selectedChipGroupIds.clear();
+      renderActiveFilterChips();
+      applyFilters();
+      return;
+    }
+
+    const logicAction = e.target.closest(".chip-logic-action");
+    if (logicAction && logicAction.dataset.logic) {
+      setSelectedChipLogic(logicAction.dataset.logic);
       return;
     }
 
@@ -1673,6 +1730,7 @@ function setupChipsBarDelegation() {
       if (editingGroupId === groupId) cancelEdit();
       activeFilters = activeFilters.filter(f => f.owner !== groupId);
       groupOrder = groupOrder.filter(g => g.id !== groupId);
+      selectedChipGroupIds.delete(groupId);
       renderActiveFilterChips();
       applyFilters();
       return;
@@ -1680,11 +1738,58 @@ function setupChipsBarDelegation() {
 
     // Chip body click → load for editing
     const chip = e.target.closest("[data-group-id]");
-    if (chip && !e.target.closest(".chip-remove")) {
+    if (chip && !e.target.closest(".chip-remove") && !e.target.closest(".chip-select-shell")) {
       showScreen("filters");
       loadGroupForEditing(chip.dataset.groupId);
     }
   });
+}
+
+function isCommittedChipFilter(filter) {
+  return filter && filter.owner && filter.type !== "fuenteSet" && filter.owner !== FUENTE_OWNER && filter.owner !== "f1";
+}
+
+function getCommittedChipGroupIds() {
+  const ids = new Set();
+  activeFilters.forEach(filter => {
+    if (isCommittedChipFilter(filter)) ids.add(filter.owner);
+  });
+  const ordered = groupOrder.map(group => group.id).filter(id => ids.has(id));
+  ids.forEach(id => {
+    if (!ordered.includes(id)) ordered.push(id);
+  });
+  return ordered;
+}
+
+function setSelectedChipLogic(nextLogic) {
+  if (!selectedChipGroupIds.size) return;
+  const logic = nextLogic === "OR" ? "OR" : "AND";
+  const ids = new Set(selectedChipGroupIds);
+
+  if (editingGroupId && ids.has(editingGroupId)) cancelEdit();
+
+  activeFilters.forEach(filter => {
+    if (!ids.has(filter.owner)) return;
+    filter.logic = logic;
+    if (normalizeScope(filter.scope) === "word" && logic === "AND") {
+      filter.wordGroupId = filter.owner;
+    } else {
+      delete filter.wordGroupId;
+    }
+  });
+
+  const seen = new Set();
+  groupOrder = groupOrder.map(group => {
+    if (!ids.has(group.id)) return group;
+    seen.add(group.id);
+    return { ...group, logic };
+  });
+  ids.forEach(id => {
+    if (!seen.has(id)) groupOrder.push({ id, logic });
+  });
+
+  renderActiveFilterChips();
+  applyFilters();
 }
 
 // Phone-only screen switcher. Safe to call on desktop — the attribute
@@ -1771,8 +1876,12 @@ function renderActiveFilterChips() {
     if (!groups.has(f.owner)) groups.set(f.owner, []);
     groups.get(f.owner).push(f);
   });
+  selectedChipGroupIds.forEach(id => {
+    if (!groups.has(id)) selectedChipGroupIds.delete(id);
+  });
 
   if (!groups.size) {
+    selectedChipGroupIds.clear();
     bar.classList.add("active-filters-bar--empty");
     bar.innerHTML = `<div class="active-filters-empty" data-i18n="chips.empty">${t("chips.empty")}</div>`;
     requestAnimationFrame(syncActiveFiltersScrollSpace);
@@ -1811,8 +1920,14 @@ function renderActiveFilterChips() {
     const chip = document.createElement("span");
     chip.className = "filter-chip chip-group";
     chip.dataset.groupId = groupId;
+    const selected = selectedChipGroupIds.has(groupId);
+    chip.classList.toggle("chip-selected", selected);
     if (groupId === editingGroupId) chip.classList.add("chip-editing");
     chip.innerHTML =
+      `<label class="chip-select-shell">` +
+      `<input type="checkbox" class="chip-select" ${selected ? "checked" : ""} ` +
+      `aria-label="${escapeHtml(t("chips.selectFilter"))}: ${escapeHtml(fieldLabel)}">` +
+      `</label>` +
       `<span class="chip-label"><span class="chip-field">${escapeHtml(fieldLabel)}</span> ${parts}</span>` +
       `<button type="button" class="chip-remove" aria-label="${escapeHtml(t("chips.removeFilter"))}">×</button>`;
 
@@ -1857,15 +1972,46 @@ function renderActiveFilterChips() {
   }
 
   const totalGroups = andIds.length + orIds.length;
-  if (totalGroups > 1) {
-    const clearAll = document.createElement("button");
-    clearAll.type = "button";
-    clearAll.className = "chip-clear-all mobile-icon-btn mobile-label-on";
-    clearAll.innerHTML =
-      `${mobileIconMarkup("icon-clear")}<span class="btn-label mobile-icon-label">${escapeHtml(t("chips.clearAll"))}</span>`;
-    clearAll.setAttribute("aria-label", t("chips.clearAll"));
-    clearAll.setAttribute("title", t("chips.clearAll"));
-    bar.appendChild(clearAll);
+  const selectedCount = selectedChipGroupIds.size;
+  const selectedHasAnd = andIds.some(id => selectedChipGroupIds.has(id));
+  const selectedHasOr = orIds.some(id => selectedChipGroupIds.has(id));
+  const allSelected = selectedCount > 0 && selectedCount === totalGroups;
+
+  function makeChipAction(className, iconId, labelKey, attrs = {}) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `${className} chip-action mobile-icon-btn mobile-label-on`;
+    btn.innerHTML =
+      `${mobileIconMarkup(iconId)}<span class="btn-label mobile-icon-label">${escapeHtml(t(labelKey))}</span>`;
+    btn.setAttribute("aria-label", t(labelKey));
+    btn.setAttribute("title", t(labelKey));
+    Object.entries(attrs).forEach(([name, value]) => {
+      btn.dataset[name] = value;
+    });
+    return btn;
+  }
+
+  if (totalGroups > 1 || selectedCount) {
+    const actions = document.createElement("div");
+    actions.className = "chip-actions";
+
+    if (totalGroups > 1 && !allSelected) {
+      actions.appendChild(makeChipAction("chip-select-all", "icon-all", "chips.selectAll"));
+    }
+    if (selectedCount) {
+      actions.appendChild(makeChipAction("chip-clear-selection", "icon-none", "chips.clearSelection"));
+      if (selectedHasOr) {
+        actions.appendChild(makeChipAction("chip-logic-action chip-logic-and", "icon-and", "chips.moveToAnd", { logic: "AND" }));
+      }
+      if (selectedHasAnd) {
+        actions.appendChild(makeChipAction("chip-logic-action chip-logic-or", "icon-or", "chips.moveToOr", { logic: "OR" }));
+      }
+      actions.appendChild(makeChipAction("chip-delete-selected", "icon-clear", "chips.deleteSelected"));
+    }
+    if (totalGroups > 1) {
+      actions.appendChild(makeChipAction("chip-clear-all", "icon-clear", "chips.clearAll"));
+    }
+    bar.appendChild(actions);
   }
 
   requestAnimationFrame(syncActiveFiltersScrollSpace);
@@ -1919,6 +2065,7 @@ function loadSession(sessionId) {
 
   // Drop all filters — fuente state now lives on the session itself
   activeFilters = [];
+  selectedChipGroupIds.clear();
 
   currentSessionId = sessionId;
   const session = sessions.find(s => s.id === sessionId);
@@ -1973,6 +2120,7 @@ function addSession() {
   if (card) card.querySelectorAll(".filter-input").forEach(i => (i.value = ""));
 
   activeFilters = [];
+  selectedChipGroupIds.clear();
   groupOrder = [];
   groupCounter = 0;
   currentSessionId = id;
@@ -2016,6 +2164,7 @@ function closeSession(sessionId) {
     if (card) card.querySelectorAll(".filter-input").forEach(i => (i.value = ""));
 
     activeFilters = [];
+    selectedChipGroupIds.clear();
     currentSessionId = nextSession.id;
     activeFilters = nextSession.filters.slice();
     groupOrder = nextSession.order.slice();
@@ -7940,6 +8089,7 @@ function applyParsedState(state) {
   try {
     if (editingGroupId) editingGroupId = null;
     activeFilters = [];
+    selectedChipGroupIds.clear();
     groupOrder = [];
     groupCounter = 0;
 
