@@ -2952,6 +2952,7 @@ function heapSiftDownWorstFirst(heap, idx, comparator) {
 function applyFilters(initial = false, options = {}) {
   if (!dataRows.length) return;
   if (shouldDeferUntilFullData()) {
+    renderActiveFilterChips();
     queueFullDataRefresh();
     return;
   }
