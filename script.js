@@ -2674,33 +2674,6 @@ function commitFilterCard() {
   vibe(8);
 }
 
-function applyFilterCard(owner) {
-  const card = document.querySelector(`.filter-card[data-owner="${owner}"]`);
-  if (!card) return;
-  removeOwnerFilters(owner);
-  resetComentarioState();
-
-  const field = card.querySelector(".field-btn.active")?.dataset.field;
-  const scope = card.querySelector(".scope-btn.active")?.dataset.scope || "whole";
-  if (!field) return;
-
-  // Word-scope filters from the same card must be evaluated against the same word.
-  // Assign a shared wordGroupId so extractWordQuickGroups groups them together.
-  const wordGroupId = scope === "word" ? owner : null;
-
-  const inputs = card.querySelectorAll(".filter-input");
-  inputs.forEach(input => {
-    const raw = sanitizeInput(input.value);
-    const mode = input.dataset.mode;
-    if (!raw) return;
-    const negate = input.dataset.negate === "true";
-    const extras = wordGroupId ? { owner, wordGroupId } : { owner };
-    appendFilter(field, mode, raw, "AND", negate, scope, extras);
-  });
-
-  applyFilters();
-}
-
 function clearFilterCard(owner) {
   const card = document.querySelector(`.filter-card[data-owner="${owner}"]`);
   if (card) {
@@ -3570,14 +3543,6 @@ function restoreScroll(options) {
   });
 }
 
-function getPrimaryTableCard() {
-  return document.querySelector(".data-panel");
-}
-
-function getPrimaryTableHeader() {
-  return document.querySelector(".table-toolbar");
-}
-
 function getHeaderTable() {
   return document.getElementById("dataTable");
 }
@@ -3588,18 +3553,6 @@ function getBodyTable() {
 
 function getTableScrollElement() {
   return document.querySelector(".table-scroll");
-}
-
-function getHeaderAnchorY() {
-  const anchor = document.getElementById("tableHeaderAnchor");
-  if (anchor) {
-    const rect = anchor.getBoundingClientRect();
-    return rect.top + window.scrollY;
-  }
-  const header = getPrimaryTableHeader();
-  if (!header) return null;
-  const rect = header.getBoundingClientRect();
-  return rect.top + window.scrollY;
 }
 
 function getTableRestoreOptions() {
@@ -4057,30 +4010,6 @@ function setupStickyHeaderTable() {
     });
   });
   syncColumnLayout();
-}
-
-function sampleRandomRows(size) {
-  if (!dataRows.length) return [];
-  if (size >= dataRows.length) {
-    return shuffleArray(dataRows.slice());
-  }
-  const n = Math.max(0, Math.min(size, dataRows.length));
-  const reservoir = dataRows.slice(0, n);
-  for (let i = n; i < dataRows.length; i++) {
-    const j = Math.floor(Math.random() * (i + 1));
-    if (j < n) {
-      reservoir[j] = dataRows[i];
-    }
-  }
-  return reservoir;
-}
-
-function shuffleArray(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
 }
 
 function setCommentExpanded(rowId, contentEl, btnEl, expanded) {
@@ -5908,10 +5837,6 @@ function setupViewToggle() {
 
 // ── Compare chip (synthetic filter on Texto estandarizado) ──────────
 
-function hasCompareChip() {
-  return activeFilters.some(f => f.owner === COMPARE_OWNER);
-}
-
 function setCompareChip(lemma) {
   const query = sanitizeInput(lemma).trim();
   if (!query) return;
@@ -5922,13 +5847,6 @@ function setCompareChip(lemma) {
     strictCompare: true
   });
   displayOffset = 0;
-  renderActiveFilterChips();
-  applyFilters();
-}
-
-function removeCompareChip() {
-  if (!hasCompareChip()) return;
-  activeFilters = activeFilters.filter(f => f.owner !== COMPARE_OWNER);
   renderActiveFilterChips();
   applyFilters();
 }
@@ -6788,7 +6706,6 @@ const STUDY_THEME_LABELS_ES = {
   wood: "Madera",
   writing: "Escritura, alfabetización"
 };
-const studyThemeRowCache = new WeakMap();
 const studyThemeRowMetaCache = new WeakMap();
 const studyCardInfoCache = new WeakMap();
 const STUDY_THEME_FUNCTION_TERMS = new Set([
@@ -6905,10 +6822,6 @@ function isStudyLeakyCombinedKey(key, forms) {
     }
   }
   return false;
-}
-
-function isStudyLeakyToken(token, forms) {
-  return isStudyLeakyKey(getStudyLeakKey(token), forms);
 }
 
 function getStudyMaskableTokens(text) {
@@ -7186,10 +7099,6 @@ function getStudyRows() {
   return getStudyRowsForThemeByLemma(baseRows, theme);
 }
 
-function getStudyThemeTranslationIndex(row) {
-  return getStudyThemeTextIndex(getStudyTranslation(row));
-}
-
 function getStudyThemeTextIndex(value) {
   const text = normalizeString(cleanStudyText(value));
   return {
@@ -7224,32 +7133,6 @@ function studyThemeTermMatchesIndex(termSpec, index) {
 
 function studyThemeMatchesIndex(theme, index) {
   return getStudyThemeTerms(theme).some(term => studyThemeTermMatchesIndex(term, index));
-}
-
-function getStudyThemeIdsForRow(row) {
-  const translation = getStudyTranslation(row);
-  const cached = studyThemeRowCache.get(row);
-  if (cached && cached.translation === translation) return cached.themeIds;
-
-  const index = getStudyThemeTranslationIndex(row);
-  const themeIds = new Set();
-  if (index.text) {
-    STUDY_THEME_PRESETS.forEach(theme => {
-      if (studyThemeMatchesIndex(theme, index)) themeIds.add(theme.id);
-    });
-  }
-  studyThemeRowCache.set(row, { translation, themeIds });
-  return themeIds;
-}
-
-function getStudyThemeIdsForTranslationText(text) {
-  const index = getStudyThemeTextIndex(text);
-  const themeIds = new Set();
-  if (!index.text) return themeIds;
-  STUDY_THEME_PRESETS.forEach(theme => {
-    if (studyThemeMatchesIndex(theme, index)) themeIds.add(theme.id);
-  });
-  return themeIds;
 }
 
 function getStudyRowThemeMeta(row) {
@@ -7293,10 +7176,6 @@ function getStudyRowsForThemeByLemma(rows, theme) {
     if (studyThemeMatchesIndex(theme, index)) selectedRows.push(...group.rows);
   });
   return selectedRows;
-}
-
-function studyRowMatchesTheme(row, theme) {
-  return getStudyThemeIdsForRow(row).has(theme.id);
 }
 
 function addStudyTranslation(entry, translation) {

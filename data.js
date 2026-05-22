@@ -6,18 +6,6 @@ let oldSpanishMode = false;
 let accentSensitiveMode = false; // false = accent-free (default); true = accent-exact
 
 // ==============================
-// CSV Loader
-// ==============================
-function loadCSV(path, callback) {
-  Papa.parse(path, {
-    download: true,
-    header: true,
-    skipEmptyLines: true,
-    complete: results => callback(results.data)
-  });
-}
-
-// ==============================
 // Normalization
 // ==============================
 function normalizeString(str) {
@@ -225,10 +213,6 @@ function getNormalizedEntry(row, field) {
   }
 
   return entry;
-}
-
-function getNormalizedValue(row, field) {
-  return getNormalizedEntry(row, field).normalized;
 }
 
 const LETTER_WILDCARD_PATTERN = "[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]";
