@@ -438,8 +438,8 @@ const I18N = {
     "accent.strict": "Exacto",
     "logic.and": "Y",
     "logic.or": "O",
-    "chips.zone.and": "×",
-    "chips.zone.or": "÷",
+    "chips.zone.and": "Y",
+    "chips.zone.or": "O",
     "chips.selectAll": "Seleccionar todo",
     "chips.clearSelection": "Deseleccionar",
     "chips.clearAll": "Limpiar todo",
@@ -893,8 +893,8 @@ const I18N = {
     "accent.strict": "Exact",
     "logic.and": "AND",
     "logic.or": "OR",
-    "chips.zone.and": "×",
-    "chips.zone.or": "÷",
+    "chips.zone.and": "AND",
+    "chips.zone.or": "OR",
     "chips.selectAll": "Select all",
     "chips.clearSelection": "Unselect",
     "chips.clearAll": "Clear all",
@@ -999,6 +999,8 @@ function compactQuoteValue(value) {
     .replace(/\s+/g, "_"));
   return `'${escaped}'`;
 }
+
+const PHONE_VIEWPORT_QUERY = "(max-width: 640px), (orientation: landscape) and (max-width: 980px) and (max-height: 520px)";
 
 function escapeHtml(str) {
   return String(str ?? "")
@@ -1982,11 +1984,12 @@ function renderActiveFilterChips() {
     const fieldLabels = [...new Set(fieldNames.map(fieldShortLabel))];
     const mixedFields = fieldLabels.length > 1;
     const fieldLabel = fieldLabels.join("/");
-    const partJoiner = logic === "OR" ? "÷" : "×";
+    const partJoiner = logic === "OR" ? t("logic.or") : t("logic.and");
 
     const parts = filters.map(f => {
       const val = String(f.value);
-      const display = val.length > 16 ? val.slice(0, 14) + "…" : val;
+      const chipValueLimit = isPhoneViewport() ? Infinity : 16;
+      const display = val.length > chipValueLimit ? val.slice(0, chipValueLimit - 2) + "…" : val;
       const partFields = Array.isArray(f.fields) && f.fields.length ? f.fields : [f.field];
       const partFieldLabel = partFields.map(fieldShortLabel).join("/");
       const fieldPrefix = mixedFields && filters.length > 1 ? `${escapeHtml(partFieldLabel)}:` : "";
@@ -3592,7 +3595,7 @@ function getColumnMinWidth(fieldKey) {
 
 function isPhoneViewport() {
   return typeof window !== "undefined" && window.matchMedia
-    && window.matchMedia("(max-width: 640px)").matches;
+    && window.matchMedia(PHONE_VIEWPORT_QUERY).matches;
 }
 
 const COLUMN_STATE_KEY = "nawat-columns-v1";

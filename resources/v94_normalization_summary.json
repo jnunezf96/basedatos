@@ -1,0 +1,14 @@
+{
+  "totalRows": 29997,
+  "excludedCurrentExactOlderEntry": 4792,
+  "excludedAllTokensOlder": 1385,
+  "wholeEntryCandidates": 401,
+  "tokenCandidates": 173,
+  "familyCandidates": 5,
+  "noCandidate": 23241,
+  "candidates": 579,
+  "ruleTypes": 57,
+  "routeRuleTypes": 29,
+  "componentRuleTypes": 28,
+  "singletonRuleTypes": 14
+}

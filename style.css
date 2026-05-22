@@ -3252,7 +3252,7 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   border-color: #a8b3f5;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 640px), (orientation: landscape) and (max-width: 980px) and (max-height: 520px) {
   :root {
     --mobile-shell-pad-top: 12px;
     --mobile-viewport-height: 100dvh;
@@ -3285,12 +3285,14 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   .app-shell[data-screen="chips"] .active-filters-bar {
     display: flex !important;
     flex-direction: column;
+    flex-wrap: nowrap;
     align-items: stretch;
     justify-content: flex-start;
     gap: 10px;
     height: var(--mobile-screen-height);
     max-height: none;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     align-content: stretch;
     padding: 10px;
     border-radius: 12px;
@@ -3304,6 +3306,7 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
 
   .app-shell[data-screen="chips"] .chips-zone {
     width: 100%;
+    flex-direction: column;
     align-items: flex-start;
   }
 
@@ -3318,6 +3321,40 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     width: 100%;
     padding-top: 4px;
     border-top: 1px solid #e1e6fb;
+  }
+
+  .app-shell[data-screen="chips"] .filter-chip {
+    align-items: flex-start;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 12px;
+    padding: 8px;
+  }
+
+  .app-shell[data-screen="chips"] .chip-label {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 4px;
+    min-width: 0;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .app-shell[data-screen="chips"] .chip-field,
+  .app-shell[data-screen="chips"] .chip-dot {
+    flex: 0 0 auto;
+  }
+
+  .app-shell[data-screen="chips"] .chip-part {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.35;
   }
 
   .panel-shell {

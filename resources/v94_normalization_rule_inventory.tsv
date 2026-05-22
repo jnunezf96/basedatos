@@ -1,0 +1,58 @@
+type	rule	accepted_count	example_record_id	example_current	example_proposed	example_authority
+component	insert l after t	497	v94-diccionario-global-snp:000077	achtonti	achtontli	153? Trilingüe:2 | 1571 Molina 1:2 | 1565 Sahagún Escolios:1 | 1571 Molina 2:1 | 1580 CF Index:1
+component	-iya>-ia	118	v94-diccionario-global-snp:001807	axhuiya	axhuia	1571 Molina 1:1 | 1571 Molina 2:1 | 1780 ? Bnf_361:1
+component	-tiya>-tia	58	v94-diccionario-global-snp:005755	ixtatia	ixtlatia	1571 Molina 1:2 | 1571 Molina 2:2 | 1780 ? Bnf_361:1
+component	-uiya>-huia	14	v94-diccionario-global-snp:001807	axhuiya	axhuia	1571 Molina 1:1 | 1571 Molina 2:1 | 1780 ? Bnf_361:1
+component	-t>-tl	12	v94-diccionario-global-snp:003119	elmatatl	elmatlatl	1571 Molina 2:1
+component	-oua>-oa	9	v94-diccionario-global-snp:002940	dezconfiaroa	desconfiaroa	1765 Cortés y Zedeño:1
+component	initial u>hu	6	v94-diccionario-global-snp:026532	hueyiti	hueiti	1580 CF Index:1
+component	oua>oa	6	v94-diccionario-global-snp:002940	dezconfiaroa	desconfiaroa	1765 Cortés y Zedeño:1
+component	catin-family	5	v94-diccionario-global-snp:000007	a ver catin!	a ver catlin!	older catl* family: catli, catlie, catlehuatl
+component	j>h	5	v94-diccionario-global-snp:000121	aá	aha	1547 Olmos_G:1
+component	j>zero	5	v94-diccionario-global-snp:002893	criztiano	cristiano	1571 Molina 1:1
+component	ltl>ll	5	v94-diccionario-global-snp:001733	ahuilti	ahuilli	1580 CF Index:2 | 1645 Carochi:1
+component	-kat>-catl	4	v94-diccionario-global-snp:000126	aacatl	ahacatl	1580 CF Index:1
+component	-l>-lli	4	v94-diccionario-global-snp:010467	metapilli	metlapilli	153? Trilingüe:1 | 1571 Molina 1:1 | 1571 Molina 2:1 | 1580 CF Index:1 | 1598 Tezozomoc:1
+component	k>c/qu	4	v94-diccionario-global-snp:018885	tlamaltic	tamaltic	1580 CF Index:1
+component	V-u-V>V-hu-V	4	v94-diccionario-global-snp:001835	ayahuia	ayahuiya	1580 CF Index:2
+component	-it>-itl	3	v94-diccionario-global-snp:009991	matalxochitl	matlalxochitl	1780 Clavijero:1
+component	-lis>-liztli	3	v94-diccionario-global-snp:011435	motaloliztli	motlaloliztli	1765 Cortés y Zedeño:1
+component	-uiliya>-huilia	3	v94-diccionario-global-snp:000140	aahuilia	ahahuilia	1780 ? Bnf_361:4 | 1571 Molina 1:3 | 153? Trilingüe:1 | 1547 Olmos_V ?:1 | 1571 Molina 2:1
+component	-al>-alli	2	v94-diccionario-global-snp:011793	nacatlamalli	nacatamalli	153? Trilingüe:1 | 1571 Molina 1:1 | 1571 Molina 2:1 | 1580 CF Index:1 | 1580 Sahagún/Máynez:1
+component	s>z	2	v94-diccionario-global-snp:001485	asnoconetl	aznoconetl	153? Trilingüe:1 | 1780 ? Bnf_361:1
+component	-anij>-ani	1	v94-diccionario-global-snp:014462	papatani	papatlani	1580 CF Index:1
+component	-il>-illi	1	v94-diccionario-global-snp:010467	metapilli	metlapilli	153? Trilingüe:1 | 1571 Molina 1:1 | 1571 Molina 2:1 | 1580 CF Index:1 | 1598 Tezozomoc:1
+component	-nij>-ni	1	v94-diccionario-global-snp:014462	papatani	papatlani	1580 CF Index:1
+component	-ol>-olli	1	v94-diccionario-global-snp:019982	tlapayolli	tapayolli	153? Trilingüe:3 | 17?? Bnf_362:2 | 1571 Molina 1:1 | 1780 ? Bnf_361:1
+component	-uat>-huatl	1	v94-diccionario-global-snp:005765	ixtahuatl	ixtlahuatl	1580 CF Index:6 | 1571 Molina 1:4 | 153? Trilingüe:2 | 1780 ? Bnf_361:2 | 1571 Molina 2:1
+component	-uj>-uh	1	v94-diccionario-global-snp:018779	tlamachiuh	tamachiuh	1551-95 Documentos nahuas de la Ciudad de México:1
+component	ej>e	1	v94-diccionario-global-snp:016414	ceptiembre	septiembre	1551-95 Documentos nahuas de la Ciudad de México:1
+route	insert l after t	492	v94-diccionario-global-snp:000077	achtonti	achtontli	153? Trilingüe:2 | 1571 Molina 1:2 | 1565 Sahagún Escolios:1 | 1571 Molina 2:1 | 1580 CF Index:1
+route	-iya>-ia	88	v94-diccionario-global-snp:001807	axhuiya	axhuia	1571 Molina 1:1 | 1571 Molina 2:1 | 1780 ? Bnf_361:1
+route	-tiya>-tia+-iya>-ia	30	v94-diccionario-global-snp:006142	caquiztiya	caquiztia	1580 CF Index:2 | 17?? Bnf_362:1 | 1759 Paredes:1
+route	-tiya>-tia	28	v94-diccionario-global-snp:005755	ixtatia	ixtlatia	1571 Molina 1:2 | 1571 Molina 2:2 | 1780 ? Bnf_361:1
+route	-uiya>-huia	14	v94-diccionario-global-snp:001807	axhuiya	axhuia	1571 Molina 1:1 | 1571 Molina 2:1 | 1780 ? Bnf_361:1
+route	-t>-tl	12	v94-diccionario-global-snp:003119	elmatatl	elmatlatl	1571 Molina 2:1
+route	-oua>-oa	9	v94-diccionario-global-snp:002940	dezconfiaroa	desconfiaroa	1765 Cortés y Zedeño:1
+route	initial u>hu	6	v94-diccionario-global-snp:026532	hueyiti	hueiti	1580 CF Index:1
+route	oua>oa	6	v94-diccionario-global-snp:002940	dezconfiaroa	desconfiaroa	1765 Cortés y Zedeño:1
+route	catin-family	5	v94-diccionario-global-snp:000007	a ver catin!	a ver catlin!	older catl* family: catli, catlie, catlehuatl
+route	insert l after t+ltl>ll	5	v94-diccionario-global-snp:001733	ahuilti	ahuilli	1580 CF Index:2 | 1645 Carochi:1
+route	j>h	5	v94-diccionario-global-snp:000121	aá	aha	1547 Olmos_G:1
+route	-kat>-catl	4	v94-diccionario-global-snp:000126	aacatl	ahacatl	1580 CF Index:1
+route	-l>-lli	4	v94-diccionario-global-snp:010467	metapilli	metlapilli	153? Trilingüe:1 | 1571 Molina 1:1 | 1571 Molina 2:1 | 1580 CF Index:1 | 1598 Tezozomoc:1
+route	j>zero	4	v94-diccionario-global-snp:002893	criztiano	cristiano	1571 Molina 1:1
+route	k>c/qu	4	v94-diccionario-global-snp:018885	tlamaltic	tamaltic	1580 CF Index:1
+route	V-u-V>V-hu-V	4	v94-diccionario-global-snp:001835	ayahuia	ayahuiya	1580 CF Index:2
+route	-it>-itl	3	v94-diccionario-global-snp:009991	matalxochitl	matlalxochitl	1780 Clavijero:1
+route	-lis>-liztli	3	v94-diccionario-global-snp:011435	motaloliztli	motlaloliztli	1765 Cortés y Zedeño:1
+route	-uiliya>-huilia	3	v94-diccionario-global-snp:000140	aahuilia	ahahuilia	1780 ? Bnf_361:4 | 1571 Molina 1:3 | 153? Trilingüe:1 | 1547 Olmos_V ?:1 | 1571 Molina 2:1
+route	-al>-alli	2	v94-diccionario-global-snp:011793	nacatlamalli	nacatamalli	153? Trilingüe:1 | 1571 Molina 1:1 | 1571 Molina 2:1 | 1580 CF Index:1 | 1580 Sahagún/Máynez:1
+route	s>z	2	v94-diccionario-global-snp:001485	asnoconetl	aznoconetl	153? Trilingüe:1 | 1780 ? Bnf_361:1
+route	-anij>-ani	1	v94-diccionario-global-snp:014462	papatani	papatlani	1580 CF Index:1
+route	-il>-illi	1	v94-diccionario-global-snp:010467	metapilli	metlapilli	153? Trilingüe:1 | 1571 Molina 1:1 | 1571 Molina 2:1 | 1580 CF Index:1 | 1598 Tezozomoc:1
+route	-nij>-ni	1	v94-diccionario-global-snp:014462	papatani	papatlani	1580 CF Index:1
+route	-ol>-olli	1	v94-diccionario-global-snp:019982	tlapayolli	tapayolli	153? Trilingüe:3 | 17?? Bnf_362:2 | 1571 Molina 1:1 | 1780 ? Bnf_361:1
+route	-uat>-huatl	1	v94-diccionario-global-snp:005765	ixtahuatl	ixtlahuatl	1580 CF Index:6 | 1571 Molina 1:4 | 153? Trilingüe:2 | 1780 ? Bnf_361:2 | 1571 Molina 2:1
+route	-uj>-uh	1	v94-diccionario-global-snp:018779	tlamachiuh	tamachiuh	1551-95 Documentos nahuas de la Ciudad de México:1
+route	j>zero+ej>e	1	v94-diccionario-global-snp:016414	ceptiembre	septiembre	1551-95 Documentos nahuas de la Ciudad de México:1
