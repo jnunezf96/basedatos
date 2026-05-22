@@ -394,6 +394,8 @@ const I18N = {
     "table.status.error": "No se pudieron cargar los datos. Revisa la conexión y vuelve a intentar.",
     "table.status.none": "Sin registros para mostrar.",
     "table.status.showing": "Registros mostrados: {{start}}-{{end}} de {{total}}",
+    "table.status.fullLoading": "Cargando la base completa…",
+    "table.status.detail.loadingFull": "base completa cargando",
     "table.status.detail.auto": "{{exact}} lemas exactos · {{phrase}} frases",
     "table.status.detail.manual": "{{exact}} lemas exactos · {{phrase}} frases · Manual",
     "table.empty": "No hay datos disponibles.",
@@ -847,6 +849,8 @@ const I18N = {
     "table.status.error": "Couldn't load the data. Check the connection and try again.",
     "table.status.none": "No records to show.",
     "table.status.showing": "Records shown: {{start}}-{{end}} of {{total}}",
+    "table.status.fullLoading": "Loading the full database…",
+    "table.status.detail.loadingFull": "full database loading",
     "table.status.detail.auto": "{{exact}} exact lemmas · {{phrase}} phrases",
     "table.status.detail.manual": "{{exact}} exact lemmas · {{phrase}} phrases · Manual",
     "table.empty": "No data available.",
@@ -1220,6 +1224,10 @@ const expandableComments = new Set();
 const commentAnchors = new Map();
 let currentLang = "es";
 let dataLoadFailed = false;
+let dataRowsComplete = false;
+let dataRowsBootstrapped = false;
+let pendingFullDataRefresh = false;
+let bootstrapTotalRows = 0;
 let lastPairResults = null;
 let lastPairMeta = null;
 let studyBaseDeck = [];
@@ -1301,51 +1309,119 @@ document.addEventListener("DOMContentLoaded", () => {
   setupMobileViewportMetrics();
   setupKeyboardAvoidance();
   setupScrollNav();
-  loadCompressedJsonl(versionedAssetUrl("data/data.jsonl.gz"))
-    .then(text => {
-      const rows = text.split("\n").filter(Boolean).map(line => JSON.parse(line));
-      rows.forEach((row, idx) => {
-        row._rid = row.record_id || idx;
-        row._prio = parsePriority(row.prio);
-        row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
-      });
-      dataRows = rows;
-      mobileRowById.clear();
-      rows.forEach(row => mobileRowById.set(getMobileRowId(row), row));
-      buildSourceSlugMaps();
+  const hasInitialRoute = location.hash && location.hash.startsWith("#/");
+  const usedBootstrap = renderBootstrapRows({ skipForRoute: hasInitialRoute });
+  loadCompressedJsonlRows(versionedAssetUrl("data/data.jsonl.gz"))
+    .then(rows => {
+      setDataRows(rows, { complete: true });
       const initialState = parseHashRoute(location.hash);
       if (initialState) {
         applyParsedState(initialState);
       } else {
-        applyFuenteFilters();
+        applyFuenteFilters({ keepOffset: usedBootstrap && !pendingFullDataRefresh });
       }
+      pendingFullDataRefresh = false;
       hashRouteApplied = true;
       window.addEventListener("hashchange", handleHashChange);
     })
     .catch(() => {
       dataLoadFailed = true;
-      dataRows = [];
-      setStatus(t("table.status.error"));
-      setTableStatusMessage(t("table.status.error"));
+      if (!dataRowsBootstrapped) {
+        dataRows = [];
+        setStatus(t("table.status.error"));
+        setTableStatusMessage(t("table.status.error"));
+      } else {
+        setTableStatusMessage(t("table.status.error"));
+      }
       renderScrollNavBadges();
     });
 });
 
-function loadCompressedJsonl(url) {
-  return fetch(url).then(response => {
-    if (!response.ok) {
-      throw new Error(`Data request failed with ${response.status}`);
-    }
-    if (!response.body) {
-      throw new Error("Data response has no body");
-    }
-    if ("DecompressionStream" in window) {
-      const stream = new DecompressionStream("gzip");
-      response.body.pipeTo(stream.writable);
-      return new Response(stream.readable).text();
-    }
-    return response.text();
+function renderBootstrapRows(options = {}) {
+  if (options.skipForRoute) return false;
+  const bootstrap = window.NAHUATL_BOOTSTRAP;
+  if (!bootstrap || !Array.isArray(bootstrap.rows) || !bootstrap.rows.length) return false;
+  const rows = bootstrap.rows.map(row => ({ ...row }));
+  setDataRows(rows, {
+    complete: false,
+    totalRows: Number.isFinite(bootstrap.totalRows) ? bootstrap.totalRows : rows.length
   });
+  applyFuenteFilters({ keepOffset: true });
+  return true;
+}
+
+function setDataRows(rows, options = {}) {
+  rows.forEach((row, idx) => {
+    row._rid = row.record_id || idx;
+    row._prio = parsePriority(row.prio);
+    row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
+  });
+  dataRows = rows;
+  dataRowsComplete = !!options.complete;
+  dataRowsBootstrapped = !dataRowsComplete && rows.length > 0;
+  bootstrapTotalRows = dataRowsBootstrapped ? (options.totalRows || rows.length) : 0;
+  mobileRowById.clear();
+  rows.forEach(row => mobileRowById.set(getMobileRowId(row), row));
+  buildSourceSlugMaps();
+}
+
+async function loadCompressedJsonlRows(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Data request failed with ${response.status}`);
+  }
+  if (!response.body) {
+    return parseJsonlText(await response.text());
+  }
+
+  let stream = response.body;
+  const responseUrl = new URL(response.url || url, location.href);
+  const isGzipFile = /\.gz$/i.test(responseUrl.pathname);
+  const browserAlreadyInflated = /\bgzip\b/i.test(response.headers.get("content-encoding") || "");
+  if (isGzipFile && !browserAlreadyInflated) {
+    if (!("DecompressionStream" in window)) {
+      throw new Error("This browser cannot decompress the data stream.");
+    }
+    stream = stream.pipeThrough(new DecompressionStream("gzip"));
+  }
+
+  const reader = stream.getReader();
+  const decoder = new TextDecoder();
+  const rows = [];
+  let carry = "";
+  let parsedSinceYield = 0;
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    carry += decoder.decode(value, { stream: true });
+    const lines = carry.split("\n");
+    carry = lines.pop() || "";
+    for (const line of lines) {
+      if (!line) continue;
+      rows.push(JSON.parse(line));
+      parsedSinceYield += 1;
+      if (parsedSinceYield >= 5000) {
+        parsedSinceYield = 0;
+        await yieldToMainThread();
+      }
+    }
+  }
+  carry += decoder.decode();
+  if (carry.trim()) rows.push(JSON.parse(carry));
+  return rows;
+}
+
+function parseJsonlText(text) {
+  const rows = [];
+  const lines = text.split("\n");
+  for (const line of lines) {
+    if (line) rows.push(JSON.parse(line));
+  }
+  return rows;
+}
+
+function yieldToMainThread() {
+  return new Promise(resolve => setTimeout(resolve, 0));
 }
 
 // Phone-only: scroll-nav buttons switch the app between three full-viewport
@@ -1841,7 +1917,7 @@ function updateScrollNavBadges(options = {}) {
     pulse: chipCount > lastScrollNavChipCount
   });
   lastScrollNavChipCount = chipCount;
-  setScrollNavBadge("results", options.resultCount ?? lastRenderTotal, { showZero: true });
+  setScrollNavBadge("results", options.resultCount ?? getStatusTotal(lastRenderTotal), { showZero: true });
 }
 
 function setupLiveSearch() {
@@ -2767,6 +2843,22 @@ function isUnfilteredBrowseState(filters = activeFilters) {
   return !hasActiveFilterChips(filters);
 }
 
+function shouldDeferUntilFullData() {
+  if (dataRowsComplete || !dataRowsBootstrapped) return false;
+  if (!isDefaultFuenteSelection()) return true;
+  if (tableViewMode !== "rows") return true;
+  if (sortKeys.length) return true;
+  if (displayOffset !== 0) return true;
+  if (maxDisplayRows > dataRows.length) return true;
+  return hasActiveFilterChips(activeFilters);
+}
+
+function queueFullDataRefresh() {
+  pendingFullDataRefresh = true;
+  setTableStatusMessage(t("table.status.fullLoading"));
+  updateScrollNavBadges({ resultCount: bootstrapTotalRows || lastRenderTotal });
+}
+
 function buildRankingContext(rows) {
   const context = {
     dominantLemmaFilter: getDominantLemmaFilter(activeFilters),
@@ -2883,6 +2975,10 @@ function heapSiftDownWorstFirst(heap, idx, comparator) {
 
 function applyFilters(initial = false, options = {}) {
   if (!dataRows.length) return;
+  if (shouldDeferUntilFullData()) {
+    queueFullDataRefresh();
+    return;
+  }
   bumpHighlightCache();
   if (!options.keepOffset) {
     displayOffset = 0;
@@ -3441,17 +3537,27 @@ function setStatus(message) {
   setTableStatusMessage(message);
 }
 
+function getStatusTotal(total) {
+  return dataRowsBootstrapped && !dataRowsComplete && bootstrapTotalRows > total
+    ? bootstrapTotalRows
+    : total;
+}
+
 function updateTableStatus(displayed, total) {
-  updateScrollNavBadges({ resultCount: total });
-  if (!total) {
+  const previewTotal = getStatusTotal(total);
+  updateScrollNavBadges({ resultCount: previewTotal });
+  if (!previewTotal) {
     setTableStatusMessage(t("table.status.none"));
     return;
   }
-  const start = total === 0 ? 0 : Math.min(displayOffset + 1, total);
-  const end = Math.min(displayOffset + displayed, total);
+  const start = previewTotal === 0 ? 0 : Math.min(displayOffset + 1, previewTotal);
+  const end = Math.min(displayOffset + displayed, previewTotal);
+  const detail = dataRowsBootstrapped && !dataRowsComplete
+    ? t("table.status.detail.loadingFull")
+    : (lastRankingSummary || "");
   setTableStatusMessage(
-    t("table.status.showing", { start, end, total }),
-    lastRankingSummary || ""
+    t("table.status.showing", { start, end, total: previewTotal }),
+    detail
   );
 }
 
