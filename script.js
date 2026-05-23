@@ -2588,6 +2588,7 @@ function setupFilterCard(owner) {
       }
     });
   });
+  setupFilterInputDrag(card);
 
   const clearBtn = card.querySelector(".clear-btn");
   if (clearBtn) {
@@ -2614,6 +2615,197 @@ function setupFilterCard(owner) {
       }
       target.focus();
     });
+  });
+}
+
+function setupFilterInputDrag(card) {
+  const grid = card.querySelector(".filter-grid");
+  if (!grid || grid.dataset.inputDragReady === "true") return;
+  grid.dataset.inputDragReady = "true";
+
+  const HOLD_DELAY = 320;
+  const TOUCH_SCROLL_CANCEL_PX = 12;
+  const POINTER_DRIFT_CANCEL_PX = 18;
+  let active = null;
+  let suppressClick = false;
+
+  function clearHoldTimer() {
+    if (active?.holdTimer) {
+      clearTimeout(active.holdTimer);
+      active.holdTimer = null;
+    }
+  }
+
+  function isVisibleInput(input) {
+    if (!input) return false;
+    const rect = input.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0;
+  }
+
+  function setDropTarget(input) {
+    if (!active || active.dropTarget === input) return;
+    active.dropTarget?.classList.remove("filter-input-drop-target", "filter-input-drop-target-filled");
+    active.dropTarget = input;
+    if (!input) return;
+    input.classList.add("filter-input-drop-target");
+    if (input.value.trim()) input.classList.add("filter-input-drop-target-filled");
+  }
+
+  function resetDragState() {
+    clearHoldTimer();
+    if (active) {
+      active.source?.classList.remove("filter-input-drag-source");
+      active.dropTarget?.classList.remove("filter-input-drop-target", "filter-input-drop-target-filled");
+      if (active.ghost) active.ghost.remove();
+      if (active.source?.releasePointerCapture && active.source.hasPointerCapture?.(active.pointerId)) {
+        try { active.source.releasePointerCapture(active.pointerId); } catch {}
+      }
+    }
+    grid.classList.remove("filter-grid-dragging");
+    document.body.classList.remove("filter-value-dragging");
+    active = null;
+  }
+
+  function updateGhost(x, y) {
+    if (!active?.ghost) return;
+    active.ghost.style.left = `${x}px`;
+    active.ghost.style.top = `${y}px`;
+  }
+
+  function findDropTarget(x, y) {
+    const el = document.elementFromPoint(x, y);
+    const input = el?.closest?.(".filter-input");
+    if (!input || !card.contains(input) || !isVisibleInput(input)) return null;
+    return input;
+  }
+
+  function dispatchValueEvents(input) {
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  function focusInputEnd(input) {
+    input.focus({ preventScroll: true });
+    const pos = input.value.length;
+    try {
+      input.setSelectionRange(pos, pos);
+    } catch {}
+  }
+
+  function moveOrSwapValue(source, target, sourceValue) {
+    if (!target || target === source) return false;
+    const targetValue = target.value;
+    target.value = sourceValue;
+    source.value = targetValue.trim() ? targetValue : "";
+    dispatchValueEvents(source);
+    dispatchValueEvents(target);
+    focusInputEnd(target);
+    return true;
+  }
+
+  function beginDrag() {
+    if (!active || active.dragging || !active.source.value.trim()) {
+      resetDragState();
+      return;
+    }
+    active.dragging = true;
+    active.holdTimer = null;
+    active.value = active.source.value;
+    active.source.blur();
+    active.source.classList.add("filter-input-drag-source");
+    grid.classList.add("filter-grid-dragging");
+    document.body.classList.add("filter-value-dragging");
+
+    const ghost = document.createElement("div");
+    ghost.className = "filter-drag-ghost";
+    ghost.textContent = active.value;
+    document.body.appendChild(ghost);
+    active.ghost = ghost;
+    updateGhost(active.lastX, active.lastY);
+
+    if (active.source.setPointerCapture) {
+      try { active.source.setPointerCapture(active.pointerId); } catch {}
+    }
+    setDropTarget(findDropTarget(active.lastX, active.lastY));
+    vibe(8);
+  }
+
+  grid.addEventListener("pointerdown", e => {
+    if (e.button !== undefined && e.button !== 0) return;
+    const source = e.target.closest?.(".filter-input");
+    if (!source || !source.value.trim() || !isVisibleInput(source)) return;
+    resetDragState();
+    active = {
+      source,
+      pointerId: e.pointerId,
+      pointerType: e.pointerType || "mouse",
+      startX: e.clientX,
+      startY: e.clientY,
+      lastX: e.clientX,
+      lastY: e.clientY,
+      dragging: false,
+      dropTarget: null,
+      ghost: null,
+      value: source.value,
+      holdTimer: null
+    };
+    active.holdTimer = setTimeout(beginDrag, HOLD_DELAY);
+  });
+
+  document.addEventListener("pointermove", e => {
+    if (!active || e.pointerId !== active.pointerId) return;
+    active.lastX = e.clientX;
+    active.lastY = e.clientY;
+
+    if (!active.dragging) {
+      const dx = e.clientX - active.startX;
+      const dy = e.clientY - active.startY;
+      const distance = Math.hypot(dx, dy);
+      const isTouchLike = active.pointerType === "touch" || active.pointerType === "pen";
+      if (isTouchLike && Math.abs(dy) > TOUCH_SCROLL_CANCEL_PX && Math.abs(dy) > Math.abs(dx)) {
+        resetDragState();
+        return;
+      }
+      if (!isTouchLike && distance > POINTER_DRIFT_CANCEL_PX) {
+        resetDragState();
+      }
+      return;
+    }
+
+    e.preventDefault();
+    updateGhost(e.clientX, e.clientY);
+    setDropTarget(findDropTarget(e.clientX, e.clientY));
+  }, { passive: false });
+
+  document.addEventListener("pointerup", e => {
+    if (!active || e.pointerId !== active.pointerId) return;
+    if (!active.dragging) {
+      resetDragState();
+      return;
+    }
+    e.preventDefault();
+    suppressClick = true;
+    const moved = moveOrSwapValue(active.source, active.dropTarget, active.value);
+    resetDragState();
+    if (moved) vibe(8);
+    window.setTimeout(() => { suppressClick = false; }, 0);
+  }, { passive: false });
+
+  document.addEventListener("pointercancel", e => {
+    if (!active || e.pointerId !== active.pointerId) return;
+    resetDragState();
+  });
+
+  grid.addEventListener("click", e => {
+    if (!suppressClick) return;
+    if (!e.target.closest?.(".filter-input")) return;
+    e.preventDefault();
+    e.stopPropagation();
+  }, true);
+
+  grid.addEventListener("contextmenu", e => {
+    if (!active?.dragging && !suppressClick) return;
+    e.preventDefault();
   });
 }
 

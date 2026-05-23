@@ -1705,6 +1705,64 @@ th[data-field="Comentario"] .header-actions {
   box-shadow: 0 0 0 2px rgba(76, 110, 245, 0.15);
 }
 
+.filter-grid-dragging .filter-input {
+  cursor: grabbing;
+}
+
+.filter-input-drag-source {
+  opacity: 0.56;
+  border-color: #4c6ef5;
+  box-shadow: 0 0 0 2px rgba(76, 110, 245, 0.18);
+}
+
+.filter-input-drop-target {
+  border-color: #0ca678;
+  box-shadow: 0 0 0 3px rgba(12, 166, 120, 0.22);
+}
+
+.filter-input-drop-target-filled {
+  border-color: #f08c00;
+  box-shadow: 0 0 0 3px rgba(240, 140, 0, 0.24);
+}
+
+.filter-drag-ghost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10000;
+  max-width: min(320px, 82vw);
+  min-height: 34px;
+  padding: 8px 12px;
+  border: 1px solid #aeb8f6;
+  border-radius: 8px;
+  background: #fff;
+  color: #17224d;
+  box-shadow: 0 12px 28px rgba(17, 28, 80, 0.2);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+  overflow: hidden;
+  pointer-events: none;
+  text-overflow: ellipsis;
+  transform: translate(-50%, calc(-100% - 14px));
+  user-select: none;
+  white-space: nowrap;
+}
+
+body.filter-value-dragging {
+  cursor: grabbing;
+  overscroll-behavior: contain;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@media (pointer: coarse) {
+  body.filter-value-dragging {
+    overflow: hidden;
+    touch-action: none;
+  }
+}
+
 .filter-actions {
   display: flex;
   align-items: center;
