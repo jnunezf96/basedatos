@@ -4843,6 +4843,22 @@ function getExportRows() {
   return rows;
 }
 
+function getExportColumns() {
+  const columns = TABLE_FIELDS.filter(field => !hiddenColumns.has(field.key));
+  return columns.length ? columns : TABLE_FIELDS.slice();
+}
+
+function getExportColumnLabel(field) {
+  const labelKey = getFieldI18nKey(field.key);
+  return labelKey ? t(labelKey) : field.label;
+}
+
+function getImageExportCellText(cell) {
+  const clone = cell.cloneNode(true);
+  clone.querySelectorAll(".mobile-row-toggle, .mobile-row-subtitle, .comentario-toggle").forEach(el => el.remove());
+  return (clone.innerText || clone.textContent || "").replace(/\s+/g, " ").trim();
+}
+
 function downloadBlob(content, filename, mime) {
   const blob = new Blob([content], { type: mime });
   const url = URL.createObjectURL(blob);
@@ -4865,23 +4881,10 @@ function exportAsCsv() {
     alert(t("table.export.empty"));
     return;
   }
-  const columns = [
-    "record_id",
-    "Fuente",
-    "eid",
-    "Texto estandarizado",
-    "Escritura original",
-    "Traducción",
-    "Comentario"
-  ];
-  const lines = [columns.join(",")];
+  const columns = getExportColumns();
+  const lines = [columns.map(getExportColumnLabel).map(csvEscape).join(",")];
   rows.forEach(row => {
-    const cells = columns.map(col => {
-      if (col === "Traducción" || col === "Comentario") {
-        return csvEscape(getDisplayValue(row, col));
-      }
-      return csvEscape(row[col] ?? "");
-    });
+    const cells = columns.map(field => csvEscape(getDisplayValue(row, field.key)));
     lines.push(cells.join(","));
   });
   const BOM = "\uFEFF";
@@ -4889,34 +4892,22 @@ function exportAsCsv() {
 }
 
 function exportTableAsImage(format = "jpeg") {
-  const headerTable = getHeaderTable();
+  const columns = getExportColumns();
   const table = getBodyTable();
-  if (!headerTable || !table) return;
-  const rows = [];
-  const head = headerTable.tHead?.rows[0];
-  if (head) {
-    rows.push(
-      Array.from(head.cells)
-        .filter((_, idx) => idx !== 4) // omitir Comentario
-        .map(c => {
-          const label = c.querySelector("span") ? c.querySelector("span").innerText : c.innerText;
-          return (label || "").trim();
-        })
-    );
-  }
+  if (!table) return;
+  const visibleKeys = new Set(columns.map(field => field.key));
+  const rows = [columns.map(getExportColumnLabel)];
   Array.from(table.tBodies[0]?.rows || []).forEach(tr => {
-    if (tr.classList.contains("mobile-row-detail-row")) return;
-    rows.push(
-      Array.from(tr.cells)
-        .filter((_, idx) => idx !== 4)
-        .map(td => {
-          const clone = td.cloneNode(true);
-          clone.querySelectorAll(".mobile-row-toggle").forEach(el => el.remove());
-          return (clone.innerText || clone.textContent || "").replace(/\s+/g, " ").trim();
-        })
-    );
+    if (tr.classList.contains("mobile-row-detail-row") || tr.classList.contains("comentario-detail-row")) return;
+    const cells = Array.from(tr.cells)
+      .filter(td => visibleKeys.has(td.dataset.field))
+      .map(getImageExportCellText);
+    if (cells.length) rows.push(cells);
   });
-  if (!rows.length) return;
+  if (rows.length <= 1) {
+    alert(t("table.export.empty"));
+    return;
+  }
   const colCount = Math.max(...rows.map(r => r.length));
   const colWidths = new Array(colCount).fill(80);
   rows.forEach(r => {
