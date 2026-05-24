@@ -1705,7 +1705,71 @@ th[data-field="Comentario"] .header-actions {
   box-shadow: 0 0 0 2px rgba(76, 110, 245, 0.15);
 }
 
+.filter-input-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.filter-input-wrap .filter-input {
+  min-width: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.filter-input-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  min-height: 26px;
+  padding: 0;
+  border: 1px solid #d5daf8;
+  border-left: 0;
+  border-radius: 0 7px 7px 0;
+  background: #f8f9ff;
+  color: #5d6797;
+  cursor: grab;
+  touch-action: manipulation;
+  transition: background 0.12s, border-color 0.12s, color 0.12s, box-shadow 0.12s;
+}
+
+.filter-input-drag-handle:hover {
+  background: #eef2ff;
+  color: #4c6ef5;
+}
+
+.filter-input-drag-handle:focus-visible {
+  outline: 2px solid #4c6ef5;
+  outline-offset: 2px;
+}
+
+.filter-input:focus + .filter-input-drag-handle,
+.filter-input-wrap:focus-within .filter-input-drag-handle {
+  border-color: #4c6ef5;
+}
+
+.filter-input:placeholder-shown + .filter-input-drag-handle {
+  color: #a1a8ca;
+  cursor: default;
+}
+
+.filter-input:placeholder-shown + .filter-input-drag-handle:hover {
+  background: #f8f9ff;
+  color: #8f97bd;
+}
+
+.filter-input-drag-icon {
+  width: 14px;
+  height: 14px;
+}
+
 .filter-grid-dragging .filter-input {
+  cursor: grabbing;
+}
+
+.filter-grid-dragging .filter-input-drag-handle {
   cursor: grabbing;
 }
 
@@ -1757,6 +1821,14 @@ body.filter-value-dragging {
 }
 
 @media (pointer: coarse) {
+  .filter-input-wrap {
+    grid-template-columns: minmax(0, 1fr) 38px;
+  }
+
+  .filter-input-drag-handle {
+    min-width: 38px;
+  }
+
   body.filter-value-dragging {
     overflow: hidden;
     touch-action: none;
@@ -4369,8 +4441,8 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     padding-top: 0;
   }
 
-  .filter-card[data-filter-side="include"] .filter-input[data-negate="true"],
-  .filter-card[data-filter-side="exclude"] .filter-input[data-negate="false"] {
+  .filter-card[data-filter-side="include"] .filter-input-wrap[data-negate="true"],
+  .filter-card[data-filter-side="exclude"] .filter-input-wrap[data-negate="false"] {
     display: none;
   }
 

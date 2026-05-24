@@ -189,6 +189,7 @@ const I18N = {
     "grid.include": "Incluye",
     "grid.exclude": "Excluye",
     "grid.side.toggle": "Cambiar entre incluye y excluye",
+    "grid.dragHandle": "Mover este texto a otra casilla",
     "grid.exact": "Exacto",
     "grid.starts": "Empieza",
     "grid.contains": "Contiene",
@@ -644,6 +645,7 @@ const I18N = {
     "grid.include": "Include",
     "grid.exclude": "Exclude",
     "grid.side.toggle": "Switch include/exclude",
+    "grid.dragHandle": "Move this text to another box",
     "grid.exact": "Exact",
     "grid.starts": "Starts with",
     "grid.contains": "Contains",
@@ -2622,6 +2624,7 @@ function setupFilterInputDrag(card) {
   const grid = card.querySelector(".filter-grid");
   if (!grid || grid.dataset.inputDragReady === "true") return;
   grid.dataset.inputDragReady = "true";
+  ensureFilterDragHandles(grid);
 
   const HOLD_DELAY = 320;
   const TOUCH_SCROLL_CANCEL_PX = 12;
@@ -2674,7 +2677,8 @@ function setupFilterInputDrag(card) {
 
   function findDropTarget(x, y) {
     const el = document.elementFromPoint(x, y);
-    const input = el?.closest?.(".filter-input");
+    const input = el?.closest?.(".filter-input")
+      || el?.closest?.(".filter-input-wrap")?.querySelector(".filter-input");
     if (!input || !card.contains(input) || !isVisibleInput(input)) return null;
     return input;
   }
@@ -2732,7 +2736,10 @@ function setupFilterInputDrag(card) {
 
   grid.addEventListener("pointerdown", e => {
     if (e.button !== undefined && e.button !== 0) return;
-    const source = e.target.closest?.(".filter-input");
+    const handle = e.target.closest?.(".filter-input-drag-handle");
+    if (!handle || !grid.contains(handle)) return;
+    e.preventDefault();
+    const source = handle.closest(".filter-input-wrap")?.querySelector(".filter-input");
     if (!source || !source.value.trim() || !isVisibleInput(source)) return;
     resetDragState();
     active = {
@@ -2806,6 +2813,28 @@ function setupFilterInputDrag(card) {
   grid.addEventListener("contextmenu", e => {
     if (!active?.dragging && !suppressClick) return;
     e.preventDefault();
+  });
+}
+
+function ensureFilterDragHandles(grid) {
+  grid.querySelectorAll(".filter-input").forEach(input => {
+    if (input.closest(".filter-input-wrap")) return;
+    const wrap = document.createElement("span");
+    wrap.className = "filter-input-wrap";
+    wrap.dataset.mode = input.dataset.mode || "";
+    wrap.dataset.negate = input.dataset.negate || "false";
+    input.parentNode.insertBefore(wrap, input);
+    wrap.appendChild(input);
+
+    const handle = document.createElement("button");
+    handle.type = "button";
+    handle.className = "filter-input-drag-handle";
+    handle.dataset.i18nAriaLabel = "grid.dragHandle";
+    handle.dataset.i18nTitle = "grid.dragHandle";
+    handle.setAttribute("aria-label", t("grid.dragHandle"));
+    handle.setAttribute("title", t("grid.dragHandle"));
+    handle.innerHTML = spriteIconMarkup("icon-drag-handle", "filter-input-drag-icon");
+    wrap.appendChild(handle);
   });
 }
 
