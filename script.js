@@ -409,6 +409,7 @@ const I18N = {
     "table.export.csv": "Hoja de cálculo (CSV)",
     "table.export.csv.filename": "nahuatl.csv",
     "table.export.empty": "No hay resultados para exportar.",
+    "table.export.started": "Exportación iniciada",
     "field.paleografia": "Original",
     "field.grafia": "Edición",
     "field.traduccion": "Traducción",
@@ -418,11 +419,16 @@ const I18N = {
     "nav.right": "Mover a la derecha",
     "action.add": "Añadir",
     "action.update": "Actualizar",
-    "filter.title": "Filtro",
     "lang.toggle": "English",
     "action.share": "Compartir",
     "share.copied": "Enlace copiado",
+    "share.sent": "Enlace compartido",
     "share.failed": "No se pudo compartir",
+    "share.manual.title": "Enlace para compartir",
+    "share.manual.copy": "Copiar enlace",
+    "share.manual.close": "Cerrar",
+    "share.manual.input": "URL para compartir",
+    "share.manual.ready": "Enlace listo para copiar",
     "copy.cell": "Texto copiado",
     "page.first": "Primera página",
     "page.prev": "Página anterior",
@@ -865,6 +871,7 @@ const I18N = {
     "table.export.csv": "Spreadsheet (CSV)",
     "table.export.csv.filename": "nahuatl.csv",
     "table.export.empty": "Nothing to export.",
+    "table.export.started": "Export started",
     "field.paleografia": "Original",
     "field.grafia": "Edition",
     "field.traduccion": "Translation",
@@ -874,11 +881,16 @@ const I18N = {
     "nav.right": "Move right",
     "action.add": "Add filter",
     "action.update": "Update",
-    "filter.title": "Filter",
     "lang.toggle": "Español",
     "action.share": "Share",
     "share.copied": "Link copied",
+    "share.sent": "Link shared",
     "share.failed": "Couldn't share",
+    "share.manual.title": "Share link",
+    "share.manual.copy": "Copy link",
+    "share.manual.close": "Close",
+    "share.manual.input": "Share URL",
+    "share.manual.ready": "Link ready to copy",
     "copy.cell": "Text copied",
     "page.first": "First page",
     "page.prev": "Previous page",
@@ -3182,7 +3194,7 @@ function applyFilters(initial = false, options = {}) {
     displayOffset = 0;
     pageScrollByOffset.clear();
   }
-  let matches = [];
+  let matches;
   if (!activeFilters.length) {
     matches = dataRows.slice();
   } else {
@@ -3282,9 +3294,9 @@ function renderTable(rows, totalCount) {
       if (stripeIdx % 2 === 0) tr.classList.add("stripe-alt");
       stripeIdx++;
       tbody.appendChild(tr);
-      let anchor = appendMobileDetailRowAfter(tr, row);
+      const anchor = appendMobileDetailRowAfter(tr, row);
       if (comentarioMeta && syncComentarioCell(comentarioMeta)) {
-        anchor = appendComentarioDetailRowAfter(anchor, row);
+        appendComentarioDetailRowAfter(anchor, row);
       }
     });
   }
@@ -4859,14 +4871,29 @@ function getImageExportCellText(cell) {
   return (clone.innerText || clone.textContent || "").replace(/\s+/g, " ").trim();
 }
 
+function markRuntimeEvent(name, value = "1") {
+  try {
+    document.documentElement.dataset[name] = String(value);
+  } catch {}
+}
+
 function downloadBlob(content, filename, mime) {
-  const blob = new Blob([content], { type: mime });
+  const blob = content instanceof Blob ? content : new Blob([content], { type: mime });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.download = filename;
   link.href = url;
+  link.style.display = "none";
+  document.body.appendChild(link);
   link.click();
-  URL.revokeObjectURL(url);
+  markRuntimeEvent("lastExportFilename", filename);
+  markRuntimeEvent("lastExportMime", mime || blob.type || "");
+  markRuntimeEvent("lastExportAt", Date.now());
+  showToast(t("table.export.started"));
+  window.setTimeout(() => {
+    URL.revokeObjectURL(url);
+    link.remove();
+  }, 1000);
 }
 
 function csvEscape(value) {
@@ -4950,20 +4977,12 @@ function exportTableAsImage(format = "jpeg") {
   if (isPng) {
     canvas.toBlob(b => {
       if (!b) return;
-      const link = document.createElement("a");
-      link.download = filename;
-      link.href = URL.createObjectURL(b);
-      link.click();
-      URL.revokeObjectURL(link.href);
+      downloadBlob(b, filename, mime);
     }, mime);
   } else {
     canvas.toBlob(b => {
       if (!b) return;
-      const link = document.createElement("a");
-      link.download = filename;
-      link.href = URL.createObjectURL(b);
-      link.click();
-      URL.revokeObjectURL(link.href);
+      downloadBlob(b, filename, mime);
     }, mime, 0.95);
   }
 }
@@ -8060,6 +8079,25 @@ const slugToSource = new Map();
 let hashRouteApplied = false;
 let suppressHashUpdate = false;
 
+function slugifySourceName(name) {
+  return String(name || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^0-9a-z]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "source";
+}
+
+function registerSourceSlug(fuente, slug, collisions) {
+  if (!fuente || !slug) return;
+  if (!sourceToSlug.has(fuente)) sourceToSlug.set(fuente, slug);
+  if (!slugToSource.has(slug)) {
+    slugToSource.set(slug, fuente);
+  } else if (slugToSource.get(slug) !== fuente && collisions) {
+    collisions.add(`${slug} ⇒ ${slugToSource.get(slug)} | ${fuente}`);
+  }
+}
+
 function buildSourceSlugMaps() {
   sourceToSlug.clear();
   slugToSource.clear();
@@ -8072,13 +8110,11 @@ function buildSourceSlugMaps() {
     const slug = rid.slice(0, sep);
     const fuente = row.Fuente;
     if (!slug || !fuente) continue;
-    if (!sourceToSlug.has(fuente)) sourceToSlug.set(fuente, slug);
-    if (!slugToSource.has(slug)) {
-      slugToSource.set(slug, fuente);
-    } else if (slugToSource.get(slug) !== fuente) {
-      collisions.add(`${slug} ⇒ ${slugToSource.get(slug)} | ${fuente}`);
-    }
+    registerSourceSlug(fuente, slug, collisions);
   }
+  FUENTE_OPTIONS.forEach(name => {
+    if (!sourceToSlug.has(name)) registerSourceSlug(name, slugifySourceName(name), collisions);
+  });
   if (collisions.size && typeof console !== "undefined") {
     console.warn("Source-slug collisions detected (share URLs may route to first source only):",
       [...collisions]);
@@ -8344,9 +8380,19 @@ function handleHashChange() {
 
 // ── Service worker (PWA install + offline cache) ────────────────────
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  markRuntimeEvent("serviceWorkerStatus", "pending");
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
+    navigator.serviceWorker.register("sw.js")
+      .then(registration => {
+        markRuntimeEvent("serviceWorkerStatus", "registered");
+        markRuntimeEvent("serviceWorkerScope", registration.scope || "");
+      })
+      .catch(() => {
+        markRuntimeEvent("serviceWorkerStatus", "failed");
+      });
   });
+} else {
+  markRuntimeEvent("serviceWorkerStatus", location.protocol === "file:" ? "file-disabled" : "unsupported");
 }
 
 // ── Toast (transient feedback) ──────────────────────────────────────
@@ -8392,6 +8438,105 @@ async function copyText(text) {
   }
 }
 
+let manualShareDialog = null;
+
+function ensureManualShareDialog() {
+  if (manualShareDialog) return manualShareDialog;
+
+  const overlay = document.createElement("div");
+  overlay.className = "share-manual";
+  overlay.hidden = true;
+
+  const dialog = document.createElement("div");
+  dialog.className = "share-manual-dialog";
+  dialog.setAttribute("role", "dialog");
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute("aria-labelledby", "shareManualTitle");
+
+  const header = document.createElement("div");
+  header.className = "share-manual-head";
+
+  const title = document.createElement("h2");
+  title.className = "share-manual-title";
+  title.id = "shareManualTitle";
+
+  const closeBtn = document.createElement("button");
+  closeBtn.type = "button";
+  closeBtn.className = "share-manual-close";
+  closeBtn.textContent = "×";
+
+  header.append(title, closeBtn);
+
+  const input = document.createElement("input");
+  input.className = "share-manual-input";
+  input.type = "text";
+  input.readOnly = true;
+  input.inputMode = "url";
+
+  const actions = document.createElement("div");
+  actions.className = "share-manual-actions";
+
+  const copyBtn = document.createElement("button");
+  copyBtn.type = "button";
+  copyBtn.className = "btn action share-manual-copy";
+
+  actions.append(copyBtn);
+  dialog.append(header, input, actions);
+  overlay.append(dialog);
+  document.body.appendChild(overlay);
+
+  const close = () => {
+    overlay.hidden = true;
+    document.body.classList.remove("share-manual-open");
+  };
+
+  const selectInput = () => {
+    input.focus();
+    input.select();
+  };
+
+  overlay.addEventListener("click", e => {
+    if (e.target === overlay) close();
+  });
+  closeBtn.addEventListener("click", close);
+  input.addEventListener("focus", selectInput);
+  input.addEventListener("click", selectInput);
+  copyBtn.addEventListener("click", async () => {
+    const ok = await copyText(input.value);
+    markRuntimeEvent("lastShareMode", ok ? "copy" : "manual");
+    markRuntimeEvent("lastShareAt", Date.now());
+    if (ok) {
+      showToast(t("share.copied"));
+      close();
+    } else {
+      selectInput();
+      showToast(t("share.manual.ready"));
+    }
+  });
+  document.addEventListener("keydown", e => {
+    if (!overlay.hidden && e.key === "Escape") close();
+  });
+
+  manualShareDialog = { overlay, title, closeBtn, input, copyBtn, open: selectInput };
+  return manualShareDialog;
+}
+
+function openManualShareDialog(url) {
+  const dialog = ensureManualShareDialog();
+  dialog.title.textContent = t("share.manual.title");
+  dialog.closeBtn.setAttribute("aria-label", t("share.manual.close"));
+  dialog.closeBtn.title = t("share.manual.close");
+  dialog.copyBtn.textContent = t("share.manual.copy");
+  dialog.input.setAttribute("aria-label", t("share.manual.input"));
+  dialog.input.value = url;
+  dialog.overlay.hidden = false;
+  document.body.classList.add("share-manual-open");
+  markRuntimeEvent("lastShareMode", "manual");
+  markRuntimeEvent("lastShareAt", Date.now());
+  showToast(t("share.manual.ready"));
+  requestAnimationFrame(dialog.open);
+}
+
 // ── Web Share button ────────────────────────────────────────────────
 function setupShareButton() {
   const btn = document.getElementById("shareBtn");
@@ -8403,14 +8548,26 @@ function setupShareButton() {
     if (navigator.share) {
       try {
         await navigator.share(shareData);
+        markRuntimeEvent("lastShareMode", "native");
+        markRuntimeEvent("lastShareAt", Date.now());
+        showToast(t("share.sent"));
         return;
       } catch (err) {
         // User cancelled — silent. Other errors fall through to copy.
-        if (err && err.name === "AbortError") return;
+        if (err && err.name === "AbortError") {
+          markRuntimeEvent("lastShareMode", "cancelled");
+          return;
+        }
       }
     }
     const ok = await copyText(url);
-    showToast(t(ok ? "share.copied" : "share.failed"));
+    if (!ok) {
+      openManualShareDialog(url);
+      return;
+    }
+    markRuntimeEvent("lastShareMode", "copy");
+    markRuntimeEvent("lastShareAt", Date.now());
+    showToast(t("share.copied"));
   });
 }
 
