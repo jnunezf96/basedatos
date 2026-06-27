@@ -5800,7 +5800,7 @@ function setupFuenteActions() {
   if (fillBtn) {
     fillBtn.addEventListener("click", () => {
       selectedFuentes.clear();
-      DEFAULT_FUENTE_OPTIONS.forEach(name => selectedFuentes.add(name));
+      FUENTE_OPTIONS.forEach(name => selectedFuentes.add(name));
       renderFuenteList();
       applyFuenteFilters();
     });

@@ -83,6 +83,7 @@ function normalizeOldSpanishPatternText(str) {
 
 const FORMATTING_REGEX = /[^\p{L}\p{N}\s]/u;
 const PUNCTUATION_REGEX = /[^\p{L}\p{N}\s]/gu;
+const STREAMING_WORD_FIELDS = new Set(["Comentario"]);
 
 function stripHtmlTags(str) {
   return str.replace(/<[^>]*>/g, " ");
@@ -99,6 +100,26 @@ function collapseWhitespace(str) {
 function hasFormattingCharacters(value) {
   if (!value) return false;
   return FORMATTING_REGEX.test(value);
+}
+
+function getRawDisplayValue(row, field) {
+  return (typeof getDisplayValue === "function") ? getDisplayValue(row, field) : (row[field] ?? "");
+}
+
+function shouldStreamNormalizedWords(field) {
+  return STREAMING_WORD_FIELDS.has(field);
+}
+
+function normalizeRawTextForSearch(raw, options = {}) {
+  const accentSensitive = !!options.accentSensitive;
+  const loose = !!options.loose;
+  const useOldSpanish = !accentSensitive && options.oldSpanish !== false && oldSpanishMode;
+  let text = accentSensitive
+    ? stripHtmlTags(String(raw ?? "")).normalize("NFC").toLowerCase()
+    : normalizeString(stripHtmlTags(String(raw ?? "")));
+  if (useOldSpanish) text = normalizeOldSpanish(text);
+  if (loose) text = collapseWhitespace(stripPunctuationCharacters(text));
+  return text;
 }
 
 // ==============================
@@ -121,11 +142,14 @@ function getRowNormalizationCache(row) {
 }
 
 function getNormalizedTextVariant(row, field, options = {}) {
+  if (shouldStreamNormalizedWords(field)) {
+    return normalizeRawTextForSearch(getRawDisplayValue(row, field), options);
+  }
   const rowCache = getRowNormalizationCache(row);
   const cacheKey = getNormalizationCacheKey(row, field) + "__text";
   if (!rowCache[cacheKey]) {
     rowCache[cacheKey] = {
-      raw: (typeof getDisplayValue === "function") ? getDisplayValue(row, field) : (row[field] ?? "")
+      raw: getRawDisplayValue(row, field)
     };
   }
   const entry = rowCache[cacheKey];
@@ -171,7 +195,7 @@ function getNormalizedEntry(row, field) {
   const rowCache = getRowNormalizationCache(row);
   const cacheKey = getNormalizationCacheKey(row, field);
   if (!rowCache[cacheKey]) {
-    const raw = (typeof getDisplayValue === "function") ? getDisplayValue(row, field) : (row[field] ?? "");
+    const raw = getRawDisplayValue(row, field);
     const normalized = normalizeString(stripHtmlTags(raw));
     const looseText = collapseWhitespace(stripPunctuationCharacters(normalized));
     const words = normalized

@@ -82,9 +82,14 @@ function wordMatchesCondition(word, filterValue, mode) {
 
 function matchesWordGroup(row, group) {
   const expression = normalizeWordGroupStructure(group);
+  if (!expression || !expression.children.length) return false;
+  if (shouldStreamNormalizedWords(group.field)) {
+    return forEachNormalizedWordEntry(row, group.field, { accentSensitive: accentSensitiveMode }, wordEntry =>
+      evaluateExpressionOnWordEntry(wordEntry, expression)
+    );
+  }
   const entry = getNormalizedEntry(row, group.field);
   if (!entry.words.length) return false;
-  if (!expression || !expression.children.length) return false;
   return entry.words.some(wordEntry => evaluateExpressionOnWordEntry(wordEntry, expression));
 }
 
@@ -108,6 +113,39 @@ function evaluateConditionAgainstWordEntry(wordEntry, condition) {
   const source = useLoose ? wordEntry.loose : wordEntry.raw;
   const result = candidateMatchesQuery(source, query, condition.mode, useLoose);
   return condition.negate ? !result : result;
+}
+
+function getNormalizedWordStreamText(row, field, options = {}) {
+  return normalizeRawTextForSearch(getRawDisplayValue(row, field), {
+    accentSensitive: !!options.accentSensitive
+  });
+}
+
+function forEachNormalizedWordEntry(row, field, options, callback) {
+  const text = getNormalizedWordStreamText(row, field, options);
+  if (!text) return false;
+  const rx = /\S+/g;
+  let match;
+  while ((match = rx.exec(text))) {
+    const raw = match[0];
+    const wordEntry = {
+      raw,
+      loose: collapseWhitespace(stripPunctuationCharacters(raw))
+    };
+    if (callback(wordEntry)) return true;
+  }
+  return false;
+}
+
+function normalizedWordEntryExists(row, field, options, predicate) {
+  if (shouldStreamNormalizedWords(field)) {
+    return forEachNormalizedWordEntry(row, field, options, predicate);
+  }
+  const entry = getNormalizedEntry(row, field);
+  const words = options?.accentSensitive
+    ? entry.wordsWithAccents
+    : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
+  return words.some(predicate);
 }
 
 
@@ -256,12 +294,8 @@ function matchWholeScopeCompiled(row, filter, query) {
 }
 
 function matchWordScopeCompiled(row, filter, query) {
-  const entry = getNormalizedEntry(row, filter.field);
   const useLoose = query.allowLoose;
-  const words = query.accentSensitive
-    ? entry.wordsWithAccents
-    : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
-  const matches = words.some(wordEntry => {
+  const matches = normalizedWordEntryExists(row, filter.field, { accentSensitive: query.accentSensitive }, wordEntry => {
     const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
     return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
   });
@@ -269,6 +303,9 @@ function matchWordScopeCompiled(row, filter, query) {
 }
 
 function matchPhraseScopeCompiled(row, filter, query) {
+  if (shouldStreamNormalizedWords(filter.field)) {
+    return matchPhraseScopeCompiledStreaming(row, filter, query);
+  }
   const entry = getNormalizedEntry(row, filter.field);
   const phraseQuery = queryMatchesMultiWordPhrase(query, filter.mode, query.allowLoose)
     ? query
@@ -282,6 +319,22 @@ function matchPhraseScopeCompiled(row, filter, query) {
     : queryUsesPhraseWindowRegex(query)
       ? phraseWindowMatchesQuery(words, filter, query, useLoose)
     : words.some(wordEntry => {
+      const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
+      return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
+    });
+  return filter.negate ? !matches : matches;
+}
+
+function matchPhraseScopeCompiledStreaming(row, filter, query) {
+  const phraseQuery = queryMatchesMultiWordPhrase(query, filter.mode, query.allowLoose)
+    ? query
+    : buildLiteralPhraseQuery(filter, query);
+  const useLoose = phraseQuery ? phraseQuery.allowLoose : query.allowLoose;
+  const matches = phraseQuery
+    ? streamingWordSequenceMatchesQuery(row, filter.field, phraseQuery, filter.mode, useLoose)
+    : queryUsesPhraseWindowRegex(query)
+      ? streamingPhraseWindowMatchesQuery(row, filter, query, useLoose)
+    : normalizedWordEntryExists(row, filter.field, { accentSensitive: query.accentSensitive }, wordEntry => {
       const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
       return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
     });
@@ -474,6 +527,41 @@ function wordSequenceMatchesQuery(words, query, mode, useLoose) {
   return false;
 }
 
+function streamingWordSequenceMatchesQuery(row, field, query, mode, useLoose) {
+  const queryValue = useLoose ? query.loose : query.strict;
+  const queryWords = splitSearchWords(queryValue);
+  if (queryWords.length < 2) return false;
+  const window = [];
+  return forEachNormalizedWordEntry(row, field, { accentSensitive: query.accentSensitive }, wordEntry => {
+    const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
+    if (!candidate) return false;
+    window.push(candidate);
+    if (window.length > queryWords.length) window.shift();
+    return window.length === queryWords.length
+      && wordSequenceMatchesMode(window, queryWords, query.effectiveMode || mode);
+  });
+}
+
+function streamingPhraseWindowMatchesQuery(row, filter, query, useLoose) {
+  if (!queryUsesPhraseWindowRegex(query)) return false;
+  const counts = phraseWindowWordCounts(filter, query);
+  if (!counts.length) return false;
+  const maxCount = Math.max(...counts);
+  const window = [];
+  return forEachNormalizedWordEntry(row, filter.field, { accentSensitive: query.accentSensitive }, wordEntry => {
+    const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
+    if (!candidate) return false;
+    window.push(candidate);
+    if (window.length > maxCount) window.shift();
+    for (const count of counts) {
+      if (count > window.length) continue;
+      const candidateText = window.slice(window.length - count).join(" ");
+      if (candidateMatchesQuery(candidateText, query, filter.mode, useLoose)) return true;
+    }
+    return false;
+  });
+}
+
 function splitSearchWords(value) {
   return String(value || "")
     .trim()
@@ -550,6 +638,9 @@ function mapModeToWordRowType(mode) {
 
 // Compiled version — used with pre-built context from buildEvalContext().
 function matchesCompiledQuickGroup(row, group) {
+  if (shouldStreamNormalizedWords(group.field)) {
+    return matchesCompiledQuickGroupStreaming(row, group);
+  }
   const entry = getNormalizedEntry(row, group.field);
   if (!entry.words.length) return false;
   const wordList = group.accentSensitive ? entry.wordsWithAccents : entry.words;
@@ -566,6 +657,23 @@ function matchesCompiledQuickGroup(row, group) {
 
   if (!group.segments.size) return false;
   return wordList.some(wordEntry => wordEntryMatchesCompiledSegments(wordEntry, group.segments));
+}
+
+function matchesCompiledQuickGroupStreaming(row, group) {
+  if (!group.hasInclude) {
+    return group.compiledFilters.every(({ filter, query }) => {
+      const useLoose = query.allowLoose;
+      return !forEachNormalizedWordEntry(row, group.field, { accentSensitive: query.accentSensitive }, wordEntry => {
+        const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
+        return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
+      });
+    });
+  }
+
+  if (!group.segments.size) return false;
+  return forEachNormalizedWordEntry(row, group.field, { accentSensitive: group.accentSensitive }, wordEntry =>
+    wordEntryMatchesCompiledSegments(wordEntry, group.segments)
+  );
 }
 
 // segments built from pre-compiled { filter, query } pairs.
