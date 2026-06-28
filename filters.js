@@ -79,6 +79,41 @@ function wordMatchesCondition(word, filterValue, mode) {
   }
 }
 
+function getWordEntryLoose(wordEntry) {
+  if (!wordEntry) return "";
+  if (wordEntry.loose !== undefined) return wordEntry.loose;
+  const raw = wordEntry.raw || "";
+  wordEntry.loose = raw && hasFormattingCharacters(raw)
+    ? collapseWhitespace(stripPunctuationCharacters(raw))
+    : raw;
+  return wordEntry.loose;
+}
+
+function getWordEntryCandidate(wordEntry, useLoose) {
+  return useLoose ? getWordEntryLoose(wordEntry) : (wordEntry?.raw || "");
+}
+
+function getSimpleLooseQueryValue(query) {
+  if (!query || query.hasRegex || query.hasWildcards) return "";
+  if (!query.strict || query.strict !== query.loose) return "";
+  return query.strict;
+}
+
+function wordEntryMatchesFilterQuery(wordEntry, filter, query) {
+  if (!wordEntry) return false;
+  const useLoose = query.allowLoose;
+  if (!useLoose) return candidateMatchesQuery(wordEntry.raw, query, filter.mode, false);
+  if (candidateMatchesQuery(wordEntry.raw, query, filter.mode, false)) return true;
+  const simpleValue = getSimpleLooseQueryValue(query);
+  if (simpleValue) {
+    const mode = query.effectiveMode || filter.mode;
+    if (mode === "any" || !wordEntry.raw.includes(simpleValue)) return false;
+  }
+  if (!hasFormattingCharacters(wordEntry.raw)) return false;
+  wordEntry.loose = collapseWhitespace(stripPunctuationCharacters(wordEntry.raw));
+  return candidateMatchesQuery(wordEntry.loose, query, filter.mode, true);
+}
+
 
 function matchesWordGroup(row, group) {
   const expression = normalizeWordGroupStructure(group);
@@ -109,9 +144,7 @@ function evaluateExpressionOnWordEntry(wordEntry, node) {
 
 function evaluateConditionAgainstWordEntry(wordEntry, condition) {
   const query = condition._query || buildFilterQuery(condition);
-  const useLoose = query.allowLoose;
-  const source = useLoose ? wordEntry.loose : wordEntry.raw;
-  const result = candidateMatchesQuery(source, query, condition.mode, useLoose);
+  const result = wordEntryMatchesFilterQuery(wordEntry, condition, query);
   return condition.negate ? !result : result;
 }
 
@@ -128,10 +161,7 @@ function forEachNormalizedWordEntry(row, field, options, callback) {
   let match;
   while ((match = rx.exec(text))) {
     const raw = match[0];
-    const wordEntry = {
-      raw,
-      loose: collapseWhitespace(stripPunctuationCharacters(raw))
-    };
+    const wordEntry = { raw };
     if (callback(wordEntry)) return true;
   }
   return false;
@@ -262,7 +292,7 @@ function matchCompiledFilter(row, cf) {
       return cf.fields.some(field => {
         const entry = getNormalizedEntry(row, field);
         return entry.words.some(w => {
-          const src = w.loose || w.raw;
+          const src = getWordEntryCandidate(w, true);
           return src === tok || src.startsWith(tok);
         });
       });
@@ -294,10 +324,8 @@ function matchWholeScopeCompiled(row, filter, query) {
 }
 
 function matchWordScopeCompiled(row, filter, query) {
-  const useLoose = query.allowLoose;
   const matches = normalizedWordEntryExists(row, filter.field, { accentSensitive: query.accentSensitive }, wordEntry => {
-    const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
-    return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
+    return wordEntryMatchesFilterQuery(wordEntry, filter, query);
   });
   return filter.negate ? !matches : matches;
 }
@@ -319,8 +347,7 @@ function matchPhraseScopeCompiled(row, filter, query) {
     : queryUsesPhraseWindowRegex(query)
       ? phraseWindowMatchesQuery(words, filter, query, useLoose)
     : words.some(wordEntry => {
-      const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
-      return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
+      return wordEntryMatchesFilterQuery(wordEntry, filter, query);
     });
   return filter.negate ? !matches : matches;
 }
@@ -335,8 +362,7 @@ function matchPhraseScopeCompiledStreaming(row, filter, query) {
     : queryUsesPhraseWindowRegex(query)
       ? streamingPhraseWindowMatchesQuery(row, filter, query, useLoose)
     : normalizedWordEntryExists(row, filter.field, { accentSensitive: query.accentSensitive }, wordEntry => {
-      const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
-      return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
+      return wordEntryMatchesFilterQuery(wordEntry, filter, query);
     });
   return filter.negate ? !matches : matches;
 }
@@ -360,7 +386,7 @@ function findPhraseWindowMatches(words, filter, query, useLoose, options = {}) {
   const candidates = words
     .map(wordEntry => ({
       entry: wordEntry,
-      candidate: useLoose ? wordEntry.loose : wordEntry.raw
+      candidate: getWordEntryCandidate(wordEntry, useLoose)
     }))
     .filter(item => item.candidate);
   if (!candidates.length) return [];
@@ -515,7 +541,7 @@ function wordSequenceMatchesQuery(words, query, mode, useLoose) {
   const queryWords = splitSearchWords(queryValue);
   if (queryWords.length < 2) return false;
   const candidateWords = words
-    .map(wordEntry => useLoose ? wordEntry.loose : wordEntry.raw)
+    .map(wordEntry => getWordEntryCandidate(wordEntry, useLoose))
     .filter(Boolean);
   if (candidateWords.length < queryWords.length) return false;
 
@@ -533,7 +559,7 @@ function streamingWordSequenceMatchesQuery(row, field, query, mode, useLoose) {
   if (queryWords.length < 2) return false;
   const window = [];
   return forEachNormalizedWordEntry(row, field, { accentSensitive: query.accentSensitive }, wordEntry => {
-    const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
+    const candidate = getWordEntryCandidate(wordEntry, useLoose);
     if (!candidate) return false;
     window.push(candidate);
     if (window.length > queryWords.length) window.shift();
@@ -549,7 +575,7 @@ function streamingPhraseWindowMatchesQuery(row, filter, query, useLoose) {
   const maxCount = Math.max(...counts);
   const window = [];
   return forEachNormalizedWordEntry(row, filter.field, { accentSensitive: query.accentSensitive }, wordEntry => {
-    const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
+    const candidate = getWordEntryCandidate(wordEntry, useLoose);
     if (!candidate) return false;
     window.push(candidate);
     if (window.length > maxCount) window.shift();
@@ -643,14 +669,14 @@ function matchesCompiledQuickGroup(row, group) {
   }
   const entry = getNormalizedEntry(row, group.field);
   if (!entry.words.length) return false;
-  const wordList = group.accentSensitive ? entry.wordsWithAccents : entry.words;
+  const wordList = group.accentSensitive
+    ? entry.wordsWithAccents
+    : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
 
   if (!group.hasInclude) {
     return group.compiledFilters.every(({ filter, query }) => {
-      const useLoose = query.allowLoose;
       return !wordList.some(wordEntry => {
-        const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
-        return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
+        return wordEntryMatchesFilterQuery(wordEntry, filter, query);
       });
     });
   }
@@ -662,10 +688,8 @@ function matchesCompiledQuickGroup(row, group) {
 function matchesCompiledQuickGroupStreaming(row, group) {
   if (!group.hasInclude) {
     return group.compiledFilters.every(({ filter, query }) => {
-      const useLoose = query.allowLoose;
       return !forEachNormalizedWordEntry(row, group.field, { accentSensitive: query.accentSensitive }, wordEntry => {
-        const candidate = useLoose ? wordEntry.loose : wordEntry.raw;
-        return candidateMatchesQuery(candidate, query, filter.mode, useLoose);
+        return wordEntryMatchesFilterQuery(wordEntry, filter, query);
       });
     });
   }
@@ -698,7 +722,5 @@ function wordEntryMatchesCompiledSegments(wordEntry, segments) {
 }
 
 function compiledQueryMatchesWordEntry(wordEntry, filter, query) {
-  const useLoose = query.allowLoose;
-  const source = useLoose ? wordEntry.loose : wordEntry.raw;
-  return candidateMatchesQuery(source, query, filter.mode, useLoose);
+  return wordEntryMatchesFilterQuery(wordEntry, filter, query);
 }

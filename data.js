@@ -99,7 +99,27 @@ function collapseWhitespace(str) {
 
 function hasFormattingCharacters(value) {
   if (!value) return false;
-  return FORMATTING_REGEX.test(value);
+  const text = String(value);
+  for (let i = 0; i < text.length; i += 1) {
+    const code = text.charCodeAt(i);
+    if (code <= 0x7f) {
+      if (
+        (code >= 48 && code <= 57) ||
+        (code >= 65 && code <= 90) ||
+        (code >= 97 && code <= 122) ||
+        code === 9 ||
+        code === 10 ||
+        code === 12 ||
+        code === 13 ||
+        code === 32
+      ) {
+        continue;
+      }
+      return true;
+    }
+    return FORMATTING_REGEX.test(text);
+  }
+  return false;
 }
 
 function getRawDisplayValue(row, field) {

@@ -19,7 +19,7 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=publish-ready-128" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-129" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -380,12 +380,13 @@
           </div>
         </div>
         <div class="filter-row scopes">
-          <span class="label" data-i18n="label.scope">Alcance</span>
-          <div class="pill-group scope-group">
+          <span class="label" id="scopeLabel-f1" data-i18n="label.scope">Alcance</span>
+          <div class="pill-group scope-group" role="group" aria-labelledby="scopeLabel-f1" aria-describedby="scopeIntent-f1">
             <button type="button" class="pill scope-btn active mobile-icon-btn mobile-label-on" data-scope="word" data-i18n="scope.word" data-i18n-placeholder-label="scope.word" data-placeholder-label="Palabra"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-word"></use></svg><span class="btn-label mobile-icon-label">Palabra</span></button>
             <button type="button" class="pill scope-btn mobile-icon-btn mobile-label-on" data-scope="phrase" data-i18n="scope.phrase" data-i18n-placeholder-label="scope.phrase" data-placeholder-label="Frase"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-phrase"></use></svg><span class="btn-label mobile-icon-label">Frase</span></button>
             <button type="button" class="pill scope-btn mobile-icon-btn mobile-label-on" data-scope="whole" data-i18n="scope.whole" data-i18n-placeholder-label="scope.whole" data-placeholder-label="Casilla"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-whole"></use></svg><span class="btn-label mobile-icon-label">Casilla</span></button>
           </div>
+          <div class="scope-intent" id="scopeIntent-f1" data-scope-intent data-i18n="scope.intent.word">Busca dentro de una sola palabra; sirve para raíces, prefijos o sufijos.</div>
         </div>
         <div class="filter-grid">
           <div class="filter-grid-mobile-head">
@@ -897,9 +898,9 @@
     </nav>
   </main> <!-- .app-shell -->
 
-  <script src="data.js?v=publish-ready-100"></script>
-  <script src="filters.js?v=publish-ready-100"></script>
+  <script src="data.js?v=publish-ready-101"></script>
+  <script src="filters.js?v=publish-ready-102"></script>
   <script src="data/bootstrap.js?v=publish-ready-122"></script>
-  <script src="script.js?v=publish-ready-130"></script>
+  <script src="script.js?v=publish-ready-135"></script>
 </body>
 </html>

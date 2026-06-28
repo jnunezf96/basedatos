@@ -1,6 +1,10 @@
 const COMENTARIO_CONTROL_WIDTH = 44;
 const COMENTARIO_ROW_PRESS_DELAY_MS = 220;
 const FIXED_CONTROL_COLUMNS = new Set(["Comentario"]);
+const FULL_DATA_IDLE_TIMEOUT_MS = 4500;
+const FULL_DATA_LOW_MEMORY_MAX_GB = 2;
+const FULL_DATA_LOW_CORE_MAX = 2;
+const FULL_DATA_PHONE_MAX_WIDTH = 700;
 
 const TABLE_FIELDS = [
   { key: "Texto estandarizado", label: "Edición", defaultWidth: 108 },
@@ -182,6 +186,9 @@ const I18N = {
     "scope.whole": "Casilla",
     "scope.word": "Palabra",
     "scope.phrase": "Frase",
+    "scope.intent.word": "Busca dentro de una sola palabra; sirve para raíces, prefijos o sufijos.",
+    "scope.intent.phrase": "Busca una secuencia de palabras juntas y en orden; sirve para frases o definiciones.",
+    "scope.intent.whole": "Compara con toda la casilla; sirve cuando el campo completo debe coincidir.",
     "field.grafia.short": "edición",
     "field.paleografia.short": "original",
     "field.traduccion.short": "traducción",
@@ -397,6 +404,7 @@ const I18N = {
     "table.status.showing": "Registros mostrados: {{start}}-{{end}} de {{total}}",
     "table.status.fullLoading": "Cargando la base completa…",
     "table.status.detail.loadingFull": "base completa cargando",
+    "table.status.detail.preview": "vista rápida",
     "table.status.detail.auto": "{{exact}} lemas exactos · {{phrase}} frases",
     "table.status.detail.manual": "{{exact}} lemas exactos · {{phrase}} frases · Manual",
     "table.empty": "No hay datos disponibles.",
@@ -644,6 +652,9 @@ const I18N = {
     "scope.whole": "Cell",
     "scope.word": "Word",
     "scope.phrase": "Phrase",
+    "scope.intent.word": "Matches inside one word; useful for roots, prefixes, or suffixes.",
+    "scope.intent.phrase": "Matches a sequence of words together and in order; useful for phrases or definitions.",
+    "scope.intent.whole": "Compares against the whole cell; useful when the complete field must match.",
     "field.grafia.short": "edition",
     "field.paleografia.short": "original",
     "field.traduccion.short": "translation",
@@ -859,6 +870,7 @@ const I18N = {
     "table.status.showing": "Records shown: {{start}}-{{end}} of {{total}}",
     "table.status.fullLoading": "Loading the full database…",
     "table.status.detail.loadingFull": "full database loading",
+    "table.status.detail.preview": "quick preview",
     "table.status.detail.auto": "{{exact}} exact lemmas · {{phrase}} phrases",
     "table.status.detail.manual": "{{exact}} exact lemmas · {{phrase}} phrases · Manual",
     "table.empty": "No data available.",
@@ -1244,6 +1256,8 @@ let dataRowsComplete = false;
 let dataRowsBootstrapped = false;
 let pendingFullDataRefresh = false;
 let bootstrapTotalRows = 0;
+let fullDataLoadPromise = null;
+let fullDataLoadScheduled = false;
 let lastPairResults = null;
 let lastPairMeta = null;
 let studyBaseDeck = [];
@@ -1255,6 +1269,7 @@ let studyViewMode = "flip";
 let studyStats = { seen: 0, again: 0, hard: 0, good: 0, easy: 0 };
 let studyEmptyMessageKey = "study.empty";
 let studyFullscreenFallback = false;
+let studyScopeDirty = true;
 let lastRankingSummary = null;
 let tableViewMode = "rows"; // "rows" | "lemmas"
 let lastLemmaItems = [];
@@ -1327,30 +1342,17 @@ document.addEventListener("DOMContentLoaded", () => {
   setupScrollNav();
   const hasInitialRoute = location.hash && location.hash.startsWith("#/");
   const usedBootstrap = renderBootstrapRows({ skipForRoute: hasInitialRoute });
-  loadCompressedJsonlRows(versionedAssetUrl("data/data.jsonl.gz"))
-    .then(rows => {
-      setDataRows(rows, { complete: true });
-      const initialState = parseHashRoute(location.hash);
-      if (initialState) {
-        applyParsedState(initialState);
-      } else {
-        applyFuenteFilters({ keepOffset: usedBootstrap && !pendingFullDataRefresh });
-      }
-      pendingFullDataRefresh = false;
-      hashRouteApplied = true;
-      window.addEventListener("hashchange", handleHashChange);
-    })
-    .catch(() => {
-      dataLoadFailed = true;
-      if (!dataRowsBootstrapped) {
-        dataRows = [];
-        setStatus(t("table.status.error"));
-        setTableStatusMessage(t("table.status.error"));
-      } else {
-        setTableStatusMessage(t("table.status.error"));
-      }
-      renderScrollNavBadges();
-    });
+  if (hasInitialRoute) {
+    queueFullDataRefresh();
+  } else if (!usedBootstrap) {
+    ensureFullDataLoad();
+  } else {
+    hashRouteApplied = true;
+    ensureHashChangeListener();
+    if (!shouldHoldFullDataForUserIntent()) {
+      scheduleFullDataLoad();
+    }
+  }
 });
 
 function renderBootstrapRows(options = {}) {
@@ -1367,18 +1369,144 @@ function renderBootstrapRows(options = {}) {
 }
 
 function setDataRows(rows, options = {}) {
-  rows.forEach((row, idx) => {
-    row._rid = row.record_id || idx;
-    row._prio = parsePriority(row.prio);
-    row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
-  });
+  if (!options.rowsPrepared) rows.forEach(prepareDataRow);
   dataRows = rows;
   dataRowsComplete = !!options.complete;
   dataRowsBootstrapped = !dataRowsComplete && rows.length > 0;
   bootstrapTotalRows = dataRowsBootstrapped ? (options.totalRows || rows.length) : 0;
   mobileRowById.clear();
-  rows.forEach(row => mobileRowById.set(getMobileRowId(row), row));
   buildSourceSlugMaps();
+}
+
+function prepareDataRow(row, idx) {
+  row._rid = row.record_id || idx;
+  row._prio = parsePriority(row.prio);
+  row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
+  return row;
+}
+
+function getFullDataUrl() {
+  const dataPath = "data/data.jsonl.gz";
+  let bootstrapVersion = "";
+  try {
+    const src = document.querySelector('script[src*="data/bootstrap.js"]')?.src || "";
+    bootstrapVersion = src ? new URL(src, location.href).searchParams.get("v") || "" : "";
+  } catch {}
+  const dataVersion = window.NAHUATL_DATA_VERSION
+    || window.NAHUATL_BOOTSTRAP?.dataVersion
+    || bootstrapVersion
+    || APP_ASSET_VERSION;
+  const separator = dataPath.includes("?") ? "&" : "?";
+  return `${dataPath}${separator}v=${encodeURIComponent(dataVersion)}`;
+}
+
+function getNavigatorConnection() {
+  return navigator.connection || navigator.mozConnection || navigator.webkitConnection || null;
+}
+
+function getPositiveNavigatorNumber(key) {
+  const value = Number(navigator[key]);
+  return Number.isFinite(value) && value > 0 ? value : 0;
+}
+
+function isLikelyPhoneViewport() {
+  try {
+    return window.matchMedia("(pointer: coarse)").matches
+      && window.matchMedia(`(max-width: ${FULL_DATA_PHONE_MAX_WIDTH}px)`).matches;
+  } catch {
+    return (navigator.maxTouchPoints || 0) > 0 && window.innerWidth <= FULL_DATA_PHONE_MAX_WIDTH;
+  }
+}
+
+function shouldHoldFullDataForUserIntent() {
+  const connection = getNavigatorConnection();
+  if (connection?.saveData) return true;
+
+  const deviceMemory = getPositiveNavigatorNumber("deviceMemory");
+  if (deviceMemory && deviceMemory <= FULL_DATA_LOW_MEMORY_MAX_GB) return true;
+
+  const cores = getPositiveNavigatorNumber("hardwareConcurrency");
+  if (cores && cores <= FULL_DATA_LOW_CORE_MAX) return true;
+
+  if (isLikelyPhoneViewport()) {
+    const unknownOrSmallMemory = !deviceMemory || deviceMemory <= 4;
+    const unknownOrFewCores = !cores || cores <= 4;
+    if (unknownOrSmallMemory && unknownOrFewCores) return true;
+  }
+
+  return false;
+}
+
+function scheduleFullDataLoad() {
+  if (dataRowsComplete || fullDataLoadPromise || fullDataLoadScheduled) return;
+  fullDataLoadScheduled = true;
+  const startLoad = () => {
+    fullDataLoadScheduled = false;
+    ensureFullDataLoad();
+  };
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(startLoad, { timeout: FULL_DATA_IDLE_TIMEOUT_MS });
+  } else {
+    window.setTimeout(startLoad, FULL_DATA_IDLE_TIMEOUT_MS);
+  }
+}
+
+function refreshBootstrappedStatus() {
+  if (!dataRowsBootstrapped || dataRowsComplete) return;
+  updateTableStatus(lastRenderRows.length, lastRenderTotal);
+}
+
+function ensureFullDataLoad() {
+  if (dataRowsComplete) return Promise.resolve(dataRows);
+  if (fullDataLoadPromise) return fullDataLoadPromise;
+
+  dataLoadFailed = false;
+
+  const load = loadCompressedJsonlRows(getFullDataUrl())
+    .then(rows => {
+      handleFullDataLoadSuccess(rows);
+      return rows;
+    })
+    .catch(() => {
+      handleFullDataLoadError();
+      return null;
+    });
+
+  fullDataLoadPromise = load.then(rows => {
+    fullDataLoadPromise = null;
+    return rows;
+  });
+  refreshBootstrappedStatus();
+  return fullDataLoadPromise;
+}
+
+function handleFullDataLoadSuccess(rows) {
+  const wasBootstrapped = dataRowsBootstrapped;
+  setDataRows(rows, { complete: true, rowsPrepared: true });
+  const initialState = parseHashRoute(location.hash);
+  if (initialState && !hashRouteApplied) {
+    applyParsedState(initialState);
+  } else {
+    applyFuenteFilters({ keepOffset: wasBootstrapped && !pendingFullDataRefresh });
+  }
+  pendingFullDataRefresh = false;
+  hashRouteApplied = true;
+  ensureHashChangeListener();
+}
+
+function handleFullDataLoadError() {
+  dataLoadFailed = true;
+  pendingFullDataRefresh = false;
+  if (!dataRowsBootstrapped) {
+    dataRows = [];
+    setStatus(t("table.status.error"));
+    setTableStatusMessage(t("table.status.error"));
+  } else {
+    setTableStatusMessage(t("table.status.error"));
+  }
+  renderScrollNavBadges();
+  hashRouteApplied = true;
+  ensureHashChangeListener();
 }
 
 async function loadCompressedJsonlRows(url) {
@@ -1414,7 +1542,9 @@ async function loadCompressedJsonlRows(url) {
     carry = lines.pop() || "";
     for (const line of lines) {
       if (!line) continue;
-      rows.push(JSON.parse(line));
+      const row = JSON.parse(line);
+      prepareDataRow(row, rows.length);
+      rows.push(row);
       parsedSinceYield += 1;
       if (parsedSinceYield >= 5000) {
         parsedSinceYield = 0;
@@ -1423,7 +1553,11 @@ async function loadCompressedJsonlRows(url) {
     }
   }
   carry += decoder.decode();
-  if (carry.trim()) rows.push(JSON.parse(carry));
+  if (carry.trim()) {
+    const row = JSON.parse(carry);
+    prepareDataRow(row, rows.length);
+    rows.push(row);
+  }
   return rows;
 }
 
@@ -1431,7 +1565,10 @@ function parseJsonlText(text) {
   const rows = [];
   const lines = text.split("\n");
   for (const line of lines) {
-    if (line) rows.push(JSON.parse(line));
+    if (!line) continue;
+    const row = JSON.parse(line);
+    prepareDataRow(row, rows.length);
+    rows.push(row);
   }
   return rows;
 }
@@ -2406,6 +2543,7 @@ function setupTabs() {
     document.querySelectorAll(".tab-panel").forEach(panel => {
       panel.classList.toggle("active", panel.id === tabId);
     });
+    if (tabId === "studyPanel" && studyScopeDirty) updateStudyScope({ force: true });
     requestAnimationFrame(syncSessionFolderNotch);
     if (focus) btn.focus();
   }
@@ -2513,6 +2651,27 @@ function updateFilterPlaceholders(card) {
     const label = t(key).replace("{campo}", campo).replace("{casilla}", casilla);
     input.placeholder = label;
     input.setAttribute("aria-label", label);
+  });
+  updateScopeIntent(card, scopeBtn?.dataset.scope);
+}
+
+function updateScopeIntent(card, selectedScope) {
+  if (!card) return;
+  const scope = normalizeScope(selectedScope || card.querySelector(".scope-btn.active")?.dataset.scope || "word");
+  const intent = card.querySelector("[data-scope-intent]");
+  if (intent) {
+    const key = `scope.intent.${scope}`;
+    intent.dataset.i18n = key;
+    setTranslatedText(intent, key);
+  }
+  card.querySelectorAll(".scope-btn[data-scope]").forEach(btn => {
+    const btnScope = normalizeScope(btn.dataset.scope);
+    const label = btn.querySelector(".btn-label")?.textContent.trim()
+      || btn.dataset.placeholderLabel
+      || btn.textContent.trim();
+    const intentText = t(`scope.intent.${btnScope}`);
+    btn.setAttribute("title", intentText);
+    btn.setAttribute("aria-label", label ? `${label}. ${intentText}` : intentText);
   });
 }
 
@@ -3066,6 +3225,7 @@ function queueFullDataRefresh() {
   pendingFullDataRefresh = true;
   setTableStatusMessage(t("table.status.fullLoading"));
   updateScrollNavBadges({ resultCount: bootstrapTotalRows || lastRenderTotal });
+  ensureFullDataLoad();
 }
 
 function buildRankingContext(rows) {
@@ -3220,7 +3380,7 @@ function applyFilters(initial = false, options = {}) {
     updateSortIndicators();
     restoreScroll(options);
     renderActiveFilterChips();
-    updateStudyScope();
+    requestStudyScopeUpdate();
     updateUrlHash();
     return;
   }
@@ -3253,7 +3413,7 @@ function applyFilters(initial = false, options = {}) {
   updateSortIndicators();
   restoreScroll(options);
   renderActiveFilterChips();
-  updateStudyScope();
+  requestStudyScopeUpdate();
   updateUrlHash();
 }
 
@@ -3263,6 +3423,7 @@ function renderTable(rows, totalCount) {
   const scroller = getTableScrollElement();
   const savedScroll = scroller ? scroller.scrollTop : 0;
   tbody.innerHTML = "";
+  mobileRowById.clear();
   expandableComments.clear();
 
   syncDataPanelViewAttribute();
@@ -3314,7 +3475,10 @@ function buildDataRow(row) {
   const tr = document.createElement("tr");
   const rowId = getMobileRowId(row);
   if (row.record_id) tr.dataset.recordId = row.record_id;
-  if (rowId) tr.dataset.mobileRowId = rowId;
+  if (rowId) {
+    tr.dataset.mobileRowId = rowId;
+    mobileRowById.set(rowId, row);
+  }
   let comentarioMeta = null;
   let mobileToggleAttached = false;
 
@@ -3763,7 +3927,9 @@ function updateTableStatus(displayed, total) {
   const start = previewTotal === 0 ? 0 : Math.min(displayOffset + 1, previewTotal);
   const end = Math.min(displayOffset + displayed, previewTotal);
   const detail = dataRowsBootstrapped && !dataRowsComplete
-    ? t("table.status.detail.loadingFull")
+    ? t(fullDataLoadPromise || pendingFullDataRefresh
+      ? "table.status.detail.loadingFull"
+      : "table.status.detail.preview")
     : (lastRankingSummary || "");
   setTableStatusMessage(
     t("table.status.showing", { start, end, total: previewTotal }),
@@ -5851,7 +6017,7 @@ function applyFuenteFilters(options = {}) {
     lastRenderTotal = 0;
     lastLemmaItems = [];
     renderTable([], 0);
-    updateStudyScope();
+    requestStudyScopeUpdate();
     updateUrlHash();
     return;
   }
@@ -7563,12 +7729,27 @@ function getStudyPossibleCardCount() {
   return countStudyPossibleCardsFromRows(rows, { direction: getStudyDirection() });
 }
 
-function updateStudyScope() {
+function isStudyPanelActive() {
+  return document.getElementById("studyPanel")?.classList.contains("active") ?? false;
+}
+
+function updateStudyScope(options = {}) {
   const el = document.getElementById("studyScope");
   if (!el) return;
+  if (options instanceof Event) options = {};
+  if (!options.force && !isStudyPanelActive()) {
+    studyScopeDirty = true;
+    return;
+  }
   const rows = getStudyRows();
-  const cards = rows.length ? getStudyPossibleCardCount() : 0;
+  const cards = rows.length ? countStudyPossibleCardsFromRows(rows, { direction: getStudyDirection() }) : 0;
+  studyScopeDirty = false;
   el.textContent = t("study.scope", { rows: rows.length, cards });
+}
+
+function requestStudyScopeUpdate() {
+  studyScopeDirty = true;
+  if (isStudyPanelActive()) updateStudyScope({ force: true });
 }
 
 function resetStudyStats() {
@@ -7919,7 +8100,7 @@ function gradeStudyCard(grade) {
 }
 
 function refreshStudyModeUI() {
-  updateStudyScope();
+  requestStudyScopeUpdate();
   renderStudyCard();
 }
 
@@ -7999,12 +8180,12 @@ function setupStudyMode() {
   ["studyUseFilters", "studyDirection", "studyTheme"].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    el.addEventListener("change", updateStudyScope);
+    el.addEventListener("change", requestStudyScopeUpdate);
   });
   syncStudyModeButtons();
   syncStudyViewButtons();
   syncStudyFullscreenButton();
-  updateStudyScope();
+  requestStudyScopeUpdate();
   renderStudyCard();
 }
 
@@ -8078,6 +8259,13 @@ const sourceToSlug = new Map();
 const slugToSource = new Map();
 let hashRouteApplied = false;
 let suppressHashUpdate = false;
+let hashChangeListenerAttached = false;
+
+function ensureHashChangeListener() {
+  if (hashChangeListenerAttached) return;
+  window.addEventListener("hashchange", handleHashChange);
+  hashChangeListenerAttached = true;
+}
 
 function slugifySourceName(name) {
   return String(name || "")
@@ -8102,18 +8290,8 @@ function buildSourceSlugMaps() {
   sourceToSlug.clear();
   slugToSource.clear();
   const collisions = new Set();
-  for (const row of dataRows) {
-    const rid = row.record_id;
-    if (!rid) continue;
-    const sep = rid.indexOf(":");
-    if (sep < 0) continue;
-    const slug = rid.slice(0, sep);
-    const fuente = row.Fuente;
-    if (!slug || !fuente) continue;
-    registerSourceSlug(fuente, slug, collisions);
-  }
   FUENTE_OPTIONS.forEach(name => {
-    if (!sourceToSlug.has(name)) registerSourceSlug(name, slugifySourceName(name), collisions);
+    registerSourceSlug(name, slugifySourceName(name), collisions);
   });
   if (collisions.size && typeof console !== "undefined") {
     console.warn("Source-slug collisions detected (share URLs may route to first source only):",

@@ -534,16 +534,16 @@ td[data-field="Comentario"] small {
 
 /* Comentario is a compact control column; full text opens below the row. */
 th[data-field="Escritura original"],
-td:nth-child(1),
+td[data-field="Escritura original"],
 th[data-field="Texto estandarizado"],
-td:nth-child(2),
+td[data-field="Texto estandarizado"],
 th[data-field="Fuente"],
-td:nth-child(4) {
+td[data-field="Fuente"] {
   width: 108px;
 }
 
 th[data-field="Traducción"],
-td:nth-child(3) {
+td[data-field="Traducción"] {
   width: 220px;
 }
 
@@ -1256,15 +1256,9 @@ th[data-field="Comentario"] .header-actions {
 
 /* ============================================================ */
 
-.hl {
-  background: #ffe08a;
-  border-radius: 2px;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
-
+.hl,
 .hl-os {
-  background: #b2f2bb;
+  background: #ffe08a;
   border-radius: 2px;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
@@ -1577,6 +1571,15 @@ th[data-field="Comentario"] .header-actions {
   color: #5d668e;
   min-width: 56px;
   letter-spacing: 0.2px;
+}
+
+.scope-intent {
+  flex: 1 1 100%;
+  margin: -2px 0 0 64px;
+  color: #6570a5;
+  font-size: 11px;
+  font-weight: 550;
+  line-height: 1.35;
 }
 
 .pill-group {
@@ -4421,6 +4424,13 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     letter-spacing: 0.06em;
     line-height: 1;
     text-transform: uppercase;
+  }
+
+  .scope-intent {
+    grid-column: 2;
+    margin: -1px 0 0;
+    font-size: 10.5px;
+    line-height: 1.25;
   }
 
   .pill-group {
