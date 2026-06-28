@@ -1,7 +1,3 @@
-:root {
-  --page-scroll-rail-width: 28px;
-}
-
 * {
   box-sizing: border-box;
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -37,7 +33,8 @@ body {
 .app-shell {
   --active-filters-scroll-space: 0px;
   --shell-inline-pad: 20px;
-  max-width: 1200px;
+  width: 100%;
+  max-width: none;
   min-height: 100dvh;
   margin: 0 auto;
   padding: 16px var(--shell-inline-pad) 0;
@@ -302,8 +299,8 @@ body {
   flex-direction: column;
   gap: 8px;
   flex: 0 0 auto;
-  align-self: center;
-  width: calc(100vw - (var(--shell-inline-pad, 20px) * 2) - var(--page-scroll-rail-width));
+  align-self: stretch;
+  width: 100%;
   max-width: none;
   height: calc(100vh - 16px);
   height: calc(100dvh - 16px);
@@ -1883,35 +1880,6 @@ body.filter-value-dragging {
   display: none;
 }
 
-.page-scroll-rail {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 70;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--page-scroll-rail-width);
-  color: #59648f;
-  background: rgba(240, 243, 255, 0.92);
-  border-left: 1px solid #dbe2ff;
-  box-shadow: -3px 0 12px rgba(15, 25, 70, 0.06);
-  cursor: ns-resize;
-  touch-action: pan-y;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.page-scroll-rail span {
-  width: 3px;
-  height: 7px;
-  border-radius: 999px;
-  background: #7c86b0;
-  box-shadow: 0 -12px 0 #a4acd0, 0 12px 0 #a4acd0;
-  opacity: 0.9;
-}
-
 .regex-toolbar {
   display: flex;
   align-items: center;
@@ -3010,7 +2978,6 @@ body.study-fullscreen-active .study-setup,
 body.study-fullscreen-active .active-filters-bar,
 body.study-fullscreen-active .data-panel,
 body.study-fullscreen-active .scroll-nav,
-body.study-fullscreen-active .page-scroll-rail,
 body.study-fullscreen-active .column-menu-dropdown,
 body.study-fullscreen-active .export-menu-dropdown,
 body.study-fullscreen-active .study-limit-menu,
@@ -3905,10 +3872,6 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     -webkit-backdrop-filter: saturate(140%) blur(10px);
     border-top: 1px solid #e5e9ff;
     box-shadow: 0 -4px 16px -8px rgba(20, 35, 100, 0.18);
-  }
-
-  .page-scroll-rail {
-    display: none;
   }
 
   .scroll-nav-btn {
