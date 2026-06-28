@@ -1,3 +1,7 @@
+:root {
+  --page-scroll-rail-width: 28px;
+}
+
 * {
   box-sizing: border-box;
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -32,10 +36,11 @@ body {
 
 .app-shell {
   --active-filters-scroll-space: 0px;
+  --shell-inline-pad: 20px;
   max-width: 1200px;
   min-height: 100dvh;
   margin: 0 auto;
-  padding: 16px 20px 0;
+  padding: 16px var(--shell-inline-pad) 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -295,11 +300,16 @@ body {
   box-shadow: inset 0 1px 0 #eef1ff, 0 8px 24px rgba(15, 25, 70, 0.07);
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 8px;
   flex: 0 0 auto;
-  height: calc(100dvh - var(--active-filters-scroll-space));
-  min-height: 560px;
+  align-self: center;
+  width: calc(100vw - (var(--shell-inline-pad, 20px) * 2) - var(--page-scroll-rail-width));
+  max-width: none;
+  height: calc(100vh - 16px);
+  height: calc(100dvh - 16px);
+  min-height: min(560px, calc(100dvh - 16px));
   overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 .scroll-anchor {
@@ -313,6 +323,12 @@ body {
   margin: -10px -12px 0;
   padding: 10px 12px 0;
   border-radius: 14px 14px 0 0;
+}
+
+.data-panel > .active-filters-bar:not(.active-filters-bar--empty) + .sticky-band {
+  margin-top: 0;
+  padding-top: 0;
+  border-radius: 0;
 }
 
 
@@ -416,6 +432,7 @@ div.table-toolbar {
   flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
+  overscroll-behavior: contain;
   border: 1px solid #dde2ff;
   border-top: none;
   border-radius: 0 0 12px 12px;
@@ -939,6 +956,7 @@ th[data-field="Comentario"] .header-actions {
    ============================================================ */
 .active-filters-bar {
   display: flex;
+  flex: 0 0 auto;
   align-items: flex-start;
   align-content: flex-start;
   justify-content: flex-start;
@@ -1863,6 +1881,35 @@ body.filter-value-dragging {
    card on phones. Hidden on desktop (both cards fit). */
 .scroll-nav {
   display: none;
+}
+
+.page-scroll-rail {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--page-scroll-rail-width);
+  color: #59648f;
+  background: rgba(240, 243, 255, 0.92);
+  border-left: 1px solid #dbe2ff;
+  box-shadow: -3px 0 12px rgba(15, 25, 70, 0.06);
+  cursor: ns-resize;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.page-scroll-rail span {
+  width: 3px;
+  height: 7px;
+  border-radius: 999px;
+  background: #7c86b0;
+  box-shadow: 0 -12px 0 #a4acd0, 0 12px 0 #a4acd0;
+  opacity: 0.9;
 }
 
 .regex-toolbar {
@@ -2963,6 +3010,7 @@ body.study-fullscreen-active .study-setup,
 body.study-fullscreen-active .active-filters-bar,
 body.study-fullscreen-active .data-panel,
 body.study-fullscreen-active .scroll-nav,
+body.study-fullscreen-active .page-scroll-rail,
 body.study-fullscreen-active .column-menu-dropdown,
 body.study-fullscreen-active .export-menu-dropdown,
 body.study-fullscreen-active .study-limit-menu,
@@ -3491,13 +3539,24 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   /* Three full-viewport screens toggled by the scroll-nav. Only the
      section matching data-screen renders; the other two are fully hidden
      (not just off-screen) so touch events and focus can't leak in. */
-  .app-shell[data-screen="filters"] .active-filters-bar,
   .app-shell[data-screen="filters"] .data-panel,
   .app-shell[data-screen="chips"] .panel-shell,
-  .app-shell[data-screen="chips"] .data-panel,
+  .app-shell[data-screen="chips"] .sticky-band,
+  .app-shell[data-screen="chips"] .table-scroll,
   .app-shell[data-screen="results"] .panel-shell,
   .app-shell[data-screen="results"] .active-filters-bar {
     display: none !important;
+  }
+
+  .app-shell[data-screen="chips"] .data-panel {
+    display: flex !important;
+    height: var(--mobile-screen-height);
+    min-height: 0;
+    padding: 0;
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
   }
 
   /* On the chips screen, force the bar to show even when empty
@@ -3509,7 +3568,9 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     align-items: stretch;
     justify-content: flex-start;
     gap: 10px;
-    height: var(--mobile-screen-height);
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
     max-height: none;
     overflow-x: hidden;
     overflow-y: auto;
@@ -3846,6 +3907,10 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     box-shadow: 0 -4px 16px -8px rgba(20, 35, 100, 0.18);
   }
 
+  .page-scroll-rail {
+    display: none;
+  }
+
   .scroll-nav-btn {
     flex: 1 1 0;
     min-width: 0;
@@ -4001,6 +4066,9 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   .data-panel {
     height: var(--mobile-screen-height);
     min-height: 0;
+    width: 100%;
+    max-width: 100%;
+    align-self: stretch;
   }
 
   /* Bigger session tabs with breathing room between label and × so

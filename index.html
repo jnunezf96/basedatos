@@ -19,7 +19,7 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=publish-ready-129" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-130" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -698,12 +698,10 @@
       </section>
     </div>
 
-    <!-- ── Active filter chips ── -->
-    <div id="activeFiltersBar" class="active-filters-bar active-filters-bar--empty" role="status" aria-live="polite" aria-label="Filtros aplicados" data-i18n-aria-label="chips.applied"></div>
-
     <!-- ── Data table ── -->
     <section class="data-panel">
       <div id="tableHeaderAnchor" class="scroll-anchor" aria-hidden="true"></div>
+      <div id="activeFiltersBar" class="active-filters-bar active-filters-bar--empty" role="status" aria-live="polite" aria-label="Filtros aplicados" data-i18n-aria-label="chips.applied"></div>
       <div class="sticky-band">
         <div class="table-toolbar">
           <div id="tableStatus" class="result-info" data-i18n="table.status.loading">Cargando datos…</div>
@@ -869,6 +867,7 @@
       </button>
     </nav>
   </main> <!-- .app-shell -->
+  <div class="page-scroll-rail" aria-hidden="true"><span></span></div>
 
   <script src="data.js?v=publish-ready-101"></script>
   <script src="filters.js?v=publish-ready-102"></script>
