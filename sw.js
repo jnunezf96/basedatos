@@ -1,6 +1,6 @@
 // Service worker for Base de datos náhuatl.
 // Bump CACHE_VERSION whenever shipped HTML/CSS/JS changes.
-const CACHE_VERSION = "v158";
+const CACHE_VERSION = "v160";
 const CACHE_NAME = `nahuatl-db-${CACHE_VERSION}`;
 
 // Note: data/data.jsonl.gz is intentionally NOT precached. It's large and

@@ -4094,15 +4094,19 @@ function syncFieldPillOrder() {
 }
 
 function ensureColumnHiddenStyles() {
-  if (document.getElementById("colHiddenStyleTag")) return;
-  const style = document.createElement("style");
-  style.id = "colHiddenStyleTag";
-  TABLE_FIELDS.forEach((_, idx) => {
-    style.textContent += `#dataTable.col-hidden-${idx} col:nth-child(${idx + 1}),` +
-      `#dataTable.col-hidden-${idx} th:nth-child(${idx + 1}),` +
-      `#dataTable.col-hidden-${idx} tbody tr:not(.mobile-row-detail-row):not(.comentario-detail-row) td:nth-child(${idx + 1}) { display: none; }\n`;
+  let style = document.getElementById("colHiddenStyleTag");
+  if (!style) {
+    style = document.createElement("style");
+    style.id = "colHiddenStyleTag";
+    document.head.appendChild(style);
+  }
+  style.textContent = "";
+  TABLE_FIELDS.forEach((field, idx) => {
+    const fieldSelector = JSON.stringify(field.key);
+    style.textContent += `#dataTable.col-hidden-${idx} col[data-field=${fieldSelector}],` +
+      `#dataTable.col-hidden-${idx} th[data-field=${fieldSelector}],` +
+      `#dataTable.col-hidden-${idx} tbody td[data-field=${fieldSelector}] { display: none; }\n`;
   });
-  document.head.appendChild(style);
 }
 
 function setupColumnControls() {
@@ -4298,6 +4302,7 @@ function resetColumnControls() {
 }
 
 function syncColumnLayout() {
+  ensureColumnHiddenStyles();
   const visibleWidth = TABLE_FIELDS.reduce((sum, field) => {
     return hiddenColumns.has(field.key) ? sum : sum + getColumnWidth(field.key);
   }, 0);
@@ -4504,40 +4509,17 @@ function toggleVisibleLemmas() {
   const lemmas = getVisibleLemmas();
   if (!lemmas.length) return;
   const allExpanded = lemmas.every(l => expandedLemmas.has(l));
-  const tbody = document.querySelector("#dataTable tbody");
-  if (!tbody) return;
-
+  const shouldExpand = !allExpanded;
+  const y = getTableScrollTop();
   lemmas.forEach(lemma => {
-    const groupRow = tbody.querySelector(`tr.lemma-group-row[data-lemma="${CSS.escape(lemma)}"]`);
-    if (!groupRow) return;
-    const toggleBtn = groupRow.querySelector(".lemma-toggle");
-    const isExpanded = expandedLemmas.has(lemma);
-    if (allExpanded && isExpanded) {
-      expandedLemmas.delete(lemma);
-      groupRow.classList.remove("expanded");
-      if (toggleBtn) {
-        toggleBtn.textContent = "+";
-        toggleBtn.setAttribute("aria-expanded", "false");
-      }
-      removeLemmaDetailRows(tbody, lemma);
-    } else if (!allExpanded && !isExpanded) {
+    if (shouldExpand) {
       expandedLemmas.add(lemma);
-      groupRow.classList.add("expanded");
-      if (toggleBtn) {
-        toggleBtn.textContent = "−";
-        toggleBtn.setAttribute("aria-expanded", "true");
-      }
-      const item = lastLemmaItems.find(it => it.lemma === lemma);
-      if (item) {
-        const stripe = groupRow.classList.contains("stripe-alt");
-        appendLemmaDetailRowsAfter(groupRow, item, stripe);
-      }
+    } else {
+      expandedLemmas.delete(lemma);
     }
   });
-  lastLemmaPageOffsets = computeLemmaPageOffsets(lastLemmaItems, maxDisplayRows);
-  updatePaginationControls(lastLemmaItems.length);
-  updateTableToggleButton();
-  updateLemmaToggleButton();
+  renderTable(lastRenderRows, lastRenderTotal);
+  requestAnimationFrame(() => setTableScroll(y));
 }
 
 function setupTableToggleAll() {
