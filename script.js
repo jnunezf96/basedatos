@@ -17,7 +17,7 @@ const DEFAULT_COLUMN_ORDER = TABLE_FIELDS.map(field => field.key);
 const COLUMN_CONTROL_ORDER = DEFAULT_COLUMN_ORDER.slice();
 const DEFAULT_COLUMN_WIDTHS = new Map(TABLE_FIELDS.map(field => [field.key, field.defaultWidth]));
 const TABLE_MIN_WIDTH = 908;
-const LEMMA_DOSSIER_SECTION_LIMIT = 8;
+const LEMMA_GROUP_TRANSLATION_LIMIT = 8;
 const APP_ASSET_VERSION = (() => {
   try {
     const src = document.currentScript?.src || "";
@@ -412,7 +412,7 @@ const I18N = {
     "table.empty.filtered": "Ningún resultado coincide con los filtros activos. Prueba a quitar un filtro, ampliar las fuentes o usar acento libre.",
     "table.export.filename": "tabla.jpg",
     "table.export.png.filename": "tabla.png",
-    "table.export.label": "Exportar ▾",
+    "table.export.label": "Exportar",
     "table.export.jpeg": "Imagen (JPG)",
     "table.export.png": "Imagen (PNG)",
     "table.export.csv": "Hoja de cálculo (CSV)",
@@ -482,7 +482,7 @@ const I18N = {
     "comentario.expandAll": "Expandir/Colapsar comentarios",
     "table.pagesize.label": "Filas:",
     "table.pagesize.lemmasLabel": "Lemas:",
-    "table.columns": "Cols ▾",
+    "table.columns": "Cols",
     "columns.title": "Columnas",
     "columns.reset": "Restablecer",
     "columns.show": "Mostrar",
@@ -886,7 +886,7 @@ const I18N = {
     "table.empty.filtered": "No rows match the current filters. Try removing a filter, broadening sources, or using free-accent matching.",
     "table.export.filename": "table.jpg",
     "table.export.png.filename": "table.png",
-    "table.export.label": "Export ▾",
+    "table.export.label": "Export",
     "table.export.jpeg": "Image (JPG)",
     "table.export.png": "Image (PNG)",
     "table.export.csv": "Spreadsheet (CSV)",
@@ -956,7 +956,7 @@ const I18N = {
     "comentario.expandAll": "Expand/Collapse comments",
     "table.pagesize.label": "Rows:",
     "table.pagesize.lemmasLabel": "Lemmas:",
-    "table.columns": "Cols ▾",
+    "table.columns": "Cols",
     "columns.title": "Columns",
     "columns.reset": "Reset",
     "columns.show": "Show",
@@ -1343,6 +1343,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupTableToggleAll();
   setupLemmaToggleAll();
   setupExportButtons();
+  setupHorizontalScrollAreas();
   renderFuenteList();
   setupFuenteActions();
   setupWimmerTranslate();
@@ -2648,6 +2649,67 @@ function setupSwipeTabs() {
     if (next < 0 || next >= buttons.length) return;
     buttons[next].click();
     vibe(8);
+  });
+}
+
+function setupHorizontalScrollAreas() {
+  const selector = ".toolbar-controls, .column-control-list, .export-menu-list";
+  const canScroll = el => el && el.scrollWidth > el.clientWidth + 1;
+
+  document.addEventListener("wheel", e => {
+    const area = e.target.closest?.(selector);
+    if (!canScroll(area)) return;
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    if (!delta) return;
+    const before = area.scrollLeft;
+    area.scrollLeft += delta;
+    if (area.scrollLeft !== before) e.preventDefault();
+  }, { passive: false });
+
+  document.querySelectorAll(selector).forEach(area => {
+    let pointerId = null;
+    let startX = 0;
+    let startLeft = 0;
+    let dragging = false;
+    let suppressClick = false;
+
+    area.addEventListener("pointerdown", e => {
+      if (e.button !== 0 || !canScroll(area)) return;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startLeft = area.scrollLeft;
+      dragging = false;
+      suppressClick = false;
+    });
+
+    area.addEventListener("pointermove", e => {
+      if (pointerId !== e.pointerId) return;
+      const dx = e.clientX - startX;
+      if (!dragging && Math.abs(dx) < 5) return;
+      if (!dragging) {
+        dragging = true;
+        suppressClick = true;
+        area.classList.add("is-dragging");
+        try { area.setPointerCapture(pointerId); } catch {}
+      }
+      area.scrollLeft = startLeft - dx;
+      e.preventDefault();
+    });
+
+    const endDrag = e => {
+      if (pointerId !== e.pointerId) return;
+      pointerId = null;
+      dragging = false;
+      area.classList.remove("is-dragging");
+    };
+    area.addEventListener("pointerup", endDrag);
+    area.addEventListener("pointercancel", endDrag);
+    area.addEventListener("click", e => {
+      if (!suppressClick) return;
+      suppressClick = false;
+      e.preventDefault();
+      e.stopPropagation();
+    }, true);
   });
 }
 
@@ -4133,11 +4195,16 @@ function setupColumnControls() {
   const dropdown = document.getElementById("columnMenuDropdown");
   const resetBtn = document.getElementById("columnResetBtn");
   if (!btn || !dropdown) return;
+  btn.setAttribute("aria-expanded", "false");
 
   btn.addEventListener("click", e => {
     e.stopPropagation();
-    document.getElementById("exportMenuDropdown")?.classList.remove("open");
-    dropdown.classList.toggle("open");
+    const exportDropdown = document.getElementById("exportMenuDropdown");
+    const exportBtn = document.getElementById("exportMenuBtn");
+    exportDropdown?.classList.remove("open");
+    exportBtn?.setAttribute("aria-expanded", "false");
+    const open = dropdown.classList.toggle("open");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
     renderColumnControls();
   });
 
@@ -4148,11 +4215,15 @@ function setupColumnControls() {
   document.addEventListener("click", e => {
     if (!dropdown.contains(e.target) && e.target !== btn) {
       dropdown.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
     }
   });
 
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape") dropdown.classList.remove("open");
+    if (e.key === "Escape") {
+      dropdown.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+    }
   });
 
   if (resetBtn) {
@@ -4985,11 +5056,16 @@ function setupExportButtons() {
   const btn = document.getElementById("exportMenuBtn");
   const dropdown = document.getElementById("exportMenuDropdown");
   if (!btn || !dropdown) return;
+  btn.setAttribute("aria-expanded", "false");
 
   btn.addEventListener("click", e => {
     e.stopPropagation();
-    document.getElementById("columnMenuDropdown")?.classList.remove("open");
-    dropdown.classList.toggle("open");
+    const columnDropdown = document.getElementById("columnMenuDropdown");
+    const columnBtn = document.getElementById("columnMenuBtn");
+    columnDropdown?.classList.remove("open");
+    columnBtn?.setAttribute("aria-expanded", "false");
+    const open = dropdown.classList.toggle("open");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
   });
 
   dropdown.addEventListener("click", e => {
@@ -4999,6 +5075,7 @@ function setupExportButtons() {
   document.addEventListener("click", e => {
     if (!dropdown.contains(e.target) && e.target !== btn) {
       dropdown.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
     }
   });
 
@@ -5006,10 +5083,18 @@ function setupExportButtons() {
     const item = e.target.closest(".export-menu-item");
     if (!item) return;
     dropdown.classList.remove("open");
+    btn.setAttribute("aria-expanded", "false");
     const kind = item.dataset.export;
     if (kind === "jpeg") exportTableAsImage("jpeg");
     else if (kind === "png") exportTableAsImage("png");
     else if (kind === "csv") exportAsCsv();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") {
+      dropdown.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+    }
   });
 }
 
@@ -5092,8 +5177,7 @@ function exportTableAsImage(format = "jpeg") {
   Array.from(table.tBodies[0]?.rows || []).forEach(tr => {
     if (
       tr.classList.contains("mobile-row-detail-row") ||
-      tr.classList.contains("comentario-detail-row") ||
-      tr.classList.contains("lemma-dossier-row")
+      tr.classList.contains("comentario-detail-row")
     ) return;
     const cells = Array.from(tr.cells)
       .filter(td => visibleKeys.has(td.dataset.field))
@@ -6121,25 +6205,6 @@ function rankLemmaDossierEntries(entries, { sourceSort = false } = {}) {
   });
 }
 
-function collectLemmaVariants(rows) {
-  const stats = new Map();
-  rows.forEach(row => {
-    const display = getCleanDisplayText(row, "Escritura original");
-    const key = display.toLocaleLowerCase();
-    addLemmaDossierEntry(stats, key, display, row);
-  });
-  return rankLemmaDossierEntries(stats.values());
-}
-
-function collectLemmaSourceCoverage(rows) {
-  const stats = new Map();
-  rows.forEach(row => {
-    const source = getCleanDisplayText(row, "Fuente");
-    addLemmaDossierEntry(stats, source, source, row);
-  });
-  return rankLemmaDossierEntries(stats.values(), { sourceSort: true });
-}
-
 function collectLemmaTranslationClusters(rows) {
   const stats = new Map();
   rows.forEach(row => {
@@ -6169,7 +6234,11 @@ function buildLemmaGroupRow(item) {
 
       const td = document.createElement("td");
       td.dataset.field = edicionVisible ? "Texto estandarizado" : field.key;
+      td.className = "lemma-group-summary-cell";
       if (headerSpan > 1) td.colSpan = headerSpan;
+
+      const groupCell = document.createElement("div");
+      groupCell.className = "lemma-group-cell";
 
       const wrap = document.createElement("div");
       wrap.className = "lemma-edicion-cell";
@@ -6200,7 +6269,11 @@ function buildLemmaGroupRow(item) {
       action.innerHTML = `${spriteIconMarkup("icon-isolate", "inline-icon browse-compare-icon")}<span class="btn-label">${escapeHtml(t("browse.compare"))}</span>`;
       wrap.appendChild(action);
 
-      td.appendChild(wrap);
+      groupCell.appendChild(wrap);
+      const translations = buildLemmaGroupTranslationList(item);
+      if (translations) groupCell.appendChild(translations);
+
+      td.appendChild(groupCell);
       tr.appendChild(td);
       return;
     }
@@ -6212,6 +6285,25 @@ function buildLemmaGroupRow(item) {
   });
 
   return tr;
+}
+
+function buildLemmaGroupTranslationList(item) {
+  const entries = item.translationClusters || [];
+  if (!entries.length) return null;
+  const list = document.createElement("div");
+  list.className = "lemma-dossier-token-list lemma-group-translation-list";
+  list.setAttribute("aria-label", t("lemma.dossier.translations"));
+  entries.slice(0, LEMMA_GROUP_TRANSLATION_LIMIT).forEach(entry => {
+    list.appendChild(buildLemmaDossierToken(entry));
+  });
+  const hiddenCount = entries.length - LEMMA_GROUP_TRANSLATION_LIMIT;
+  if (hiddenCount > 0) {
+    const more = document.createElement("span");
+    more.className = "lemma-dossier-more";
+    more.textContent = t("lemma.dossier.more", { count: hiddenCount });
+    list.appendChild(more);
+  }
+  return list;
 }
 
 function toggleLemmaExpansion(groupRow, lemma) {
@@ -6577,8 +6669,6 @@ function buildLemmaItemsFromRows(rows) {
     const sourceSet = new Set(sortedRows.map(r => r["Fuente"]).filter(Boolean));
     const sources = [...sourceSet].sort(compareFuenteNames);
     const translations = collectBrowseTranslations(sortedRows);
-    const variants = collectLemmaVariants(sortedRows);
-    const sourceCoverage = collectLemmaSourceCoverage(sortedRows);
     const translationClusters = collectLemmaTranslationClusters(sortedRows);
     items.push({
       lemma: entry.lemma,
@@ -6588,8 +6678,6 @@ function buildLemmaItemsFromRows(rows) {
       rowCount: sortedRows.length,
       translationCount: translations.count,
       sampleTranslations: translations.sample,
-      variants,
-      sourceCoverage,
       translationClusters
     });
   });
@@ -6640,112 +6728,17 @@ function renderLemmasIntoTbody(tbody, totalCount) {
   });
 }
 
-function buildLemmaDossierRow(item, stripe) {
-  const tr = document.createElement("tr");
-  tr.className = "lemma-dossier-row lemma-detail-row";
-  tr.dataset.lemma = item.lemma;
-  if (stripe) tr.classList.add("stripe-alt");
-
-  const td = document.createElement("td");
-  td.className = "lemma-dossier-cell";
-  td.colSpan = getVisibleTableColumnCount();
-
-  const dossier = document.createElement("div");
-  dossier.className = "lemma-dossier";
-
-  const metrics = document.createElement("div");
-  metrics.className = "lemma-dossier-metrics";
-  [
-    ["lemma.dossier.records", item.rowCount],
-    ["lemma.dossier.sources", item.sourceCount],
-    ["lemma.dossier.variants", item.variants?.length || 0],
-    ["lemma.dossier.translations", item.translationClusters?.length || 0],
-  ].forEach(([labelKey, value]) => {
-    const metric = document.createElement("div");
-    metric.className = "lemma-dossier-metric";
-    const number = document.createElement("span");
-    number.className = "lemma-dossier-metric-value";
-    number.textContent = String(value);
-    const label = document.createElement("span");
-    label.className = "lemma-dossier-metric-label";
-    label.textContent = t(labelKey);
-    metric.appendChild(number);
-    metric.appendChild(label);
-    metrics.appendChild(metric);
-  });
-  dossier.appendChild(metrics);
-
-  const sections = document.createElement("div");
-  sections.className = "lemma-dossier-sections";
-  appendLemmaDossierSection(sections, "lemma.dossier.variants", item.variants || []);
-  appendLemmaDossierSection(sections, "lemma.dossier.sourceCoverage", item.sourceCoverage || [], { sourceTokens: true });
-  appendLemmaDossierSection(sections, "lemma.dossier.translations", item.translationClusters || []);
-  dossier.appendChild(sections);
-
-  td.appendChild(dossier);
-  tr.appendChild(td);
-  return tr;
-}
-
-function appendLemmaDossierSection(container, labelKey, entries, options = {}) {
-  const section = document.createElement("section");
-  section.className = "lemma-dossier-section";
-
-  const title = document.createElement("div");
-  title.className = "lemma-dossier-section-title";
-  title.textContent = t(labelKey);
-  section.appendChild(title);
-
-  const list = document.createElement("div");
-  list.className = "lemma-dossier-token-list";
-  const visibleEntries = entries.slice(0, LEMMA_DOSSIER_SECTION_LIMIT);
-  if (!visibleEntries.length) {
-    const empty = document.createElement("span");
-    empty.className = "lemma-dossier-empty";
-    empty.textContent = t("lemma.dossier.none");
-    list.appendChild(empty);
-  } else {
-    visibleEntries.forEach(entry => {
-      list.appendChild(buildLemmaDossierToken(entry, options));
-    });
-    const hiddenCount = entries.length - visibleEntries.length;
-    if (hiddenCount > 0) {
-      const more = document.createElement("span");
-      more.className = "lemma-dossier-more";
-      more.textContent = t("lemma.dossier.more", { count: hiddenCount });
-      list.appendChild(more);
-    }
-  }
-
-  section.appendChild(list);
-  container.appendChild(section);
-}
-
-function buildLemmaDossierToken(entry, options = {}) {
+function buildLemmaDossierToken(entry) {
   const token = document.createElement("span");
-  token.className = options.sourceTokens ? "lemma-dossier-token lemma-dossier-token--source" : "lemma-dossier-token";
+  token.className = "lemma-dossier-token";
   if (entry.sources?.size) {
     token.title = [...entry.sources].sort(compareFuenteNames).join("\n");
   }
 
-  if (options.sourceTokens) {
-    const parts = splitFuenteLabel(entry.display);
-    if (parts.year) {
-      const year = document.createElement("span");
-      year.className = "lemma-dossier-token-year";
-      year.textContent = parts.year;
-      token.appendChild(year);
-    }
-    const main = document.createElement("span");
-    main.className = "lemma-dossier-token-main";
-    main.textContent = parts.title || entry.display;
-    token.appendChild(main);
-  } else {
-    const main = document.createElement("span");
-    main.className = "lemma-dossier-token-main";
-    main.textContent = entry.display;
-    token.appendChild(main);
-  }
+  const main = document.createElement("span");
+  main.className = "lemma-dossier-token-main";
+  main.textContent = entry.display;
+  token.appendChild(main);
 
   if (entry.count > 1) {
     const count = document.createElement("span");
@@ -6758,9 +6751,6 @@ function buildLemmaDossierToken(entry, options = {}) {
 
 function appendLemmaDetailRowsAfter(anchorRow, item, stripe) {
   let anchor = anchorRow;
-  const dossierRow = buildLemmaDossierRow(item, stripe);
-  anchor.after(dossierRow);
-  anchor = dossierRow;
   item.rows.forEach(row => {
     const { tr, comentarioMeta } = buildDataRow(row);
     tr.classList.add("lemma-detail-row");
