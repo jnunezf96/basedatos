@@ -3464,6 +3464,128 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   display: none;
 }
 
+.lemma-dossier-row > td {
+  background: #fbfcff;
+}
+
+.lemma-dossier-cell {
+  padding: 8px 10px 10px;
+}
+
+.lemma-dossier {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr);
+  gap: 10px;
+  min-width: 0;
+}
+
+.lemma-dossier-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  align-content: start;
+}
+
+.lemma-dossier-metric {
+  min-width: 0;
+  padding: 7px 8px;
+  border: 1px solid #e2e7ff;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.lemma-dossier-metric-value {
+  display: block;
+  color: #1a2468;
+  font-size: 16px;
+  font-weight: 750;
+  line-height: 1.05;
+}
+
+.lemma-dossier-metric-label {
+  display: block;
+  margin-top: 3px;
+  color: #69729a;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.lemma-dossier-sections {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  min-width: 0;
+}
+
+.lemma-dossier-section {
+  min-width: 0;
+}
+
+.lemma-dossier-section-title {
+  margin-bottom: 5px;
+  color: #505a85;
+  font-size: 10px;
+  font-weight: 750;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.lemma-dossier-token-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-width: 0;
+}
+
+.lemma-dossier-token,
+.lemma-dossier-more,
+.lemma-dossier-empty {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 23px;
+  border: 1px solid #dfe5ff;
+  border-radius: 999px;
+  background: #fff;
+  color: #27315f;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.1;
+}
+
+.lemma-dossier-token {
+  gap: 5px;
+  padding: 4px 8px;
+}
+
+.lemma-dossier-token-main {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lemma-dossier-token-year,
+.lemma-dossier-token-count {
+  flex: 0 0 auto;
+  color: #69729a;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.lemma-dossier-token--source .lemma-dossier-token-main {
+  max-width: 150px;
+}
+
+.lemma-dossier-more,
+.lemma-dossier-empty {
+  padding: 4px 8px;
+  color: #687094;
+  background: #f5f7ff;
+}
+
 .browse-compare-btn {
   display: inline-flex;
   align-items: center;
@@ -4986,9 +5108,9 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     padding: 0 6px;
   }
 
-  #dataTable tbody tr:not(.mobile-row-detail-row):not(.comentario-detail-row):not(.lemma-group-row) > td { display: none !important; }
-  #dataTable tbody tr:not(.mobile-row-detail-row):not(.comentario-detail-row):not(.lemma-group-row) > td.mobile-row-anchor-cell,
-  #dataTable tbody tr:not(.mobile-row-detail-row):not(.comentario-detail-row):not(.lemma-group-row) > td.table-empty {
+  #dataTable tbody tr:not(.mobile-row-detail-row):not(.comentario-detail-row):not(.lemma-dossier-row):not(.lemma-group-row) > td { display: none !important; }
+  #dataTable tbody tr:not(.mobile-row-detail-row):not(.comentario-detail-row):not(.lemma-dossier-row):not(.lemma-group-row) > td.mobile-row-anchor-cell,
+  #dataTable tbody tr:not(.mobile-row-detail-row):not(.comentario-detail-row):not(.lemma-dossier-row):not(.lemma-group-row) > td.table-empty {
     display: table-cell !important;
     width: auto;
   }
@@ -4997,6 +5119,11 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .data-panel[data-view-mode="lemmas"] #dataTable tbody tr.lemma-group-row > td:first-child {
+    display: table-cell !important;
+    width: auto !important;
+  }
+
+  .data-panel[data-view-mode="lemmas"] #dataTable tbody tr.lemma-dossier-row > td {
     display: table-cell !important;
     width: auto !important;
   }
@@ -5021,6 +5148,18 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
     font-weight: 600;
     line-height: 1.35;
     overflow-wrap: anywhere;
+  }
+
+  .data-panel[data-view-mode="lemmas"] .lemma-dossier {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .data-panel[data-view-mode="lemmas"] .lemma-dossier-sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .data-panel[data-view-mode="lemmas"] .lemma-dossier-token--source .lemma-dossier-token-main {
+    max-width: 210px;
   }
 
   #dataTable td.mobile-row-anchor-cell {

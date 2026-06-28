@@ -17,6 +17,7 @@ const DEFAULT_COLUMN_ORDER = TABLE_FIELDS.map(field => field.key);
 const COLUMN_CONTROL_ORDER = DEFAULT_COLUMN_ORDER.slice();
 const DEFAULT_COLUMN_WIDTHS = new Map(TABLE_FIELDS.map(field => [field.key, field.defaultWidth]));
 const TABLE_MIN_WIDTH = 908;
+const LEMMA_DOSSIER_SECTION_LIMIT = 8;
 const APP_ASSET_VERSION = (() => {
   try {
     const src = document.currentScript?.src || "";
@@ -496,6 +497,14 @@ const I18N = {
     "view.lemmas": "Lemas",
     "view.lemmas.summary": "Lemas: {{lemmas}} (de {{rows}} filas)",
     "view.lemmas.empty": "Ningún lema coincide con los filtros.",
+    "lemma.dossier.records": "Registros",
+    "lemma.dossier.sources": "Fuentes",
+    "lemma.dossier.variants": "Variantes originales",
+    "lemma.dossier.translations": "Traducciones",
+    "lemma.dossier.sourceCoverage": "Cobertura de fuentes",
+    "lemma.dossier.none": "Sin datos",
+    "lemma.dossier.count": "×{{count}}",
+    "lemma.dossier.more": "+{{count}} más",
     "compare.chipLabel": "Comparar"
   },
   en: {
@@ -962,6 +971,14 @@ const I18N = {
     "view.lemmas": "Lemmas",
     "view.lemmas.summary": "Lemmas: {{lemmas}} (of {{rows}} rows)",
     "view.lemmas.empty": "No lemmas match the current filters.",
+    "lemma.dossier.records": "Records",
+    "lemma.dossier.sources": "Sources",
+    "lemma.dossier.variants": "Original variants",
+    "lemma.dossier.translations": "Translations",
+    "lemma.dossier.sourceCoverage": "Source coverage",
+    "lemma.dossier.none": "No data",
+    "lemma.dossier.count": "×{{count}}",
+    "lemma.dossier.more": "+{{count}} more",
     "compare.chipLabel": "Compare"
   }
 };
@@ -5073,7 +5090,11 @@ function exportTableAsImage(format = "jpeg") {
   const visibleKeys = new Set(columns.map(field => field.key));
   const rows = [columns.map(getExportColumnLabel)];
   Array.from(table.tBodies[0]?.rows || []).forEach(tr => {
-    if (tr.classList.contains("mobile-row-detail-row") || tr.classList.contains("comentario-detail-row")) return;
+    if (
+      tr.classList.contains("mobile-row-detail-row") ||
+      tr.classList.contains("comentario-detail-row") ||
+      tr.classList.contains("lemma-dossier-row")
+    ) return;
     const cells = Array.from(tr.cells)
       .filter(td => visibleKeys.has(td.dataset.field))
       .map(getImageExportCellText);
@@ -6076,6 +6097,59 @@ function collectBrowseTranslations(rows) {
   };
 }
 
+function getCleanDisplayText(row, fieldKey) {
+  return collapseWhitespace(stripHtmlTags(String(getDisplayValue(row, fieldKey) || ""))).trim();
+}
+
+function addLemmaDossierEntry(map, key, display, row) {
+  if (!key || !display) return;
+  let entry = map.get(key);
+  if (!entry) {
+    entry = { display, count: 0, sources: new Set() };
+    map.set(key, entry);
+  }
+  entry.count += 1;
+  const source = getCleanDisplayText(row, "Fuente");
+  if (source) entry.sources.add(source);
+}
+
+function rankLemmaDossierEntries(entries, { sourceSort = false } = {}) {
+  return [...entries].sort((a, b) => {
+    if (b.count !== a.count) return b.count - a.count;
+    if (sourceSort) return compareFuenteNames(a.display, b.display);
+    return alphaNumCollator.compare(a.display, b.display);
+  });
+}
+
+function collectLemmaVariants(rows) {
+  const stats = new Map();
+  rows.forEach(row => {
+    const display = getCleanDisplayText(row, "Escritura original");
+    const key = display.toLocaleLowerCase();
+    addLemmaDossierEntry(stats, key, display, row);
+  });
+  return rankLemmaDossierEntries(stats.values());
+}
+
+function collectLemmaSourceCoverage(rows) {
+  const stats = new Map();
+  rows.forEach(row => {
+    const source = getCleanDisplayText(row, "Fuente");
+    addLemmaDossierEntry(stats, source, source, row);
+  });
+  return rankLemmaDossierEntries(stats.values(), { sourceSort: true });
+}
+
+function collectLemmaTranslationClusters(rows) {
+  const stats = new Map();
+  rows.forEach(row => {
+    const normalized = getBrowseNormalizedTranslation(row);
+    const display = getBrowseDisplayedTranslation(row);
+    addLemmaDossierEntry(stats, normalized, display, row);
+  });
+  return rankLemmaDossierEntries(stats.values());
+}
+
 function buildLemmaGroupRow(item) {
   const tr = document.createElement("tr");
   tr.className = "lemma-group-row";
@@ -6503,6 +6577,9 @@ function buildLemmaItemsFromRows(rows) {
     const sourceSet = new Set(sortedRows.map(r => r["Fuente"]).filter(Boolean));
     const sources = [...sourceSet].sort(compareFuenteNames);
     const translations = collectBrowseTranslations(sortedRows);
+    const variants = collectLemmaVariants(sortedRows);
+    const sourceCoverage = collectLemmaSourceCoverage(sortedRows);
+    const translationClusters = collectLemmaTranslationClusters(sortedRows);
     items.push({
       lemma: entry.lemma,
       rows: sortedRows,
@@ -6510,7 +6587,10 @@ function buildLemmaItemsFromRows(rows) {
       sourceCount: sources.length,
       rowCount: sortedRows.length,
       translationCount: translations.count,
-      sampleTranslations: translations.sample
+      sampleTranslations: translations.sample,
+      variants,
+      sourceCoverage,
+      translationClusters
     });
   });
   const lemmaSortKey = hasUserSort
@@ -6560,8 +6640,127 @@ function renderLemmasIntoTbody(tbody, totalCount) {
   });
 }
 
+function buildLemmaDossierRow(item, stripe) {
+  const tr = document.createElement("tr");
+  tr.className = "lemma-dossier-row lemma-detail-row";
+  tr.dataset.lemma = item.lemma;
+  if (stripe) tr.classList.add("stripe-alt");
+
+  const td = document.createElement("td");
+  td.className = "lemma-dossier-cell";
+  td.colSpan = getVisibleTableColumnCount();
+
+  const dossier = document.createElement("div");
+  dossier.className = "lemma-dossier";
+
+  const metrics = document.createElement("div");
+  metrics.className = "lemma-dossier-metrics";
+  [
+    ["lemma.dossier.records", item.rowCount],
+    ["lemma.dossier.sources", item.sourceCount],
+    ["lemma.dossier.variants", item.variants?.length || 0],
+    ["lemma.dossier.translations", item.translationClusters?.length || 0],
+  ].forEach(([labelKey, value]) => {
+    const metric = document.createElement("div");
+    metric.className = "lemma-dossier-metric";
+    const number = document.createElement("span");
+    number.className = "lemma-dossier-metric-value";
+    number.textContent = String(value);
+    const label = document.createElement("span");
+    label.className = "lemma-dossier-metric-label";
+    label.textContent = t(labelKey);
+    metric.appendChild(number);
+    metric.appendChild(label);
+    metrics.appendChild(metric);
+  });
+  dossier.appendChild(metrics);
+
+  const sections = document.createElement("div");
+  sections.className = "lemma-dossier-sections";
+  appendLemmaDossierSection(sections, "lemma.dossier.variants", item.variants || []);
+  appendLemmaDossierSection(sections, "lemma.dossier.sourceCoverage", item.sourceCoverage || [], { sourceTokens: true });
+  appendLemmaDossierSection(sections, "lemma.dossier.translations", item.translationClusters || []);
+  dossier.appendChild(sections);
+
+  td.appendChild(dossier);
+  tr.appendChild(td);
+  return tr;
+}
+
+function appendLemmaDossierSection(container, labelKey, entries, options = {}) {
+  const section = document.createElement("section");
+  section.className = "lemma-dossier-section";
+
+  const title = document.createElement("div");
+  title.className = "lemma-dossier-section-title";
+  title.textContent = t(labelKey);
+  section.appendChild(title);
+
+  const list = document.createElement("div");
+  list.className = "lemma-dossier-token-list";
+  const visibleEntries = entries.slice(0, LEMMA_DOSSIER_SECTION_LIMIT);
+  if (!visibleEntries.length) {
+    const empty = document.createElement("span");
+    empty.className = "lemma-dossier-empty";
+    empty.textContent = t("lemma.dossier.none");
+    list.appendChild(empty);
+  } else {
+    visibleEntries.forEach(entry => {
+      list.appendChild(buildLemmaDossierToken(entry, options));
+    });
+    const hiddenCount = entries.length - visibleEntries.length;
+    if (hiddenCount > 0) {
+      const more = document.createElement("span");
+      more.className = "lemma-dossier-more";
+      more.textContent = t("lemma.dossier.more", { count: hiddenCount });
+      list.appendChild(more);
+    }
+  }
+
+  section.appendChild(list);
+  container.appendChild(section);
+}
+
+function buildLemmaDossierToken(entry, options = {}) {
+  const token = document.createElement("span");
+  token.className = options.sourceTokens ? "lemma-dossier-token lemma-dossier-token--source" : "lemma-dossier-token";
+  if (entry.sources?.size) {
+    token.title = [...entry.sources].sort(compareFuenteNames).join("\n");
+  }
+
+  if (options.sourceTokens) {
+    const parts = splitFuenteLabel(entry.display);
+    if (parts.year) {
+      const year = document.createElement("span");
+      year.className = "lemma-dossier-token-year";
+      year.textContent = parts.year;
+      token.appendChild(year);
+    }
+    const main = document.createElement("span");
+    main.className = "lemma-dossier-token-main";
+    main.textContent = parts.title || entry.display;
+    token.appendChild(main);
+  } else {
+    const main = document.createElement("span");
+    main.className = "lemma-dossier-token-main";
+    main.textContent = entry.display;
+    token.appendChild(main);
+  }
+
+  if (entry.count > 1) {
+    const count = document.createElement("span");
+    count.className = "lemma-dossier-token-count";
+    count.textContent = t("lemma.dossier.count", { count: entry.count });
+    token.appendChild(count);
+  }
+  return token;
+}
+
 function appendLemmaDetailRowsAfter(anchorRow, item, stripe) {
   let anchor = anchorRow;
+  const dossierRow = buildLemmaDossierRow(item, stripe);
+  anchor.after(dossierRow);
+  anchor = dossierRow;
   item.rows.forEach(row => {
     const { tr, comentarioMeta } = buildDataRow(row);
     tr.classList.add("lemma-detail-row");
