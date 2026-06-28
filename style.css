@@ -33,8 +33,9 @@ body {
 .app-shell {
   --active-filters-scroll-space: 0px;
   --shell-inline-pad: 20px;
-  width: 100%;
-  max-width: none;
+  --shell-side-gutter: clamp(28px, 5vw, 120px);
+  width: min(1200px, calc(100% - (var(--shell-side-gutter) * 2)));
+  max-width: 100%;
   min-height: 100dvh;
   margin: 0 auto;
   padding: 16px var(--shell-inline-pad) 0;
@@ -3497,6 +3498,8 @@ tr.lemma-group-row td[data-field="Texto estandarizado"] {
   }
 
   .app-shell {
+    width: 100%;
+    max-width: none;
     height: var(--mobile-viewport-height);
     padding: var(--mobile-shell-pad-top) 12px var(--mobile-nav-space);
     gap: 0;
