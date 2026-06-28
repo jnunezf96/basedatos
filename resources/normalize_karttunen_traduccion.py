@@ -602,7 +602,7 @@ def normalize_karttunen_row(row: dict[str, str]) -> tuple[str, str]:
     value = row.get("Traducción", "")
     value = value.replace("∕", "/").replace("“", "'").replace("”", "'")
     value = re.sub(r"\s+", " ", value).strip()
-    value = strip_leading_exact_original(value, row.get("Escritura original", ""))
+    value = strip_leading_exact_original(value, row.get("Original", ""))
     value, head = strip_leading_head(value)
     value = SOURCE_BEFORE_HEAD_RE.sub(". ", value)
     value = EMBED_HEAD_RE.sub(
@@ -759,8 +759,8 @@ def main() -> int:
                 {
                     "record_id": row.get("record_id", ""),
                     "route": route,
-                    "escritura_original": row.get("Escritura original", ""),
-                    "texto_estandarizado": row.get("Texto estandarizado", ""),
+                    "escritura_original": row.get("Original", ""),
+                    "texto_estandarizado": row.get("Editado", ""),
                     "source_traduccion": source_value,
                     "old_traduccion": old_value,
                     "new_traduccion": new_value,

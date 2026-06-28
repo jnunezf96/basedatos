@@ -668,10 +668,10 @@ td[data-field="Comentario"] small {
 }
 
 /* Comentario is a compact control column; full text opens below the row. */
-th[data-field="Escritura original"],
-td[data-field="Escritura original"],
-th[data-field="Texto estandarizado"],
-td[data-field="Texto estandarizado"],
+th[data-field="Original"],
+td[data-field="Original"],
+th[data-field="Editado"],
+td[data-field="Editado"],
 th[data-field="Fuente"],
 td[data-field="Fuente"] {
   width: 108px;
@@ -1038,20 +1038,23 @@ th[data-field="Comentario"] .header-actions {
 /* ============================================================
    Active filter chips
    ============================================================ */
-.accent-field {
+.accent-field,
+.logic-field {
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
-.accent-field-label {
+.accent-field-label,
+.logic-field-label {
   font-size: 12px;
   color: #6b7199;
   font-weight: 500;
   letter-spacing: 0.01em;
 }
 
-.accent-field-label::after {
+.accent-field-label::after,
+.logic-field-label::after {
   content: ":";
 }
 
@@ -3579,7 +3582,7 @@ body.study-fullscreen-active .study-stage--fullscreen .study-back {
   border-color: #a8b3f5;
 }
 
-tr.lemma-group-row td[data-field="Texto estandarizado"],
+tr.lemma-group-row td[data-field="Editado"],
 tr.lemma-group-row .lemma-group-summary-cell {
   overflow: hidden;
 }

@@ -19,7 +19,7 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=publish-ready-146" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-148" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -344,7 +344,7 @@
             </button>
             <button type="button" role="tab" id="tab-regexPanel" class="tab-btn mobile-icon-btn mobile-label-on" data-tab="regexPanel" aria-selected="false" aria-controls="regexPanel" tabindex="-1" data-i18n-aria-label="tab.regex" data-i18n-title="tab.regex">
               <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-regex"></use></svg>
-              <span class="btn-label mobile-icon-label" data-i18n="tab.regex">Regex</span>
+              <span class="btn-label mobile-icon-label" data-i18n="tab.regex">Patrones</span>
             </button>
             <button type="button" role="tab" id="tab-pairsPanel" class="tab-btn mobile-icon-btn mobile-label-on" data-tab="pairsPanel" aria-selected="false" aria-controls="pairsPanel" tabindex="-1" data-i18n-aria-label="tab.pairs" data-i18n-title="tab.pairs">
               <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-pairs"></use></svg>
@@ -372,8 +372,8 @@
         <div class="filter-row fields">
           <span class="label" data-i18n="label.column">Columna</span>
           <div class="pill-group field-group">
-            <button type="button" class="pill field-btn active mobile-icon-btn mobile-label-on" data-field="Texto estandarizado" data-i18n="field.grafia" data-i18n-placeholder-label="field.grafia.short" data-placeholder-label="edición"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-edition"></use></svg><span class="btn-label mobile-icon-label">Edición</span></button>
-            <button type="button" class="pill field-btn mobile-icon-btn mobile-label-on" data-field="Escritura original" data-i18n="field.paleografia" data-i18n-placeholder-label="field.paleografia.short" data-placeholder-label="original"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-original"></use></svg><span class="btn-label mobile-icon-label">Original</span></button>
+            <button type="button" class="pill field-btn active mobile-icon-btn mobile-label-on" data-field="Editado" data-i18n="field.grafia" data-i18n-placeholder-label="field.grafia.short" data-placeholder-label="editado"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-edition"></use></svg><span class="btn-label mobile-icon-label">Editado</span></button>
+            <button type="button" class="pill field-btn mobile-icon-btn mobile-label-on" data-field="Original" data-i18n="field.paleografia" data-i18n-placeholder-label="field.paleografia.short" data-placeholder-label="original"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-original"></use></svg><span class="btn-label mobile-icon-label">Original</span></button>
             <button type="button" class="pill field-btn mobile-icon-btn mobile-label-on" data-field="Traducción" data-i18n="field.traduccion" data-i18n-placeholder-label="field.traduccion.short" data-placeholder-label="traducción"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-translation"></use></svg><span class="btn-label mobile-icon-label">Traducción</span></button>
             <button type="button" class="pill field-btn mobile-icon-btn mobile-label-on" data-field="Fuente" data-i18n="field.fuente" data-placeholder-label="fuente"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-source"></use></svg><span class="btn-label mobile-icon-label">Fuente</span></button>
             <button type="button" class="pill field-btn mobile-icon-btn mobile-label-on" data-field="Comentario" data-i18n="field.comentario" data-i18n-placeholder-label="field.comentario.short" data-placeholder-label="comentario"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-comment"></use></svg><span class="btn-label mobile-icon-label">Comentario</span></button>
@@ -382,11 +382,10 @@
         <div class="filter-row scopes">
           <span class="label" id="scopeLabel-f1" data-i18n="label.scope">Alcance</span>
           <div class="pill-group scope-group" role="group" aria-labelledby="scopeLabel-f1" aria-describedby="scopeIntent-f1">
-            <button type="button" class="pill scope-btn active mobile-icon-btn mobile-label-on" data-scope="word" data-i18n="scope.word" data-i18n-placeholder-label="scope.word" data-placeholder-label="Palabra"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-word"></use></svg><span class="btn-label mobile-icon-label">Palabra</span></button>
-            <button type="button" class="pill scope-btn mobile-icon-btn mobile-label-on" data-scope="phrase" data-i18n="scope.phrase" data-i18n-placeholder-label="scope.phrase" data-placeholder-label="Frase"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-phrase"></use></svg><span class="btn-label mobile-icon-label">Frase</span></button>
+            <button type="button" class="pill scope-btn active mobile-icon-btn mobile-label-on" data-scope="wordPhrase" data-i18n="scope.wordPhrase" data-i18n-placeholder-label="scope.wordPhrase" data-placeholder-label="Palabra/Frase"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-phrase"></use></svg><span class="btn-label mobile-icon-label">Palabra/Frase</span></button>
             <button type="button" class="pill scope-btn mobile-icon-btn mobile-label-on" data-scope="whole" data-i18n="scope.whole" data-i18n-placeholder-label="scope.whole" data-placeholder-label="Casilla"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-whole"></use></svg><span class="btn-label mobile-icon-label">Casilla</span></button>
           </div>
-          <div class="scope-intent" id="scopeIntent-f1" data-scope-intent data-i18n="scope.intent.word">Busca dentro de una sola palabra; sirve para raíces, prefijos o sufijos.</div>
+          <div class="scope-intent" id="scopeIntent-f1" data-scope-intent data-i18n="scope.intent.wordPhrase">Usa Palabra si escribes una palabra y Frase si escribes varias en orden.</div>
         </div>
         <div class="filter-grid">
           <div class="filter-grid-mobile-head">
@@ -428,9 +427,12 @@
                 <button type="button" class="accent-btn mobile-icon-btn mobile-label-on" data-accent="strict" data-i18n="accent.strict" data-i18n-aria-label="accent.sensitive" data-i18n-title="accent.sensitive"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-accent-strict"></use></svg><span class="btn-label mobile-icon-label">Exacto</span></button>
               </div>
             </div>
-            <div class="logic-toggle" role="group" aria-label="Zona del filtro">
-              <button type="button" class="logic-btn active mobile-icon-btn mobile-label-on" data-logic="AND" data-i18n="logic.and"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-and"></use></svg><span class="btn-label mobile-icon-label">Y</span></button>
-              <button type="button" class="logic-btn mobile-icon-btn mobile-label-on" data-logic="OR" data-i18n="logic.or"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-or"></use></svg><span class="btn-label mobile-icon-label">O</span></button>
+            <div class="logic-field">
+              <span class="logic-field-label" data-i18n="label.logic">Combinar</span>
+              <div class="logic-toggle" role="group" aria-label="Combinar filtros" data-i18n-aria-label="label.logic">
+                <button type="button" class="logic-btn active mobile-icon-btn mobile-label-on" data-logic="AND" data-i18n="logic.and"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-and"></use></svg><span class="btn-label mobile-icon-label">Y</span></button>
+                <button type="button" class="logic-btn mobile-icon-btn mobile-label-on" data-logic="OR" data-i18n="logic.or"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-or"></use></svg><span class="btn-label mobile-icon-label">O</span></button>
+              </div>
             </div>
           </div>
           <div class="filter-actions-btns">
@@ -481,81 +483,86 @@
         </div>
       </section>
 
-      <!-- ── Panel: Regex ── -->
+      <!-- ── Panel: Patrones ── -->
       <section class="tab-panel" id="regexPanel" role="tabpanel" aria-labelledby="tab-regexPanel">
       <div class="sources-card rx-card">
         <div class="sources-head">
-          <h2 data-i18n="regex.title">Mini-language</h2>
+          <h2 data-i18n="regex.title">Patrones: 6 reglas</h2>
         </div>
         <div class="rx-grid">
 
           <div class="rx-block">
-            <div class="rx-title" data-i18n="rx.wildcards">Comodines</div>
-            <div class="rx-row"><code>?</code><span data-i18n="rx.q1">1 grafema cualquiera</span></div>
+            <div class="rx-title" data-i18n="rx.rule.sequence">1. Secuencia</div>
+            <div class="rx-row"><code>cen nemi</code><span data-i18n="rx.sequence.space">cen seguido de nemi</span></div>
+            <div class="rx-row"><code>cen&gt;nemi</code><span data-i18n="rx.sequence.before">cen antes de nemi</span></div>
+            <div class="rx-row"><code>nemi&lt;cen</code><span data-i18n="rx.sequence.after">nemi después de cen</span></div>
+            <div class="rx-row"><code>"in tla"</code><span data-i18n="rx.phrase.exact">frase exacta</span></div>
+            <div class="rx-row"><code>\? \* \(</code><span data-i18n="rx.escape.meta">signos literales</span></div>
+            <div class="rx-row rx-note" data-i18n="rx.sequence.note">Escribe las partes en el orden que deben aparecer</div>
+          </div>
+
+          <div class="rx-block">
+            <div class="rx-title" data-i18n="rx.rule.optional">2. Opcionalidad</div>
             <div class="rx-row"><code>(?)</code><span data-i18n="rx.optional.any">grafema opcional</span></div>
             <div class="rx-row"><code>(h)</code><span data-i18n="rx.optional.literal">h opcional</span></div>
+            <div class="rx-row"><code>( )</code><span data-i18n="rx.optional.space">espacio opcional</span></div>
+            <div class="rx-row"><code>cen( )nemi</code><span data-i18n-html="rx.optional.bridge">→ <em>cennemi</em> / <em>cen nemi</em></span></div>
+            <div class="rx-row"><code>{h0-3}</code><span data-i18n="rx.optional.range">h de 0 a 3 veces</span></div>
+            <div class="rx-row rx-note" data-i18n="rx.optional.note">Sin barra vertical = opcional; con barra vertical = alternativas</div>
+          </div>
+
+          <div class="rx-block">
+            <div class="rx-title" data-i18n="rx.rule.alternatives">3. Alternativas</div>
+            <div class="rx-row"><code>pat(o|a)</code><span data-i18n-html="rx.alt.group">pato <em>o</em> pata</span></div>
+            <div class="rx-row"><code>pato|pata</code><span data-i18n="rx.alt.pipe">equivalente (nivel superior)</span></div>
+            <div class="rx-row"><code>\|</code><span data-i18n="rx.alt.escape">barra literal</span></div>
+            <div class="rx-row"><code>(c|qu)*</code><span data-i18n="rx.alt.wildcard.after">c/qu + grafemas</span></div>
+            <div class="rx-row rx-note" data-i18n="rx.alt.note">La barra vertical separa opciones</div>
+          </div>
+
+          <div class="rx-block">
+            <div class="rx-title" data-i18n="rx.rule.quantity">4. Cantidad</div>
+            <div class="rx-row"><code>?</code><span data-i18n="rx.q1">1 grafema cualquiera</span></div>
             <div class="rx-row"><code>??</code><span data-i18n="rx.q2">exactamente 2 grafemas</span></div>
             <div class="rx-row"><code>*</code><span data-i18n="rx.star1">1 o más grafemas</span></div>
             <div class="rx-row"><code>**</code><span data-i18n="rx.star2">2 o más grafemas</span></div>
             <div class="rx-row"><code>?{2,4}</code><span data-i18n="rx.range">2 a 4 grafemas</span></div>
-            <div class="rx-row rx-note" data-i18n="rx.grapheme.note">En Edición, Original y Comentario, ? cuenta ch/tz/qu/etc. como un grafema</div>
-          </div>
-
-
-          <div class="rx-block">
-            <div class="rx-title" data-i18n="rx.alternatives">Alternativas</div>
-            <div class="rx-row"><code>pat(o|a)</code><span data-i18n-html="rx.alt.group">pato <em>o</em> pata</span></div>
-            <div class="rx-row"><code>pato|pata</code><span data-i18n="rx.alt.pipe">equivalente (nivel superior)</span></div>
-            <div class="rx-row"><code>\|</code><span data-i18n="rx.alt.escape">barra literal</span></div>
-            <div class="rx-row"><code>\? \* \(</code><span data-i18n="rx.escape.meta">signos literales</span></div>
-            <div class="rx-row"><code>(c|qu)*</code><span data-i18n="rx.alt.wildcard.after">c/qu + grafemas</span></div>
-            <div class="rx-row"><code>"in tla"</code><span data-i18n="rx.phrase.exact">frase exacta</span></div>
+            <div class="rx-row"><code>{h0-}</code><span data-i18n="rx.zero.more">0 o más h</span></div>
+            <div class="rx-row rx-note" data-i18n="rx.grapheme.note">En Editado, Original y Comentario, ? cuenta ch/tz/qu/etc. como un grafema</div>
           </div>
 
           <div class="rx-block">
-            <div class="rx-title" data-i18n="rx.templates">Plantillas C/V</div>
-            <div class="rx-row"><code>{C}</code><span data-i18n="rx.cv.c">consonante</span></div>
-            <div class="rx-row"><code>{V}</code><span data-i18n="rx.cv.v">vocal</span></div>
-            <div class="rx-row"><code>{N}</code><span data-i18n="rx.cv.n">nasal (m, n, ñ)</span></div>
-            <div class="rx-row"><code>{L}</code><span data-i18n="rx.cv.l">líquida (l, ll, r, rr)</span></div>
-            <div class="rx-row"><code>{S}</code><span data-i18n="rx.cv.s">sibilante (s, z, x, tz)</span></div>
-            <div class="rx-row"><code>{G}</code><span data-i18n="rx.cv.g">deslizada (y, hu, uh)</span></div>
-            <div class="rx-row"><code>{P}</code><span data-i18n="rx.cv.p">oclusiva (p, t, c, ch, tz…)</span></div>
-            <div class="rx-row"><code>{A}</code><span data-i18n="rx.cv.a">cualquier letra</span></div>
-            <div class="rx-row"><code>{CVC}</code><span data-i18n="rx.cv.pattern">patrón C‑V‑C</span></div>
-            <div class="rx-row"><code>{CVC}+</code><span data-i18n="rx.cv.repeat">una o más sílabas</span></div>
-            <div class="rx-row"><code>{CVC}{2}</code><span data-i18n="rx.cv.count">exactamente 2 sílabas</span></div>
-            <div class="rx-row rx-note" data-i18n="rx.cv.note">Solo activo dentro de llaves { }</div>
+            <div class="rx-title" data-i18n="rx.rule.classes">5. Clases</div>
+            <div class="rx-row"><code>{c}</code><span data-i18n="rx.cv.c">consonante</span></div>
+            <div class="rx-row"><code>{v}</code><span data-i18n="rx.cv.v">vocal</span></div>
+            <div class="rx-row"><code>{n}</code><span data-i18n="rx.cv.n">nasal (m, n, ñ)</span></div>
+            <div class="rx-row"><code>{l}</code><span data-i18n="rx.cv.l">líquida (l, ll, r, rr)</span></div>
+            <div class="rx-row"><code>{s}</code><span data-i18n="rx.cv.s">sibilante (s, z, x, tz)</span></div>
+            <div class="rx-row"><code>{g}</code><span data-i18n="rx.cv.g">deslizada (y, hu, uh)</span></div>
+            <div class="rx-row"><code>{p}</code><span data-i18n="rx.cv.p">oclusiva (p, t, c, ch, tz…)</span></div>
+            <div class="rx-row"><code>{a}</code><span data-i18n="rx.cv.a">cualquier letra</span></div>
+            <div class="rx-row"><code>{cvc}</code><span data-i18n="rx.cv.pattern">patrón c‑v‑c</span></div>
+            <div class="rx-row"><code>{cvc2}</code><span data-i18n="rx.cv.repeat">exactamente 2 bloques cvc</span></div>
+            <div class="rx-row"><code>{cvc3}</code><span data-i18n="rx.cv.count">exactamente 3 bloques cvc</span></div>
+            <div class="rx-row"><code>{cvc2-4}</code><span data-i18n="rx.cv.range">2 a 4 bloques cvc</span></div>
+            <div class="rx-row"><code>{=aeiou}</code><span data-i18n="rx.class.custom">solo esas letras</span></div>
+            <div class="rx-row"><code>{!aeiou}</code><span data-i18n="rx.negclass.desc">cualquier letra excepto esas</span></div>
+            <div class="rx-row rx-note" data-i18n="rx.cv.note">El número final repite todo el bloque</div>
           </div>
 
           <div class="rx-block">
-            <div class="rx-title" data-i18n="rx.containsboth">Ambas en la misma palabra</div>
+            <div class="rx-title" data-i18n="rx.rule.sameAgain">6. Mismo otra vez</div>
+            <div class="rx-row"><code>{r}paqui</code><span data-i18n-html="rx.redup.simple">→ <em>papaqui</em></span></div>
+            <div class="rx-row"><code>{r}hpaqui</code><span data-i18n-html="rx.redup.infix">→ <em>pahpaqui</em></span></div>
+            <div class="rx-row"><code>{r}(h)paqui</code><span data-i18n-html="rx.redup.optionalH">→ <em>papaqui</em> / <em>pahpaqui</em></span></div>
+            <div class="rx-row"><code>({r})ahuia</code><span data-i18n-html="rx.redup.optionalMarker">→ <em>ahuia</em> / <em>aahuia</em></span></div>
+            <div class="rx-row"><code>{r}h{cv}qui</code><span data-i18n-html="rx.redup.marker">→ <em>pahpaqui</em> por patrón</span></div>
+            <div class="rx-row"><code>(?{1}){r2}</code><span data-i18n="rx.repeat.same.grapheme">mismo grafema 2 veces</span></div>
+            <div class="rx-row"><code>({c}{v}){r2}</code><span data-i18n="rx.repeat.same.cv">misma sílaba cv 2 veces</span></div>
+            <div class="rx-row"><code>({c}{v}){r3}</code><span data-i18n="rx.repeat.same.cv3">misma sílaba cv 3 veces</span></div>
+            <div class="rx-row"><code>({c}{v}){r2-3}</code><span data-i18n="rx.repeat.same.range">misma sílaba cv 2 a 3 veces</span></div>
             <div class="rx-row"><code>(pech||pepech)</code><span data-i18n-html="rx.both.desc">la palabra contiene <em>ambas</em></span></div>
-            <div class="rx-row rx-note" data-i18n-html="rx.both.note">Doble barra <code>||</code> dentro de paréntesis</div>
-          </div>
-
-          <div class="rx-block">
-            <div class="rx-title" data-i18n="rx.reduplication">Reduplicación</div>
-            <div class="rx-row"><code>{R}paqui</code><span data-i18n-html="rx.redup.simple">→ <em>papaqui</em></span></div>
-            <div class="rx-row"><code>{R}hpaqui</code><span data-i18n-html="rx.redup.infix">→ <em>pahpaqui</em></span></div>
-            <div class="rx-row"><code>{R}(h)paqui</code><span data-i18n-html="rx.redup.optionalH">→ <em>papaqui</em> / <em>pahpaqui</em></span></div>
-            <div class="rx-row"><code>({R})ahuia</code><span data-i18n-html="rx.redup.optionalMarker">→ <em>ahuia</em> / <em>aahuia</em></span></div>
-            <div class="rx-row"><code>{R}h{CV}qui</code><span data-i18n-html="rx.redup.marker">→ <em>pahpaqui</em> por patrón</span></div>
-            <div class="rx-row rx-note" data-i18n="rx.redup.note">{R} duplica el siguiente bloque; (h) permite h opcional</div>
-            <div class="rx-row"><code>(?{1})\1</code><span data-i18n="rx.repeat.same.grapheme">mismo grafema repetido</span></div>
-            <div class="rx-row"><code>({C}{V})\1</code><span data-i18n="rx.repeat.same.cv">misma sílaba CV repetida</span></div>
-          </div>
-
-          <div class="rx-block">
-            <div class="rx-title" data-i18n="rx.negclass">Clase negada</div>
-            <div class="rx-row"><code>[^aeiou]</code><span data-i18n="rx.negclass.desc">cualquier no-vocal</span></div>
-            <div class="rx-row"><code>[^aeious]</code><span data-i18n="rx.negclass.ex">excluye vocales y s</span></div>
-          </div>
-
-          <div class="rx-block rx-block--wide">
-            <div class="rx-title" data-i18n="rx.literal">Regex literal</div>
-            <div class="rx-row"><code>/^tla[a-z]+li$/i</code><span data-i18n-html="rx.lit.desc">expresión completa entre <code>/</code></span></div>
-            <div class="rx-row"><code>/qu?e/i</code><span data-i18n="rx.lit.flags">admite flags: i g m…</span></div>
+            <div class="rx-row rx-note" data-i18n-html="rx.sameAgain.note">{r} duplica; {r2}/{r3} repiten lo capturado</div>
           </div>
 
         </div>
@@ -628,8 +635,8 @@
             <label class="study-control">
               <span data-i18n="study.direction">Dirección</span>
               <select id="studyDirection">
-                <option value="nahuatlToSpanish" data-i18n="study.direction.nt">Edición → Traducción</option>
-                <option value="spanishToNahuatl" data-i18n="study.direction.tn">Traducción → Edición</option>
+                <option value="nahuatlToSpanish" data-i18n="study.direction.nt">Editado → Traducción</option>
+                <option value="spanishToNahuatl" data-i18n="study.direction.tn">Traducción → Editado</option>
               </select>
             </label>
             <label class="study-control study-theme-control">
@@ -673,7 +680,7 @@
           <div class="study-face">
             <button type="button" class="btn ghost study-fullscreen-exit-btn" id="studyFullscreenExitBtn" data-i18n-aria-label="study.fullscreen.exit" data-i18n-title="study.fullscreen.exit" aria-label="Salir pantalla completa" title="Salir pantalla completa" hidden><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-fullscreen-exit"></use></svg><span class="sr-only" data-i18n="study.fullscreen.exit">Salir pantalla completa</span></button>
             <button type="button" class="btn ghost study-fullscreen-icon-btn" id="studyFullscreenToggleBtn" data-i18n-aria-label="study.fullscreen" data-i18n-title="study.fullscreen" aria-label="Pantalla completa" title="Pantalla completa" aria-pressed="false"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-fullscreen"></use></svg><span class="sr-only" data-i18n="study.fullscreen">Pantalla completa</span></button>
-            <div class="study-face-label" id="studyFrontLabel" data-i18n="study.front.edition">Edición</div>
+            <div class="study-face-label" id="studyFrontLabel" data-i18n="study.front.edition">Editado</div>
             <div class="study-front" id="studyFront" data-i18n="study.empty">Crea un mazo para empezar.</div>
             <div class="study-back-wrap" id="studyBackWrap" hidden>
               <div class="study-face-label" id="studyBackLabel" data-i18n="study.front.translation">Traducción</div>
@@ -800,20 +807,20 @@
           <colgroup></colgroup>
           <thead class="col-headers">
             <tr>
-              <th data-field="Texto estandarizado">
+              <th data-field="Editado">
                 <div class="header-bar">
-                  <span data-i18n="table.header.grafia">Edición</span>
+                  <span data-i18n="table.header.grafia">Editado</span>
                   <div class="header-actions">
-                    <button type="button" class="arrow-btn sort-btn" data-sort-field="Texto estandarizado" aria-label="Ordenar por edición" title="Ordenar por edición"><svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-sort"></use></svg></button>
+                    <button type="button" class="arrow-btn sort-btn" data-sort-field="Editado" aria-label="Ordenar por editado" title="Ordenar por editado"><svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-sort"></use></svg></button>
                     <button type="button" class="arrow-btn table-toggle-all table-control-mobile-only" id="tableExpandAllMobile" data-i18n-title="list.expandAll" data-i18n-aria-label="list.expandAll" title="Expandir/Colapsar registros" aria-label="Expandir/Colapsar registros" hidden>+</button>
                   </div>
                 </div>
               </th>
-              <th data-field="Escritura original">
+              <th data-field="Original">
                 <div class="header-bar">
                   <span data-i18n="table.header.paleografia">Original</span>
                   <div class="header-actions">
-                    <button type="button" class="arrow-btn sort-btn" data-sort-field="Escritura original" aria-label="Ordenar por original" title="Ordenar por original"><svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-sort"></use></svg></button>
+                    <button type="button" class="arrow-btn sort-btn" data-sort-field="Original" aria-label="Ordenar por original" title="Ordenar por original"><svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-sort"></use></svg></button>
                   </div>
                 </div>
               </th>
@@ -868,9 +875,9 @@
     </nav>
   </main> <!-- .app-shell -->
 
-  <script src="data.js?v=publish-ready-101"></script>
-  <script src="filters.js?v=publish-ready-102"></script>
-  <script src="data/bootstrap.js?v=publish-ready-122"></script>
-  <script src="script.js?v=publish-ready-143"></script>
+  <script src="data.js?v=publish-ready-109"></script>
+  <script src="filters.js?v=publish-ready-105"></script>
+  <script src="data/bootstrap.js?v=publish-ready-145"></script>
+  <script src="script.js?v=publish-ready-157"></script>
 </body>
 </html>

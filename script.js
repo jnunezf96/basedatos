@@ -7,8 +7,8 @@ const FULL_DATA_LOW_CORE_MAX = 2;
 const FULL_DATA_PHONE_MAX_WIDTH = 700;
 
 const TABLE_FIELDS = [
-  { key: "Texto estandarizado", label: "Edición", defaultWidth: 108 },
-  { key: "Escritura original", label: "Original", defaultWidth: 108 },
+  { key: "Editado", label: "Editado", defaultWidth: 108 },
+  { key: "Original", label: "Original", defaultWidth: 108 },
   { key: "Traducción", label: "Traducción", defaultWidth: 220 },
   { key: "Fuente", label: "Fuente", defaultWidth: 96 },
   { key: "Comentario", label: "Comentario", defaultWidth: COMENTARIO_CONTROL_WIDTH }
@@ -38,7 +38,7 @@ const I18N = {
     subtitle: "Filtra y explora cinco columnas con filtros rápidos y mini‑lenguaje.",
     "tab.filters": "Filtros",
     "tab.sources": "Fuentes",
-    "tab.regex": "Regex",
+    "tab.regex": "Patrones",
     "tab.pairs": "Pares",
     "tab.study": "Tarjetas",
     "reverse.title": "Filtros guiados",
@@ -59,7 +59,7 @@ const I18N = {
     "reverse.preset.nahuatlStarts": "Qué palabra estoy recordando",
     "reverse.preset.nahuatlStartsGoal": "Recupera lemas cuando solo sabes el inicio.",
     "reverse.preset.oldSpelling": "Qué es esta grafía antigua",
-    "reverse.preset.oldSpellingGoal": "Conecta escritura original con edición normalizada.",
+    "reverse.preset.oldSpellingGoal": "Conecta escritura original con editado normalizado.",
     "reverse.preset.notesMention": "Qué notas hablan de este tema",
     "reverse.preset.notesMentionGoal": "Explora comentarios y observaciones editoriales.",
     "reverse.preset.qAbbrev": "Abreviaturas q^",
@@ -94,28 +94,28 @@ const I18N = {
     "reverse.preset.reduplicatedRootGoal": "Busca una raíz con el patrón +raíz.",
     "reverse.preset.sameWordPieces": "Dos piezas",
     "reverse.preset.sameWordPiecesGoal": "Busca dos partes dentro de la misma palabra.",
-    "reverse.preset.translationToEdition": "Traducción → Edición",
-    "reverse.preset.translationToEditionGoal": "Busca en Traducción; muestra lemas de Edición.",
+    "reverse.preset.translationToEdition": "Traducción → Editado",
+    "reverse.preset.translationToEditionGoal": "Busca en Traducción; muestra lemas de Editado.",
     "reverse.preset.translationToOriginal": "Traducción → Original",
     "reverse.preset.translationToOriginalGoal": "Busca en Traducción; muestra grafías originales.",
-    "reverse.preset.translationPhraseToEdition": "Frase → Edición",
+    "reverse.preset.translationPhraseToEdition": "Frase → Editado",
     "reverse.preset.translationPhraseToEditionGoal": "Busca una frase completa en Traducción.",
-    "reverse.preset.editionToTranslation": "Edición → Traducción",
-    "reverse.preset.editionToTranslationGoal": "Busca en Edición; muestra Traducción.",
-    "reverse.preset.editionToOriginal": "Edición → Original",
-    "reverse.preset.editionToOriginalGoal": "Busca en Edición; muestra Original.",
-    "reverse.preset.originalToEdition": "Original → Edición",
-    "reverse.preset.originalToEditionGoal": "Busca en Original; muestra lemas de Edición.",
+    "reverse.preset.editionToTranslation": "Editado → Traducción",
+    "reverse.preset.editionToTranslationGoal": "Busca en Editado; muestra Traducción.",
+    "reverse.preset.editionToOriginal": "Editado → Original",
+    "reverse.preset.editionToOriginalGoal": "Busca en Editado; muestra Original.",
+    "reverse.preset.originalToEdition": "Original → Editado",
+    "reverse.preset.originalToEditionGoal": "Busca en Original; muestra lemas de Editado.",
     "reverse.preset.originalToTranslation": "Original → Traducción",
     "reverse.preset.originalToTranslationGoal": "Busca en Original; muestra Traducción.",
-    "reverse.preset.commentToEdition": "Comentario → Edición",
-    "reverse.preset.commentToEditionGoal": "Busca en Comentario; muestra lemas de Edición.",
-    "reverse.preset.editionToSources": "Edición → Fuentes",
-    "reverse.preset.editionToSourcesGoal": "Busca en Edición; muestra Fuente.",
+    "reverse.preset.commentToEdition": "Comentario → Editado",
+    "reverse.preset.commentToEditionGoal": "Busca en Comentario; muestra lemas de Editado.",
+    "reverse.preset.editionToSources": "Editado → Fuentes",
+    "reverse.preset.editionToSourcesGoal": "Busca en Editado; muestra Fuente.",
     "reverse.preset.translationToSources": "Traducción → Fuentes",
     "reverse.preset.translationToSourcesGoal": "Busca en Traducción; muestra Fuente.",
-    "reverse.preset.sourceToEdition": "Fuente → Edición",
-    "reverse.preset.sourceToEditionGoal": "Busca en Fuente; muestra lemas de Edición.",
+    "reverse.preset.sourceToEdition": "Fuente → Editado",
+    "reverse.preset.sourceToEditionGoal": "Busca en Fuente; muestra lemas de Editado.",
     "reverse.preset.sourceToTranslation": "Fuente → Traducción",
     "reverse.preset.sourceToTranslationGoal": "Busca en Fuente; muestra Traducción.",
     "reverse.preset.commentToSources": "Comentario → Fuente",
@@ -125,9 +125,9 @@ const I18N = {
     "reverse.objective.phraseMeaning": "Objetivo: encontrar entradas que expresan una frase, definición o explicación completa.",
     "reverse.objective.nahuatlExact": "Objetivo: confirmar una forma náhuatl normalizada y revisar sus fuentes.",
     "reverse.objective.nahuatlStarts": "Objetivo: recuperar posibles lemas cuando solo recuerdas el comienzo.",
-    "reverse.objective.oldSpelling": "Objetivo: identificar la edición normalizada detrás de una grafía original o antigua.",
+    "reverse.objective.oldSpelling": "Objetivo: identificar el editado normalizado detrás de una grafía original o antigua.",
     "reverse.objective.notesMention": "Objetivo: encontrar comentarios, notas o fuentes que mencionan el tema.",
-    "reverse.objective.qAbbrev": "Objetivo: expandir abreviaturas q^ en escritura original y compararlas con la edición normalizada (171 filas).",
+    "reverse.objective.qAbbrev": "Objetivo: expandir abreviaturas q^ en escritura original y compararlas con el editado normalizado (171 filas).",
     "reverse.objective.questionOriginal": "Objetivo: revisar lecturas con signo ? en la escritura original, normalmente incertidumbre paleográfica (482 filas).",
     "reverse.objective.bracedOriginal": "Objetivo: revisar lecturas alternativas entre llaves en la escritura original (408 filas).",
     "reverse.objective.bnfAdditions": "Objetivo: ver añadidos, interlineados o notas de mano en BNF 361; combina Fuente + Comentario (61 filas).",
@@ -143,17 +143,17 @@ const I18N = {
     "reverse.objective.variantLabels": "Objetivo: revisar comentarios que etiquetan variantes explícitamente (≈1.2k filas).",
     "reverse.objective.reduplicatedRoot": "Objetivo: buscar una raíz reduplicada usando el mini-lenguaje; escribe la raíz base y el filtro usará +raíz.",
     "reverse.objective.sameWordPieces": "Objetivo: buscar palabras que contienen dos piezas a la vez; escribe algo como teo||tlatol.",
-    "reverse.objective.translationToEdition": "Relación: escribe una palabra que aparece en Traducción; la tabla presenta todos los lemas de Edición asociados.",
+    "reverse.objective.translationToEdition": "Relación: escribe una palabra que aparece en Traducción; la tabla presenta todos los lemas de Editado asociados.",
     "reverse.objective.translationToOriginal": "Relación: escribe una palabra que aparece en Traducción; la tabla presenta las grafías de Original asociadas.",
-    "reverse.objective.translationPhraseToEdition": "Relación: busca una frase en Traducción y presenta los lemas de Edición vinculados a esa frase.",
-    "reverse.objective.editionToTranslation": "Relación: escribe un lema de Edición; la tabla presenta sus traducciones documentadas.",
-    "reverse.objective.editionToOriginal": "Relación: escribe un lema de Edición; la tabla presenta las grafías originales que lo registran.",
-    "reverse.objective.originalToEdition": "Relación: escribe una grafía de Original; la tabla presenta la Edición normalizada correspondiente.",
+    "reverse.objective.translationPhraseToEdition": "Relación: busca una frase en Traducción y presenta los lemas de Editado vinculados a esa frase.",
+    "reverse.objective.editionToTranslation": "Relación: escribe un lema de Editado; la tabla presenta sus traducciones documentadas.",
+    "reverse.objective.editionToOriginal": "Relación: escribe un lema de Editado; la tabla presenta las grafías originales que lo registran.",
+    "reverse.objective.originalToEdition": "Relación: escribe una grafía de Original; la tabla presenta el Editado normalizado correspondiente.",
     "reverse.objective.originalToTranslation": "Relación: escribe una grafía de Original; la tabla presenta las traducciones asociadas.",
-    "reverse.objective.commentToEdition": "Relación: escribe un tema en Comentario; la tabla presenta los lemas de Edición conectados con esa nota.",
-    "reverse.objective.editionToSources": "Relación: escribe un lema de Edición; la tabla presenta las fuentes que lo atestiguan.",
+    "reverse.objective.commentToEdition": "Relación: escribe un tema en Comentario; la tabla presenta los lemas de Editado conectados con esa nota.",
+    "reverse.objective.editionToSources": "Relación: escribe un lema de Editado; la tabla presenta las fuentes que lo atestiguan.",
     "reverse.objective.translationToSources": "Relación: escribe una palabra de Traducción; la tabla presenta las fuentes que contienen ese significado.",
-    "reverse.objective.sourceToEdition": "Relación: escribe una fuente o parte de su nombre; la tabla presenta los lemas de Edición en esa fuente.",
+    "reverse.objective.sourceToEdition": "Relación: escribe una fuente o parte de su nombre; la tabla presenta los lemas de Editado en esa fuente.",
     "reverse.objective.sourceToTranslation": "Relación: escribe una fuente o parte de su nombre; la tabla presenta traducciones y lemas de esa fuente.",
     "reverse.objective.commentToSources": "Relación: escribe un tema en Comentario; la tabla presenta las fuentes donde aparece esa nota.",
     "reverse.placeholder.meaning": "Escribe la idea, ej. agua",
@@ -168,12 +168,12 @@ const I18N = {
     "reverse.placeholder.translationToEdition": "Palabra en traducción, ej. agua",
     "reverse.placeholder.translationToOriginal": "Palabra en traducción, ej. agua",
     "reverse.placeholder.translationPhraseToEdition": "Frase en traducción",
-    "reverse.placeholder.editionToTranslation": "Lema en edición, ej. atl",
-    "reverse.placeholder.editionToOriginal": "Lema en edición",
+    "reverse.placeholder.editionToTranslation": "Lema en editado, ej. atl",
+    "reverse.placeholder.editionToOriginal": "Lema en editado",
     "reverse.placeholder.originalToEdition": "Grafía original",
     "reverse.placeholder.originalToTranslation": "Grafía original",
     "reverse.placeholder.commentToEdition": "Tema o palabra en comentario",
-    "reverse.placeholder.editionToSources": "Lema en edición",
+    "reverse.placeholder.editionToSources": "Lema en editado",
     "reverse.placeholder.translationToSources": "Palabra en traducción",
     "reverse.placeholder.sourceToEdition": "Fuente o abreviatura, ej. Molina",
     "reverse.placeholder.sourceToTranslation": "Fuente o abreviatura, ej. Molina",
@@ -187,10 +187,12 @@ const I18N = {
     "scope.whole": "Casilla",
     "scope.word": "Palabra",
     "scope.phrase": "Frase",
+    "scope.wordPhrase": "Palabra/Frase",
     "scope.intent.word": "Busca dentro de una sola palabra; sirve para raíces, prefijos o sufijos.",
     "scope.intent.phrase": "Busca una secuencia de palabras juntas y en orden; sirve para frases o definiciones.",
+    "scope.intent.wordPhrase": "Usa Palabra si escribes una palabra y Frase si escribes varias en orden.",
     "scope.intent.whole": "Compara con toda la casilla; sirve cuando el campo completo debe coincidir.",
-    "field.grafia.short": "edición",
+    "field.grafia.short": "editado",
     "field.paleografia.short": "original",
     "field.traduccion.short": "traducción",
     "field.comentario.short": "comentario",
@@ -225,20 +227,37 @@ const I18N = {
     "sources.orderAlpha.short": "A-Z",
     "sources.orderYear": "Ordenar fuentes por año",
     "sources.orderYear.short": "Año",
-    "regex.title": "Mini-lenguaje",
+    "regex.title": "Patrones: 6 reglas",
     "rx.wildcards": "Comodines",
+    "rx.rule.sequence": "1. Secuencia",
+    "rx.sequence.space": "cen seguido de nemi",
+    "rx.sequence.before": "cen antes de nemi",
+    "rx.sequence.after": "nemi después de cen",
+    "rx.sequence.note": "Escribe las partes en el orden que deben aparecer",
+    "rx.rule.optional": "2. Opcionalidad",
+    "rx.rule.alternatives": "3. Alternativas",
+    "rx.rule.quantity": "4. Cantidad",
+    "rx.rule.classes": "5. Clases",
+    "rx.rule.sameAgain": "6. Mismo otra vez",
     "rx.q1": "1 grafema cualquiera",
     "rx.q2": "exactamente 2 grafemas",
     "rx.star1": "1 o más grafemas",
     "rx.star2": "2 o más grafemas",
     "rx.range": "2 a 4 grafemas",
+    "rx.zero.more": "0 o más h",
+    "rx.optionality": "Opcionalidad",
     "rx.optional.any": "grafema opcional",
     "rx.optional.literal": "h opcional",
-    "rx.grapheme.note": "En Edición, Original y Comentario, ? cuenta ch/tz/qu/etc. como un grafema",
+    "rx.optional.space": "espacio opcional",
+    "rx.optional.bridge": "→ <em>cennemi</em> / <em>cen nemi</em>",
+    "rx.optional.range": "h de 0 a 3 veces",
+    "rx.optional.note": "Sin barra vertical = opcional; con barra vertical = alternativas",
+    "rx.grapheme.note": "En Editado, Original y Comentario, ? cuenta ch/tz/qu/etc. como un grafema",
     "rx.alternatives": "Alternativas",
     "rx.alt.group": "pato <em>o</em> pata",
     "rx.alt.pipe": "equivalente (nivel superior)",
     "rx.alt.escape": "barra literal",
+    "rx.alt.note": "La barra vertical separa opciones",
     "rx.escape.meta": "signos literales",
     "rx.alt.wildcard.after": "c/qu + grafemas",
     "rx.phrase.exact": "frase exacta",
@@ -251,13 +270,15 @@ const I18N = {
     "rx.cv.g": "deslizada (y, hu, uh)",
     "rx.cv.p": "oclusiva (p, t, c, ch, tz…)",
     "rx.cv.a": "cualquier letra",
-    "rx.cv.repeat": "una o más sílabas",
-    "rx.cv.count": "exactamente 2 sílabas",
-    "rx.cv.pattern": "patrón C‑V‑C",
+    "rx.cv.repeat": "exactamente 2 bloques cvc",
+    "rx.cv.count": "exactamente 3 bloques cvc",
+    "rx.cv.pattern": "patrón c‑v‑c",
+    "rx.cv.range": "2 a 4 bloques cvc",
+    "rx.class.custom": "solo esas letras",
     "rx.negclass": "Clase negada",
-    "rx.negclass.desc": "cualquier no-vocal",
+    "rx.negclass.desc": "cualquier letra excepto esas",
     "rx.negclass.ex": "excluye vocales y s",
-    "rx.cv.note": "Solo activo dentro de llaves { }",
+    "rx.cv.note": "El número final repite todo el bloque",
     "rx.containsboth": "Ambas en la misma palabra",
     "rx.both.desc": "la palabra contiene <em>ambas</em>",
     "rx.both.note": "Doble barra <code>||</code> dentro de paréntesis",
@@ -267,12 +288,12 @@ const I18N = {
     "rx.redup.marker": "→ <em>pahpaqui</em> por patrón",
     "rx.redup.optionalH": "→ <em>papaqui</em> / <em>pahpaqui</em>",
     "rx.redup.optionalMarker": "→ <em>ahuia</em> / <em>aahuia</em>",
-    "rx.redup.note": "{R} duplica el siguiente bloque; (h) permite h opcional",
-    "rx.repeat.same.grapheme": "mismo grafema repetido",
-    "rx.repeat.same.cv": "misma sílaba CV repetida",
-    "rx.literal": "Regex literal",
-    "rx.lit.desc": "expresión completa entre <code>/</code>",
-    "rx.lit.flags": "admite flags: i g m…",
+    "rx.redup.note": "{r} duplica el siguiente bloque; (h) permite h opcional",
+    "rx.repeat.same.grapheme": "mismo grafema 2 veces",
+    "rx.repeat.same.cv": "misma sílaba cv 2 veces",
+    "rx.repeat.same.cv3": "misma sílaba cv 3 veces",
+    "rx.repeat.same.range": "misma sílaba cv 2 a 3 veces",
+    "rx.sameAgain.note": "{r} duplica; {r2}/{r3} repiten lo capturado",
     "pairs.title": "Pares",
     "pairs.description": "Compara formas que comparten base y cambian por sufijo, por ejemplo -i / -a.",
     "pairs.run": "Buscar pares",
@@ -292,7 +313,7 @@ const I18N = {
     "pairs.header.i": "Forma en -i",
     "pairs.header.total": "Total",
     "study.title": "Tarjetas",
-    "study.hint": "Crea un mazo desde los resultados actuales; cada tarjeta usa Edición y Traducción.",
+    "study.hint": "Crea un mazo desde los resultados actuales; cada tarjeta usa Editado y Traducción.",
     "study.mode": "Modo",
     "study.mode.study": "Estudio",
     "study.mode.exam": "Examen",
@@ -305,8 +326,8 @@ const I18N = {
     "study.face.zones.flip": "Izquierda: anterior · centro: voltear · derecha: siguiente",
     "study.face.zones.next": "Izquierda: anterior · derecha: siguiente",
     "study.direction": "Dirección",
-    "study.direction.nt": "Edición → Traducción",
-    "study.direction.tn": "Traducción → Edición",
+    "study.direction.nt": "Editado → Traducción",
+    "study.direction.tn": "Traducción → Editado",
     "study.theme": "Tema",
     "study.theme.all": "Todos",
     "study.limit": "Cartas",
@@ -339,7 +360,7 @@ const I18N = {
     "study.progress.study": "{{seen}} estudiadas",
     "study.progress": "{{seen}} vistas · {{good}} bien · {{again}} repasar",
     "study.sources": "{{sources}} fuentes · {{rows}} filas",
-    "study.front.edition": "Edición",
+    "study.front.edition": "Editado",
     "study.front.translation": "Traducción",
     "compare.title": "Comparar lema",
     "compare.run": "Comparar",
@@ -389,7 +410,7 @@ const I18N = {
     "browse.page": "Pág. {{page}} de {{total}}",
     "site.tagline": "Usa los filtros para encontrar palabras por escritura, traducción o fuente; los resultados aparecen en la tabla de abajo.",
     "table.header.paleografia": "Original",
-    "table.header.grafia": "Edición",
+    "table.header.grafia": "Editado",
     "table.header.traduccion": "Traducción",
     "table.header.fuente": "Fuente",
     "table.header.comentario": "Comentario",
@@ -420,7 +441,7 @@ const I18N = {
     "table.export.empty": "No hay resultados para exportar.",
     "table.export.started": "Exportación iniciada",
     "field.paleografia": "Original",
-    "field.grafia": "Edición",
+    "field.grafia": "Editado",
     "field.traduccion": "Traducción",
     "field.comentario": "Comentario",
     "field.fuente": "Fuente",
@@ -468,6 +489,7 @@ const I18N = {
     "chips.scope.whole.code": "C",
     "chips.scope.word.code": "P",
     "chips.scope.phrase.code": "F",
+    "chips.scope.wordPhrase.code": "P/F",
     "comentario.expandRow": "Abrir comentario",
     "comentario.collapseRow": "Cerrar comentario",
     "session.new": "Nueva búsqueda",
@@ -512,7 +534,7 @@ const I18N = {
     subtitle: "Filter and explore five columns with quick filters and a mini-language.",
     "tab.filters": "Filters",
     "tab.sources": "Sources",
-    "tab.regex": "Regex guide",
+    "tab.regex": "Patterns",
     "tab.pairs": "Pairs",
     "tab.study": "Cards",
     "reverse.title": "Guided filters",
@@ -661,8 +683,10 @@ const I18N = {
     "scope.whole": "Cell",
     "scope.word": "Word",
     "scope.phrase": "Phrase",
+    "scope.wordPhrase": "Word/Phrase",
     "scope.intent.word": "Matches inside one word; useful for roots, prefixes, or suffixes.",
     "scope.intent.phrase": "Matches a sequence of words together and in order; useful for phrases or definitions.",
+    "scope.intent.wordPhrase": "Uses Word for one word and Phrase for several words in order.",
     "scope.intent.whole": "Compares against the whole cell; useful when the complete field must match.",
     "field.grafia.short": "edition",
     "field.paleografia.short": "original",
@@ -699,20 +723,37 @@ const I18N = {
     "sources.orderAlpha.short": "A-Z",
     "sources.orderYear": "Sort sources by year",
     "sources.orderYear.short": "Year",
-    "regex.title": "Mini-language",
+    "regex.title": "Patterns: 6 rules",
     "rx.wildcards": "Wildcards",
+    "rx.rule.sequence": "1. Sequence",
+    "rx.sequence.space": "cen followed by nemi",
+    "rx.sequence.before": "cen before nemi",
+    "rx.sequence.after": "nemi after cen",
+    "rx.sequence.note": "Write the parts in the order they must appear",
+    "rx.rule.optional": "2. Optionality",
+    "rx.rule.alternatives": "3. Alternatives",
+    "rx.rule.quantity": "4. Quantity",
+    "rx.rule.classes": "5. Classes",
+    "rx.rule.sameAgain": "6. Same again",
     "rx.q1": "any 1 grapheme",
     "rx.q2": "exactly 2 graphemes",
     "rx.star1": "1 or more graphemes",
     "rx.star2": "2 or more graphemes",
     "rx.range": "2 to 4 graphemes",
+    "rx.zero.more": "0 or more h",
+    "rx.optionality": "Optionality",
     "rx.optional.any": "optional grapheme",
     "rx.optional.literal": "optional h",
-    "rx.grapheme.note": "In Edición, Original, and Comment, ? counts ch/tz/qu/etc. as one grapheme",
+    "rx.optional.space": "optional space",
+    "rx.optional.bridge": "→ <em>cennemi</em> / <em>cen nemi</em>",
+    "rx.optional.range": "h 0 to 3 times",
+    "rx.optional.note": "No vertical bar = optional; vertical bar = alternatives",
+    "rx.grapheme.note": "In Editado, Original, and Comment, ? counts ch/tz/qu/etc. as one grapheme",
     "rx.alternatives": "Alternatives",
     "rx.alt.group": "pato <em>or</em> pata",
     "rx.alt.pipe": "equivalent (top level)",
     "rx.alt.escape": "literal pipe",
+    "rx.alt.note": "The vertical bar separates options",
     "rx.escape.meta": "literal signs",
     "rx.alt.wildcard.after": "c/qu + graphemes",
     "rx.phrase.exact": "exact phrase",
@@ -725,13 +766,15 @@ const I18N = {
     "rx.cv.g": "glide (y, hu, uh)",
     "rx.cv.p": "stop (p, t, c, ch, tz…)",
     "rx.cv.a": "any letter",
-    "rx.cv.repeat": "one or more syllables",
-    "rx.cv.count": "exactly 2 syllables",
-    "rx.cv.pattern": "C‑V‑C pattern",
+    "rx.cv.repeat": "exactly 2 cvc blocks",
+    "rx.cv.count": "exactly 3 cvc blocks",
+    "rx.cv.pattern": "c‑v‑c pattern",
+    "rx.cv.range": "2 to 4 cvc blocks",
+    "rx.class.custom": "only those letters",
     "rx.negclass": "Negated class",
-    "rx.negclass.desc": "any non-vowel",
+    "rx.negclass.desc": "any letter except those",
     "rx.negclass.ex": "excludes vowels and s",
-    "rx.cv.note": "Only active inside braces { }",
+    "rx.cv.note": "A final number repeats the whole block",
     "rx.containsboth": "Both in same word",
     "rx.both.desc": "word contains <em>both</em>",
     "rx.both.note": "Double pipe <code>||</code> inside parentheses",
@@ -741,12 +784,12 @@ const I18N = {
     "rx.redup.marker": "→ <em>pahpaqui</em> by pattern",
     "rx.redup.optionalH": "→ <em>papaqui</em> / <em>pahpaqui</em>",
     "rx.redup.optionalMarker": "→ <em>ahuia</em> / <em>aahuia</em>",
-    "rx.redup.note": "{R} repeats the next block; (h) allows optional h",
-    "rx.repeat.same.grapheme": "same grapheme repeated",
-    "rx.repeat.same.cv": "same CV syllable repeated",
-    "rx.literal": "Literal regex",
-    "rx.lit.desc": "full expression between <code>/</code>",
-    "rx.lit.flags": "supports flags: i g m…",
+    "rx.redup.note": "{r} repeats the next block; (h) allows optional h",
+    "rx.repeat.same.grapheme": "same grapheme 2 times",
+    "rx.repeat.same.cv": "same cv syllable 2 times",
+    "rx.repeat.same.cv3": "same cv syllable 3 times",
+    "rx.repeat.same.range": "same cv syllable 2 to 3 times",
+    "rx.sameAgain.note": "{r} repeats; {r2}/{r3} repeat the captured part",
     "pairs.title": "Pairs",
     "pairs.description": "Compare forms that share a stem and differ by suffix, such as -i / -a.",
     "pairs.run": "Find pairs",
@@ -942,6 +985,7 @@ const I18N = {
     "chips.scope.whole.code": "C",
     "chips.scope.word.code": "W",
     "chips.scope.phrase.code": "P",
+    "chips.scope.wordPhrase.code": "W/P",
     "comentario.expandRow": "Open comment",
     "comentario.collapseRow": "Close comment",
     "session.new": "New search",
@@ -988,7 +1032,7 @@ const FILTER_OWNERS = ["f1"];
 let groupCounter = 0;
 let editingGroupId = null;
 let currentCommitLogic = "AND";
-let groupOrder = []; // [{id, logic}] — preserves chip insertion order
+let groupOrder = []; // [{id, logic, scopeChoice?}] — preserves chip insertion order
 
 // ── Session state ──────────────────────────────────────────────
 let sessionCounter = 1;
@@ -998,18 +1042,20 @@ const selectedChipGroupIds = new Set();
 
 const FIELD_SHORT_BY_LANG = {
   es: {
-    "Escritura original": "Orig.",
-    "Texto estandarizado": "Ed.",
+    "Original": "Orig.",
+    "Editado": "Ed.",
     "Traducción": "Trad.",
     "Comentario": "Com.",
   },
   en: {
-    "Escritura original": "Orig.",
-    "Texto estandarizado": "Ed.",
+    "Original": "Orig.",
+    "Editado": "Ed.",
     "Traducción": "Tr.",
     "Comentario": "Com.",
   }
 };
+
+const AUTO_SCOPE = "wordPhrase";
 
 function fieldShortLabel(field) {
   const dict = FIELD_SHORT_BY_LANG[currentLang] || FIELD_SHORT_BY_LANG.es;
@@ -1019,8 +1065,47 @@ function fieldShortLabel(field) {
 function chipScopeCodeForFilter(filter) {
   const scope = normalizeScope(filter.scope || "whole");
   if (scope === "whole") return t("chips.scope.whole.code");
+  if (scope === "wordPhrase") return t("chips.scope.wordPhrase.code");
   if (scope === "phrase") return t("chips.scope.phrase.code");
   return t("chips.scope.word.code");
+}
+
+function normalizeScopeChoice(scope) {
+  return scope === AUTO_SCOPE ? AUTO_SCOPE : normalizeScope(scope);
+}
+
+function resolveInputScope(scopeChoice, raw) {
+  const normalized = normalizeScopeChoice(scopeChoice);
+  if (normalized === AUTO_SCOPE) {
+    if (filterValueLooksWordPhraseBridge(raw)) return AUTO_SCOPE;
+    return filterValueLooksPhraseLike(raw) ? "phrase" : "word";
+  }
+  return normalizeScope(normalized);
+}
+
+function filterValueLooksWordPhraseBridge(value) {
+  return filterValueLooksOptionalSpaceGroup(value);
+}
+
+function filterValueLooksOptionalSpaceGroup(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return false;
+  return /(?:^|[^\\])\(\s+\)/.test(raw);
+}
+
+function filterValueLooksPhraseLike(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return false;
+  return filterValueLooksMultiWord(raw);
+}
+
+function getGroupScopeChoice(groupId, filters = []) {
+  const entry = groupOrder.find(group => group.id === groupId);
+  if (entry?.scopeChoice === AUTO_SCOPE) return AUTO_SCOPE;
+  if (filters.some(filter => filter.scopeChoice === AUTO_SCOPE)) return AUTO_SCOPE;
+  const scopes = new Set(filters.map(filter => normalizeScope(filter.scope)));
+  if (scopes.size === 1 && scopes.has("whole")) return "whole";
+  return AUTO_SCOPE;
 }
 
 function chipPartMarkup(filter, display) {
@@ -1063,7 +1148,7 @@ const REVERSE_PRESETS = {
     objectiveKey: "reverse.objective.translationToEdition",
     placeholderKey: "reverse.placeholder.translationToEdition",
     viewMode: "lemmas",
-    visibleColumns: ["Texto estandarizado", "Traducción", "Fuente"],
+    visibleColumns: ["Editado", "Traducción", "Fuente"],
     commentFields: ["Traducción", "Comentario"]
   },
   translationToOriginal: {
@@ -1075,7 +1160,7 @@ const REVERSE_PRESETS = {
     objectiveKey: "reverse.objective.translationToOriginal",
     placeholderKey: "reverse.placeholder.translationToOriginal",
     viewMode: "rows",
-    visibleColumns: ["Escritura original", "Texto estandarizado", "Traducción", "Fuente"],
+    visibleColumns: ["Original", "Editado", "Traducción", "Fuente"],
     commentFields: ["Traducción", "Comentario"]
   },
   translationToSources: {
@@ -1087,63 +1172,63 @@ const REVERSE_PRESETS = {
     objectiveKey: "reverse.objective.translationToSources",
     placeholderKey: "reverse.placeholder.translationToSources",
     viewMode: "rows",
-    visibleColumns: ["Fuente", "Texto estandarizado", "Traducción"],
+    visibleColumns: ["Fuente", "Editado", "Traducción"],
     commentFields: ["Traducción", "Comentario"]
   },
   editionToTranslation: {
     titleKey: "reverse.preset.editionToTranslation",
     goalKey: "reverse.preset.editionToTranslationGoal",
-    field: "Texto estandarizado",
+    field: "Editado",
     mode: "exact",
     scope: "word",
     objectiveKey: "reverse.objective.editionToTranslation",
     placeholderKey: "reverse.placeholder.editionToTranslation",
     viewMode: "rows",
-    visibleColumns: ["Texto estandarizado", "Traducción", "Fuente"]
+    visibleColumns: ["Editado", "Traducción", "Fuente"]
   },
   editionToOriginal: {
     titleKey: "reverse.preset.editionToOriginal",
     goalKey: "reverse.preset.editionToOriginalGoal",
-    field: "Texto estandarizado",
+    field: "Editado",
     mode: "exact",
     scope: "word",
     objectiveKey: "reverse.objective.editionToOriginal",
     placeholderKey: "reverse.placeholder.editionToOriginal",
     viewMode: "rows",
-    visibleColumns: ["Texto estandarizado", "Escritura original", "Fuente"]
+    visibleColumns: ["Editado", "Original", "Fuente"]
   },
   editionToSources: {
     titleKey: "reverse.preset.editionToSources",
     goalKey: "reverse.preset.editionToSourcesGoal",
-    field: "Texto estandarizado",
+    field: "Editado",
     mode: "exact",
     scope: "word",
     objectiveKey: "reverse.objective.editionToSources",
     placeholderKey: "reverse.placeholder.editionToSources",
     viewMode: "rows",
-    visibleColumns: ["Fuente", "Texto estandarizado", "Traducción"]
+    visibleColumns: ["Fuente", "Editado", "Traducción"]
   },
   originalToEdition: {
     titleKey: "reverse.preset.originalToEdition",
     goalKey: "reverse.preset.originalToEditionGoal",
-    field: "Escritura original",
+    field: "Original",
     mode: "any",
     scope: "word",
     objectiveKey: "reverse.objective.originalToEdition",
     placeholderKey: "reverse.placeholder.originalToEdition",
     viewMode: "lemmas",
-    visibleColumns: ["Texto estandarizado", "Escritura original", "Traducción", "Fuente"]
+    visibleColumns: ["Editado", "Original", "Traducción", "Fuente"]
   },
   originalToTranslation: {
     titleKey: "reverse.preset.originalToTranslation",
     goalKey: "reverse.preset.originalToTranslationGoal",
-    field: "Escritura original",
+    field: "Original",
     mode: "any",
     scope: "word",
     objectiveKey: "reverse.objective.originalToTranslation",
     placeholderKey: "reverse.placeholder.originalToTranslation",
     viewMode: "rows",
-    visibleColumns: ["Traducción", "Escritura original", "Texto estandarizado", "Fuente"]
+    visibleColumns: ["Traducción", "Original", "Editado", "Fuente"]
   },
   sourceToEdition: {
     titleKey: "reverse.preset.sourceToEdition",
@@ -1154,7 +1239,7 @@ const REVERSE_PRESETS = {
     objectiveKey: "reverse.objective.sourceToEdition",
     placeholderKey: "reverse.placeholder.sourceToEdition",
     viewMode: "lemmas",
-    visibleColumns: ["Texto estandarizado", "Fuente", "Traducción"]
+    visibleColumns: ["Editado", "Fuente", "Traducción"]
   },
   sourceToTranslation: {
     titleKey: "reverse.preset.sourceToTranslation",
@@ -1165,7 +1250,7 @@ const REVERSE_PRESETS = {
     objectiveKey: "reverse.objective.sourceToTranslation",
     placeholderKey: "reverse.placeholder.sourceToTranslation",
     viewMode: "rows",
-    visibleColumns: ["Traducción", "Texto estandarizado", "Fuente"]
+    visibleColumns: ["Traducción", "Editado", "Fuente"]
   },
   commentToEdition: {
     titleKey: "reverse.preset.commentToEdition",
@@ -1176,7 +1261,7 @@ const REVERSE_PRESETS = {
     objectiveKey: "reverse.objective.commentToEdition",
     placeholderKey: "reverse.placeholder.commentToEdition",
     viewMode: "lemmas",
-    visibleColumns: ["Texto estandarizado", "Comentario", "Fuente"]
+    visibleColumns: ["Editado", "Comentario", "Fuente"]
   },
   commentToSources: {
     titleKey: "reverse.preset.commentToSources",
@@ -1187,7 +1272,7 @@ const REVERSE_PRESETS = {
     objectiveKey: "reverse.objective.commentToSources",
     placeholderKey: "reverse.placeholder.commentToSources",
     viewMode: "rows",
-    visibleColumns: ["Fuente", "Comentario", "Texto estandarizado"]
+    visibleColumns: ["Fuente", "Comentario", "Editado"]
   }
 };
 let currentReversePreset = "translationToEdition";
@@ -1397,6 +1482,7 @@ function setDataRows(rows, options = {}) {
 }
 
 function prepareDataRow(row, idx) {
+  normalizeRowFieldKeys(row);
   row._rid = row.record_id || idx;
   row._prio = parsePriority(row.prio);
   row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
@@ -2736,7 +2822,7 @@ function updateFilterPlaceholders(card) {
 
 function updateScopeIntent(card, selectedScope) {
   if (!card) return;
-  const scope = normalizeScope(selectedScope || card.querySelector(".scope-btn.active")?.dataset.scope || "word");
+  const scope = normalizeScopeChoice(selectedScope || card.querySelector(".scope-btn.active")?.dataset.scope || AUTO_SCOPE);
   const intent = card.querySelector("[data-scope-intent]");
   if (intent) {
     const key = `scope.intent.${scope}`;
@@ -2744,7 +2830,7 @@ function updateScopeIntent(card, selectedScope) {
     setTranslatedText(intent, key);
   }
   card.querySelectorAll(".scope-btn[data-scope]").forEach(btn => {
-    const btnScope = normalizeScope(btn.dataset.scope);
+    const btnScope = normalizeScopeChoice(btn.dataset.scope);
     const label = btn.querySelector(".btn-label")?.textContent.trim()
       || btn.dataset.placeholderLabel
       || btn.textContent.trim();
@@ -3103,7 +3189,7 @@ function commitFilterCard() {
   if (!card) return;
 
   const field = card.querySelector(".field-btn.active")?.dataset.field;
-  const scope = card.querySelector(".scope-btn.active")?.dataset.scope || "whole";
+  const scopeChoice = normalizeScopeChoice(card.querySelector(".scope-btn.active")?.dataset.scope || AUTO_SCOPE);
   if (!field) return;
   if (field === "Fuente") return;
 
@@ -3118,23 +3204,30 @@ function commitFilterCard() {
   const isEditing = editingGroupId !== null;
   const groupId = isEditing ? editingGroupId : `group_${++groupCounter}`;
   const logic = currentCommitLogic;
-  // Word-scope AND groups use wordGroupId for same-word semantics; OR groups do not.
-  const wordGroupId = (scope === "word" && logic === "AND") ? groupId : null;
 
   // Remove existing filters for this group (re-commit or live-preview cleanup)
   activeFilters = activeFilters.filter(f => f.owner !== groupId && f.owner !== "f1");
 
   inputs.forEach(({ raw, mode, negate }) => {
-    const extras = wordGroupId ? { owner: groupId, wordGroupId } : { owner: groupId };
-    appendFilter(field, mode, raw, logic, negate, scope, extras);
+    const resolvedScope = resolveInputScope(scopeChoice, raw);
+    // Word-scope AND filters share a wordGroupId so same-group word conditions
+    // are tested against the same word. Phrase filters remain phrase-scoped.
+    const wordGroupId = (resolvedScope === "word" && logic === "AND") ? groupId : null;
+    const extras = wordGroupId
+      ? { owner: groupId, wordGroupId, scopeChoice }
+      : { owner: groupId, scopeChoice };
+    appendFilter(field, mode, raw, logic, negate, resolvedScope, extras);
   });
 
   if (isEditing) {
     // Update groupOrder entry logic in case user switched AND/OR during edit
     const entry = groupOrder.find(g => g.id === groupId);
-    if (entry) entry.logic = logic;
+    if (entry) {
+      entry.logic = logic;
+      entry.scopeChoice = scopeChoice;
+    }
   } else {
-    groupOrder.push({ id: groupId, logic });
+    groupOrder.push({ id: groupId, logic, scopeChoice });
   }
 
   // Reset edit state and card
@@ -3180,7 +3273,7 @@ function loadGroupForEditing(groupId) {
   if (!filters.length) return;
 
   const field = filters[0].field;
-  const scope = filters[0].scope || "whole";
+  const scope = getGroupScopeChoice(groupId, filters);
   const logic = filters[0].logic || "AND";
 
   // Set field pill
@@ -3193,6 +3286,7 @@ function loadGroupForEditing(groupId) {
   card.querySelectorAll(".scope-btn").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.scope === scope);
   });
+  updateFilterPlaceholders(card);
 
   // Set logic toggle
   setLogicToggle(logic);
@@ -3270,7 +3364,7 @@ function getDominantLemmaFilter(filters = activeFilters) {
   }
   const candidates = substantiveFilters.filter(filter =>
     !filter.negate &&
-    filter.field === "Texto estandarizado" &&
+    filter.field === "Editado" &&
     normalizeScope(filter.scope) === "word" &&
     filter.mode === "exact" &&
     String(filter.logic || "AND").toUpperCase() === "AND"
@@ -3617,8 +3711,8 @@ function getMobileRowId(row) {
 // stands on its own. Comentario is the only one we keep behind the +/-
 // toggle because it's often a long paragraph.
 const MOBILE_PREVIEW_ORDER = [
-  "Texto estandarizado",
-  "Escritura original",
+  "Editado",
+  "Original",
   "Traducción",
   "Fuente",
 ];
@@ -4108,7 +4202,8 @@ function loadColumnState() {
   if (Array.isArray(payload.order)) {
     const byKey = new Map(TABLE_FIELDS.map(f => [f.key, f]));
     const ordered = [];
-    payload.order.forEach(key => {
+    payload.order.forEach(rawKey => {
+      const key = normalizeFieldKey(rawKey);
       const field = byKey.get(key);
       if (field && !ordered.includes(field)) ordered.push(field);
     });
@@ -4122,7 +4217,8 @@ function loadColumnState() {
   }
 
   if (payload.widths && typeof payload.widths === "object") {
-    Object.entries(payload.widths).forEach(([key, w]) => {
+    Object.entries(payload.widths).forEach(([rawKey, w]) => {
+      const key = normalizeFieldKey(rawKey);
       if (columnWidths.has(key) && Number.isFinite(w) && w >= 50) {
         const compactDefault = DEFAULT_COLUMN_WIDTHS.get(key);
         columnWidths.set(key, Math.min(w, compactDefault || w));
@@ -4132,7 +4228,8 @@ function loadColumnState() {
 
   if (Array.isArray(payload.hidden)) {
     hiddenColumns.clear();
-    payload.hidden.forEach(key => {
+    payload.hidden.forEach(rawKey => {
+      const key = normalizeFieldKey(rawKey);
       if (TABLE_FIELDS.some(f => f.key === key)) hiddenColumns.add(key);
     });
   }
@@ -4255,7 +4352,7 @@ function renderColumnControls() {
     row.dataset.field = field.key;
 
     const visible = !hiddenColumns.has(field.key);
-    const canHide = visibleCount > 1 && !(tableViewMode === "lemmas" && field.key === "Texto estandarizado");
+    const canHide = visibleCount > 1 && !(tableViewMode === "lemmas" && field.key === "Editado");
     const check = document.createElement("input");
     check.type = "checkbox";
     check.className = "column-visible-check";
@@ -4342,7 +4439,7 @@ function applyColumnControlStateChange({ renderRows = true } = {}) {
 
 function setColumnVisible(fieldKey, nextVisible) {
   if (!nextVisible) {
-    if (tableViewMode === "lemmas" && fieldKey === "Texto estandarizado") {
+    if (tableViewMode === "lemmas" && fieldKey === "Editado") {
       renderColumnControls();
       return;
     }
@@ -4471,7 +4568,7 @@ function syncTableHeaderActionSlots(table, mobileAnchorTh, isPhone) {
   placeHeaderAction(commentExpandAll, getHeaderCellForField(table, "Comentario"));
   placeHeaderAction(
     mobileExpandAll,
-    isPhone && mobileAnchorTh ? mobileAnchorTh : getHeaderCellForField(table, "Texto estandarizado")
+    isPhone && mobileAnchorTh ? mobileAnchorTh : getHeaderCellForField(table, "Editado")
   );
 }
 
@@ -4984,7 +5081,7 @@ function getPrioritySortEntry(row) {
   let entry = prioritySortCache.get(row);
   if (entry) return entry;
   entry = {
-    head: buildSortKey(getDisplayValue(row, "Texto estandarizado") || getDisplayValue(row, "Escritura original")),
+    head: buildSortKey(getDisplayValue(row, "Editado") || getDisplayValue(row, "Original")),
     source: getFuenteSortKey(getDisplayValue(row, "Fuente"))
   };
   prioritySortCache.set(row, entry);
@@ -5011,7 +5108,7 @@ function updateSortIndicators() {
       const dirLabel = dir === "asc" ? t("sort.asc") : t("sort.desc");
       btn.setAttribute("aria-label", `${t("sort.by")} ${fieldLabel}, ${dirLabel}`);
       btn.setAttribute("aria-pressed", "true");
-      if (inLemmasView && field !== "Texto estandarizado") {
+      if (inLemmasView && field !== "Editado") {
         btn.classList.add("sort-child");
         btn.title = t("sort.childHint");
       } else {
@@ -5241,13 +5338,14 @@ function exportTableAsImage(format = "jpeg") {
 }
 
 function getDisplayValue(row, fieldKey) {
+  const normalizedField = normalizeFieldKey(fieldKey);
   if (wimmerShowEs && row.Fuente === "2021 Wimmer") {
-    const esKey = fieldKey === "Traducción" ? "Traducción (es)"
-                : fieldKey === "Comentario"  ? "Comentario (es)"
+    const esKey = normalizedField === "Traducción" ? "Traducción (es)"
+                : normalizedField === "Comentario"  ? "Comentario (es)"
                 : null;
     if (esKey && row[esKey]) return row[esKey];
   }
-  return row[fieldKey] ?? "";
+  return row[normalizedField] ?? row[fieldKey] ?? "";
 }
 
 // ── Wimmer ───────────────────────────────────────────────────────────────────
@@ -5318,8 +5416,14 @@ function applyHighlights(rawValue, fieldKey) {
   const allFilters = getHighlightFiltersForField(fieldKey);
   if (!allFilters.length) return val;
 
-  const phraseFilters = allFilters.filter(f => normalizeScope(f.scope) === "phrase" && !f.negate);
-  const wordFilters = allFilters.filter(f => normalizeScope(f.scope) === "word");
+  const phraseFilters = allFilters.filter(f => {
+    const scope = normalizeScope(f.scope);
+    return (scope === "phrase" || scope === "wordPhrase") && !f.negate;
+  });
+  const wordFilters = allFilters.filter(f => {
+    const scope = normalizeScope(f.scope);
+    return scope === "word" || scope === "wordPhrase";
+  });
   const cellFilters = allFilters.filter(f => normalizeScope(f.scope) === "whole" && !f.negate);
 
   let rendered = val;
@@ -5732,8 +5836,7 @@ function buildHighlightRegex(filters) {
         const sourcePart = (!accentSensitiveMode && oldSpanishMode)
           ? normalizeOldSpanishPatternText(p)
           : p;
-        const expanded = expandReduplicationMarkers(sourcePart, { field: filter.field })
-          || convertWildcardPatternAllowRegex(expandVCPlaceholders(sourcePart), { field: filter.field });
+        const expanded = buildCompositePatternBody(sourcePart, { field: filter.field });
         if (expanded) {
           let adjusted = accentSensitiveMode ? expanded : normalizePatternSource(expanded);
           if (!accentSensitiveMode && oldSpanishMode) {
@@ -6121,9 +6224,9 @@ function applyFuenteFilters(options = {}) {
 
 function getFieldI18nKey(fieldKey) {
   switch (fieldKey) {
-    case "Escritura original":
+    case "Original":
       return "field.paleografia";
-    case "Texto estandarizado":
+    case "Editado":
       return "field.grafia";
     case "Traducción":
       return "field.traduccion";
@@ -6143,8 +6246,8 @@ function compareLemmaRows(a, b) {
   const pb = Number.isFinite(b._prio) ? b._prio : Number.POSITIVE_INFINITY;
   if (pa !== pb) return pa - pb;
   const originalCmp = alphaNumCollator.compare(
-    buildSortKey(a["Escritura original"]),
-    buildSortKey(b["Escritura original"])
+    buildSortKey(a["Original"]),
+    buildSortKey(b["Original"])
   );
   if (originalCmp !== 0) return originalCmp;
   return compareRecordId(a, b);
@@ -6221,9 +6324,9 @@ function buildLemmaGroupRow(item) {
   tr.dataset.lemma = item.lemma;
   if (expandedLemmas.has(item.lemma)) tr.classList.add("expanded");
 
-  const headerKeys = new Set(["Texto estandarizado", "Escritura original", "Traducción"]);
+  const headerKeys = new Set(["Editado", "Original", "Traducción"]);
   const headerSpan = TABLE_FIELDS.filter(f => headerKeys.has(f.key) && !hiddenColumns.has(f.key)).length;
-  const edicionVisible = !hiddenColumns.has("Texto estandarizado");
+  const edicionVisible = !hiddenColumns.has("Editado");
   let headerRendered = false;
 
   TABLE_FIELDS.forEach(field => {
@@ -6233,7 +6336,7 @@ function buildLemmaGroupRow(item) {
       headerRendered = true;
 
       const td = document.createElement("td");
-      td.dataset.field = edicionVisible ? "Texto estandarizado" : field.key;
+      td.dataset.field = edicionVisible ? "Editado" : field.key;
       td.className = "lemma-group-summary-cell";
       if (headerSpan > 1) td.colSpan = headerSpan;
 
@@ -6365,8 +6468,8 @@ function setViewMode(next) {
   if (tableViewMode === next) return;
   tableViewMode = next;
   displayOffset = 0;
-  if (next === "lemmas" && hiddenColumns.has("Texto estandarizado")) {
-    hiddenColumns.delete("Texto estandarizado");
+  if (next === "lemmas" && hiddenColumns.has("Editado")) {
+    hiddenColumns.delete("Editado");
     syncColumnLayout();
   }
   updateViewToggleButtons();
@@ -6384,13 +6487,13 @@ function setupViewToggle() {
   updateViewToggleButtons();
 }
 
-// ── Compare chip (synthetic filter on Texto estandarizado) ──────────
+// ── Compare chip (synthetic filter on Editado) ──────────
 
 function setCompareChip(lemma) {
   const query = sanitizeInput(lemma).trim();
   if (!query) return;
   activeFilters = activeFilters.filter(f => f.owner !== COMPARE_OWNER);
-  appendFilter("Texto estandarizado", "exact", query, "AND", false, "whole", {
+  appendFilter("Editado", "exact", query, "AND", false, "whole", {
     owner: COMPARE_OWNER,
     type: "compare",
     strictCompare: true
@@ -6457,7 +6560,7 @@ function applyGuidedPresentation(preset) {
     TABLE_FIELDS.forEach(field => {
       if (!visible.has(field.key)) hiddenColumns.add(field.key);
     });
-    if (tableViewMode === "lemmas") hiddenColumns.delete("Texto estandarizado");
+    if (tableViewMode === "lemmas") hiddenColumns.delete("Editado");
     sortKeys = sortKeys.filter(key => !hiddenColumns.has(key.field));
     syncColumnLayout();
     renderColumnControls();
@@ -6645,7 +6748,7 @@ function setupEdicionCellClick() {
 function buildLemmaItemsFromRows(rows) {
   const map = new Map();
   rows.forEach(row => {
-    const lemma = sanitizeInput(row["Texto estandarizado"]);
+    const lemma = sanitizeInput(row["Editado"]);
     if (!lemma) return;
     let entry = map.get(lemma);
     if (!entry) {
@@ -6657,7 +6760,7 @@ function buildLemmaItemsFromRows(rows) {
   const items = [];
   const hasUserSort = Array.isArray(sortKeys) && sortKeys.length > 0;
   const childSortKeys = hasUserSort
-    ? sortKeys.filter(k => k.field !== "Texto estandarizado")
+    ? sortKeys.filter(k => k.field !== "Editado")
     : [];
   map.forEach(entry => {
     const sortedRows = entry.rows.slice();
@@ -6682,7 +6785,7 @@ function buildLemmaItemsFromRows(rows) {
     });
   });
   const lemmaSortKey = hasUserSort
-    ? sortKeys.find(k => k.field === "Texto estandarizado")
+    ? sortKeys.find(k => k.field === "Editado")
     : null;
   if (lemmaSortKey) {
     const dir = lemmaSortKey.dir === "desc" ? -1 : 1;
@@ -6756,7 +6859,7 @@ function appendLemmaDetailRowsAfter(anchorRow, item, stripe) {
     tr.classList.add("lemma-detail-row");
     tr.dataset.lemma = item.lemma;
     if (stripe) tr.classList.add("stripe-alt");
-    const edicionCell = tr.querySelector('td[data-field="Texto estandarizado"]');
+    const edicionCell = tr.querySelector('td[data-field="Editado"]');
     if (edicionCell) {
       const mobileToggle = edicionCell.querySelector(".mobile-row-toggle");
       edicionCell.replaceChildren();
@@ -6787,7 +6890,7 @@ function buildLemmaMobileDetailPreview(row) {
     preview.appendChild(line);
   };
 
-  addLine("lemma-mobile-detail-primary", "Escritura original");
+  addLine("lemma-mobile-detail-primary", "Original");
   addLine("mobile-row-subtitle mobile-row-sub--traduccion", "Traducción");
   addLine("mobile-row-subtitle mobile-row-sub--fuente", "Fuente");
 
@@ -6836,8 +6939,8 @@ function setupPairFinder() {
       option.textContent = labelKey ? t(labelKey) : key;
       select.appendChild(option);
     });
-    if (columns.includes("Texto estandarizado")) {
-      select.value = "Texto estandarizado";
+    if (columns.includes("Editado")) {
+      select.value = "Editado";
     }
   }
 
@@ -7708,7 +7811,7 @@ function studyThemeMatchesIndex(theme, index) {
 }
 
 function getStudyRowThemeMeta(row) {
-  const lemmaValue = getDisplayValue(row, "Texto estandarizado");
+  const lemmaValue = getDisplayValue(row, "Editado");
   const translationValue = getDisplayValue(row, "Traducción");
   const cached = studyThemeRowMetaCache.get(row);
   if (cached && cached.lemmaValue === lemmaValue && cached.translationValue === translationValue) {
@@ -7760,7 +7863,7 @@ function addStudyTranslation(entry, translation) {
 
 function getStudyCardInfo(row, direction, cache) {
   const targetCache = cache || studyCardInfoCache;
-  const lemmaValue = getDisplayValue(row, "Texto estandarizado");
+  const lemmaValue = getDisplayValue(row, "Editado");
   const translationValue = getDisplayValue(row, "Traducción");
   const cached = targetCache.get(row);
   const cachedMatches = cached
@@ -7819,7 +7922,7 @@ function buildStudyCardsFromRows(rows, options = {}) {
   const byLemma = new Map();
 
   rows.forEach(row => {
-    const lemma = cleanStudyText(getDisplayValue(row, "Texto estandarizado"));
+    const lemma = cleanStudyText(getDisplayValue(row, "Editado"));
     const key = normalizeString(lemma);
     if (!lemma || !key) return;
     if (selectedKeys && !selectedKeys.has(key)) return;
@@ -8412,17 +8515,19 @@ function moveColumn(srcKey, dstKey) {
 // ── URL hash routing (shareable filter state) ──────────────────────
 
 const FIELD_CODE_OUT = {
-  "Texto estandarizado": "te",
-  "Escritura original": "eo",
+  "Editado": "ed",
+  "Original": "or",
   "Traducción": "tr",
   "Comentario": "co",
   "Fuente": "fu",
 };
-const FIELD_CODE_IN = Object.fromEntries(
-  Object.entries(FIELD_CODE_OUT).map(([k, v]) => [v, k])
-);
-const SCOPE_CODE_OUT = { whole: "c", word: "w", phrase: "p" };
-const SCOPE_CODE_IN = { t: "whole", c: "whole", w: "word", p: "phrase" };
+const FIELD_CODE_IN = {
+  ...Object.fromEntries(Object.entries(FIELD_CODE_OUT).map(([k, v]) => [v, k])),
+  te: "Editado",
+  eo: "Original"
+};
+const SCOPE_CODE_OUT = { whole: "c", word: "w", phrase: "p", wordPhrase: "m" };
+const SCOPE_CODE_IN = { t: "whole", c: "whole", w: "word", p: "phrase", m: "wordPhrase" };
 const MODE_CODE_OUT = { exact: "e", starts: "s", any: "a", ends: "d" };
 const MODE_CODE_IN = { e: "exact", s: "starts", a: "any", d: "ends" };
 
@@ -8487,7 +8592,7 @@ function tryCanonicalLemma(groups) {
   const filters = groups[0].filters;
   if (filters.length !== 1) return null;
   const f = filters[0];
-  if (f.field !== "Texto estandarizado") return null;
+  if (f.field !== "Editado") return null;
   if (f.mode !== "exact") return null;
   if (normalizeScope(f.scope) !== "whole") return null;
   if (f.negate) return null;
@@ -8591,7 +8696,7 @@ function parseHashRoute(hash) {
     return {
       groups: [{
         logic: "AND",
-        field: "Texto estandarizado",
+        field: "Editado",
         scope: "whole",
         inputs: [{ mode: "exact", negate: false, value: lema }],
       }],

@@ -5,10 +5,11 @@ let filterIdCounter = 0;
 
 function appendFilter(field, mode, value, logic = "AND", negate = false, scope = "whole", extras = {}) {
   if (!field || !mode || !value) return;
+  const normalizedField = typeof normalizeFieldKey === "function" ? normalizeFieldKey(field) : field;
   activeFilters.push({
     id: ++filterIdCounter,
     type: "filter",
-    field,
+    field: normalizedField,
     mode,
     value,
     logic,
@@ -40,6 +41,7 @@ function normalizeWordGroupStructure(filter) {
 function normalizeScope(scope) {
   if (scope === "word") return "word";
   if (scope === "phrase") return "phrase";
+  if (scope === "wordPhrase") return "wordPhrase";
   return "whole";
 }
 
@@ -310,6 +312,7 @@ function matchCompiledFilter(row, cf) {
   const { filter, query, scope } = cf;
   if (scope === "word") return matchWordScopeCompiled(row, filter, query);
   if (scope === "phrase") return matchPhraseScopeCompiled(row, filter, query);
+  if (scope === "wordPhrase") return matchWordPhraseScopeCompiled(row, filter, query);
   return matchWholeScopeCompiled(row, filter, query);
 }
 
@@ -327,6 +330,14 @@ function matchWordScopeCompiled(row, filter, query) {
   const matches = normalizedWordEntryExists(row, filter.field, { accentSensitive: query.accentSensitive }, wordEntry => {
     return wordEntryMatchesFilterQuery(wordEntry, filter, query);
   });
+  return filter.negate ? !matches : matches;
+}
+
+function matchWordPhraseScopeCompiled(row, filter, query) {
+  const positiveFilter = filter.negate ? { ...filter, negate: false } : filter;
+  const matches =
+    matchWordScopeCompiled(row, positiveFilter, query) ||
+    matchPhraseScopeCompiled(row, positiveFilter, query);
   return filter.negate ? !matches : matches;
 }
 
@@ -470,8 +481,6 @@ function phraseWordCountEstimates(filter, query) {
 
 function normalizePhrasePatternInput(value, mode) {
   let raw = String(value ?? "").trim();
-  const literalRegex = raw.match(/^\/(.+)\/([gimsuy]*)$/);
-  if (literalRegex) return literalRegex[1];
   if (isQuoted(raw)) return unquote(raw);
   if (mode === "exact") {
     const leading = raw.startsWith("-");

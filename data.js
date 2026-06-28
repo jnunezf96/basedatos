@@ -5,6 +5,28 @@ let normalizationCache = new Map();
 let oldSpanishMode = false;
 let accentSensitiveMode = false; // false = accent-free (default); true = accent-exact
 
+const FIELD_KEY_ALIASES = new Map([
+  ["Texto estandarizado", "Editado"],
+  ["Escritura original", "Original"]
+]);
+
+function normalizeFieldKey(fieldKey) {
+  return FIELD_KEY_ALIASES.get(fieldKey) || fieldKey;
+}
+
+function normalizeRowFieldKeys(row) {
+  if (!row || typeof row !== "object") return row;
+  FIELD_KEY_ALIASES.forEach((nextKey, oldKey) => {
+    if (Object.prototype.hasOwnProperty.call(row, oldKey)) {
+      if (!Object.prototype.hasOwnProperty.call(row, nextKey)) {
+        row[nextKey] = row[oldKey];
+      }
+      delete row[oldKey];
+    }
+  });
+  return row;
+}
+
 // ==============================
 // Normalization
 // ==============================
@@ -123,7 +145,10 @@ function hasFormattingCharacters(value) {
 }
 
 function getRawDisplayValue(row, field) {
-  return (typeof getDisplayValue === "function") ? getDisplayValue(row, field) : (row[field] ?? "");
+  const normalizedField = normalizeFieldKey(field);
+  return (typeof getDisplayValue === "function")
+    ? getDisplayValue(row, normalizedField)
+    : (row[normalizedField] ?? row[field] ?? "");
 }
 
 function shouldStreamNormalizedWords(field) {
@@ -262,9 +287,10 @@ function getNormalizedEntry(row, field) {
 const LETTER_WILDCARD_PATTERN = "[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]";
 const NAHUATL_GRAPHEME_DIGRAPHS = "ch|tz|hu|uh|qu|cu|uc|ll|rr|gu";
 const NAHUATL_GRAPHEME_PATTERN = `(?:${NAHUATL_GRAPHEME_DIGRAPHS}|(?!${NAHUATL_GRAPHEME_DIGRAPHS})[A-Za-z\u00C0-\u024F\u1E00-\u1EFF])`;
-const NAHUATL_GRAPHEME_FIELDS = new Set(["Texto estandarizado", "Escritura original", "Comentario"]);
+const NAHUATL_GRAPHEME_FIELDS = new Set(["Editado", "Original", "Comentario"]);
 const REDUPLICATION_VOWELS = /[aeiouáâãäàāéêëèēíîïìīóôõöòōúûüùýÿ]/i;
 let reduplicationMarkerCounter = 0;
+let sameAgainMarkerCounter = 0;
 
 function getWildcardUnit(options = {}) {
   return NAHUATL_GRAPHEME_FIELDS.has(options.field) ? NAHUATL_GRAPHEME_PATTERN : LETTER_WILDCARD_PATTERN;
@@ -285,6 +311,18 @@ function escapeRegex(ch) {
 // Alias kept for internal callers
 const escapeRegexCharacter = escapeRegex;
 
+function escapeRegexClassCharacters(value) {
+  return String(value || "").replace(/[\\\]\-\^]/g, "\\$&");
+}
+
+function buildCustomBraceClass(inner) {
+  const sign = String(inner || "")[0];
+  if (sign !== "=" && sign !== "!") return null;
+  const body = String(inner).slice(1);
+  if (!body) return null;
+  return `[${sign === "!" ? "^" : ""}${escapeRegexClassCharacters(body)}]`;
+}
+
 function expandVCPlaceholders(value) {
   if (!value) return "";
   const map = {
@@ -297,7 +335,15 @@ function expandVCPlaceholders(value) {
     P: "(?:ch|tz|qu|cu|uc|p|t|c|b|d|g|k)",
     A: "[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]"
   };
-  // Expande solo dentro de llaves { } y permite escape \{ \} \C \V \N \L \S \G
+  const expandInner = segment => segment.replace(/\\[A-Za-z]|[A-Za-z]\??/g, m => {
+    if (m.startsWith("\\")) return m.slice(1);
+    const optional = m.endsWith("?");
+    const key = optional ? m.slice(0, -1) : m;
+    const expansion = map[key.toUpperCase()];
+    if (!expansion) return m;
+    return optional ? `${expansion}?` : expansion;
+  });
+  // Expande solo dentro de llaves { } y permite escape \{ \} \c \v etc.
   let out = "";
   let i = 0;
   while (i < value.length) {
@@ -326,14 +372,19 @@ function expandVCPlaceholders(value) {
         i = end + 1;
         continue;
       }
-      const expanded = inner.replace(/\\[A-Z]|[A-Z]\??/g, m => {
-        if (m.startsWith("\\")) return m.slice(1);
-        const optional = m.endsWith("?");
-        const key = optional ? m.slice(0, -1) : m;
-        const expansion = map[key];
-        if (!expansion) return m;
-        return optional ? `${expansion}?` : expansion;
-      });
+      const customClass = buildCustomBraceClass(inner);
+      if (customClass) {
+        out += `(?:${customClass})`;
+        i = end + 1;
+        continue;
+      }
+      const countedBlock = parseBraceCount(inner);
+      if (countedBlock) {
+        out += `(?:${expandInner(countedBlock.body)})${countRangeQuantifier(countedBlock)}`;
+        i = end + 1;
+        continue;
+      }
+      const expanded = expandInner(inner);
       out += `(?:${expanded})`;
       i = end + 1;
       continue;
@@ -342,6 +393,22 @@ function expandVCPlaceholders(value) {
     i++;
   }
   return out;
+}
+
+function parseBraceCount(inner) {
+  const match = String(inner || "").match(/^([A-Za-z]+)(\d+)(?:-(\d*))?$/);
+  if (!match) return null;
+  const min = Number(match[2]);
+  const hasRange = match[3] !== undefined;
+  const max = hasRange && match[3] !== "" ? Number(match[3]) : hasRange ? null : min;
+  if (max !== null && max < min) return null;
+  return { body: match[1], min, max };
+}
+
+function countRangeQuantifier(range) {
+  if (range.max === range.min) return `{${range.min}}`;
+  if (range.max === null) return `{${range.min},}`;
+  return `{${range.min},${range.max}}`;
 }
 
 function expandReduplication(value, options = {}) {
@@ -369,68 +436,118 @@ function expandReduplication(value, options = {}) {
 
 function expandReduplicationMarkers(value, options = {}) {
   const source = String(value || "");
-  if (!source.includes("{R}")) return null;
+  if (!/[{][Rr](?:[1-9]\d*(?:-\d*)?)?[}]/.test(source)) return null;
 
   let out = "";
   let i = 0;
   while (i < source.length) {
-    const markerIdx = findNextReduplicationMarker(source, i);
-    if (markerIdx === -1) {
+    const marker = findNextReduplicationMarker(source, i);
+    if (!marker) {
       out += expandPatternSegmentForRegex(source.slice(i), options);
       break;
     }
-    const optionalGroup = readOptionalReduplicationMarkerGroup(source, markerIdx);
+    const optionalGroup = readOptionalReduplicationMarkerGroup(source, marker.start);
     if (optionalGroup) {
       out += expandPatternSegmentForRegex(source.slice(i, optionalGroup.openIdx), options);
       const target = readReduplicationMarkerTarget(source, optionalGroup.end);
       if (!target) return null;
       const targetBody = expandPatternSegmentForRegex(target.target, options);
       if (!targetBody) return null;
-      const groupName = `r${++reduplicationMarkerCounter}`;
-      out += `(?:(?<${groupName}>${targetBody})${optionalGroup.infixBody})?`;
+      out += `(?:${buildReduplicationPrefixBody(targetBody, optionalGroup.infixBody, optionalGroup)})?`;
       i = optionalGroup.end;
       continue;
     }
-    out += expandPatternSegmentForRegex(source.slice(i, markerIdx), options);
-    const target = readReduplicationMarkerTarget(source, markerIdx + 3);
+    out += expandPatternSegmentForRegex(source.slice(i, marker.start), options);
+    const target = readReduplicationMarkerTarget(source, marker.end);
     if (!target) return null;
     const targetBody = expandPatternSegmentForRegex(target.target, options);
     if (!targetBody) return null;
     const infixBody = target.infixBody ?? expandPatternSegmentForRegex(target.infix, options);
-    const groupName = `r${++reduplicationMarkerCounter}`;
-    out += `(?<${groupName}>${targetBody})${infixBody}\\k<${groupName}>`;
+    out += buildReduplicationFullBody(targetBody, infixBody, marker);
     i = target.end;
   }
   return out || null;
+}
+
+function buildReduplicationFullBody(targetBody, infixBody, marker) {
+  const groupName = `r${++reduplicationMarkerCounter}`;
+  const repeatUnit = `${infixBody}\\k<${groupName}>`;
+  return `(?<${groupName}>${targetBody})(?:${repeatUnit})${markerRepeatQuantifier(marker, -1)}`;
+}
+
+function buildReduplicationPrefixBody(targetBody, infixBody, marker) {
+  const groupName = `r${++reduplicationMarkerCounter}`;
+  return `(?<${groupName}>${targetBody})${infixBody}(?:\\k<${groupName}>${infixBody})${markerRepeatQuantifier(marker, -2)}`;
 }
 
 function readOptionalReduplicationMarkerGroup(value, markerIdx) {
   const openIdx = markerIdx - 1;
   if (openIdx < 0 || value[openIdx] !== "(" || isEscapedAt(value, openIdx)) return null;
   const closeIdx = findMatchingGroupClose(value, openIdx);
-  if (closeIdx === -1 || closeIdx < markerIdx + 3) return null;
+  const marker = readReduplicationMarkerAt(value, markerIdx);
+  if (!marker || closeIdx === -1 || closeIdx < marker.end) return null;
   const inner = value.slice(openIdx + 1, closeIdx);
-  if (!inner.startsWith("{R}") || isEscapedAt(inner, 0)) return null;
-  const tail = inner.slice(3);
+  const innerMarker = readReduplicationMarkerAt(inner, 0);
+  if (!innerMarker) return null;
+  const tail = inner.slice(innerMarker.raw.length);
   if (splitTopLevel(tail, "|").length > 1) return null;
   if (!tail) {
-    return { openIdx, end: closeIdx + 1, infix: "", infixBody: "" };
+    return { openIdx, end: closeIdx + 1, infix: "", infixBody: "", min: innerMarker.min, max: innerMarker.max };
   }
   const optionalH = parseOptionalReduplicationHInfix(tail);
   if (optionalH) {
-    return { openIdx, end: closeIdx + 1, infix: tail, infixBody: optionalH.body };
+    return { openIdx, end: closeIdx + 1, infix: tail, infixBody: optionalH.body, min: innerMarker.min, max: innerMarker.max };
   }
   if (tail === "h" && !isEscapedAt(tail, 0)) {
-    return { openIdx, end: closeIdx + 1, infix: tail, infixBody: "h" };
+    return { openIdx, end: closeIdx + 1, infix: tail, infixBody: "h", min: innerMarker.min, max: innerMarker.max };
   }
   return null;
 }
 
 function findNextReduplicationMarker(value, startIdx = 0) {
   for (let i = startIdx; i < value.length; i++) {
-    if (value.startsWith("{R}", i) && !isEscapedAt(value, i)) return i;
+    const marker = readReduplicationMarkerAt(value, i);
+    if (marker) return marker;
   }
-  return -1;
+  return null;
+}
+
+function isReduplicationMarkerAt(value, idx) {
+  return !!readReduplicationMarkerAt(value, idx);
+}
+
+function readReduplicationMarkerAt(value, idx) {
+  if (idx < 0 || isEscapedAt(value, idx)) return null;
+  const match = String(value || "").slice(idx).match(/^\{[Rr]([1-9]\d*(?:-\d*)?)?\}/);
+  if (!match) return null;
+  const range = parseMarkerCount(match[1]);
+  if (!range) return null;
+  return {
+    raw: match[0],
+    start: idx,
+    end: idx + match[0].length,
+    min: range.min,
+    max: range.max
+  };
+}
+
+function parseMarkerCount(raw) {
+  if (!raw) return { min: 2, max: 2 };
+  const match = raw.match(/^([1-9]\d*)(?:-(\d*))?$/);
+  if (!match) return null;
+  const min = Number(match[1]);
+  const hasRange = match[2] !== undefined;
+  const max = hasRange && match[2] !== "" ? Number(match[2]) : hasRange ? null : min;
+  if (max !== null && max < min) return null;
+  return { min, max };
+}
+
+function markerRepeatQuantifier(marker, offset) {
+  const min = Math.max(0, marker.min + offset);
+  const max = marker.max === null ? null : Math.max(0, marker.max + offset);
+  if (max === min) return `{${min}}`;
+  if (max === null) return `{${min},}`;
+  return `{${min},${max}}`;
 }
 
 function expandPatternSegmentForRegex(segment, options = {}) {
@@ -478,7 +595,7 @@ function findNextBracePlaceholder(value, startIdx) {
     const end = value.indexOf("}", i + 1);
     if (end === -1) return null;
     const inner = value.slice(i + 1, end);
-    if (/^\d+([,:]\d*)?$/.test(inner) || inner === "R") {
+    if (/^\d+([,:]\d*)?$/.test(inner) || /^[Rr](?:[1-9]\d*(?:-\d*)?)?$/.test(inner)) {
       i = end;
       continue;
     }
@@ -525,6 +642,113 @@ function parseOptionalReduplicationHInfix(value) {
   return null;
 }
 
+function expandSameAgainMarkers(value, options = {}) {
+  const source = String(value || "");
+  if (!source.includes("(") || !/[{][Rr](?:[1-9]\d*(?:-\d*)?)?[}]/.test(source)) return null;
+  let out = "";
+  let last = 0;
+  let changed = false;
+
+  for (let i = 0; i < source.length; i++) {
+    if (source[i] !== "(" || isEscapedAt(source, i)) continue;
+    const closeIdx = findMatchingGroupClose(source, i);
+    if (closeIdx === -1) continue;
+    const marker = readReduplicationMarkerAt(source, closeIdx + 1);
+    if (!marker) {
+      i = closeIdx;
+      continue;
+    }
+    out += expandPatternSegmentForRegex(source.slice(last, i), options);
+    const inner = source.slice(i + 1, closeIdx);
+    const body = expandPatternSegmentForRegex(inner, options);
+    if (!body) return null;
+    out += buildSameAgainBody(body, marker);
+    last = marker.end;
+    i = marker.end - 1;
+    changed = true;
+  }
+
+  if (!changed) return null;
+  out += expandPatternSegmentForRegex(source.slice(last), options);
+  return out;
+}
+
+function buildSameAgainBody(body, marker) {
+  const groupName = `s${++sameAgainMarkerCounter}`;
+  return `(?<${groupName}>${body})\\k<${groupName}>${markerRepeatQuantifier(marker, -1)}`;
+}
+
+function buildContextCondition(text, options = {}) {
+  const source = String(text || "");
+  const op = findTopLevelContextOperator(source);
+  if (!op) return null;
+  const left = source.slice(0, op.index).trim();
+  const right = source.slice(op.index + 1).trim();
+  if (!left || !right) return null;
+  const targetBody = buildCompositePatternBody(left, options);
+  const contextBody = buildCompositePatternBody(right, options);
+  if (!targetBody || !contextBody) return null;
+  if (op.value === ">") return `(?:${targetBody})(?=${contextBody})`;
+  return `(?<=${contextBody})(?:${targetBody})`;
+}
+
+function buildCompositePatternBody(text, options = {}) {
+  const sameAgain = expandSameAgainMarkers(text, options);
+  if (sameAgain) return sameAgain;
+  const redupMarker = expandReduplicationMarkers(text, options);
+  if (redupMarker) return redupMarker;
+  const expandedVC = expandVCPlaceholders(text);
+  return expandReduplication(expandedVC, options)
+    || convertWildcardPatternAllowRegex(expandedVC, options);
+}
+
+function findTopLevelContextOperator(value) {
+  let escaped = false;
+  let parenDepth = 0;
+  let braceDepth = 0;
+  let bracketDepth = 0;
+  for (let i = 0; i < value.length; i++) {
+    const ch = value[i];
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+    if (ch === "\\") {
+      escaped = true;
+      continue;
+    }
+    if (bracketDepth > 0) {
+      if (ch === "]") bracketDepth--;
+      continue;
+    }
+    if (braceDepth > 0) {
+      if (ch === "{") braceDepth++;
+      else if (ch === "}") braceDepth--;
+      continue;
+    }
+    if (ch === "[") {
+      bracketDepth++;
+      continue;
+    }
+    if (ch === "{") {
+      braceDepth++;
+      continue;
+    }
+    if (ch === "(") {
+      parenDepth++;
+      continue;
+    }
+    if (ch === ")" && parenDepth > 0) {
+      parenDepth--;
+      continue;
+    }
+    if (parenDepth === 0 && (ch === ">" || ch === "<")) {
+      return { index: i, value: ch };
+    }
+  }
+  return null;
+}
+
 function readOptionalReduplicationH(value, startIdx, stopIdx = value.length) {
   if (startIdx + 3 <= stopIdx && value.startsWith("(h)", startIdx) && !isEscapedAt(value, startIdx)) {
     return {
@@ -562,24 +786,6 @@ function readLiteralSyllable(value, startIdx, stopIdx = value.length) {
 
 function parseFilterValue(rawValue, mode, options = {}) {
   const cleaned = rawValue == null ? "" : String(rawValue);
-  const literalRegex = cleaned.match(/^\/(.+)\/([gimsuy]*)$/);
-  if (literalRegex) {
-    try {
-      const rx = new RegExp(literalRegex[1], literalRegex[2] || "i");
-      return {
-        strict: "",
-        loose: "",
-        hasRegex: true,
-        allowLoose: true,
-        hasWildcards: false,
-        strictRegex: rx,
-        looseRegex: rx
-      };
-    } catch {
-      // fall through to other parsing
-    }
-  }
-
   const val = cleaned.trim();
   // "Acento exacto" ON  → all queries are accent-specific (lowercase-only, no stripping).
   // "Sin acento"   OFF → all queries ignore accents (full normalization).
@@ -625,7 +831,7 @@ function parseFilterValue(rawValue, mode, options = {}) {
 
     // Normalize the query text to match against the appropriate candidate.
     // In old-Spanish mode, normalize literal portions even around wildcards
-    // and {VC} placeholders so x behaves like modern j in filters.
+    // and {vc} placeholders so x behaves like modern j in filters.
     if (!queryHasAccents && oldSpanishMode) {
       text = normalizeOldSpanishPatternText(text);
     } else if (!text.includes("{") && !text.includes("[")) {
@@ -641,6 +847,16 @@ function parseFilterValue(rawValue, mode, options = {}) {
     const containsBoth = buildContainsBoth(text, options);
     if (containsBoth) {
       bodies.push({ body: containsBoth, mode: m });
+      return;
+    }
+    const context = buildContextCondition(text, options);
+    if (context) {
+      bodies.push({ body: context, mode: "any" });
+      return;
+    }
+    const sameAgain = expandSameAgainMarkers(text, options);
+    if (sameAgain) {
+      bodies.push({ body: sameAgain, mode: m });
       return;
     }
     const redupMarker = expandReduplicationMarkers(text, options);
@@ -714,7 +930,7 @@ function parseFilterValue(rawValue, mode, options = {}) {
 function parseSimpleLiteralFilterValue(val, mode, queryHasAccents) {
   if (mode === "regex") return null;
   if (!val || val.startsWith("+")) return null;
-  if (/[\\*?"()[\]{}|]/.test(val)) return null;
+  if (/[\\*?"()[\]{}|<>]/.test(val)) return null;
 
   let effectiveMode = mode;
   let text = val;
