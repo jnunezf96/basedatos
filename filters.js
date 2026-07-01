@@ -120,14 +120,9 @@ function wordEntryMatchesFilterQuery(wordEntry, filter, query) {
 function matchesWordGroup(row, group) {
   const expression = normalizeWordGroupStructure(group);
   if (!expression || !expression.children.length) return false;
-  if (shouldStreamNormalizedWords(group.field)) {
-    return forEachNormalizedWordEntry(row, group.field, { accentSensitive: accentSensitiveMode }, wordEntry =>
-      evaluateExpressionOnWordEntry(wordEntry, expression)
-    );
-  }
-  const entry = getNormalizedEntry(row, group.field);
-  if (!entry.words.length) return false;
-  return entry.words.some(wordEntry => evaluateExpressionOnWordEntry(wordEntry, expression));
+  return normalizedWordEntryExists(row, group.field, { accentSensitive: accentSensitiveMode }, wordEntry =>
+    evaluateExpressionOnWordEntry(wordEntry, expression)
+  );
 }
 
 function evaluateExpressionOnWordEntry(wordEntry, node) {
@@ -151,7 +146,10 @@ function evaluateConditionAgainstWordEntry(wordEntry, condition) {
 }
 
 function getNormalizedWordStreamText(row, field, options = {}) {
-  return normalizeRawTextForSearch(getRawDisplayValue(row, field), {
+  const raw = options.layer && typeof getRawDisplayValueForSearchLayer === "function"
+    ? getRawDisplayValueForSearchLayer(row, field, options.layer)
+    : getRawDisplayValue(row, field);
+  return normalizeRawTextForSearch(raw, {
     accentSensitive: !!options.accentSensitive
   });
 }
@@ -169,15 +167,41 @@ function forEachNormalizedWordEntry(row, field, options, callback) {
   return false;
 }
 
-function normalizedWordEntryExists(row, field, options, predicate) {
-  if (shouldStreamNormalizedWords(field)) {
-    return forEachNormalizedWordEntry(row, field, options, predicate);
+function getSearchLayersForFilterField(field) {
+  if (typeof getSearchLayerModesForField === "function") {
+    const modes = getSearchLayerModesForField(field);
+    if (Array.isArray(modes) && modes.length) return modes;
   }
-  const entry = getNormalizedEntry(row, field);
-  const words = options?.accentSensitive
-    ? entry.wordsWithAccents
-    : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
-  return words.some(predicate);
+  return ["normalized"];
+}
+
+function getNormalizedEntryForSearchLayer(row, field, layer) {
+  if (typeof getNormalizedEntryForLayer === "function") {
+    return getNormalizedEntryForLayer(row, field, layer);
+  }
+  return getNormalizedEntry(row, field);
+}
+
+function getNormalizedTextVariantForSearchLayer(row, field, options, layer) {
+  if (typeof getNormalizedTextVariantForLayer === "function") {
+    return getNormalizedTextVariantForLayer(row, field, options, layer);
+  }
+  return getNormalizedTextVariant(row, field, options);
+}
+
+function normalizedWordEntryExists(row, field, options, predicate) {
+  const layers = options?.layer ? [options.layer] : getSearchLayersForFilterField(field);
+  return layers.some(layer => {
+    const layerOptions = { ...(options || {}), layer };
+    if (shouldStreamNormalizedWords(field)) {
+      return forEachNormalizedWordEntry(row, field, layerOptions, predicate);
+    }
+    const entry = getNormalizedEntryForSearchLayer(row, field, layer);
+    const words = options?.accentSensitive
+      ? entry.wordsWithAccents
+      : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
+    return words.some(predicate);
+  });
 }
 
 
@@ -292,8 +316,7 @@ function matchCompiledFilter(row, cf) {
     if (!cf.tokens.length) return true;
     const ok = cf.tokens.every(tok => {
       return cf.fields.some(field => {
-        const entry = getNormalizedEntry(row, field);
-        return entry.words.some(w => {
+        return normalizedWordEntryExists(row, field, { accentSensitive: false }, w => {
           const src = getWordEntryCandidate(w, true);
           return src === tok || src.startsWith(tok);
         });
@@ -318,12 +341,14 @@ function matchCompiledFilter(row, cf) {
 
 function matchWholeScopeCompiled(row, filter, query) {
   const useLoose = query.allowLoose;
-  const candidateText = getNormalizedTextVariant(row, filter.field, {
-    accentSensitive: query.accentSensitive,
-    loose: useLoose
+  const matches = getSearchLayersForFilterField(filter.field).some(layer => {
+    const candidateText = getNormalizedTextVariantForSearchLayer(row, filter.field, {
+      accentSensitive: query.accentSensitive,
+      loose: useLoose
+    }, layer);
+    return candidateMatchesQuery(candidateText, query, filter.mode, useLoose);
   });
-  const result = candidateMatchesQuery(candidateText, query, filter.mode, useLoose);
-  return filter.negate ? !result : result;
+  return filter.negate ? !matches : matches;
 }
 
 function matchWordScopeCompiled(row, filter, query) {
@@ -342,37 +367,39 @@ function matchWordPhraseScopeCompiled(row, filter, query) {
 }
 
 function matchPhraseScopeCompiled(row, filter, query) {
-  if (shouldStreamNormalizedWords(filter.field)) {
-    return matchPhraseScopeCompiledStreaming(row, filter, query);
-  }
-  const entry = getNormalizedEntry(row, filter.field);
   const phraseQuery = queryMatchesMultiWordPhrase(query, filter.mode, query.allowLoose)
     ? query
     : buildLiteralPhraseQuery(filter, query);
   const useLoose = phraseQuery ? phraseQuery.allowLoose : query.allowLoose;
-  const words = (phraseQuery || query).accentSensitive
-    ? entry.wordsWithAccents
-    : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
-  const matches = phraseQuery
-    ? wordSequenceMatchesQuery(words, phraseQuery, filter.mode, useLoose)
-    : queryUsesPhraseWindowRegex(query)
-      ? phraseWindowMatchesQuery(words, filter, query, useLoose)
-    : words.some(wordEntry => {
-      return wordEntryMatchesFilterQuery(wordEntry, filter, query);
-    });
+  const matches = getSearchLayersForFilterField(filter.field).some(layer => {
+    if (shouldStreamNormalizedWords(filter.field)) {
+      return matchPhraseScopeCompiledStreaming(row, filter, query, layer);
+    }
+    const entry = getNormalizedEntryForSearchLayer(row, filter.field, layer);
+    const words = (phraseQuery || query).accentSensitive
+      ? entry.wordsWithAccents
+      : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
+    return phraseQuery
+      ? wordSequenceMatchesQuery(words, phraseQuery, filter.mode, useLoose)
+      : queryUsesPhraseWindowRegex(query)
+        ? phraseWindowMatchesQuery(words, filter, query, useLoose)
+      : words.some(wordEntry => {
+        return wordEntryMatchesFilterQuery(wordEntry, filter, query);
+      });
+  });
   return filter.negate ? !matches : matches;
 }
 
-function matchPhraseScopeCompiledStreaming(row, filter, query) {
+function matchPhraseScopeCompiledStreaming(row, filter, query, layer) {
   const phraseQuery = queryMatchesMultiWordPhrase(query, filter.mode, query.allowLoose)
     ? query
     : buildLiteralPhraseQuery(filter, query);
   const useLoose = phraseQuery ? phraseQuery.allowLoose : query.allowLoose;
   const matches = phraseQuery
-    ? streamingWordSequenceMatchesQuery(row, filter.field, phraseQuery, filter.mode, useLoose)
+    ? streamingWordSequenceMatchesQuery(row, filter.field, phraseQuery, filter.mode, useLoose, layer)
     : queryUsesPhraseWindowRegex(query)
-      ? streamingPhraseWindowMatchesQuery(row, filter, query, useLoose)
-    : normalizedWordEntryExists(row, filter.field, { accentSensitive: query.accentSensitive }, wordEntry => {
+      ? streamingPhraseWindowMatchesQuery(row, filter, query, useLoose, layer)
+    : normalizedWordEntryExists(row, filter.field, { accentSensitive: query.accentSensitive, layer }, wordEntry => {
       return wordEntryMatchesFilterQuery(wordEntry, filter, query);
     });
   return filter.negate ? !matches : matches;
@@ -562,12 +589,12 @@ function wordSequenceMatchesQuery(words, query, mode, useLoose) {
   return false;
 }
 
-function streamingWordSequenceMatchesQuery(row, field, query, mode, useLoose) {
+function streamingWordSequenceMatchesQuery(row, field, query, mode, useLoose, layer) {
   const queryValue = useLoose ? query.loose : query.strict;
   const queryWords = splitSearchWords(queryValue);
   if (queryWords.length < 2) return false;
   const window = [];
-  return forEachNormalizedWordEntry(row, field, { accentSensitive: query.accentSensitive }, wordEntry => {
+  return forEachNormalizedWordEntry(row, field, { accentSensitive: query.accentSensitive, layer }, wordEntry => {
     const candidate = getWordEntryCandidate(wordEntry, useLoose);
     if (!candidate) return false;
     window.push(candidate);
@@ -577,13 +604,13 @@ function streamingWordSequenceMatchesQuery(row, field, query, mode, useLoose) {
   });
 }
 
-function streamingPhraseWindowMatchesQuery(row, filter, query, useLoose) {
+function streamingPhraseWindowMatchesQuery(row, filter, query, useLoose, layer) {
   if (!queryUsesPhraseWindowRegex(query)) return false;
   const counts = phraseWindowWordCounts(filter, query);
   if (!counts.length) return false;
   const maxCount = Math.max(...counts);
   const window = [];
-  return forEachNormalizedWordEntry(row, filter.field, { accentSensitive: query.accentSensitive }, wordEntry => {
+  return forEachNormalizedWordEntry(row, filter.field, { accentSensitive: query.accentSensitive, layer }, wordEntry => {
     const candidate = getWordEntryCandidate(wordEntry, useLoose);
     if (!candidate) return false;
     window.push(candidate);
@@ -676,35 +703,31 @@ function matchesCompiledQuickGroup(row, group) {
   if (shouldStreamNormalizedWords(group.field)) {
     return matchesCompiledQuickGroupStreaming(row, group);
   }
-  const entry = getNormalizedEntry(row, group.field);
-  if (!entry.words.length) return false;
-  const wordList = group.accentSensitive
-    ? entry.wordsWithAccents
-    : (oldSpanishMode && entry.wordsOS) ? entry.wordsOS : entry.words;
-
   if (!group.hasInclude) {
     return group.compiledFilters.every(({ filter, query }) => {
-      return !wordList.some(wordEntry => {
+      return !normalizedWordEntryExists(row, group.field, { accentSensitive: query.accentSensitive }, wordEntry => {
         return wordEntryMatchesFilterQuery(wordEntry, filter, query);
       });
     });
   }
 
   if (!group.segments.size) return false;
-  return wordList.some(wordEntry => wordEntryMatchesCompiledSegments(wordEntry, group.segments));
+  return normalizedWordEntryExists(row, group.field, { accentSensitive: group.accentSensitive }, wordEntry =>
+    wordEntryMatchesCompiledSegments(wordEntry, group.segments)
+  );
 }
 
 function matchesCompiledQuickGroupStreaming(row, group) {
   if (!group.hasInclude) {
     return group.compiledFilters.every(({ filter, query }) => {
-      return !forEachNormalizedWordEntry(row, group.field, { accentSensitive: query.accentSensitive }, wordEntry => {
+      return !normalizedWordEntryExists(row, group.field, { accentSensitive: query.accentSensitive }, wordEntry => {
         return wordEntryMatchesFilterQuery(wordEntry, filter, query);
       });
     });
   }
 
   if (!group.segments.size) return false;
-  return forEachNormalizedWordEntry(row, group.field, { accentSensitive: group.accentSensitive }, wordEntry =>
+  return normalizedWordEntryExists(row, group.field, { accentSensitive: group.accentSensitive }, wordEntry =>
     wordEntryMatchesCompiledSegments(wordEntry, group.segments)
   );
 }

@@ -1,17 +1,15 @@
 {
   "source": "1992 Karttunen",
   "totalRows": 6407,
-  "changedRows": 26,
-  "translationChangedRows": 26,
-  "commentChangedRows": 0,
-  "sourceTranslationChangedRows": 6405,
-  "unchangedRows": 6381,
+  "changedRows": 193,
+  "translationChangedRows": 193,
+  "commentChangedRows": 193,
+  "sourceTranslationChangedRows": 193,
+  "unchangedRows": 6214,
   "emptyAfterNormalization": 0,
   "routeCounts": {
-    "general": 26
+    "general": 193
   },
   "auditPath": "resources/karttunen_normalization_audit.tsv",
-  "applied": true,
-  "originalDataPath": "data/data.jsonl.bak34.gz",
-  "backupPath": "data/data.jsonl.bak39.gz"
+  "applied": false
 }

@@ -18,6 +18,10 @@ const COLUMN_CONTROL_ORDER = DEFAULT_COLUMN_ORDER.slice();
 const DEFAULT_COLUMN_WIDTHS = new Map(TABLE_FIELDS.map(field => [field.key, field.defaultWidth]));
 const TABLE_MIN_WIDTH = 908;
 const LEMMA_GROUP_TRANSLATION_LIMIT = 8;
+const SEARCH_LAYER_KEY = "nahuatl-search-layer-v1";
+const SEARCH_LAYER_MODES = new Set(["normalized", "source", "both"]);
+const ORTHOGRAPHY_LAYER_KEY = "nahuatl-orthography-layer-v1";
+const ORTHOGRAPHY_LAYER_MODES = new Set(["normalized", "source"]);
 const APP_ASSET_VERSION = (() => {
   try {
     const src = document.currentScript?.src || "";
@@ -499,6 +503,16 @@ const I18N = {
     "page.current": "Página actual",
     "page.total": "de {{total}} pág.",
     "comentario.lang": "Idioma del comentario",
+    "search.layer.label": "Buscar",
+    "search.layer.label": "Buscar capa",
+    "search.layer.title": "Buscar en capa de traducción/comentario: Ambas / Revisada / Transcrita",
+    "search.layer.normalized": "Revisada",
+    "search.layer.source": "Transcrita",
+    "search.layer.both": "Ambas",
+    "orth.layer.label": "Mostrar capa",
+    "orth.layer.title": "Mostrar capa de traducción/comentario: Revisada / Transcrita",
+    "orth.layer.normalized": "Revisada",
+    "orth.layer.source": "Transcrita",
     "list.expandAll": "Expandir/Colapsar registros",
     "lemma.expandAll": "Expandir/Colapsar lemas",
     "comentario.expandAll": "Expandir/Colapsar comentarios",
@@ -995,6 +1009,15 @@ const I18N = {
     "page.current": "Current page",
     "page.total": "of {{total}} pg.",
     "comentario.lang": "Comment language",
+    "search.layer.label": "Search layer",
+    "search.layer.title": "Search translation/comment layer: Both / Revised / Transcribed",
+    "search.layer.normalized": "Revised",
+    "search.layer.source": "Transcribed",
+    "search.layer.both": "Both",
+    "orth.layer.label": "Show layer",
+    "orth.layer.title": "Show translation/comment layer: Revised / Transcribed",
+    "orth.layer.normalized": "Revised",
+    "orth.layer.source": "Transcribed",
     "list.expandAll": "Expand/Collapse records",
     "lemma.expandAll": "Expand/Collapse lemmas",
     "comentario.expandAll": "Expand/Collapse comments",
@@ -1345,7 +1368,6 @@ const emptyBrowseSeed = (() => {
   } catch {}
   return Math.floor(Math.random() * 0x100000000) >>> 0;
 })();
-let wimmerShowEs = true;
 let lastFocusedInput = null;
 let filterCards = [];
 let activeCardIndex = 0;
@@ -1382,13 +1404,17 @@ let mobileViewportBaselineHeight = 0;
 let mobileViewportBaselineWidth = 0;
 let mobileNavBaselineHeight = 0;
 let activeFiltersResizeObserver = null;
-const prioritySortCache = new WeakMap();
+let prioritySortCache = new WeakMap();
 const FUENTE_ORDER_KEY = "nahuatl-source-order-v1";
 let fuenteOrderMode = "title"; // "title" | "year"
+let searchLayerMode = "both"; // "both" | "normalized" | "source"
+let orthographyLayerMode = "normalized"; // "normalized" | "source"
 
 document.addEventListener("DOMContentLoaded", () => {
   loadColumnState();
   loadFuenteOrderMode();
+  loadSearchLayerMode();
+  loadOrthographyLayerMode();
   syncHeaderOrderToTableFields();
   syncFieldPillOrder();
   setupLanguageToggle();
@@ -1423,6 +1449,8 @@ document.addEventListener("DOMContentLoaded", () => {
   setupPaginationControls();
   setupPageSizeControls();
   setupColumnControls();
+  setupSearchLayerToggle();
+  setupOrthographyLayerToggle();
   setupStickyHeaderTable();
   setupComentarioToggleAll();
   setupTableToggleAll();
@@ -1431,7 +1459,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupHorizontalScrollAreas();
   renderFuenteList();
   setupFuenteActions();
-  setupWimmerTranslate();
   setupPairFinder();
   setupStudyMode();
   setupViewToggle();
@@ -3659,7 +3686,8 @@ function buildDataRow(row) {
     const td = document.createElement("td");
     td.dataset.field = field.key;
     if (field.key === "Comentario") {
-      const raw = getDisplayValue(row, field.key);
+      const parts = getDisplayParts(row, field.key);
+      const raw = parts.primary;
       const safe = raw == null ? "" : String(raw);
       if (!safe.trim()) {
         td.textContent = "";
@@ -3667,7 +3695,10 @@ function buildDataRow(row) {
         td.classList.add("comentario-cell");
         const content = document.createElement("div");
         content.className = "comentario-text collapsed";
-        content.innerHTML = applyHighlights(safe, field.key);
+        const primary = document.createElement("div");
+        primary.className = "display-layer-primary";
+        primary.innerHTML = applyHighlights(safe, getPrimaryDisplayHighlightField(field.key));
+        content.appendChild(primary);
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "comentario-toggle";
@@ -3680,14 +3711,11 @@ function buildDataRow(row) {
         comentarioMeta = { content, btn, rowId: row._rid };
       }
     } else {
-      const raw = getDisplayValue(row, field.key);
+      const parts = getDisplayParts(row, field.key);
       if (field.key === "Traducción") {
-        const content = document.createElement("div");
-        content.className = "traduccion-text";
-        content.innerHTML = applyHighlights(raw, field.key);
-        td.appendChild(content);
+        appendLayeredDisplayContent(td, parts, field.key, "traduccion-text");
       } else {
-        td.innerHTML = applyHighlights(raw, field.key);
+        td.innerHTML = applyHighlights(parts.primary, getPrimaryDisplayHighlightField(field.key));
       }
     }
     if (!mobileToggleAttached && !hiddenColumns.has(field.key)) {
@@ -4561,11 +4589,19 @@ function syncTableHeaderActionSlots(table, mobileAnchorTh, isPhone) {
   if (!table) return;
   const mobileExpandAll = document.getElementById("tableExpandAllMobile");
   const commentExpandAll = document.getElementById("comentarioExpandAll");
+  const lemmaExpandAll = document.getElementById("lemmaExpandAll");
 
   // These controls are actions, not data columns. Desktop anchors comment
-  // actions to Comentario; mobile anchors the global expand action to the
-  // one visible header.
+  // actions to Comentario and, in lemma view, lemma actions to the rightmost
+  // visible header; mobile anchors the global expand action to one visible header.
   placeHeaderAction(commentExpandAll, getHeaderCellForField(table, "Comentario"));
+  placeHeaderAction(
+    lemmaExpandAll,
+    tableViewMode === "lemmas"
+      ? getRightmostVisibleHeaderCell(table)
+      : getHeaderCellForField(table, "Comentario"),
+    { placement: "last" }
+  );
   placeHeaderAction(
     mobileExpandAll,
     isPhone && mobileAnchorTh ? mobileAnchorTh : getHeaderCellForField(table, "Editado")
@@ -4577,10 +4613,23 @@ function getHeaderCellForField(table, fieldKey) {
     .find(th => th.dataset.field === fieldKey) || null;
 }
 
-function placeHeaderAction(btn, th) {
+function getRightmostVisibleHeaderCell(table) {
+  const visibleFields = new Set(TABLE_FIELDS
+    .filter(field => !hiddenColumns.has(field.key))
+    .map(field => field.key));
+  const visibleHeaders = Array.from(table.querySelectorAll("thead th[data-field]"))
+    .filter(th => visibleFields.has(th.dataset.field));
+  return visibleHeaders.length ? visibleHeaders[visibleHeaders.length - 1] : null;
+}
+
+function placeHeaderAction(btn, th, options = {}) {
   if (!btn || !th) return;
   const slot = th.querySelector(".header-actions");
   if (!slot) return;
+  if (options.placement === "last") {
+    if (btn.parentElement !== slot || btn.nextElementSibling) slot.appendChild(btn);
+    return;
+  }
   const sortBtn = slot.querySelector(".sort-btn");
   if (sortBtn) {
     if (sortBtn.nextElementSibling !== btn) sortBtn.after(btn);
@@ -4797,6 +4846,13 @@ function setupComentarioToggleAll() {
 function updateComentarioToggleButton(rows) {
   const btn = document.getElementById("comentarioExpandAll");
   if (!btn) return;
+  if (tableViewMode !== "rows") {
+    btn.hidden = true;
+    btn.disabled = true;
+    btn.setAttribute("aria-pressed", "false");
+    return;
+  }
+  btn.hidden = false;
   const expandableRows = getExpandableRenderRows(rows);
   if (!expandableRows.length) {
     btn.textContent = "+";
@@ -5337,49 +5393,224 @@ function exportTableAsImage(format = "jpeg") {
   }
 }
 
-function getDisplayValue(row, fieldKey) {
+function getDisplayBaseField(row, fieldKey) {
   const normalizedField = normalizeFieldKey(fieldKey);
-  if (wimmerShowEs && row.Fuente === "2021 Wimmer") {
+  if (row.Fuente === "2021 Wimmer") {
     const esKey = normalizedField === "Traducción" ? "Traducción (es)"
                 : normalizedField === "Comentario"  ? "Comentario (es)"
                 : null;
-    if (esKey && row[esKey]) return row[esKey];
+    if (esKey && row[esKey]) return esKey;
   }
+  return normalizedField;
+}
+
+function getNormalizedDisplayValue(row, fieldKey) {
+  const normalizedField = normalizeFieldKey(fieldKey);
+  const baseField = getDisplayBaseField(row, normalizedField);
+  return row[baseField] ?? row[normalizedField] ?? row[fieldKey] ?? "";
+}
+
+function getRawLayerPrefixes(fieldKey) {
+  switch (fieldKey) {
+    case "Traducción (es)":
+      return ["Traducción_es_raw", "Traduccion_es_raw", "Traducción_raw", "Traduccion_raw"];
+    case "Traducción":
+      return ["Traducción_raw", "Traduccion_raw"];
+    case "Comentario (es)":
+      return [
+        "Comentario_es_raw",
+        "Comentario_public_raw",
+        "Comentario_wimmer_plus_html_raw",
+        "Sahagun_Escolios_JSON_display_html_raw",
+        "Comentario_raw"
+      ];
+    case "Comentario":
+      return [
+        "Comentario_public_raw",
+        "Comentario_wimmer_plus_html_raw",
+        "Sahagun_Escolios_JSON_display_html_raw",
+        "Comentario_raw"
+      ];
+    default:
+      return [];
+  }
+}
+
+function getSourceRawValue(row, fieldKey) {
+  const prefixes = getRawLayerPrefixes(fieldKey);
+  if (!prefixes.length) return "";
+  const candidates = [];
+  Object.keys(row || {}).forEach(key => {
+    const rank = prefixes.findIndex(prefix => key.startsWith(prefix));
+    if (rank === -1) return;
+    candidates.push({ key, rank });
+  });
+  candidates.sort((a, b) =>
+    a.rank - b.rank ||
+    a.key.length - b.key.length ||
+    alphaNumCollator.compare(a.key, b.key)
+  );
+  for (const candidate of candidates) {
+    const value = row[candidate.key];
+    if (value == null || typeof value === "object") continue;
+    if (String(value).trim()) return value;
+  }
+  return "";
+}
+
+function getSourceDisplayValue(row, fieldKey) {
+  const normalizedField = normalizeFieldKey(fieldKey);
+  if (normalizedField !== "Traducción" && normalizedField !== "Comentario") {
+    return row[normalizedField] ?? row[fieldKey] ?? "";
+  }
+  const raw = getSourceRawValue(row, normalizedField);
+  if (raw) return raw;
   return row[normalizedField] ?? row[fieldKey] ?? "";
 }
 
-// ── Wimmer ───────────────────────────────────────────────────────────────────
-
-function setupWimmerTranslate() {
-  const langToggle = document.getElementById("wLangToggle");
-  if (langToggle) {
-    setInlineLabelText(langToggle, wimmerShowEs ? "ES" : "FR");
-    langToggle.classList.toggle("active", wimmerShowEs);
-    langToggle.addEventListener("click", () => {
-      wimmerShowEs = !wimmerShowEs;
-      setInlineLabelText(langToggle, wimmerShowEs ? "ES" : "FR");
-      langToggle.classList.toggle("active", wimmerShowEs);
-      if (currentQueryUsesWimmerLanguage()) {
-        applyFilters(false, getTableRestoreOptions());
-      } else {
-        renderTable(lastRenderRows, lastRenderTotal);
-      }
-    });
-  }
+function searchLayerAppliesToField(fieldKey) {
+  const normalizedField = normalizeFieldKey(fieldKey);
+  return normalizedField === "Traducción" ||
+    normalizedField === "Comentario" ||
+    normalizedField === "Traducción (es)" ||
+    normalizedField === "Comentario (es)";
 }
 
-const WIMMER_LANGUAGE_FIELDS = new Set(["Traducción", "Comentario"]);
+function getSearchLayerModesForField(fieldKey) {
+  if (!searchLayerAppliesToField(fieldKey)) return ["normalized"];
+  if (searchLayerMode === "both") return ["normalized", "source"];
+  return [SEARCH_LAYER_MODES.has(searchLayerMode) ? searchLayerMode : "normalized"];
+}
 
-function currentQueryUsesWimmerLanguage() {
-  if (sortKeys.some(key => WIMMER_LANGUAGE_FIELDS.has(key.field))) return true;
-  return activeFilters.some(filter => {
-    if (WIMMER_LANGUAGE_FIELDS.has(filter.field)) return true;
-    if (filter.type === "reverse") {
-      const fields = Array.isArray(filter.fields) && filter.fields.length ? filter.fields : ["Traducción"];
-      return fields.some(field => WIMMER_LANGUAGE_FIELDS.has(field));
-    }
-    return false;
+function getSearchDisplayValueForLayer(row, fieldKey, layer) {
+  return searchLayerAppliesToField(fieldKey) && layer === "source"
+    ? getSourceDisplayValue(row, fieldKey)
+    : getNormalizedDisplayValue(row, fieldKey);
+}
+
+function getSearchDisplayValue(row, fieldKey) {
+  return getSearchDisplayValueForLayer(row, fieldKey, "normalized");
+}
+
+function getDisplayValue(row, fieldKey) {
+  return orthographyLayerMode === "source"
+    ? getSourceDisplayValue(row, fieldKey)
+    : getNormalizedDisplayValue(row, fieldKey);
+}
+
+function getDisplayParts(row, fieldKey) {
+  const primary = getDisplayValue(row, fieldKey);
+  return { primary, secondary: "", secondaryField: fieldKey };
+}
+
+function getPrimaryDisplayHighlightField(fieldKey) {
+  return fieldKey;
+}
+
+function appendLayeredDisplayContent(td, parts, fieldKey, primaryClass = "") {
+  const wrap = document.createElement("div");
+  wrap.className = "display-layered-content";
+  const primary = document.createElement("div");
+  primary.className = ["display-layer-primary", primaryClass].filter(Boolean).join(" ");
+  primary.innerHTML = applyHighlights(parts.primary, getPrimaryDisplayHighlightField(fieldKey));
+  wrap.appendChild(primary);
+  td.appendChild(wrap);
+}
+
+function invalidateDisplayLayerCaches() {
+  prioritySortCache = new WeakMap();
+  bumpHighlightCache();
+}
+
+function loadSearchLayerMode() {
+  try {
+    const saved = localStorage.getItem(SEARCH_LAYER_KEY);
+    if (SEARCH_LAYER_MODES.has(saved)) searchLayerMode = saved;
+  } catch {}
+}
+
+function saveSearchLayerMode() {
+  try {
+    localStorage.setItem(SEARCH_LAYER_KEY, searchLayerMode);
+  } catch {}
+}
+
+function syncSearchLayerToggle() {
+  document.querySelectorAll("[data-search-layer]").forEach(btn => {
+    const active = btn.dataset.searchLayer === searchLayerMode;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-pressed", String(active));
   });
+}
+
+function setSearchLayerMode(mode, triggerEl = null) {
+  const next = SEARCH_LAYER_MODES.has(mode) ? mode : "both";
+  if (searchLayerMode === next) {
+    syncSearchLayerToggle();
+    return;
+  }
+  searchLayerMode = next;
+  saveSearchLayerMode();
+  syncSearchLayerToggle();
+  normalizationCache = new Map();
+  bumpHighlightCache();
+  if (activeFilters.length) applyFilters(false, getTableRestoreOptions());
+  else updateUrlHash();
+  if (triggerEl) triggerEl.focus({ preventScroll: true });
+}
+
+function setupSearchLayerToggle() {
+  document.querySelectorAll("[data-search-layer]").forEach(btn => {
+    btn.addEventListener("click", () => setSearchLayerMode(btn.dataset.searchLayer, btn));
+  });
+  syncSearchLayerToggle();
+}
+
+function loadOrthographyLayerMode() {
+  try {
+    const saved = localStorage.getItem(ORTHOGRAPHY_LAYER_KEY);
+    if (ORTHOGRAPHY_LAYER_MODES.has(saved)) orthographyLayerMode = saved;
+  } catch {}
+}
+
+function saveOrthographyLayerMode() {
+  try {
+    localStorage.setItem(ORTHOGRAPHY_LAYER_KEY, orthographyLayerMode);
+  } catch {}
+}
+
+function syncOrthographyLayerToggle() {
+  document.querySelectorAll("[data-orth-layer]").forEach(btn => {
+    const active = btn.dataset.orthLayer === orthographyLayerMode;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-pressed", String(active));
+  });
+}
+
+function setOrthographyLayerMode(mode, triggerEl = null) {
+  const next = ORTHOGRAPHY_LAYER_MODES.has(mode) ? mode : "normalized";
+  if (orthographyLayerMode === next) {
+    syncOrthographyLayerToggle();
+    return;
+  }
+  orthographyLayerMode = next;
+  saveOrthographyLayerMode();
+  syncOrthographyLayerToggle();
+  invalidateDisplayLayerCaches();
+  if (dataRows.length) {
+    applyFilters(false, getTableRestoreOptions());
+  } else {
+    renderTable(lastRenderRows, lastRenderTotal);
+    updateSortIndicators();
+  }
+  if (triggerEl) triggerEl.focus({ preventScroll: true });
+}
+
+function setupOrthographyLayerToggle() {
+  document.querySelectorAll("[data-orth-layer]").forEach(btn => {
+    btn.addEventListener("click", () => setOrthographyLayerMode(btn.dataset.orthLayer, btn));
+  });
+  syncOrthographyLayerToggle();
 }
 
 function sanitizeInput(value) {
@@ -8601,7 +8832,7 @@ function tryCanonicalLemma(groups) {
 }
 
 function buildHash() {
-  if (oldSpanishMode || accentSensitiveMode) return serializeQueryHash();
+  if (oldSpanishMode || accentSensitiveMode || searchLayerMode !== "both") return serializeQueryHash();
   const groups = getCommittedGroups();
   const defaultSources = isDefaultFuenteSelection();
   const sel = selectedFuentes.size;
@@ -8656,6 +8887,9 @@ function serializeQueryHash() {
   }
   if (oldSpanishMode) params.push("o=1");
   if (accentSensitiveMode) params.push("a=s");
+  if (searchLayerMode !== "both") {
+    params.push(`l=${searchLayerMode === "source" ? "o" : "e"}`);
+  }
   return params.length ? `#/q?${params.join("&")}` : "";
 }
 
@@ -8703,6 +8937,7 @@ function parseHashRoute(hash) {
       fuentes,
       oldSpanish: false,
       accent: false,
+      layer: "both",
     };
   }
   if (head === "fuente" && parts.length >= 2) {
@@ -8710,13 +8945,13 @@ function parseHashRoute(hash) {
     try { slug = decodeURIComponent(parts[1]); } catch { return null; }
     const name = slugToSource.get(slug);
     if (!name) return null;
-    return { groups: [], fuentes: [name], oldSpanish: false, accent: false };
+    return { groups: [], fuentes: [name], oldSpanish: false, accent: false, layer: "both" };
   }
   return null;
 }
 
 function parseQueryHash(qs) {
-  const state = { groups: [], fuentes: null, oldSpanish: false, accent: false };
+  const state = { groups: [], fuentes: null, oldSpanish: false, accent: false, layer: "both" };
   if (!qs) return state;
   const params = new Map();
   for (const part of qs.split("&")) {
@@ -8738,6 +8973,8 @@ function parseQueryHash(qs) {
   }
   state.oldSpanish = params.get("o") === "1";
   state.accent = params.get("a") === "s";
+  const layerCode = params.get("l") || "";
+  state.layer = layerCode === "o" ? "source" : layerCode === "e" ? "normalized" : "both";
   return state;
 }
 
@@ -8813,6 +9050,14 @@ function applyParsedState(state) {
     if (accentSensitiveMode !== desiredAccent) {
       accentSensitiveMode = desiredAccent;
       updateAccentLabels();
+    }
+    const desiredLayer = SEARCH_LAYER_MODES.has(state.layer) ? state.layer : "both";
+    if (searchLayerMode !== desiredLayer) {
+      searchLayerMode = desiredLayer;
+      saveSearchLayerMode();
+      syncSearchLayerToggle();
+      normalizationCache = new Map();
+      bumpHighlightCache();
     }
     const session = sessions.find(s => s.id === currentSessionId);
     if (session) session.accentSensitive = accentSensitiveMode;

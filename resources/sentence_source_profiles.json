@@ -1,0 +1,62 @@
+{
+  "1551-95 Documentos nahuas de la Ciudad de México": {
+    "apply_policy": "review-first",
+    "profile": "legal_document_sentences",
+    "tier": "sentence-heavy",
+    "treatment": "preserve legal Spanish formulae while extracting embedded Nahuatl documentary sentences"
+  },
+  "1565 Sahagún Escolios": {
+    "apply_policy": "existing-escolios-pipeline",
+    "profile": "numbered_witness_glosses",
+    "tier": "strongest",
+    "treatment": "keep existing numbered witness/gloss apparatus; continue source-specific public display repairs"
+  },
+  "1579 Durán": {
+    "apply_policy": "review-first",
+    "profile": "chronicle_narrative_terms",
+    "tier": "strongest",
+    "treatment": "extract Nahuatl terms inside Spanish narrative; avoid broad Spanish modernization"
+  },
+  "1580 Sahagún/Máynez": {
+    "apply_policy": "review-first",
+    "profile": "sahagun_narrative_terms",
+    "tier": "strongest",
+    "treatment": "extract bold Nahuatl terms inside Spanish narrative; normalize embedded Nahuatl cautiously"
+  },
+  "1598 Tezozomoc": {
+    "apply_policy": "review-first",
+    "profile": "chronicle_narrative_terms",
+    "tier": "strongest",
+    "treatment": "extract bold Nahuatl names/terms and preserve surrounding Spanish narrative context"
+  },
+  "1611 Arenas": {
+    "apply_policy": "review-first",
+    "profile": "phrasebook_pairs",
+    "tier": "sentence-heavy",
+    "treatment": "align Nahuatl phrasebook sentences with Spanish prompts/translations"
+  },
+  "1629 Alarcón": {
+    "apply_policy": "review-first",
+    "profile": "ritual_text_plus_spanish_explanation",
+    "tier": "strongest",
+    "treatment": "split bold Nahuatl ritual text from Spanish explanation and citation"
+  },
+  "1645 Carochi": {
+    "apply_policy": "review-first",
+    "profile": "grammar_examples",
+    "tier": "sentence-heavy",
+    "treatment": "split italic/bold Nahuatl examples from Spanish glosses and grammar citations"
+  },
+  "1759 Paredes": {
+    "apply_policy": "review-first",
+    "profile": "religious_sentence_examples",
+    "tier": "sentence-heavy",
+    "treatment": "split doctrinal/confessional Nahuatl examples from Spanish parenthetical glosses"
+  },
+  "17?? Bnf_362bis": {
+    "apply_policy": "review-first",
+    "profile": "grammar_notes_examples",
+    "tier": "sentence-heavy",
+    "treatment": "align grammar examples with Spanish explanations"
+  }
+}

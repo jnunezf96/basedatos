@@ -146,9 +146,20 @@ function hasFormattingCharacters(value) {
 
 function getRawDisplayValue(row, field) {
   const normalizedField = normalizeFieldKey(field);
+  if (typeof getSearchDisplayValue === "function") {
+    return getSearchDisplayValue(row, normalizedField);
+  }
   return (typeof getDisplayValue === "function")
     ? getDisplayValue(row, normalizedField)
     : (row[normalizedField] ?? row[field] ?? "");
+}
+
+function getRawDisplayValueForSearchLayer(row, field, layer) {
+  const normalizedField = normalizeFieldKey(field);
+  if (typeof getSearchDisplayValueForLayer === "function") {
+    return getSearchDisplayValueForLayer(row, normalizedField, layer);
+  }
+  return getRawDisplayValue(row, normalizedField);
 }
 
 function shouldStreamNormalizedWords(field) {
@@ -170,11 +181,9 @@ function normalizeRawTextForSearch(raw, options = {}) {
 // ==============================
 // Lazy normalization helpers
 // ==============================
-function getNormalizationCacheKey(row, field) {
-  const usesWimmerEs = typeof wimmerShowEs !== "undefined"
-    && wimmerShowEs
-    && row.Fuente === "2021 Wimmer";
-  return field + (usesWimmerEs ? "_es" : "");
+function getNormalizationCacheKey(row, field, layer) {
+  const layerSuffix = layer ? `__layer_${layer}` : "";
+  return field + layerSuffix;
 }
 
 function getRowNormalizationCache(row) {
@@ -187,14 +196,23 @@ function getRowNormalizationCache(row) {
 }
 
 function getNormalizedTextVariant(row, field, options = {}) {
+  return getNormalizedTextVariantForLayer(row, field, options, options.layer);
+}
+
+function getNormalizedTextVariantForLayer(row, field, options = {}, layer) {
   if (shouldStreamNormalizedWords(field)) {
-    return normalizeRawTextForSearch(getRawDisplayValue(row, field), options);
+    const raw = layer
+      ? getRawDisplayValueForSearchLayer(row, field, layer)
+      : getRawDisplayValue(row, field);
+    return normalizeRawTextForSearch(raw, options);
   }
   const rowCache = getRowNormalizationCache(row);
-  const cacheKey = getNormalizationCacheKey(row, field) + "__text";
+  const cacheKey = getNormalizationCacheKey(row, field, layer) + "__text";
   if (!rowCache[cacheKey]) {
     rowCache[cacheKey] = {
-      raw: getRawDisplayValue(row, field)
+      raw: layer
+        ? getRawDisplayValueForSearchLayer(row, field, layer)
+        : getRawDisplayValue(row, field)
     };
   }
   const entry = rowCache[cacheKey];
@@ -237,10 +255,16 @@ function getNormalizedTextVariant(row, field, options = {}) {
 }
 
 function getNormalizedEntry(row, field) {
+  return getNormalizedEntryForLayer(row, field, undefined);
+}
+
+function getNormalizedEntryForLayer(row, field, layer) {
   const rowCache = getRowNormalizationCache(row);
-  const cacheKey = getNormalizationCacheKey(row, field);
+  const cacheKey = getNormalizationCacheKey(row, field, layer);
   if (!rowCache[cacheKey]) {
-    const raw = getRawDisplayValue(row, field);
+    const raw = layer
+      ? getRawDisplayValueForSearchLayer(row, field, layer)
+      : getRawDisplayValue(row, field);
     const normalized = normalizeString(stripHtmlTags(raw));
     const looseText = collapseWhitespace(stripPunctuationCharacters(normalized));
     const words = normalized

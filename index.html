@@ -19,7 +19,7 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=publish-ready-148" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-153" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -420,6 +420,14 @@
         </div>
         <div class="filter-actions">
           <div class="filter-options">
+            <div class="search-layer-field">
+              <span class="search-layer-label" data-i18n="search.layer.label">Buscar capa</span>
+              <div class="search-layer-toggle" role="group" aria-label="Buscar en capa de traducción/comentario: Ambas / Revisada / Transcrita" data-i18n-aria-label="search.layer.title">
+                <button type="button" class="search-layer-btn active mobile-icon-btn mobile-label-on" data-search-layer="both" aria-pressed="true" data-i18n="search.layer.both" data-i18n-title="search.layer.both"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-all"></use></svg><span class="btn-label mobile-icon-label">Ambas</span></button>
+                <button type="button" class="search-layer-btn mobile-icon-btn mobile-label-on" data-search-layer="normalized" aria-pressed="false" data-i18n="search.layer.normalized" data-i18n-title="search.layer.normalized"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-edition"></use></svg><span class="btn-label mobile-icon-label">Revisada</span></button>
+                <button type="button" class="search-layer-btn mobile-icon-btn mobile-label-on" data-search-layer="source" aria-pressed="false" data-i18n="search.layer.source" data-i18n-title="search.layer.source"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-original"></use></svg><span class="btn-label mobile-icon-label">Transcrita</span></button>
+              </div>
+            </div>
             <div class="accent-field">
               <span class="accent-field-label" data-i18n="label.accent">Acento</span>
               <div class="accent-toggle" role="group" aria-label="Sensibilidad de acento">
@@ -726,6 +734,14 @@
               </div>
             </div>
             <div class="toolbar-sep"></div>
+            <div class="orthography-layer-group">
+              <span class="orthography-layer-label" data-i18n="orth.layer.label">Mostrar capa</span>
+              <div class="orthography-layer-toggle" role="group" aria-label="Mostrar capa de traducción/comentario: Revisada / Transcrita" data-i18n-aria-label="orth.layer.title">
+                <button type="button" class="orthography-layer-btn active" data-orth-layer="normalized" aria-pressed="true" data-i18n="orth.layer.normalized" data-i18n-title="orth.layer.normalized">Revisada</button>
+                <button type="button" class="orthography-layer-btn" data-orth-layer="source" aria-pressed="false" data-i18n="orth.layer.source" data-i18n-title="orth.layer.source">Transcrita</button>
+              </div>
+            </div>
+            <div class="toolbar-sep"></div>
             <div class="column-group">
               <div class="column-menu-wrap">
                 <button type="button" class="arrow-btn column-menu-btn mobile-icon-btn mobile-label-on" id="columnMenuBtn" title="Columnas" data-i18n-aria-label="table.columns" data-i18n-title="table.columns">
@@ -790,10 +806,6 @@
             <div class="column-menu-head">
               <span data-i18n="columns.title">Columnas</span>
               <div class="column-menu-tools">
-                <div class="view-actions">
-                  <button type="button" class="arrow-btn active w-lang-toggle" id="wLangToggle" data-i18n-title="comentario.lang" data-i18n-aria-label="comentario.lang" title="Idioma del comentario" aria-label="Idioma del comentario"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-lang"></use></svg><span class="btn-label">ES</span></button>
-                  <button type="button" class="arrow-btn lemma-toggle-all table-control-desktop-only" id="lemmaExpandAll" data-i18n-title="lemma.expandAll" data-i18n-aria-label="lemma.expandAll" title="Expandir/Colapsar lemas" aria-label="Expandir/Colapsar lemas" hidden>+</button>
-                </div>
                 <button type="button" class="column-reset-btn mobile-icon-btn mobile-label-on" id="columnResetBtn" data-i18n="columns.reset" data-i18n-aria-label="columns.reset" data-i18n-title="columns.reset"><svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-reset"></use></svg><span class="btn-label mobile-icon-label">Restablecer</span></button>
               </div>
             </div>
@@ -846,6 +858,7 @@
                   <div class="header-actions">
                     <button type="button" class="arrow-btn sort-btn" data-sort-field="Comentario" aria-label="Ordenar por comentario" title="Ordenar por comentario"><svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-sort"></use></svg></button>
                     <button type="button" class="arrow-btn comentario-toggle-all table-control-desktop-only" id="comentarioExpandAll" data-i18n-title="comentario.expandAll" data-i18n-aria-label="comentario.expandAll" title="Expandir/Colapsar comentarios" aria-label="Expandir/Colapsar comentarios">+</button>
+                    <button type="button" class="arrow-btn lemma-toggle-all table-control-desktop-only" id="lemmaExpandAll" data-i18n-title="lemma.expandAll" data-i18n-aria-label="lemma.expandAll" title="Expandir/Colapsar lemas" aria-label="Expandir/Colapsar lemas" hidden>+</button>
                   </div>
                 </div>
               </th>
@@ -875,9 +888,9 @@
     </nav>
   </main> <!-- .app-shell -->
 
-  <script src="data.js?v=publish-ready-109"></script>
-  <script src="filters.js?v=publish-ready-105"></script>
-  <script src="data/bootstrap.js?v=publish-ready-145"></script>
-  <script src="script.js?v=publish-ready-157"></script>
+  <script src="data.js?v=publish-ready-112"></script>
+  <script src="filters.js?v=publish-ready-106"></script>
+  <script src="data/bootstrap.js?v=publish-ready-432"></script>
+  <script src="script.js?v=publish-ready-167"></script>
 </body>
 </html>

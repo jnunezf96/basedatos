@@ -1,0 +1,7 @@
+{
+  "by_decision": {},
+  "by_source": {},
+  "by_triage": {},
+  "output": "resources/source_cleanup_decision_queue.tsv",
+  "queue_rows": 0
+}
