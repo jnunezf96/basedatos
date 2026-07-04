@@ -429,7 +429,7 @@ const I18N = {
     "table.status.loading": "Cargando datos…",
     "table.status.error": "No se pudieron cargar los datos. Revisa la conexión y vuelve a intentar.",
     "table.status.none": "Sin registros para mostrar.",
-    "table.status.showing": "Registros mostrados: {{start}}-{{end}} de {{total}}",
+    "table.status.showing": "{{start}}-{{end}} de {{total}}",
     "table.status.fullLoading": "Cargando la base completa…",
     "table.status.lazyLoading": "Cargando índice ligero…",
     "table.status.backendRequired": "Servidor de búsqueda requerido. Usa resources/search_service.py o abre con ?static=1 para modo offline.",
@@ -938,7 +938,7 @@ const I18N = {
     "table.status.loading": "Loading data…",
     "table.status.error": "Couldn't load the data. Check the connection and try again.",
     "table.status.none": "No records to show.",
-    "table.status.showing": "Records shown: {{start}}-{{end}} of {{total}}",
+    "table.status.showing": "{{start}}-{{end}} of {{total}}",
     "table.status.fullLoading": "Loading the full database…",
     "table.status.lazyLoading": "Loading lightweight index…",
     "table.status.backendRequired": "Search server required. Use resources/search_service.py or open with ?static=1 for offline mode.",
@@ -1336,10 +1336,21 @@ const FUENTE_OPTIONS = [
   "C_M",
   "Docs_México",
   "1992 Karttunen",
-  "V94 Diccionario Global SNP"
+  "V94 SNP"
 ];
+const FUENTE_DISPLAY_ALIASES = new Map([
+  ["V94 Diccionario Global SNP", "V94 SNP"],
+]);
+const FUENTE_LEGACY_SLUGS_BY_NAME = new Map([
+  ["V94 SNP", ["v94-diccionario-global-snp", "diccionario-global-snp", "snp"]],
+]);
 const DEFAULT_EXCLUDED_FUENTES = new Set(["1580 CF Index"]);
 const DEFAULT_FUENTE_OPTIONS = FUENTE_OPTIONS.filter(name => !DEFAULT_EXCLUDED_FUENTES.has(name));
+
+function canonicalFuenteName(value) {
+  const text = String(value ?? "").trim();
+  return FUENTE_DISPLAY_ALIASES.get(text) || text;
+}
 
 function refreshDefaultFuenteOptions() {
   DEFAULT_FUENTE_OPTIONS.splice(
@@ -1589,6 +1600,7 @@ function setDataRows(rows, options = {}) {
 
 function prepareDataRow(row, idx) {
   normalizeRowFieldKeys(row);
+  if (row.Fuente != null) row.Fuente = canonicalFuenteName(row.Fuente);
   row._rid = row.record_id || idx;
   row._prio = parsePriority(row.prio);
   row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
@@ -2007,12 +2019,15 @@ async function querySearchApi(payload) {
 function replaceFuenteOptions(items) {
   const sourceItems = (items || []).map(item => {
     if (item && typeof item === "object") {
+      const rawName = String(item.name || "").trim();
+      const name = canonicalFuenteName(rawName);
+      const rawSlug = String(item.slug || "").trim();
       return {
-        name: String(item.name || "").trim(),
-        slug: String(item.slug || "").trim()
+        name,
+        slug: rawName && rawName !== name ? slugifySourceName(name) : rawSlug
       };
     }
-    return { name: String(item || "").trim(), slug: "" };
+    return { name: canonicalFuenteName(item), slug: "" };
   }).filter(item => item.name);
   const nextNames = [...new Set(sourceItems.map(item => item.name))];
   if (!nextNames.length) return false;
@@ -10077,6 +10092,9 @@ function buildSourceSlugMaps() {
   const collisions = new Set();
   FUENTE_OPTIONS.forEach(name => {
     registerSourceSlug(name, apiSourceSlugs.get(name) || slugifySourceName(name), collisions);
+    (FUENTE_LEGACY_SLUGS_BY_NAME.get(name) || []).forEach(slug => {
+      registerSourceSlug(name, slug, collisions);
+    });
   });
   if (collisions.size && typeof console !== "undefined") {
     console.warn("Source-slug collisions detected (share URLs may route to first source only):",

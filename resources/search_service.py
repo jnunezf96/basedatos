@@ -42,6 +42,12 @@ NO_STORE_STATIC_PREFIXES = ("data/lazy/",)
 DISPLAY_FIELDS = ("Editado", "Original", "Traducción", "Comentario")
 LAYERED_FIELDS = {"Traducción", "Comentario", "Traducción (es)", "Comentario (es)"}
 SEARCH_FIELDS = {"Editado", "Original", "Traducción", "Comentario", "Fuente"}
+SOURCE_DISPLAY_ALIASES = {
+    "V94 Diccionario Global SNP": "V94 SNP",
+}
+SOURCE_QUERY_ALIASES_BY_CANONICAL = {
+    "V94 SNP": ("V94 Diccionario Global SNP",),
+}
 FIELD_CODE_IN = {
     "ed": "Editado",
     "te": "Editado",
@@ -250,7 +256,27 @@ def normalized_display_value(row: dict[str, Any], field: str) -> str:
     value = row.get(base)
     if value is None:
         value = row.get(field, "")
+    if field == "Fuente":
+        return canonical_source_name(value)
     return "" if value is None else str(value)
+
+
+def canonical_source_name(value: Any) -> str:
+    text = str(value or "").strip()
+    return SOURCE_DISPLAY_ALIASES.get(text, text)
+
+
+def source_filter_values(fuentes: list[str]) -> list[str]:
+    values: list[str] = []
+    seen: set[str] = set()
+    for fuente in fuentes or []:
+        canonical = canonical_source_name(fuente)
+        for candidate in (str(fuente or ""), canonical, *SOURCE_QUERY_ALIASES_BY_CANONICAL.get(canonical, ())):
+            text = candidate.strip()
+            if text and text not in seen:
+                seen.add(text)
+                values.append(text)
+    return values
 
 
 def source_raw_value(row: dict[str, Any], field: str) -> str:
@@ -280,7 +306,7 @@ def source_display_value(row: dict[str, Any], field: str) -> str:
 
 def layer_values(row: dict[str, Any], field: str, layer: str = "both") -> list[str]:
     if field == "Fuente":
-        return [str(row.get("Fuente", ""))]
+        return [canonical_source_name(row.get("Fuente", ""))]
     if field not in LAYERED_FIELDS:
         return [normalized_display_value(row, field)]
     values = []
@@ -311,6 +337,8 @@ def public_row_payload(row: dict[str, Any]) -> dict[str, Any]:
         for key, value in row.items()
         if key in PUBLIC_ROW_FIELDS
     }
+    if "Fuente" in payload:
+        payload["Fuente"] = canonical_source_name(payload["Fuente"])
     for prefixes in PUBLIC_RAW_PREFIXES_BY_FIELD.values():
         key = first_public_raw_key(row, prefixes)
         if key:
@@ -1429,9 +1457,10 @@ def candidate_sql(filters: list[dict[str, Any]], fuentes: list[str], layer: str)
     where = []
     args: list[Any] = []
     can_limit_in_sql = not filters
-    if fuentes:
-        where.append(f"r.fuente IN ({','.join('?' for _ in fuentes)})")
-        args.extend(fuentes)
+    fuente_values = source_filter_values(fuentes)
+    if fuente_values:
+        where.append(f"r.fuente IN ({','.join('?' for _ in fuente_values)})")
+        args.extend(fuente_values)
     positive_matches = [
         fts_match_for_filter(filter_item, layer)
         for filter_item in filters
@@ -2291,11 +2320,12 @@ def search_database(
     con = sqlite3.connect(db_path)
     con.row_factory = sqlite3.Row
     sql, args, can_limit_in_sql = candidate_sql(filters, fuentes, layer)
+    fuente_values = source_filter_values(fuentes)
     if view_mode == "rows" and can_limit_in_sql and not sort_keys and not randomize_browse:
-        if fuentes:
+        if fuente_values:
             total = con.execute(
-                f"SELECT COUNT(*) FROM rows r WHERE r.fuente IN ({','.join('?' for _ in fuentes)})",
-                args,
+                f"SELECT COUNT(*) FROM rows r WHERE r.fuente IN ({','.join('?' for _ in fuente_values)})",
+                fuente_values,
             ).fetchone()[0]
         else:
             total = con.execute("SELECT COUNT(*) FROM rows").fetchone()[0]
@@ -2899,7 +2929,7 @@ def health_payload(db_path: Path) -> dict[str, Any]:
 
 
 def source_slug(value: Any) -> str:
-    text = normalize_string(str(value or ""))
+    text = normalize_string(canonical_source_name(value))
     return re.sub(r"[^0-9a-z]+", "-", text).strip("-") or "source"
 
 
@@ -2911,14 +2941,19 @@ def sources_payload(db_path: Path) -> dict[str, Any]:
         ).fetchall()
     finally:
         con.close()
+    source_counts: dict[str, int] = {}
+    for fuente, row_count in rows:
+        name = canonical_source_name(fuente)
+        if not name:
+            continue
+        source_counts[name] = source_counts.get(name, 0) + int(row_count or 0)
     sources = [
         {
-            "name": str(fuente or ""),
-            "slug": source_slug(fuente),
-            "rowCount": int(row_count or 0),
+            "name": name,
+            "slug": source_slug(name),
+            "rowCount": row_count,
         }
-        for fuente, row_count in rows
-        if fuente
+        for name, row_count in source_counts.items()
     ]
     sources.sort(key=lambda item: natural_key(item["name"]))
     return {

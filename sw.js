@@ -1,6 +1,6 @@
 // Service worker for Base de datos náhuatl.
 // Bump CACHE_VERSION whenever shipped HTML/CSS/JS changes.
-const CACHE_VERSION = "v530";
+const CACHE_VERSION = "v538";
 const CACHE_NAME = `nahuatl-db-${CACHE_VERSION}`;
 
 // Large static search assets are intentionally not precached or runtime-cached.

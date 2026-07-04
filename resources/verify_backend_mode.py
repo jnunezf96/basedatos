@@ -163,6 +163,12 @@ def verify_file_contracts() -> list[str]:
         "ordinary backend row searches should stream the current page instead of materializing all matched rows",
     )
     require("def sources_payload(db_path: Path)" in search_service, "backend should expose source metadata without frontend rows")
+    require(
+        '"V94 Diccionario Global SNP": "V94 SNP"' in search_service
+        and "def canonical_source_name(value: Any) -> str:" in search_service
+        and "def source_filter_values(fuentes: list[str]) -> list[str]:" in search_service,
+        "backend should expose V94 Diccionario Global SNP as V94 SNP while preserving query compatibility",
+    )
     checks.append("backend service exposes contract metadata plus source, search, lemma, pairs, study, and export endpoints")
 
     for marker in ("GET /api/health", "GET /api/sources", "POST /api/search", "POST /api/lemma", "POST /api/pairs", "POST /api/study", "POST /api/export"):
@@ -183,6 +189,12 @@ def verify_file_contracts() -> list[str]:
         and "async function hydrateSourcesFromApi()" in script_js
         and "function replaceFuenteOptions(items)" in script_js,
         "frontend should hydrate source metadata from the backend when available",
+    )
+    require(
+        '["V94 Diccionario Global SNP", "V94 SNP"]' in script_js
+        and '["V94 SNP", ["v94-diccionario-global-snp", "diccionario-global-snp", "snp"]]' in script_js
+        and "function canonicalFuenteName(value)" in script_js,
+        "frontend should display the V94 SNP source label while preserving old source slugs",
     )
     require(
         "const apiSourceSlugs = new Map();" in script_js
@@ -326,6 +338,12 @@ def verify_database_smoke(db_path: Path) -> list[str]:
     require(isinstance(first_source, dict), "source metadata should return source records")
     require(first_source.get("name") and first_source.get("slug"), "source metadata should include source name and slug")
     require(isinstance(first_source.get("rowCount"), int), "source metadata should include row count")
+    source_names = [source.get("name") for source in sources.get("sources") or []]
+    require("V94 SNP" in source_names, "source metadata should expose V94 SNP")
+    require("V94 Diccionario Global SNP" not in source_names, "source metadata should hide the old V94 Diccionario Global SNP label")
+    v94_snp_source = next(source for source in sources["sources"] if source.get("name") == "V94 SNP")
+    require(v94_snp_source.get("slug") == "v94-snp", "V94 SNP should use the short source slug")
+    require(v94_snp_source.get("rowCount", 0) > 0, "V94 SNP should preserve the source row count")
     nemi_filter = {
         "field": "Editado",
         "mode": "exact",
@@ -351,6 +369,21 @@ def verify_database_smoke(db_path: Path) -> list[str]:
     require(len(result.get("rows") or []) == 3, "search response should return only current page rows")
     for row in result.get("rows") or []:
         assert_public_row_shape(row, "search response row")
+
+    v94_snp_result = search_service.search_database(
+        db_path,
+        filters=[],
+        fuentes=["V94 SNP"],
+        layer="both",
+        offset=0,
+        page_size=1,
+    )
+    require(v94_snp_result.get("total", 0) > 0, "search should filter rows by V94 SNP")
+    require(len(v94_snp_result.get("rows") or []) == 1, "V94 SNP search should return a row")
+    require(
+        v94_snp_result["rows"][0].get("Fuente") == "V94 SNP",
+        "V94 SNP search should return the canonical source name",
+    )
 
     word_group_result = search_service.search_database(
         db_path,
