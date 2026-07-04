@@ -197,9 +197,11 @@ def verify_file_contracts() -> list[str]:
     require(
         "function isStaticFallbackMode()" in script_js
         and 'location.protocol === "file:"' in script_js
+        and "function isGithubPagesHost()" in script_js
+        and "if (isGithubPagesHost()) return true;" in script_js
         and 'params.get("static")' in script_js
         and 'params.get("offline")' in script_js,
-        "static fallback should be limited to file:// or explicit static/offline mode",
+        "static fallback should be limited to file://, GitHub Pages, or explicit static/offline mode",
     )
     require(
         "function shouldRequireBackendSearch() {\n  return !getSearchApiEndpoint() && !isStaticFallbackMode();\n}" in script_js,

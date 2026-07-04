@@ -1926,8 +1926,13 @@ function getSourcesApiEndpoint() {
   return endpointForApiPath("/api/sources");
 }
 
+function isGithubPagesHost() {
+  return location.hostname === "github.io" || location.hostname.endsWith(".github.io");
+}
+
 function isStaticFallbackMode() {
   if (location.protocol === "file:") return true;
+  if (isGithubPagesHost()) return true;
   try {
     const params = new URLSearchParams(location.search || "");
     const staticMode = String(params.get("static") || params.get("offline") || "").toLowerCase();

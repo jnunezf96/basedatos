@@ -77,6 +77,7 @@ architecture for an extremely large mobile database.
 Static fallback rules:
 
 - `file://.../index.html` may use the static/offline fallback.
+- `*.github.io` is treated as a static GitHub Pages deployment.
 - Plain HTTP without `/api/search` is treated as missing the backend.
 - To test the static fallback over HTTP, open with `?static=1` or `?offline=1`.
 
