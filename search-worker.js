@@ -43,6 +43,10 @@ let lazyIndexPromises = new Map();
 let lazyLoadedIndexKeys = new Set();
 let lazyNgramPromises = new Map();
 let lazyLoadedNgramKeys = new Map();
+let lazyShortTokenPromises = new Map();
+let lazyLoadedShortTokenKeys = new Map();
+let lazyWordEdgePromises = new Map();
+let lazyLoadedWordEdgeKeys = new Map();
 let lazyRowChunkPromises = new Map();
 let lazyRowChunkCache = new Map();
 let lazyRowChunkPaths = new Map();
@@ -330,6 +334,14 @@ function getLazyNgramShardCacheKey(field, layer, shard) {
   return `${field}::${layer}::${shard}`;
 }
 
+function getLazyShortTokenShardCacheKey(field, layer, shard) {
+  return `${field}::${layer}::${shard}`;
+}
+
+function getLazyWordEdgeShardCacheKey(field, layer, kind, shard) {
+  return `${field}::${layer}::${kind}::${shard}`;
+}
+
 async function ensureLazyFieldIndex(field, layer) {
   const normalizedField = normalizeFieldKey(field);
   const effectiveLayer = searchLayerAppliesToField(normalizedField) ? layer : "normalized";
@@ -387,12 +399,80 @@ async function ensureLazyNgramShard(field, layer, shard) {
   return lazyNgramPromises.get(key);
 }
 
+async function ensureLazyShortTokenShard(field, layer, shard) {
+  const normalizedField = normalizeFieldKey(field);
+  const effectiveLayer = searchLayerAppliesToField(normalizedField) ? layer : "normalized";
+  const key = getLazyShortTokenShardCacheKey(normalizedField, effectiveLayer, shard);
+  if (lazyLoadedShortTokenKeys.has(key)) return lazyLoadedShortTokenKeys.get(key);
+  if (!lazyShortTokenPromises.has(key)) {
+    lazyShortTokenPromises.set(key, ensureLazyDataManifest()
+      .then(manifest => {
+        const entry = manifest?.shortTokens?.[normalizedField]?.[effectiveLayer];
+        const path = entry?.shards?.[shard];
+        if (!path) return null;
+        return loadJsonlRows(path);
+      })
+      .then(rows => {
+        if (!rows) return null;
+        const map = new Map();
+        rows.forEach(item => {
+          if (item?.token && Array.isArray(item.rows)) map.set(item.token, item.rows);
+        });
+        lazyLoadedShortTokenKeys.set(key, map);
+        return map;
+      }));
+  }
+  return lazyShortTokenPromises.get(key);
+}
+
+async function ensureLazyWordEdgeShard(field, layer, kind, shard) {
+  const normalizedField = normalizeFieldKey(field);
+  const effectiveLayer = searchLayerAppliesToField(normalizedField) ? layer : "normalized";
+  const key = getLazyWordEdgeShardCacheKey(normalizedField, effectiveLayer, kind, shard);
+  if (lazyLoadedWordEdgeKeys.has(key)) return lazyLoadedWordEdgeKeys.get(key);
+  if (!lazyWordEdgePromises.has(key)) {
+    lazyWordEdgePromises.set(key, ensureLazyDataManifest()
+      .then(manifest => {
+        const entry = manifest?.wordEdges?.[normalizedField]?.[effectiveLayer]?.[kind];
+        const path = entry?.shards?.[shard];
+        if (!path) return null;
+        return loadJsonlRows(path);
+      })
+      .then(rows => {
+        if (!rows) return null;
+        const map = new Map();
+        rows.forEach(item => {
+          if (item?.edge && Array.isArray(item.rows)) map.set(item.edge, item.rows);
+        });
+        lazyLoadedWordEdgeKeys.set(key, map);
+        return map;
+      }));
+  }
+  return lazyWordEdgePromises.get(key);
+}
+
 function getNgramShard(field, layer, gram) {
   const normalizedField = normalizeFieldKey(field);
   const effectiveLayer = searchLayerAppliesToField(normalizedField) ? layer : "normalized";
   const entry = lazyDataManifest?.ngrams?.[normalizedField]?.[effectiveLayer];
   const prefixLen = Number(entry?.shardPrefix) || 1;
   return gram.slice(0, prefixLen);
+}
+
+function getShortTokenShard(field, layer, token) {
+  const normalizedField = normalizeFieldKey(field);
+  const effectiveLayer = searchLayerAppliesToField(normalizedField) ? layer : "normalized";
+  const entry = lazyDataManifest?.shortTokens?.[normalizedField]?.[effectiveLayer];
+  const prefixLen = Number(entry?.shardPrefix) || 1;
+  return token.slice(0, prefixLen);
+}
+
+function getWordEdgeShard(field, layer, kind, edge) {
+  const normalizedField = normalizeFieldKey(field);
+  const effectiveLayer = searchLayerAppliesToField(normalizedField) ? layer : "normalized";
+  const entry = lazyDataManifest?.wordEdges?.[normalizedField]?.[effectiveLayer]?.[kind];
+  const prefixLen = Number(entry?.shardPrefix) || 1;
+  return edge.slice(0, prefixLen);
 }
 
 function hasUnescapedPipe(value) {
@@ -466,6 +546,81 @@ function ngramsFromFilterValue(value) {
   return [...grams];
 }
 
+function shortTokensFromFilterValue(value) {
+  if (!value || oldSpanishMode || hasUnescapedPipe(value)) return [];
+  if (!hasFormattingCharacters(value)) return [];
+  if (/[\\*?"()[\]{}|<>]/.test(String(value))) return [];
+  const normalized = normalizeString(stripHtmlTags(String(value)));
+  const tokens = normalized.match(/[0-9a-z]+/g) || [];
+  return [...new Set(tokens.filter(token => token.length > 0 && token.length < 3))];
+}
+
+function literalEdgeFromFilterValue(value, kind) {
+  const normalized = normalizeString(stripHtmlTags(String(value || "")));
+  if (!normalized) return "";
+  if (kind === "prefix") {
+    const match = normalized.match(/^[0-9a-z]{3,}/);
+    return match ? match[0].slice(0, 3) : "";
+  }
+  const match = normalized.match(/[0-9a-z]{3,}$/);
+  return match ? match[0].slice(-3) : "";
+}
+
+function wildcardAlnumLengthRange(value) {
+  const normalized = normalizeString(stripHtmlTags(String(value || "")));
+  if (!normalized || normalized.includes("*")) return null;
+  let min = 0;
+  let max = 0;
+  for (const ch of normalized) {
+    if (ch === "?") {
+      min += 1;
+      max += 2;
+    } else if (/[0-9a-z]/.test(ch)) {
+      min += 1;
+      max += 1;
+    } else {
+      return null;
+    }
+  }
+  if (min < 3 || max > 64) return null;
+  return { min, max };
+}
+
+function lengthEdgeAlternatives(edge, kind, lengthRange) {
+  if (!edge || !lengthRange) return null;
+  const lengthKind = kind === "prefix" ? "prefixLen" : "suffixLen";
+  const alternatives = [];
+  for (let len = lengthRange.min; len <= lengthRange.max; len += 1) {
+    alternatives.push({ kind: lengthKind, edge: `${edge}:${len}` });
+  }
+  return alternatives;
+}
+
+function wordEdgeKeysFromFilter(filter) {
+  if (!filter?.value || oldSpanishMode || hasUnescapedPipe(filter.value)) return [];
+  const value = String(filter.value);
+  if (!/[?*]/.test(value)) return [];
+  if (/[\\"()[\]{}|<>]/.test(value)) return [];
+  const scope = normalizeScope(filter.scope);
+  if (scope !== "word" && scope !== "wordPhrase") return [];
+  const mode = filter.mode;
+  const groups = [];
+  const lengthRange = mode === "exact" ? wildcardAlnumLengthRange(value) : null;
+  if ((mode === "exact" || mode === "starts") && /^[0-9A-Za-z]/.test(value)) {
+    const edge = literalEdgeFromFilterValue(value, "prefix");
+    const alternatives = lengthEdgeAlternatives(edge, "prefix", lengthRange);
+    if (alternatives) groups.push(alternatives);
+    else if (edge) groups.push([{ kind: "prefix", edge }]);
+  }
+  if ((mode === "exact" || mode === "ends") && /[0-9A-Za-z]$/.test(value)) {
+    const edge = literalEdgeFromFilterValue(value, "suffix");
+    const alternatives = lengthEdgeAlternatives(edge, "suffix", lengthRange);
+    if (alternatives) groups.push(alternatives);
+    else if (edge) groups.push([{ kind: "suffix", edge }]);
+  }
+  return groups;
+}
+
 function hasOrLogic(filters) {
   return (filters || []).some(filter => String(filter?.logic || "AND").toUpperCase() === "OR");
 }
@@ -521,24 +676,97 @@ async function getNgramCandidatesForFilter(filter) {
   return unionSortedArrays(layerCandidates);
 }
 
-async function buildNgramCandidateInfo(filters = activeFilters) {
+async function getShortTokenCandidatesForFilter(filter) {
+  const field = normalizeFieldKey(filter.field);
+  const tokens = shortTokensFromFilterValue(filter.value);
+  if (!tokens.length) return null;
+  const layers = getSearchLayerModesForField(field);
+  const layerCandidates = [];
+  for (const layer of layers) {
+    let candidate = null;
+    let usable = 0;
+    for (const token of tokens) {
+      const shard = getShortTokenShard(field, layer, token);
+      const tokenIndex = await ensureLazyShortTokenShard(field, layer, shard);
+      if (!tokenIndex) continue;
+      const rows = tokenIndex.get(token) || [];
+      usable += 1;
+      candidate = candidate == null ? rows : intersectSortedArrays(candidate, rows);
+      if (!candidate.length) break;
+    }
+    if (usable > 0) layerCandidates.push(candidate || []);
+  }
+  if (!layerCandidates.length) return null;
+  return unionSortedArrays(layerCandidates);
+}
+
+async function getWordEdgeCandidatesForFilter(filter) {
+  const field = normalizeFieldKey(filter.field);
+  const edgeGroups = wordEdgeKeysFromFilter(filter);
+  if (!edgeGroups.length) return null;
+  const layers = getSearchLayerModesForField(field);
+  const layerCandidates = [];
+  for (const layer of layers) {
+    let candidate = null;
+    let usable = 0;
+    for (const alternatives of edgeGroups) {
+      const alternativeRows = [];
+      for (const { kind, edge } of alternatives) {
+        const shard = getWordEdgeShard(field, layer, kind, edge);
+        const edgeIndex = await ensureLazyWordEdgeShard(field, layer, kind, shard);
+        if (!edgeIndex) continue;
+        alternativeRows.push(edgeIndex.get(edge) || []);
+      }
+      if (!alternativeRows.length) continue;
+      const rows = unionSortedArrays(alternativeRows);
+      usable += 1;
+      candidate = candidate == null ? rows : intersectSortedArrays(candidate, rows);
+      if (!candidate.length) break;
+    }
+    if (usable > 0) layerCandidates.push(candidate || []);
+  }
+  if (!layerCandidates.length) return null;
+  return unionSortedArrays(layerCandidates);
+}
+
+async function getLazyCandidatesForFilter(filter) {
+  const ngramCandidates = await getNgramCandidatesForFilter(filter);
+  const shortTokenCandidates = await getShortTokenCandidatesForFilter(filter);
+  const wordEdgeCandidates = await getWordEdgeCandidatesForFilter(filter);
+  const candidateSets = [ngramCandidates, shortTokenCandidates, wordEdgeCandidates].filter(Boolean);
+  if (!candidateSets.length) return null;
+  const rows = candidateSets.reduce((current, rows) =>
+    current == null ? rows : intersectSortedArrays(current, rows), null);
+  return {
+    rows,
+    usedNgrams: !!ngramCandidates,
+    usedShortTokens: !!shortTokenCandidates,
+    usedWordEdges: !!wordEdgeCandidates,
+  };
+}
+
+async function buildLazyCandidateInfo(filters = activeFilters) {
   if (oldSpanishMode || hasOrLogic(filters)) return null;
   let candidate = null;
-  let used = false;
+  let usedNgrams = false;
+  let usedShortTokens = false;
+  let usedWordEdges = false;
   for (const filter of filters || []) {
     if (!filter || filter.negate || filter.type === "fuenteSet" || filter.type === "wordGroup") continue;
     const field = normalizeFieldKey(filter.field);
     if (!field || !FIELDS_WITH_LAZY_INDEX.has(field)) continue;
-    const fieldCandidates = await getNgramCandidatesForFilter(filter);
+    const fieldCandidates = await getLazyCandidatesForFilter(filter);
     if (!fieldCandidates) continue;
-    used = true;
-    candidate = candidate == null ? fieldCandidates : intersectSortedArrays(candidate, fieldCandidates);
+    usedNgrams = usedNgrams || fieldCandidates.usedNgrams;
+    usedShortTokens = usedShortTokens || fieldCandidates.usedShortTokens;
+    usedWordEdges = usedWordEdges || fieldCandidates.usedWordEdges;
+    candidate = candidate == null ? fieldCandidates.rows : intersectSortedArrays(candidate, fieldCandidates.rows);
     if (!candidate.length) break;
   }
-  if (!used) return null;
+  if (!usedNgrams && !usedShortTokens && !usedWordEdges) return null;
   const rows = candidate.map(idx => lazyMetaRows[idx]).filter(Boolean);
-  const chunkCount = new Set(rows.map(row => row._lazyChunk).filter(Boolean)).size;
-  return { rows, chunkCount };
+  const chunkIds = [...new Set(rows.map(row => row._lazyChunk).filter(Boolean))];
+  return { rows, chunkCount: chunkIds.length, chunkIds, usedNgrams, usedShortTokens, usedWordEdges };
 }
 
 async function loadLazyRowChunk(chunkId) {
@@ -719,29 +947,37 @@ async function runQuery(payload) {
   prioritySortCache = new WeakMap();
 
   await ensureLazyMetaRows();
-  const candidateInfo = await buildNgramCandidateInfo(activeFilters);
+  const candidateInfo = await buildLazyCandidateInfo(activeFilters);
   let scanRows = lazyMetaRows;
   let usedNgrams = false;
+  let usedShortTokens = false;
+  let usedWordEdges = false;
   let hydratedCandidates = false;
   let candidateFiltered = false;
   let fallbackIndexesLoaded = false;
   if (candidateInfo && candidateInfo.rows.length === 0) {
     scanRows = [];
-    usedNgrams = true;
+    usedNgrams = candidateInfo.usedNgrams;
+    usedShortTokens = candidateInfo.usedShortTokens;
+    usedWordEdges = candidateInfo.usedWordEdges;
   } else if (
     candidateInfo &&
     candidateInfo.rows.length <= NGRAM_FULL_VERIFY_ROW_LIMIT &&
     candidateInfo.chunkCount <= NGRAM_FULL_VERIFY_CHUNK_LIMIT
   ) {
     scanRows = await hydrateCandidateRows(candidateInfo);
-    usedNgrams = true;
+    usedNgrams = candidateInfo.usedNgrams;
+    usedShortTokens = candidateInfo.usedShortTokens;
+    usedWordEdges = candidateInfo.usedWordEdges;
     hydratedCandidates = true;
   } else {
     const needs = collectLazyIndexNeeds(activeFilters);
     await Promise.all(needs.map(need => ensureLazyFieldIndex(need.field, need.layer)));
     if (candidateInfo) {
       scanRows = candidateInfo.rows;
-      usedNgrams = true;
+      usedNgrams = candidateInfo.usedNgrams;
+      usedShortTokens = candidateInfo.usedShortTokens;
+      usedWordEdges = candidateInfo.usedWordEdges;
       candidateFiltered = true;
     }
     fallbackIndexesLoaded = needs.length > 0;
@@ -779,12 +1015,17 @@ async function runQuery(payload) {
       indexedDB: !!(await openLazyAssetDb()),
       indexesLoaded: [...lazyLoadedIndexKeys],
       ngramsLoaded: [...lazyLoadedNgramKeys.keys()],
+      shortTokensLoaded: [...lazyLoadedShortTokenKeys.keys()],
+      wordEdgesLoaded: [...lazyLoadedWordEdgeKeys.keys()],
       usedNgrams,
+      usedShortTokens,
+      usedWordEdges,
       hydratedCandidates,
       candidateFiltered,
       fallbackIndexesLoaded,
       candidateCount: candidateInfo ? candidateInfo.rows.length : null,
       candidateChunkCount: candidateInfo ? candidateInfo.chunkCount : null,
+      candidateChunks: candidateInfo ? candidateInfo.chunkIds : [],
       scanRowCount: scanRows.length
     }
   };

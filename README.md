@@ -1,11 +1,53 @@
 # Nahuatl Database Website
 
-This app can still run as static files, but the recommended path for a very
-large database, especially on mobile, is server-backed search:
+This app is deployed as a static GitHub Pages site. The production path is:
 
-> Backend owns search. Frontend only renders pages.
+> GitHub builds lazy search assets. The browser loads only thin indexes and the
+> row chunks needed for the current page.
 
-## Large/mobile run path
+## GitHub Pages run path
+
+The Pages workflow builds `data/lazy/` during deployment, then publishes a
+static `_site` artifact. The generated lazy assets stay out of the source tree
+because they are large build output.
+
+Static search should use this order:
+
+1. Search thin candidate indexes.
+2. Compute the ids for the current page.
+3. Load only the row chunks containing those ids.
+4. Render only those rows.
+
+The local backend is kept as a diagnostic/reference tool. It is not required for
+the public GitHub Pages site.
+
+## Local static verification
+
+Rebuild lazy assets:
+
+```bash
+python3 resources/build_lazy_data_assets.py
+```
+
+Serve the static site:
+
+```bash
+python3 -m http.server 8131
+```
+
+Benchmark a share URL:
+
+```bash
+node resources/benchmark_static_share_url.mjs \
+  'http://127.0.0.1:8131/index.html?static=1#/q?g=A:tr:w:a:0:v.t.;A:ed:w:e:0:%3F%3Fqui' \
+  27 \
+  '1571-molina-1:001300,1571-molina-1:001301,1571-molina-2:000836,1780-bnf-361:001248,1780-bnf-361:001251'
+```
+
+The benchmark checks correctness, full-data avoidance, full-index avoidance,
+candidate hydration, heap, and lazy transfer.
+
+## Local backend diagnostic
 
 Build the local SQLite search database:
 
@@ -23,19 +65,6 @@ Then open:
 
 ```text
 http://127.0.0.1:8100/index.html
-```
-
-For large/mobile use, do not treat `file://.../index.html` or
-`python3 -m http.server` as the main deployment path. Those modes leave the
-browser responsible for static/offline data loading. The search service injects
-`<meta name="nahuatl-search-api" content="/api/search" />`, which tells the
-frontend to ask the backend for result pages. It also omits the static
-`data/bootstrap.js` row sample so the first page is loaded through `/api/search`.
-
-You can combine build and serve during local work:
-
-```bash
-python3 resources/search_service.py serve --build-if-missing --port 8100
 ```
 
 ## Backend contract
@@ -71,10 +100,7 @@ The detailed HTTP contract is in
 [docs/backend-api-contract.md](docs/backend-api-contract.md). Treat that file as
 the replaceability boundary for a future production search engine.
 
-Static lazy chunks are kept as an offline/static fallback. They are not the best
-architecture for an extremely large mobile database.
-
-Static fallback rules:
+Static rules:
 
 - `file://.../index.html` may use the static/offline fallback.
 - `*.github.io` is treated as a static GitHub Pages deployment.
@@ -87,9 +113,6 @@ locally:
 ```bash
 python3 resources/build_lazy_data_assets.py
 ```
-
-Do not treat `data/lazy/` as the normal deployment artifact for large/mobile
-use.
 
 ## Development rule
 

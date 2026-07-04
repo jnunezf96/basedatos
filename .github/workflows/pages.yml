@@ -1,0 +1,57 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Validate scripts
+        run: |
+          python3 -m py_compile resources/build_lazy_data_assets.py
+          node --check search-worker.js
+          node --check resources/benchmark_static_share_url.mjs
+
+      - name: Build static lazy assets
+        run: python3 resources/build_lazy_data_assets.py
+
+      - name: Assemble static site
+        run: |
+          mkdir -p _site/data
+          cp index.html style.css data.js filters.js script.js search-worker.js sw.js manifest.json icon.svg _site/
+          cp data/bootstrap.js data/data.jsonl.gz _site/data/
+          cp -R data/lazy _site/data/lazy
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
