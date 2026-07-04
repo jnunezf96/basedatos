@@ -148,6 +148,7 @@ def verify_cmd(script: Path, targets: Iterable[str], *, skip_audit: bool, skip_s
         sys.executable,
         str(VERIFY_SCRIPT),
         "--rebuild-bootstrap",
+        "--rebuild-lazy-assets",
         "--bump-cache",
         "--script",
         str(script),

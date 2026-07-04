@@ -1,0 +1,177 @@
+[
+  {
+    "name": "optional-space-word-phrase",
+    "description": "Optional literal space bridges one-word cennemi and phrase cen nemi.",
+    "request": {
+      "filters": [
+        {
+          "field": "Editado",
+          "mode": "exact",
+          "scope": "wordPhrase",
+          "value": "cen( )nemi",
+          "logic": "AND",
+          "negate": false
+        }
+      ],
+      "fuentes": [],
+      "layer": "both",
+      "offset": 0,
+      "pageSize": 10
+    },
+    "expect": {
+      "total": 7,
+      "ids": [
+        "1571-molina-1:006765",
+        "1571-molina-1:007225",
+        "1571-molina-2:005066",
+        "1645-carochi:000568",
+        "2021-wimmer:009000",
+        "v94-diccionario-global-snp:015963",
+        "v94-diccionario-global-snp:016088"
+      ]
+    }
+  },
+  {
+    "name": "alternatives-word-exact",
+    "description": "Vertical bar keeps alternatives inside one exact word filter.",
+    "request": {
+      "filters": [
+        {
+          "field": "Editado",
+          "mode": "exact",
+          "scope": "word",
+          "value": "cenca|cenquizca",
+          "logic": "AND",
+          "negate": false
+        }
+      ],
+      "fuentes": [],
+      "layer": "both",
+      "offset": 0,
+      "pageSize": 12
+    },
+    "expect": {
+      "total": 266,
+      "ids": [
+        "17-bnf-362:001122",
+        "153-trilingue:002212",
+        "1547-olmos-g:000164",
+        "1551-95-documentos-nahuas-de-la-ciudad-de-mexico:000474",
+        "1571-molina-1:006767",
+        "1571-molina-1:006768",
+        "1571-molina-1:006769",
+        "1571-molina-1:006770",
+        "1571-molina-2:004777",
+        "1611-arenas:000431",
+        "1611-arenas:000432",
+        "1629-alarcon:000256"
+      ]
+    }
+  },
+  {
+    "name": "reduplication-repeat-twice",
+    "description": "{r2} repeats the captured reduplicating part twice.",
+    "request": {
+      "filters": [
+        {
+          "field": "Editado",
+          "mode": "exact",
+          "scope": "word",
+          "value": "{r2}paca",
+          "logic": "AND",
+          "negate": false
+        }
+      ],
+      "fuentes": [],
+      "layer": "both",
+      "offset": 0,
+      "pageSize": 20
+    },
+    "expect": {
+      "total": 12,
+      "ids": [
+        "17-bnf-362:003483",
+        "17-bnf-362:003484",
+        "153-trilingue:007738",
+        "1645-carochi:001929",
+        "1765-cortes-y-zedeno:003365",
+        "1984-tzinacapan:002014",
+        "1984-tzinacapan:002015",
+        "1984-tzinacapan:002016",
+        "2021-wimmer:028409",
+        "2021-wimmer:028410",
+        "1992-karttunen:003350",
+        "v94-diccionario-global-snp:014002"
+      ]
+    }
+  },
+  {
+    "name": "old-spanish-qu-cu",
+    "description": "Old-Spanish matching lets cuahuitl find qu-/cu- original spellings.",
+    "request": {
+      "filters": [
+        {
+          "field": "Original",
+          "mode": "exact",
+          "scope": "word",
+          "value": "cuahuitl",
+          "logic": "AND",
+          "negate": false
+        }
+      ],
+      "fuentes": [],
+      "layer": "both",
+      "oldSpanish": true,
+      "offset": 0,
+      "pageSize": 10
+    },
+    "expect": {
+      "total": 8,
+      "ids": [
+        "1580-sahagun-maynez:000588",
+        "1580-sahagun-maynez:000779",
+        "1645-carochi:000782",
+        "2021-wimmer:012819",
+        "2021-wimmer:012820",
+        "1580-sahagun-maynez:000780",
+        "2021-wimmer:012821",
+        "1580-sahagun-maynez:001163"
+      ]
+    }
+  },
+  {
+    "name": "source-layer-commentary",
+    "description": "Source layer searches commentary transcription separately from the reviewed layer.",
+    "request": {
+      "filters": [
+        {
+          "field": "Comentario",
+          "mode": "any",
+          "scope": "word",
+          "value": "quavitl",
+          "logic": "AND",
+          "negate": false
+        }
+      ],
+      "fuentes": [],
+      "layer": "source",
+      "offset": 0,
+      "pageSize": 10
+    },
+    "expect": {
+      "total": 109,
+      "ids": [
+        "1565-sahagun-escolios:000859",
+        "1565-sahagun-escolios:000860",
+        "1565-sahagun-escolios:001305",
+        "1565-sahagun-escolios:000284",
+        "1565-sahagun-escolios:000292",
+        "1580-sahagun-maynez:000580",
+        "1565-sahagun-escolios:000317",
+        "1565-sahagun-escolios:000655",
+        "1565-sahagun-escolios:000656",
+        "1565-sahagun-escolios:000890"
+      ]
+    }
+  }
+]

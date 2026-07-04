@@ -1,11 +1,11 @@
 // Service worker for Base de datos náhuatl.
 // Bump CACHE_VERSION whenever shipped HTML/CSS/JS changes.
-const CACHE_VERSION = "v511";
+const CACHE_VERSION = "v525";
 const CACHE_NAME = `nahuatl-db-${CACHE_VERSION}`;
 
-// Note: data/data.jsonl.gz is intentionally NOT precached. It's large and
-// schema-coupled to the JS — letting it lazy-cache via stale-while-revalidate
-// keeps the install lean and avoids serving stale data with new code.
+// Large static search assets are intentionally not precached or runtime-cached.
+// They are static/offline fallback assets, not normal large/mobile deployment
+// assets, and caching them can quickly consume phone storage.
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -13,7 +13,6 @@ const CORE_ASSETS = [
   "./script.js",
   "./data.js",
   "./filters.js",
-  "./data/bootstrap.js",
   "./manifest.json",
   "./icon.svg",
 ];
@@ -69,6 +68,13 @@ function networkFirst(request) {
   );
 }
 
+function isLargeSearchFallbackAsset(url) {
+  const path = url.pathname.replace(/^\/+/, "");
+  return path === "data/data.jsonl.gz"
+    || path === "search-worker.js"
+    || path.startsWith("data/lazy/");
+}
+
 // Code assets must stay in lock-step with HTML — if the user gets new HTML
 // but stale JS/CSS the page breaks. Treat them like navigations.
 const CODE_ASSET_RE = /\.(?:js|css|html)$/i;
@@ -79,6 +85,13 @@ self.addEventListener("fetch", event => {
   const url = new URL(request.url);
   // Same-origin only; skip cross-origin (CDNs etc.).
   if (url.origin !== self.location.origin) return;
+
+  // Backend search/API responses must not be cached by the app shell.
+  if (url.pathname.startsWith("/api/")) return;
+
+  // Full DB, static lazy chunks, and the fallback search worker must never be
+  // stored by the app shell. Backend mode should not request them at all.
+  if (isLargeSearchFallbackAsset(url)) return;
 
   // Navigation + code → network-first so updates apply on first reload.
   if (request.mode === "navigate" || CODE_ASSET_RE.test(url.pathname)) {

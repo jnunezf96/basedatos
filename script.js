@@ -5,6 +5,8 @@ const FULL_DATA_IDLE_TIMEOUT_MS = 4500;
 const FULL_DATA_LOW_MEMORY_MAX_GB = 2;
 const FULL_DATA_LOW_CORE_MAX = 2;
 const FULL_DATA_PHONE_MAX_WIDTH = 700;
+const LAZY_DATA_MANIFEST_PATH = "data/lazy/manifest.json";
+const SEARCH_API_DEFAULT_PATH = "/api/search";
 
 const TABLE_FIELDS = [
   { key: "Editado", label: "Editado", defaultWidth: 108 },
@@ -429,7 +431,10 @@ const I18N = {
     "table.status.none": "Sin registros para mostrar.",
     "table.status.showing": "Registros mostrados: {{start}}-{{end}} de {{total}}",
     "table.status.fullLoading": "Cargando la base completa…",
+    "table.status.lazyLoading": "Cargando índice ligero…",
+    "table.status.backendRequired": "Servidor de búsqueda requerido. Usa resources/search_service.py o abre con ?static=1 para modo offline.",
     "table.status.detail.loadingFull": "base completa cargando",
+    "table.status.detail.loadingPage": "cargando página",
     "table.status.detail.preview": "vista rápida",
     "table.status.detail.auto": "{{exact}} lemas exactos · {{phrase}} frases",
     "table.status.detail.manual": "{{exact}} lemas exactos · {{phrase}} frases · Manual",
@@ -935,7 +940,10 @@ const I18N = {
     "table.status.none": "No records to show.",
     "table.status.showing": "Records shown: {{start}}-{{end}} of {{total}}",
     "table.status.fullLoading": "Loading the full database…",
+    "table.status.lazyLoading": "Loading lightweight index…",
+    "table.status.backendRequired": "Search server required. Use resources/search_service.py or open with ?static=1 for offline mode.",
     "table.status.detail.loadingFull": "full database loading",
+    "table.status.detail.loadingPage": "loading page",
     "table.status.detail.preview": "quick preview",
     "table.status.detail.auto": "{{exact}} exact lemmas · {{phrase}} phrases",
     "table.status.detail.manual": "{{exact}} exact lemmas · {{phrase}} phrases · Manual",
@@ -1333,6 +1341,19 @@ const FUENTE_OPTIONS = [
 const DEFAULT_EXCLUDED_FUENTES = new Set(["1580 CF Index"]);
 const DEFAULT_FUENTE_OPTIONS = FUENTE_OPTIONS.filter(name => !DEFAULT_EXCLUDED_FUENTES.has(name));
 
+function refreshDefaultFuenteOptions() {
+  DEFAULT_FUENTE_OPTIONS.splice(
+    0,
+    DEFAULT_FUENTE_OPTIONS.length,
+    ...FUENTE_OPTIONS.filter(name => !DEFAULT_EXCLUDED_FUENTES.has(name))
+  );
+}
+
+function sourceSetEquals(set, values) {
+  if (!set || set.size !== values.length) return false;
+  return values.every(name => set.has(name));
+}
+
 function createDefaultFuenteSet() {
   return new Set(DEFAULT_FUENTE_OPTIONS);
 }
@@ -1382,6 +1403,34 @@ let pendingFullDataRefresh = false;
 let bootstrapTotalRows = 0;
 let fullDataLoadPromise = null;
 let fullDataLoadScheduled = false;
+let lazyDataManifest = null;
+let lazyDataManifestPromise = null;
+let lazyMetaRows = null;
+let lazyMetaById = new Map();
+let lazyMetaPromise = null;
+let lazyIndexPromises = new Map();
+let lazyLoadedIndexKeys = new Set();
+let lazyRowChunkPromises = new Map();
+let lazyRowChunkCache = new Map();
+let lazyRowChunkPaths = new Map();
+let lazyActiveSignature = "";
+let lazyActiveMatches = null;
+let lazyQueryPromise = null;
+let lazyQueryPendingSignature = "";
+let lazyQueryFailed = false;
+let lazyHydrationToken = 0;
+let lazyDisplayRowsById = new Map();
+let lazySearchWorker = null;
+let lazySearchWorkerUnavailable = false;
+let lazyWorkerRequestCounter = 0;
+let lazyWorkerPendingRequests = new Map();
+let lazyWorkerPendingRequestSignature = "";
+let lazyWorkerResult = null;
+let lazyWorkerQueryPromise = null;
+let searchApiUnavailable = false;
+let searchApiPendingRequestSignature = "";
+let searchApiQueryPromise = null;
+let searchApiResult = null;
 let lastPairResults = null;
 let lastPairMeta = null;
 let studyBaseDeck = [];
@@ -1394,10 +1443,14 @@ let studyStats = { seen: 0, again: 0, hard: 0, good: 0, easy: 0 };
 let studyEmptyMessageKey = "study.empty";
 let studyFullscreenFallback = false;
 let studyScopeDirty = true;
+let studyScopeRequestCounter = 0;
+let studyDeckRequestCounter = 0;
 let lastRankingSummary = null;
 let tableViewMode = "rows"; // "rows" | "lemmas"
 let lastLemmaItems = [];
 let lastLemmaPageOffsets = [0];
+let lastLemmaItemsArePage = false;
+let lastLemmaRowTotal = 0;
 let mobileViewportMetricRaf = 0;
 let mobileViewportResizeObserver = null;
 let mobileViewportBaselineHeight = 0;
@@ -1410,7 +1463,7 @@ let fuenteOrderMode = "title"; // "title" | "year"
 let searchLayerMode = "both"; // "both" | "normalized" | "source"
 let orthographyLayerMode = "normalized"; // "normalized" | "source"
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   loadColumnState();
   loadFuenteOrderMode();
   loadSearchLayerMode();
@@ -1457,6 +1510,8 @@ document.addEventListener("DOMContentLoaded", () => {
   setupLemmaToggleAll();
   setupExportButtons();
   setupHorizontalScrollAreas();
+  await hydrateSourcesFromApi();
+  buildSourceSlugMaps();
   renderFuenteList();
   setupFuenteActions();
   setupPairFinder();
@@ -1470,10 +1525,34 @@ document.addEventListener("DOMContentLoaded", () => {
   setupMobileViewportMetrics();
   setupKeyboardAvoidance();
   setupScrollNav();
+  if (shouldRequireBackendSearch()) {
+    renderBackendRequiredState();
+    hashRouteApplied = true;
+    ensureHashChangeListener();
+    return;
+  }
   const hasInitialRoute = location.hash && location.hash.startsWith("#/");
-  const usedBootstrap = renderBootstrapRows({ skipForRoute: hasInitialRoute });
+  if (getSearchApiEndpoint()) {
+    const initialState = hasInitialRoute ? parseHashRoute(location.hash) : null;
+    hashRouteApplied = true;
+    ensureHashChangeListener();
+    if (initialState) {
+      applyParsedState(initialState);
+    } else {
+      applyFuenteFilters({ keepOffset: true });
+    }
+    return;
+  }
+  const usedBootstrap = renderBootstrapRows();
   if (hasInitialRoute) {
-    queueFullDataRefresh();
+    const initialState = parseHashRoute(location.hash);
+    hashRouteApplied = true;
+    ensureHashChangeListener();
+    if (initialState && usedBootstrap) {
+      applyParsedState(initialState);
+    } else {
+      queueFullDataRefresh();
+    }
   } else if (!usedBootstrap) {
     ensureFullDataLoad();
   } else {
@@ -1516,19 +1595,32 @@ function prepareDataRow(row, idx) {
   return row;
 }
 
-function getFullDataUrl() {
-  const dataPath = "data/data.jsonl.gz";
+function getDataAssetVersion() {
   let bootstrapVersion = "";
   try {
     const src = document.querySelector('script[src*="data/bootstrap.js"]')?.src || "";
     bootstrapVersion = src ? new URL(src, location.href).searchParams.get("v") || "" : "";
   } catch {}
-  const dataVersion = window.NAHUATL_DATA_VERSION
+  return window.NAHUATL_DATA_VERSION
     || window.NAHUATL_BOOTSTRAP?.dataVersion
     || bootstrapVersion
     || APP_ASSET_VERSION;
+}
+
+function getDataAssetUrl(dataPath) {
+  const dataVersion = getDataAssetVersion();
   const separator = dataPath.includes("?") ? "&" : "?";
   return `${dataPath}${separator}v=${encodeURIComponent(dataVersion)}`;
+}
+
+function getFullDataUrl() {
+  return getDataAssetUrl("data/data.jsonl.gz");
+}
+
+function getLazyDataUrl(relativePath) {
+  const clean = String(relativePath || "").replace(/^\/+/, "");
+  const path = clean.startsWith("data/") ? clean : `data/${clean}`;
+  return getDataAssetUrl(path);
 }
 
 function getNavigatorConnection() {
@@ -1559,16 +1651,13 @@ function shouldHoldFullDataForUserIntent() {
   const cores = getPositiveNavigatorNumber("hardwareConcurrency");
   if (cores && cores <= FULL_DATA_LOW_CORE_MAX) return true;
 
-  if (isLikelyPhoneViewport()) {
-    const unknownOrSmallMemory = !deviceMemory || deviceMemory <= 4;
-    const unknownOrFewCores = !cores || cores <= 4;
-    if (unknownOrSmallMemory && unknownOrFewCores) return true;
-  }
+  if (isLikelyPhoneViewport()) return true;
 
   return false;
 }
 
 function scheduleFullDataLoad() {
+  if (getSearchApiEndpoint() || !isStaticFallbackMode()) return;
   if (dataRowsComplete || fullDataLoadPromise || fullDataLoadScheduled) return;
   fullDataLoadScheduled = true;
   const startLoad = () => {
@@ -1588,6 +1677,14 @@ function refreshBootstrappedStatus() {
 }
 
 function ensureFullDataLoad() {
+  if (getSearchApiEndpoint()) {
+    pendingFullDataRefresh = false;
+    return Promise.resolve(dataRows);
+  }
+  if (!isStaticFallbackMode()) {
+    renderBackendRequiredState();
+    return Promise.resolve(null);
+  }
   if (dataRowsComplete) return Promise.resolve(dataRows);
   if (fullDataLoadPromise) return fullDataLoadPromise;
 
@@ -1640,13 +1737,919 @@ function handleFullDataLoadError() {
   ensureHashChangeListener();
 }
 
-async function loadCompressedJsonlRows(url) {
+async function ensureLazyDataManifest() {
+  if (lazyDataManifest) return lazyDataManifest;
+  if (!lazyDataManifestPromise) {
+    lazyDataManifestPromise = fetch(getDataAssetUrl(LAZY_DATA_MANIFEST_PATH))
+      .then(response => {
+        if (!response.ok) throw new Error(`Lazy manifest request failed with ${response.status}`);
+        return response.json();
+      })
+      .then(manifest => {
+        lazyDataManifest = manifest;
+        lazyRowChunkPaths = new Map((manifest.rowChunks || []).map(chunk => [chunk.id, chunk.path]));
+        return manifest;
+      });
+  }
+  return lazyDataManifestPromise;
+}
+
+function prepareLazyMetaRow(row, idx) {
+  row._rid = row.record_id || idx;
+  row._prio = parsePriority(row.prio);
+  row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
+  row.__lazyMeta = true;
+  row.__lazyLayers = row.__lazyLayers || {};
+  return row;
+}
+
+async function ensureLazyMetaRows() {
+  if (lazyMetaRows) return lazyMetaRows;
+  if (!lazyMetaPromise) {
+    lazyMetaPromise = ensureLazyDataManifest()
+      .then(manifest => loadCompressedJsonlRows(getLazyDataUrl(manifest.meta), { prepare: false }))
+      .then(rows => {
+        lazyMetaById = new Map();
+        rows.forEach((row, idx) => {
+          prepareLazyMetaRow(row, idx);
+          lazyMetaById.set(row.record_id, row);
+        });
+        lazyMetaRows = rows;
+        return rows;
+      });
+  }
+  return lazyMetaPromise;
+}
+
+function getLazyIndexManifestEntry(manifest, field, layer) {
+  const fieldIndexes = manifest?.indexes?.[field];
+  if (!fieldIndexes) return null;
+  return fieldIndexes[layer] || fieldIndexes.normalized || null;
+}
+
+function getLazyIndexCacheKey(field, layer) {
+  return `${field}::${layer}`;
+}
+
+async function ensureLazyFieldIndex(field, layer) {
+  const normalizedField = normalizeFieldKey(field);
+  const effectiveLayer = searchLayerAppliesToField(normalizedField) ? layer : "normalized";
+  const key = getLazyIndexCacheKey(normalizedField, effectiveLayer);
+  if (lazyLoadedIndexKeys.has(key)) return;
+  if (!lazyIndexPromises.has(key)) {
+    lazyIndexPromises.set(key, Promise.all([ensureLazyDataManifest(), ensureLazyMetaRows()])
+      .then(([manifest]) => {
+        const entry = getLazyIndexManifestEntry(manifest, normalizedField, effectiveLayer);
+        if (!entry?.path) throw new Error(`Missing lazy index for ${key}`);
+        return loadCompressedJsonlRows(getLazyDataUrl(entry.path), { prepare: false });
+      })
+      .then(rows => {
+        rows.forEach(item => {
+          const row = lazyMetaById.get(item.record_id);
+          if (!row) return;
+          row.__lazyLayers = row.__lazyLayers || {};
+          const layerMap = row.__lazyLayers[normalizedField] || {};
+          layerMap[effectiveLayer] = item.value || "";
+          row.__lazyLayers[normalizedField] = layerMap;
+          if (effectiveLayer === "normalized" && item.value != null) {
+            row[normalizedField] = item.value;
+          }
+        });
+        normalizationCache = new Map();
+        lazyLoadedIndexKeys.add(key);
+      }));
+  }
+  return lazyIndexPromises.get(key);
+}
+
+function getLazySearchLayersForField(field) {
+  const normalizedField = normalizeFieldKey(field);
+  if (!searchLayerAppliesToField(normalizedField)) return ["normalized"];
+  return getSearchLayerModesForField(normalizedField);
+}
+
+function isLazySupportedFilter(filter) {
+  if (!filter) return false;
+  if (filter.type === "fuenteSet") return true;
+  if (filter.type === "reverse" || filter.type === "reversePreset") return false;
+  if (filter.type && filter.type !== "filter" && filter.type !== "wordGroup") return false;
+  const field = normalizeFieldKey(filter.field);
+  if (!field || field === "Fuente") return true;
+  return FIELDS_WITH_LAZY_INDEX.has(field);
+}
+
+const FIELDS_WITH_LAZY_INDEX = new Set(["Editado", "Original", "Traducción", "Comentario"]);
+
+function collectLazyIndexNeeds(filters = activeFilters) {
+  const needs = new Map();
+  (filters || []).forEach(filter => {
+    if (!filter || filter.type === "fuenteSet") return;
+    const fields = Array.isArray(filter.fields) && filter.fields.length
+      ? filter.fields
+      : [filter.field];
+    fields.forEach(item => {
+      const field = normalizeFieldKey(item);
+      if (!field || field === "Fuente" || !FIELDS_WITH_LAZY_INDEX.has(field)) return;
+      const layers = getLazySearchLayersForField(field);
+      needs.set(field, new Set([...(needs.get(field) || []), ...layers]));
+    });
+  });
+  return [...needs.entries()].flatMap(([field, layers]) =>
+    [...layers].map(layer => ({ field, layer }))
+  );
+}
+
+function getLazySignatureValue(value) {
+  if (value instanceof Set) return [...value].sort();
+  if (Array.isArray(value)) return value.map(getLazySignatureValue);
+  if (value && typeof value === "object") return value;
+  return value;
+}
+
+function getLazyQuerySignature() {
+  return JSON.stringify({
+    filters: activeFilters.map(filter => ({
+      type: filter.type || "filter",
+      field: filter.field,
+      mode: filter.mode,
+      value: getLazySignatureValue(filter.value),
+      logic: filter.logic,
+      negate: !!filter.negate,
+      scope: normalizeScope(filter.scope),
+      owner: filter.owner || "",
+      fields: Array.isArray(filter.fields) ? filter.fields.map(normalizeFieldKey).filter(Boolean) : null,
+      expression: filter.expression || null,
+      conditions: filter.conditions || null,
+    })),
+    fuentes: [...selectedFuentes].sort(),
+    searchLayerMode,
+    tableViewMode,
+    oldSpanishMode,
+    accentSensitiveMode,
+    sortKeys: sortKeys.map(key => ({
+      field: normalizeFieldKey(key.field),
+      dir: key.dir === "desc" ? "desc" : "asc",
+    })).filter(key => key.field),
+    sortScope,
+  });
+}
+
+function getSearchApiEndpoint() {
+  try {
+    const params = new URLSearchParams(location.search || "");
+    const explicit = params.get("searchApi");
+    if (explicit) return explicit;
+    if (params.get("backend") === "1") return SEARCH_API_DEFAULT_PATH;
+    const advertised = document.querySelector('meta[name="nahuatl-search-api"]')?.getAttribute("content") || "";
+    if (advertised) return advertised;
+  } catch {}
+  return "";
+}
+
+function endpointForApiPath(apiPath) {
+  const endpoint = getSearchApiEndpoint();
+  if (!endpoint) return "";
+  try {
+    const url = new URL(endpoint, location.href);
+    if (url.pathname.endsWith("/api/search")) {
+      url.pathname = `${url.pathname.slice(0, -"/api/search".length)}${apiPath}`;
+    } else {
+      url.pathname = apiPath;
+    }
+    return url.href;
+  } catch {
+    return endpoint.replace(/\/api\/search$/, apiPath);
+  }
+}
+
+function getSourcesApiEndpoint() {
+  return endpointForApiPath("/api/sources");
+}
+
+function isStaticFallbackMode() {
+  if (location.protocol === "file:") return true;
+  try {
+    const params = new URLSearchParams(location.search || "");
+    const staticMode = String(params.get("static") || params.get("offline") || "").toLowerCase();
+    return ["1", "true", "yes"].includes(staticMode);
+  } catch {}
+  return false;
+}
+
+function shouldRequireBackendSearch() {
+  return !getSearchApiEndpoint() && !isStaticFallbackMode();
+}
+
+function shouldUseSearchApiPath() {
+  if (searchApiUnavailable || !getSearchApiEndpoint()) return false;
+  if (tableViewMode !== "rows" && tableViewMode !== "lemmas") return false;
+  return true;
+}
+
+function getSearchApiRequestSignature(querySignature = getLazyQuerySignature()) {
+  return JSON.stringify({
+    endpoint: getSearchApiEndpoint(),
+    querySignature,
+    offset: displayOffset,
+    pageSize: maxDisplayRows,
+  });
+}
+
+function getSelectedFuenteApiPayload() {
+  return selectedFuentes.size === FUENTE_OPTIONS.length ? [] : [...selectedFuentes];
+}
+
+function getApiSortPayload() {
+  return sortKeys.map(key => ({
+    field: normalizeFieldKey(key.field),
+    dir: key.dir === "desc" ? "desc" : "asc",
+  })).filter(key => key.field);
+}
+
+function getSearchApiPayload(requestSignature, querySignature) {
+  return {
+    requestSignature,
+    querySignature,
+    filters: getApiFilterPayload(activeFilters),
+    fuentes: getSelectedFuenteApiPayload(),
+    layer: searchLayerMode,
+    viewMode: tableViewMode,
+    accentSensitive: accentSensitiveMode,
+    oldSpanish: oldSpanishMode,
+    sortKeys: getApiSortPayload(),
+    sortScope,
+    randomizeBrowse: isUnfilteredBrowseState(activeFilters),
+    browseSeed: emptyBrowseSeed,
+    offset: displayOffset,
+    pageSize: maxDisplayRows,
+  };
+}
+
+async function querySearchApi(payload) {
+  const endpoint = getSearchApiEndpoint();
+  if (!endpoint) throw new Error("Search API endpoint is not configured.");
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) {
+    throw new Error(`Search API failed with ${response.status}`);
+  }
+  return response.json();
+}
+
+function replaceFuenteOptions(items) {
+  const sourceItems = (items || []).map(item => {
+    if (item && typeof item === "object") {
+      return {
+        name: String(item.name || "").trim(),
+        slug: String(item.slug || "").trim()
+      };
+    }
+    return { name: String(item || "").trim(), slug: "" };
+  }).filter(item => item.name);
+  const nextNames = [...new Set(sourceItems.map(item => item.name))];
+  if (!nextNames.length) return false;
+  apiSourceSlugs.clear();
+  sourceItems.forEach(item => {
+    if (item.slug && !apiSourceSlugs.has(item.name)) {
+      apiSourceSlugs.set(item.name, item.slug);
+    }
+  });
+  const previousDefault = DEFAULT_FUENTE_OPTIONS.slice();
+  const previousDefaultsBySession = new Map(sessions.map(session => [
+    session.id,
+    sourceSetEquals(session.fuentes, previousDefault)
+  ]));
+  FUENTE_OPTIONS.splice(0, FUENTE_OPTIONS.length, ...nextNames);
+  refreshDefaultFuenteOptions();
+  const valid = new Set(FUENTE_OPTIONS);
+  sessions.forEach(session => {
+    if (previousDefaultsBySession.get(session.id)) {
+      session.fuentes = createDefaultFuenteSet();
+      return;
+    }
+    session.fuentes = new Set([...session.fuentes].filter(name => valid.has(name)));
+  });
+  const currentSession = sessions.find(session => session.id === currentSessionId);
+  selectedFuentes = currentSession?.fuentes || createDefaultFuenteSet();
+  return true;
+}
+
+async function hydrateSourcesFromApi() {
+  const endpoint = getSourcesApiEndpoint();
+  if (!endpoint) return false;
+  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+  const timeoutId = controller ? window.setTimeout(() => controller.abort(), 5000) : null;
+  try {
+    const response = await fetch(endpoint, {
+      method: "GET",
+      headers: { "accept": "application/json" },
+      cache: "no-store",
+      signal: controller?.signal
+    });
+    if (!response.ok) throw new Error(`Source API failed with ${response.status}`);
+    const result = await response.json();
+    const sources = Array.isArray(result.sources) ? result.sources : [];
+    return replaceFuenteOptions(sources);
+  } catch (err) {
+    console.warn("Source API failed; using static source list.", err);
+    return false;
+  } finally {
+    if (timeoutId) window.clearTimeout(timeoutId);
+  }
+}
+
+function getLemmaDetailApiEndpoint() {
+  return endpointForApiPath("/api/lemma");
+}
+
+function shouldUseLemmaDetailApi(item) {
+  return !!getSearchApiEndpoint() && item?.detailRowsIncluded === false;
+}
+
+function getLemmaDetailApiPayload(lemma) {
+  return {
+    lemma,
+    filters: getApiFilterPayload(activeFilters),
+    fuentes: getSelectedFuenteApiPayload(),
+    layer: searchLayerMode,
+    accentSensitive: accentSensitiveMode,
+    oldSpanish: oldSpanishMode,
+    sortKeys: getApiSortPayload(),
+    sortScope,
+  };
+}
+
+async function queryLemmaDetailApi(payload) {
+  const endpoint = getLemmaDetailApiEndpoint();
+  if (!endpoint) throw new Error("Lemma detail API endpoint is not configured.");
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) {
+    throw new Error(`Lemma detail API failed with ${response.status}`);
+  }
+  return response.json();
+}
+
+function getPairFinderApiEndpoint() {
+  return endpointForApiPath("/api/pairs");
+}
+
+function shouldUsePairFinderApi(useFilters) {
+  return !!getSearchApiEndpoint();
+}
+
+function getPairFinderApiPayload({ useFilters, wordOnly, suffixConfig, column }) {
+  return {
+    filters: useFilters ? getApiFilterPayload(activeFilters) : [],
+    fuentes: useFilters ? getSelectedFuenteApiPayload() : [],
+    layer: searchLayerMode,
+    accentSensitive: accentSensitiveMode,
+    oldSpanish: oldSpanishMode,
+    column: normalizeFieldKey(column) || "Editado",
+    wordOnly,
+    suffixes: {
+      first: suffixConfig.first.raw,
+      second: suffixConfig.second.raw,
+      third: suffixConfig.third.raw,
+      fourth: suffixConfig.fourth.raw,
+    },
+  };
+}
+
+async function queryPairFinderApi(payload) {
+  const endpoint = getPairFinderApiEndpoint();
+  if (!endpoint) throw new Error("Pair finder API endpoint is not configured.");
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) {
+    throw new Error(`Pair finder API failed with ${response.status}`);
+  }
+  return response.json();
+}
+
+function getStudyApiEndpoint() {
+  return endpointForApiPath("/api/study");
+}
+
+function shouldUseStudyApi(useCurrent) {
+  return !!getSearchApiEndpoint();
+}
+
+function getApiFilterPayload(filters = activeFilters) {
+  return filters
+    .filter(filter => filter.type !== "fuenteSet")
+    .map(filter => ({
+      type: filter.type || "filter",
+      field: normalizeFieldKey(filter.field),
+      mode: filter.mode,
+      value: typeof filter.value === "string" ? filter.value : "",
+      logic: String(filter.logic || "AND").toUpperCase() === "OR" ? "OR" : "AND",
+      negate: !!filter.negate,
+      scope: normalizeScope(filter.scope),
+      wordGroupId: filter.wordGroupId || null,
+      fields: Array.isArray(filter.fields) ? filter.fields.map(normalizeFieldKey).filter(Boolean) : null,
+      expression: filter.expression || null,
+      conditions: filter.conditions || null,
+    }));
+}
+
+function getStudyThemeApiTerms() {
+  const theme = getStudyThemePreset();
+  if (!theme) return [];
+  return getStudyThemeTerms(theme).map(item => ({
+    term: item.term,
+    exact: !!item.exact,
+  }));
+}
+
+function getStudyApiPayload({ useCurrent, limit, scopeOnly = false }) {
+  const safeLimit = Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : getStudyLimit();
+  return {
+    filters: useCurrent ? getApiFilterPayload(activeFilters) : [],
+    fuentes: getSelectedFuenteApiPayload(),
+    layer: searchLayerMode,
+    accentSensitive: accentSensitiveMode,
+    oldSpanish: oldSpanishMode,
+    direction: getStudyDirection(),
+    themeTerms: getStudyThemeApiTerms(),
+    limit: safeLimit,
+    sampleLimit: Math.min(Math.max(safeLimit * 4, safeLimit), 800),
+    maxRows: Math.min(Math.max(safeLimit * 12, 400), 2500),
+    rowsPerGroup: 8,
+    seed: Math.floor(Math.random() * 2147483647),
+    scopeOnly,
+  };
+}
+
+async function queryStudyApi(payload) {
+  const endpoint = getStudyApiEndpoint();
+  if (!endpoint) throw new Error("Study API endpoint is not configured.");
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) {
+    throw new Error(`Study API failed with ${response.status}`);
+  }
+  return response.json();
+}
+
+function getExportApiEndpoint() {
+  return endpointForApiPath("/api/export");
+}
+
+function shouldUseExportApi() {
+  return !!getSearchApiEndpoint();
+}
+
+function getExportApiPayload() {
+  const columns = getExportColumns();
+  return {
+    filters: getApiFilterPayload(activeFilters),
+    fuentes: getSelectedFuenteApiPayload(),
+    layer: searchLayerMode,
+    displayLayer: orthographyLayerMode,
+    accentSensitive: accentSensitiveMode,
+    oldSpanish: oldSpanishMode,
+    sortKeys: getApiSortPayload(),
+    sortScope,
+    randomizeBrowse: isUnfilteredBrowseState(activeFilters),
+    browseSeed: emptyBrowseSeed,
+    columns: columns.map(field => field.key),
+    labels: columns.map(getExportColumnLabel),
+  };
+}
+
+async function queryExportApi(payload) {
+  const endpoint = getExportApiEndpoint();
+  if (!endpoint) throw new Error("Export API endpoint is not configured.");
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) {
+    throw new Error(`Export API failed with ${response.status}`);
+  }
+  return response.text();
+}
+
+function queueSearchApiQuery(querySignature, requestSignature, options = {}) {
+  if (searchApiQueryPromise) {
+    if (searchApiPendingRequestSignature === requestSignature) return;
+    searchApiQueryPromise.finally(() => {
+      if (getSearchApiRequestSignature(querySignature) === requestSignature) {
+        queueSearchApiQuery(querySignature, requestSignature, options);
+      }
+    });
+    return;
+  }
+
+  searchApiPendingRequestSignature = requestSignature;
+  pendingFullDataRefresh = true;
+  setTableStatusMessage(t("table.status.lazyLoading"));
+  updateScrollNavBadges({ resultCount: lastRenderTotal || bootstrapTotalRows });
+  searchApiQueryPromise = querySearchApi(getSearchApiPayload(requestSignature, querySignature))
+    .then(result => {
+      pendingFullDataRefresh = false;
+      searchApiPendingRequestSignature = "";
+      searchApiQueryPromise = null;
+      searchApiResult = {
+        ...result,
+        requestSignature,
+        querySignature,
+      };
+      applyFilters(false, { ...options, keepOffset: true });
+    })
+    .catch(err => {
+      pendingFullDataRefresh = false;
+      searchApiPendingRequestSignature = "";
+      searchApiQueryPromise = null;
+      if (getSearchApiRequestSignature(querySignature) !== requestSignature) {
+        return;
+      }
+      console.warn("Search API failed.", err);
+      renderSearchApiUnavailableState({ ...options, keepOffset: true });
+    });
+}
+
+function applySearchApiResult(result, options = {}) {
+  if (!result || result.requestSignature !== getSearchApiRequestSignature(result.querySignature)) {
+    return false;
+  }
+  const total = Number(result.total) || 0;
+  if (displayOffset >= total && total > 0) {
+    displayOffset = Math.max(0, total - maxDisplayRows);
+    searchApiResult = null;
+    const querySignature = getLazyQuerySignature();
+    queueSearchApiQuery(querySignature, getSearchApiRequestSignature(querySignature), options);
+    return true;
+  }
+
+  if (result.viewMode === "lemmas" || tableViewMode === "lemmas") {
+    const lemmaItems = Array.isArray(result.lemmaItems) ? result.lemmaItems.map(item => ({
+      ...item,
+      rows: Array.isArray(item.rows) ? item.rows.map(prepareDataRow) : [],
+      detailRowsIncluded: item.detailRowsIncluded !== false,
+      detailRowsLoaded: item.detailRowsIncluded !== false && Array.isArray(item.rows),
+      sources: Array.isArray(item.sources) ? item.sources : [],
+      translationClusters: Array.isArray(item.translationClusters) ? item.translationClusters : [],
+    })) : [];
+    lazyActiveSignature = result.querySignature || getLazyQuerySignature();
+    lazyActiveMatches = null;
+    lastFilteredRows = [];
+    lastRenderRows = [];
+    lastLemmaItems = lemmaItems;
+    lastLemmaItemsArePage = true;
+    lastLemmaRowTotal = Number(result.rowTotal) || 0;
+    lastLemmaPageOffsets = computeLemmaPageOffsetsForTotal(total, maxDisplayRows);
+    lastRenderTotal = total;
+    lastRankingSummary = null;
+    renderTable([], total);
+    updateSortIndicators();
+    restoreScroll(options);
+    renderActiveFilterChips();
+    requestStudyScopeUpdate();
+    updateUrlHash();
+    return true;
+  }
+
+  const rows = Array.isArray(result.rows) ? result.rows.map(prepareDataRow) : [];
+  lazyActiveSignature = result.querySignature || getLazyQuerySignature();
+  lazyActiveMatches = null;
+  lastLemmaItemsArePage = false;
+  lastLemmaRowTotal = 0;
+  lastFilteredRows = rows.slice();
+  lastRenderRows = rows.slice();
+  lastRenderTotal = total;
+  lastRankingSummary = null;
+  renderTable(rows, total);
+  updateSortIndicators();
+  restoreScroll(options);
+  renderActiveFilterChips();
+  requestStudyScopeUpdate();
+  updateUrlHash();
+  return true;
+}
+
+function renderSearchApiUnavailableState(options = {}) {
+  lazyActiveMatches = null;
+  lastFilteredRows = [];
+  lastRenderRows = [];
+  lastRenderTotal = 0;
+  lastLemmaItems = [];
+  lastLemmaItemsArePage = false;
+  lastLemmaRowTotal = 0;
+  lastLemmaPageOffsets = [0];
+  lastRankingSummary = null;
+  renderTable([], 0);
+  updateSortIndicators();
+  restoreScroll(options);
+  renderActiveFilterChips();
+  setTableStatusMessage(t("table.status.error"));
+  updateScrollNavBadges({ resultCount: 0 });
+  requestStudyScopeUpdate();
+  updateUrlHash();
+}
+
+function renderBackendRequiredState(options = {}) {
+  pendingFullDataRefresh = false;
+  lazyActiveMatches = null;
+  lastFilteredRows = [];
+  lastRenderRows = [];
+  lastRenderTotal = 0;
+  lastLemmaItems = [];
+  lastLemmaItemsArePage = false;
+  lastLemmaRowTotal = 0;
+  lastLemmaPageOffsets = [0];
+  lastRankingSummary = null;
+  renderTable([], 0);
+  updateSortIndicators();
+  restoreScroll(options);
+  renderActiveFilterChips();
+  setTableStatusMessage(t("table.status.backendRequired"));
+  updateScrollNavBadges({ resultCount: 0 });
+  requestStudyScopeUpdate();
+}
+
+function shouldUseLazyQueryPath() {
+  if (getSearchApiEndpoint() || !isStaticFallbackMode()) return false;
+  if (dataRowsComplete || lazyQueryFailed) return false;
+  if (tableViewMode !== "rows") return false;
+  if (sortKeys.length) return false;
+  if (!dataRowsBootstrapped && !lazyMetaRows) return false;
+  if (!activeFilters.every(isLazySupportedFilter)) return false;
+  const hasUserFilters = hasActiveFilterChips(activeFilters);
+  if (shouldHoldFullDataForUserIntent()) {
+    const canUseBootstrapFirstPage =
+      dataRowsBootstrapped &&
+      !hasUserFilters &&
+      isDefaultFuenteSelection() &&
+      displayOffset === 0 &&
+      maxDisplayRows <= dataRows.length;
+    return !canUseBootstrapFirstPage;
+  }
+  if (displayOffset >= dataRows.length) return true;
+  if (!isDefaultFuenteSelection()) return true;
+  return hasUserFilters;
+}
+
+function ensureLazySearchWorker() {
+  if (lazySearchWorkerUnavailable) return null;
+  if (lazySearchWorker) return lazySearchWorker;
+  if (typeof Worker === "undefined") {
+    lazySearchWorkerUnavailable = true;
+    return null;
+  }
+  try {
+    lazySearchWorker = new Worker(versionedAssetUrl("search-worker.js"));
+    lazySearchWorker.addEventListener("message", event => {
+      const msg = event.data || {};
+      const pending = lazyWorkerPendingRequests.get(msg.id);
+      if (!pending) return;
+      lazyWorkerPendingRequests.delete(msg.id);
+      if (msg.type === "result") pending.resolve(msg.result);
+      else pending.reject(new Error(msg.error || "Lazy search worker failed."));
+    });
+    lazySearchWorker.addEventListener("error", event => {
+      const error = new Error(event.message || "Lazy search worker failed.");
+      lazySearchWorkerUnavailable = true;
+      lazySearchWorker = null;
+      lazyWorkerPendingRequests.forEach(pending => pending.reject(error));
+      lazyWorkerPendingRequests.clear();
+    });
+  } catch {
+    lazySearchWorkerUnavailable = true;
+    lazySearchWorker = null;
+  }
+  return lazySearchWorker;
+}
+
+function shouldUseLazyWorkerPath() {
+  return !lazySearchWorkerUnavailable && typeof Worker !== "undefined";
+}
+
+function getLazyPageRequestSignature(querySignature = getLazyQuerySignature()) {
+  return JSON.stringify({
+    querySignature,
+    offset: displayOffset,
+    pageSize: maxDisplayRows,
+    assetVersion: getDataAssetVersion(),
+    browseSeed: emptyBrowseSeed,
+  });
+}
+
+function queryLazySearchWorker(payload) {
+  const worker = ensureLazySearchWorker();
+  if (!worker) return Promise.reject(new Error("Lazy search worker unavailable."));
+  const id = ++lazyWorkerRequestCounter;
+  worker.postMessage({ type: "query", id, payload });
+  return new Promise((resolve, reject) => {
+    lazyWorkerPendingRequests.set(id, { resolve, reject });
+  });
+}
+
+function queueLazyWorkerQuery(querySignature, requestSignature, options = {}) {
+  if (lazyWorkerQueryPromise) {
+    if (lazyWorkerPendingRequestSignature === requestSignature) return;
+    lazyWorkerQueryPromise.finally(() => {
+      if (getLazyPageRequestSignature(querySignature) === requestSignature) {
+        queueLazyWorkerQuery(querySignature, requestSignature, options);
+      }
+    });
+    return;
+  }
+
+  lazyWorkerPendingRequestSignature = requestSignature;
+  pendingFullDataRefresh = true;
+  setTableStatusMessage(t("table.status.lazyLoading"));
+  updateScrollNavBadges({ resultCount: lastRenderTotal || bootstrapTotalRows });
+  lazyWorkerQueryPromise = queryLazySearchWorker({
+    requestSignature,
+    querySignature,
+    activeFilters,
+    searchLayerMode,
+    oldSpanishMode,
+    accentSensitiveMode,
+    offset: displayOffset,
+    pageSize: maxDisplayRows,
+    assetVersion: getDataAssetVersion(),
+    emptyBrowseSeed,
+    randomizeBrowse: isUnfilteredBrowseState(activeFilters),
+  })
+    .then(result => {
+      pendingFullDataRefresh = false;
+      lazyWorkerPendingRequestSignature = "";
+      lazyWorkerQueryPromise = null;
+      lazyWorkerResult = result;
+      applyFilters(false, { ...options, keepOffset: true });
+    })
+    .catch(err => {
+      pendingFullDataRefresh = false;
+      lazyWorkerPendingRequestSignature = "";
+      lazyWorkerQueryPromise = null;
+      if (getLazyPageRequestSignature(querySignature) !== requestSignature) {
+        applyFilters(false, { ...options, keepOffset: true });
+        return;
+      }
+      console.warn("Lazy worker search failed; falling back to main-thread lazy search.", err);
+      lazySearchWorkerUnavailable = true;
+      lazySearchWorker = null;
+      applyFilters(false, { ...options, keepOffset: true });
+    });
+}
+
+function applyLazyWorkerResult(result, options = {}) {
+  if (!result || result.requestSignature !== getLazyPageRequestSignature(result.querySignature)) {
+    return false;
+  }
+  const total = Number(result.total) || 0;
+  if (displayOffset >= total && total > 0) {
+    displayOffset = Math.max(0, total - maxDisplayRows);
+    lazyWorkerResult = null;
+    const querySignature = getLazyQuerySignature();
+    queueLazyWorkerQuery(querySignature, getLazyPageRequestSignature(querySignature), options);
+    return true;
+  }
+
+  const rows = Array.isArray(result.rows) ? result.rows : [];
+  lazyActiveSignature = result.querySignature || getLazyQuerySignature();
+  lazyActiveMatches = null;
+  lastFilteredRows = rows.slice();
+  lastRenderRows = rows.slice();
+  lastRenderTotal = total;
+  lastRankingSummary = result.ranking
+    ? t(result.ranking.manual ? "table.status.detail.manual" : "table.status.detail.auto", {
+      exact: Number(result.ranking.exact) || 0,
+      phrase: Number(result.ranking.phrase) || 0,
+    })
+    : null;
+  renderTable(rows, total);
+  hydrateLazyRowsForPage(rows, total, options).catch(err => {
+    console.warn("Lazy page hydration failed.", err);
+  });
+  updateSortIndicators();
+  restoreScroll(options);
+  renderActiveFilterChips();
+  requestStudyScopeUpdate();
+  updateUrlHash();
+  return true;
+}
+
+function queueLazyQueryRefresh(signature, options = {}) {
+  if (lazyQueryPromise) {
+    if (lazyQueryPendingSignature === signature) return;
+    lazyQueryPromise.finally(() => {
+      if (getLazyQuerySignature() === signature && lazyActiveSignature !== signature) {
+        queueLazyQueryRefresh(signature, options);
+      }
+    });
+    return;
+  }
+  if (!lazyQueryPromise) {
+    lazyQueryPendingSignature = signature;
+    pendingFullDataRefresh = true;
+    setTableStatusMessage(t("table.status.lazyLoading"));
+    updateScrollNavBadges({ resultCount: bootstrapTotalRows || lastRenderTotal });
+    lazyQueryPromise = buildLazyQueryMatches(signature)
+      .then(matches => {
+        lazyActiveSignature = signature;
+        lazyActiveMatches = matches;
+        pendingFullDataRefresh = false;
+        lazyQueryPromise = null;
+        lazyQueryPendingSignature = "";
+        applyFilters(false, { ...options, keepOffset: true });
+      })
+      .catch(err => {
+        pendingFullDataRefresh = false;
+        lazyQueryPromise = null;
+        lazyQueryPendingSignature = "";
+        if (getLazyQuerySignature() !== signature) {
+          applyFilters(false, { ...options, keepOffset: true });
+          return;
+        }
+        console.warn("Lazy search failed; falling back to full data.", err);
+        lazyQueryFailed = true;
+        queueFullDataRefresh();
+      });
+  }
+}
+
+async function buildLazyQueryMatches(signature) {
+  await ensureLazyMetaRows();
+  const needs = collectLazyIndexNeeds(activeFilters);
+  await Promise.all(needs.map(need => ensureLazyFieldIndex(need.field, need.layer)));
+  if (signature !== getLazyQuerySignature()) {
+    throw new Error("Lazy query changed while indexes were loading.");
+  }
+  if (!activeFilters.length) return lazyMetaRows.slice();
+  buildEvalContext();
+  return lazyMetaRows.filter(row => evaluateTextFilters(row));
+}
+
+function getLazyPageHydrationSignature(rows, totalCount) {
+  const ids = rows.map(row => row.record_id || row._rid || "").join("|");
+  return `${lazyActiveSignature}::${displayOffset}::${totalCount}::${ids}`;
+}
+
+async function loadLazyRowChunk(chunkId) {
+  if (!chunkId) return [];
+  if (lazyRowChunkCache.has(chunkId)) return lazyRowChunkCache.get(chunkId);
+  if (!lazyRowChunkPromises.has(chunkId)) {
+    lazyRowChunkPromises.set(chunkId, ensureLazyDataManifest()
+      .then(() => {
+        const path = lazyRowChunkPaths.get(chunkId);
+        if (!path) throw new Error(`Missing lazy row chunk ${chunkId}`);
+        return loadCompressedJsonlRows(getLazyDataUrl(path));
+      })
+      .then(rows => {
+        lazyRowChunkCache.set(chunkId, rows);
+        rows.forEach(row => {
+          const id = row.record_id || row._rid;
+          if (id) lazyDisplayRowsById.set(id, row);
+        });
+        return rows;
+      }));
+  }
+  return lazyRowChunkPromises.get(chunkId);
+}
+
+async function hydrateLazyRowsForPage(rows, totalCount, options = {}) {
+  if (!rows.length || !rows.some(row => row.__lazyMeta)) return;
+  const token = ++lazyHydrationToken;
+  const signature = getLazyPageHydrationSignature(rows, totalCount);
+  const chunks = [...new Set(rows.map(row => row._lazyChunk).filter(Boolean))];
+  setTableStatusMessage(t("table.status.showing", {
+    start: Math.min(displayOffset + 1, totalCount || 0),
+    end: Math.min(displayOffset + rows.length, totalCount || 0),
+    total: totalCount
+  }), t("table.status.detail.loadingPage"));
+  await Promise.all(chunks.map(loadLazyRowChunk));
+  if (token !== lazyHydrationToken) return;
+  if (signature !== getLazyPageHydrationSignature(rows, totalCount)) return;
+  const hydrated = rows.map(row => lazyDisplayRowsById.get(row.record_id) || row);
+  lastRenderRows = hydrated.slice();
+  renderTable(hydrated, totalCount);
+  restoreScroll(options);
+}
+
+async function loadCompressedJsonlRows(url, options = {}) {
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Data request failed with ${response.status}`);
   }
   if (!response.body) {
-    return parseJsonlText(await response.text());
+    return parseJsonlText(await response.text(), options);
   }
 
   let stream = response.body;
@@ -1674,7 +2677,7 @@ async function loadCompressedJsonlRows(url) {
     for (const line of lines) {
       if (!line) continue;
       const row = JSON.parse(line);
-      prepareDataRow(row, rows.length);
+      if (options.prepare !== false) prepareDataRow(row, rows.length);
       rows.push(row);
       parsedSinceYield += 1;
       if (parsedSinceYield >= 5000) {
@@ -1686,19 +2689,19 @@ async function loadCompressedJsonlRows(url) {
   carry += decoder.decode();
   if (carry.trim()) {
     const row = JSON.parse(carry);
-    prepareDataRow(row, rows.length);
+    if (options.prepare !== false) prepareDataRow(row, rows.length);
     rows.push(row);
   }
   return rows;
 }
 
-function parseJsonlText(text) {
+function parseJsonlText(text, options = {}) {
   const rows = [];
   const lines = text.split("\n");
   for (const line of lines) {
     if (!line) continue;
     const row = JSON.parse(line);
-    prepareDataRow(row, rows.length);
+    if (options.prepare !== false) prepareDataRow(row, rows.length);
     rows.push(row);
   }
   return rows;
@@ -3422,6 +4425,10 @@ function shouldDeferUntilFullData() {
 }
 
 function queueFullDataRefresh() {
+  if (shouldRequireBackendSearch()) {
+    renderBackendRequiredState();
+    return;
+  }
   pendingFullDataRefresh = true;
   setTableStatusMessage(t("table.status.fullLoading"));
   updateScrollNavBadges({ resultCount: bootstrapTotalRows || lastRenderTotal });
@@ -3543,29 +4550,69 @@ function heapSiftDownWorstFirst(heap, idx, comparator) {
 }
 
 function applyFilters(initial = false, options = {}) {
-  if (!dataRows.length) return;
-  if (shouldDeferUntilFullData()) {
+  const useSearchApiRows = shouldUseSearchApiPath();
+  if (!dataRows.length && !lazyMetaRows && !useSearchApiRows) return;
+  if (!options.keepOffset) {
+    displayOffset = 0;
+    pageScrollByOffset.clear();
+  }
+  const useLazyRows = shouldUseLazyQueryPath();
+  if (useSearchApiRows) {
+    bumpHighlightCache();
+    const querySignature = getLazyQuerySignature();
+    const requestSignature = getSearchApiRequestSignature(querySignature);
+    if (searchApiResult?.requestSignature === requestSignature) {
+      if (applySearchApiResult(searchApiResult, options)) return;
+    }
+    renderActiveFilterChips();
+    queueSearchApiQuery(querySignature, requestSignature, options);
+    return;
+  }
+  if (getSearchApiEndpoint()) {
+    renderActiveFilterChips();
+    renderSearchApiUnavailableState(options);
+    return;
+  }
+  if (useLazyRows && shouldUseLazyWorkerPath()) {
+    bumpHighlightCache();
+    const querySignature = getLazyQuerySignature();
+    const requestSignature = getLazyPageRequestSignature(querySignature);
+    if (lazyWorkerResult?.requestSignature === requestSignature) {
+      if (applyLazyWorkerResult(lazyWorkerResult, options)) return;
+    }
+    renderActiveFilterChips();
+    queueLazyWorkerQuery(querySignature, requestSignature, options);
+    return;
+  }
+  if (useLazyRows) {
+    const signature = getLazyQuerySignature();
+    if (lazyActiveSignature !== signature || !Array.isArray(lazyActiveMatches)) {
+      renderActiveFilterChips();
+      queueLazyQueryRefresh(signature, options);
+      return;
+    }
+  }
+  if (!useLazyRows && shouldDeferUntilFullData()) {
     renderActiveFilterChips();
     queueFullDataRefresh();
     return;
   }
   bumpHighlightCache();
-  if (!options.keepOffset) {
-    displayOffset = 0;
-    pageScrollByOffset.clear();
-  }
+  const sourceRows = useLazyRows ? lazyActiveMatches : dataRows;
   let matches;
   if (!activeFilters.length) {
-    matches = dataRows.slice();
+    matches = sourceRows.slice();
   } else {
     buildEvalContext();
-    matches = dataRows.filter(row => evaluateTextFilters(row));
+    matches = sourceRows.filter(row => evaluateTextFilters(row));
   }
   lastFilteredRows = matches;
 
   if (tableViewMode === "lemmas") {
     const lemmaItems = buildLemmaItemsFromRows(matches);
     lastLemmaItems = lemmaItems;
+    lastLemmaItemsArePage = false;
+    lastLemmaRowTotal = matches.length;
     lastLemmaPageOffsets = computeLemmaPageOffsets(lemmaItems, maxDisplayRows);
     const total = lemmaItems.length;
     if (displayOffset >= total) {
@@ -3610,6 +4657,11 @@ function applyFilters(initial = false, options = {}) {
   lastRenderTotal = total;
   lastRankingSummary = buildRankingSummary(rankingContext, sortKeys.length > 0);
   renderTable(paged, total);
+  if (useLazyRows) {
+    hydrateLazyRowsForPage(paged, total, options).catch(err => {
+      console.warn("Lazy page hydration failed.", err);
+    });
+  }
   updateSortIndicators();
   restoreScroll(options);
   renderActiveFilterChips();
@@ -4112,8 +5164,15 @@ function setStatus(message) {
   setTableStatusMessage(message);
 }
 
+function hasActiveLazyResults() {
+  const signature = getLazyQuerySignature();
+  return (Array.isArray(lazyActiveMatches) && lazyActiveSignature === signature) ||
+    (lazyWorkerResult?.querySignature === signature && lazyWorkerResult?.requestSignature === getLazyPageRequestSignature(signature)) ||
+    (searchApiResult?.querySignature === signature && searchApiResult?.requestSignature === getSearchApiRequestSignature(signature));
+}
+
 function getStatusTotal(total) {
-  return dataRowsBootstrapped && !dataRowsComplete && bootstrapTotalRows > total
+  return !hasActiveLazyResults() && dataRowsBootstrapped && !dataRowsComplete && bootstrapTotalRows > total
     ? bootstrapTotalRows
     : total;
 }
@@ -4128,6 +5187,7 @@ function updateTableStatus(displayed, total) {
   const start = previewTotal === 0 ? 0 : Math.min(displayOffset + 1, previewTotal);
   const end = Math.min(displayOffset + displayed, previewTotal);
   const detail = dataRowsBootstrapped && !dataRowsComplete
+    && !hasActiveLazyResults()
     ? t(fullDataLoadPromise || pendingFullDataRefresh
       ? "table.status.detail.loadingFull"
       : "table.status.detail.preview")
@@ -4715,7 +5775,10 @@ function getPagedLemmaNames() {
   const pageIdx = findLemmaPageIndex(displayOffset);
   const startIdx = offsets[pageIdx] || 0;
   const endIdx = pageIdx + 1 < offsets.length ? offsets[pageIdx + 1] : lastLemmaItems.length;
-  return lastLemmaItems.slice(startIdx, endIdx).map(item => item.lemma);
+  const items = lastLemmaItemsArePage
+    ? lastLemmaItems
+    : lastLemmaItems.slice(startIdx, endIdx);
+  return items.map(item => item.lemma);
 }
 
 function getVisibleLemmas() {
@@ -5305,7 +6368,23 @@ function csvEscape(value) {
   return s;
 }
 
-function exportAsCsv() {
+async function exportAsCsv() {
+  if (shouldUseExportApi()) {
+    try {
+      const csvText = await queryExportApi(getExportApiPayload());
+      const csvRows = csvText.replace(/^\uFEFF/, "").split(/\r\n|\n/).filter(Boolean);
+      if (csvRows.length <= 1) {
+        alert(t("table.export.empty"));
+        return;
+      }
+      downloadBlob(csvText, t("table.export.csv.filename"), "text/csv;charset=utf-8");
+    } catch (err) {
+      console.warn("Export API failed.", err);
+      alert(t("table.status.error"));
+    }
+    return;
+  }
+
   const rows = getExportRows();
   if (!rows.length) {
     alert(t("table.export.empty"));
@@ -5483,7 +6562,15 @@ function getSearchLayerModesForField(fieldKey) {
 }
 
 function getSearchDisplayValueForLayer(row, fieldKey, layer) {
-  return searchLayerAppliesToField(fieldKey) && layer === "source"
+  const normalizedField = normalizeFieldKey(fieldKey);
+  const lazyLayer = row?.__lazyLayers?.[normalizedField];
+  if (lazyLayer) {
+    if (searchLayerAppliesToField(normalizedField) && layer === "source") {
+      return lazyLayer.source ?? lazyLayer.normalized ?? row[normalizedField] ?? "";
+    }
+    return lazyLayer.normalized ?? row[normalizedField] ?? "";
+  }
+  return searchLayerAppliesToField(normalizedField) && layer === "source"
     ? getSourceDisplayValue(row, fieldKey)
     : getNormalizedDisplayValue(row, fieldKey);
 }
@@ -6437,6 +7524,8 @@ function applyFuenteFilters(options = {}) {
     lastRenderRows = [];
     lastRenderTotal = 0;
     lastLemmaItems = [];
+    lastLemmaItemsArePage = false;
+    lastLemmaRowTotal = 0;
     renderTable([], 0);
     requestStudyScopeUpdate();
     updateUrlHash();
@@ -6640,7 +7729,65 @@ function buildLemmaGroupTranslationList(item) {
   return list;
 }
 
-function toggleLemmaExpansion(groupRow, lemma) {
+async function ensureLemmaDetailRows(item) {
+  if (!item) return [];
+  if (!shouldUseLemmaDetailApi(item)) return item.rows || [];
+  if (item.detailRowsLoaded) return item.rows || [];
+  if (item.detailRowsPromise) return item.detailRowsPromise;
+  item.detailRowsPromise = queryLemmaDetailApi(getLemmaDetailApiPayload(item.lemma))
+    .then(result => {
+      const rows = Array.isArray(result.rows) ? result.rows.map(prepareDataRow) : [];
+      item.rows = rows;
+      item.rowCount = Number(result.rowCount) || rows.length;
+      item.detailRowsIncluded = true;
+      item.detailRowsLoaded = true;
+      item.detailRowsPromise = null;
+      return rows;
+    })
+    .catch(err => {
+      item.detailRowsPromise = null;
+      throw err;
+    });
+  return item.detailRowsPromise;
+}
+
+async function renderLemmaDetailRowsForExpandedGroup(groupRow, item, stripe) {
+  const lemma = item?.lemma || groupRow?.dataset?.lemma || "";
+  if (!groupRow || !item || !lemma) return false;
+  const tbody = groupRow.parentElement;
+  if (!tbody) return false;
+  const toggleBtn = groupRow.querySelector(".lemma-toggle");
+  removeLemmaDetailRows(tbody, lemma);
+  if (shouldUseLemmaDetailApi(item) && !item.detailRowsLoaded) {
+    if (toggleBtn) toggleBtn.textContent = "...";
+    setTableStatusMessage(t("table.status.lazyLoading"));
+    try {
+      await ensureLemmaDetailRows(item);
+    } catch (err) {
+      console.warn("Lemma detail API failed.", err);
+      expandedLemmas.delete(lemma);
+      groupRow.classList.remove("expanded");
+      if (toggleBtn) {
+        toggleBtn.textContent = "+";
+        toggleBtn.setAttribute("aria-expanded", "false");
+      }
+      setTableStatusMessage(t("table.status.error"));
+      updateTableToggleButton();
+      updateLemmaToggleButton();
+      return false;
+    }
+  }
+  if (!expandedLemmas.has(lemma) || !groupRow.isConnected) return false;
+  if (toggleBtn) {
+    toggleBtn.textContent = "−";
+    toggleBtn.setAttribute("aria-expanded", "true");
+  }
+  appendLemmaDetailRowsAfter(groupRow, item, stripe);
+  updateTableStatusForLemmas(lastRenderTotal || lastLemmaItems.length);
+  return true;
+}
+
+async function toggleLemmaExpansion(groupRow, lemma) {
   const tbody = groupRow.parentElement;
   if (!tbody) return;
   const expanded = expandedLemmas.has(lemma);
@@ -6663,11 +7810,13 @@ function toggleLemmaExpansion(groupRow, lemma) {
     const item = lastLemmaItems.find(it => it.lemma === lemma);
     if (item) {
       const stripe = groupRow.classList.contains("stripe-alt");
-      appendLemmaDetailRowsAfter(groupRow, item, stripe);
+      await renderLemmaDetailRowsForExpandedGroup(groupRow, item, stripe);
     }
   }
-  lastLemmaPageOffsets = computeLemmaPageOffsets(lastLemmaItems, maxDisplayRows);
-  updatePaginationControls(lastLemmaItems.length);
+  if (!lastLemmaItemsArePage) {
+    lastLemmaPageOffsets = computeLemmaPageOffsets(lastLemmaItems, maxDisplayRows);
+  }
+  updatePaginationControls(lastRenderTotal || lastLemmaItems.length);
   updateTableToggleButton();
   updateLemmaToggleButton();
 }
@@ -7049,7 +8198,9 @@ function renderLemmasIntoTbody(tbody, totalCount) {
   const pageIdx = findLemmaPageIndex(displayOffset);
   const startIdx = offsets[pageIdx];
   const endIdx = pageIdx + 1 < offsets.length ? offsets[pageIdx + 1] : lastLemmaItems.length;
-  const slice = lastLemmaItems.slice(startIdx, endIdx);
+  const slice = lastLemmaItemsArePage
+    ? lastLemmaItems
+    : lastLemmaItems.slice(startIdx, endIdx);
 
   slice.forEach((item, groupIdx) => {
     const stripe = groupIdx % 2 === 0;
@@ -7057,7 +8208,7 @@ function renderLemmasIntoTbody(tbody, totalCount) {
     if (stripe) groupRow.classList.add("stripe-alt");
     tbody.appendChild(groupRow);
     if (expandedLemmas.has(item.lemma)) {
-      appendLemmaDetailRowsAfter(groupRow, item, stripe);
+      renderLemmaDetailRowsForExpandedGroup(groupRow, item, stripe);
     }
   });
 }
@@ -7065,8 +8216,11 @@ function renderLemmasIntoTbody(tbody, totalCount) {
 function buildLemmaDossierToken(entry) {
   const token = document.createElement("span");
   token.className = "lemma-dossier-token";
-  if (entry.sources?.size) {
-    token.title = [...entry.sources].sort(compareFuenteNames).join("\n");
+  const sourceList = entry.sources instanceof Set
+    ? [...entry.sources]
+    : Array.isArray(entry.sources) ? entry.sources : [];
+  if (sourceList.length) {
+    token.title = sourceList.sort(compareFuenteNames).join("\n");
   }
 
   const main = document.createElement("span");
@@ -7135,8 +8289,13 @@ function removeLemmaDetailRows(tbody, lemma) {
 
 function computeLemmaPageOffsets(items, pageSize) {
   if (!items.length || pageSize <= 0) return [0];
+  return computeLemmaPageOffsetsForTotal(items.length, pageSize);
+}
+
+function computeLemmaPageOffsetsForTotal(total, pageSize) {
+  if (!total || pageSize <= 0) return [0];
   const offsets = [0];
-  for (let i = pageSize; i < items.length; i += pageSize) {
+  for (let i = pageSize; i < total; i += pageSize) {
     offsets.push(i);
   }
   return offsets;
@@ -7153,7 +8312,7 @@ function findLemmaPageIndex(itemOffset) {
 
 function updateTableStatusForLemmas(total) {
   updateScrollNavBadges({ resultCount: total });
-  const rowsTotal = lastFilteredRows.length;
+  const rowsTotal = lastLemmaItemsArePage ? lastLemmaRowTotal : lastFilteredRows.length;
   setTableStatusMessage(t("view.lemmas.summary", { lemmas: total, rows: rowsTotal }));
 }
 
@@ -7252,7 +8411,40 @@ function getPairSuffixConfigFromInputs() {
   };
 }
 
-function runPairFinder() {
+function pairFormEntriesToMap(entries) {
+  const map = new Map();
+  if (!Array.isArray(entries)) return map;
+  entries.forEach(entry => {
+    if (!Array.isArray(entry) || !entry.length) return;
+    const form = String(entry[0] ?? "");
+    if (!form) return;
+    const count = Number(entry[1]) || 0;
+    map.set(form, count);
+  });
+  return map;
+}
+
+function normalizePairResultFromApi(pair) {
+  return {
+    stem: String(pair?.stem || ""),
+    first: pairFormEntriesToMap(pair?.first),
+    second: pairFormEntriesToMap(pair?.second),
+    third: pairFormEntriesToMap(pair?.third),
+    fourth: pairFormEntriesToMap(pair?.fourth),
+  };
+}
+
+function getPairMetaFromSuffixConfig(suffixConfig, rows = 0) {
+  return {
+    rows,
+    labelFirst: suffixConfig.labelFirst,
+    labelSecond: suffixConfig.labelSecond,
+    labelThird: suffixConfig.labelThird,
+    labelFourth: suffixConfig.labelFourth
+  };
+}
+
+async function runPairFinder() {
   const resultsEl = document.getElementById("pairResults");
   const select = document.getElementById("pairColumn");
   if (!resultsEl || !select) return;
@@ -7261,6 +8453,25 @@ function runPairFinder() {
   const wordOnly = document.getElementById("pairWordOnly")?.checked ?? true;
   const suffixConfig = getPairSuffixConfigFromInputs();
   const column = select.value;
+
+  if (shouldUsePairFinderApi(useFilters)) {
+    resultsEl.textContent = t("table.status.lazyLoading");
+    try {
+      const result = await queryPairFinderApi(getPairFinderApiPayload({
+        useFilters,
+        wordOnly,
+        suffixConfig,
+        column,
+      }));
+      const pairs = Array.isArray(result.pairs) ? result.pairs.map(normalizePairResultFromApi) : [];
+      renderPairResults(pairs, getPairMetaFromSuffixConfig(suffixConfig, Number(result.rows) || 0));
+    } catch (err) {
+      console.warn("Pair finder API failed.", err);
+      resultsEl.textContent = t("table.status.error");
+    }
+    return;
+  }
+
   const rows = getPairFinderRows(useFilters);
 
   const pairMap = new Map();
@@ -7309,13 +8520,7 @@ function runPairFinder() {
   });
 
   pairs.sort((a, b) => alphaNumCollator.compare(a.stem, b.stem));
-  renderPairResults(pairs, {
-    rows: rows.length,
-    labelFirst: suffixConfig.labelFirst,
-    labelSecond: suffixConfig.labelSecond,
-    labelThird: suffixConfig.labelThird,
-    labelFourth: suffixConfig.labelFourth
-  });
+  renderPairResults(pairs, getPairMetaFromSuffixConfig(suffixConfig, rows.length));
 }
 
 function renderPairResults(pairs, meta) {
@@ -8005,6 +9210,10 @@ function getStudyRows() {
   return getStudyRowsForThemeByLemma(baseRows, theme);
 }
 
+function normalizeStudyRowsFromApi(rows) {
+  return Array.isArray(rows) ? rows.map((row, idx) => prepareDataRow(row, idx)) : [];
+}
+
 function getStudyThemeTextIndex(value) {
   const text = normalizeString(cleanStudyText(value));
   return {
@@ -8238,7 +9447,7 @@ function isStudyPanelActive() {
   return document.getElementById("studyPanel")?.classList.contains("active") ?? false;
 }
 
-function updateStudyScope(options = {}) {
+async function updateStudyScope(options = {}) {
   const el = document.getElementById("studyScope");
   if (!el) return;
   if (options instanceof Event) options = {};
@@ -8246,6 +9455,30 @@ function updateStudyScope(options = {}) {
     studyScopeDirty = true;
     return;
   }
+  const useCurrent = document.getElementById("studyUseFilters")?.checked ?? false;
+  if (shouldUseStudyApi(useCurrent)) {
+    const requestId = ++studyScopeRequestCounter;
+    studyScopeDirty = false;
+    el.textContent = t("table.status.lazyLoading");
+    try {
+      const result = await queryStudyApi(getStudyApiPayload({
+        useCurrent,
+        limit: getStudyLimit(),
+        scopeOnly: true,
+      }));
+      if (requestId !== studyScopeRequestCounter) return;
+      el.textContent = t("study.scope", {
+        rows: Number(result.rowCount) || 0,
+        cards: Number(result.possibleCards) || 0
+      });
+    } catch (err) {
+      if (requestId !== studyScopeRequestCounter) return;
+      console.warn("Study API scope failed.", err);
+      el.textContent = t("table.status.error");
+    }
+    return;
+  }
+
   const rows = getStudyRows();
   const cards = rows.length ? countStudyPossibleCardsFromRows(rows, { direction: getStudyDirection() }) : 0;
   studyScopeDirty = false;
@@ -8294,13 +9527,7 @@ function getStudyProgressText() {
   });
 }
 
-function buildStudyDeck() {
-  const rows = getStudyRows();
-  const limit = getStudyLimit();
-  let cards = buildStudyCardsFromRows(rows, {
-    limit,
-    direction: getStudyDirection()
-  });
+function setStudyDeckFromCards(cards, limit) {
   cards = shuffleStudyCards(cards);
   studyBaseDeck = cards.slice(0, limit);
   studyDeck = studyBaseDeck.slice();
@@ -8309,6 +9536,51 @@ function buildStudyDeck() {
   studyEmptyMessageKey = studyDeck.length ? "study.empty" : "study.noCards";
   resetStudyStats();
   renderStudyCard();
+}
+
+async function buildStudyDeck() {
+  const useCurrent = document.getElementById("studyUseFilters")?.checked ?? false;
+  const limit = getStudyLimit();
+  if (shouldUseStudyApi(useCurrent)) {
+    const requestId = ++studyDeckRequestCounter;
+    studyEmptyMessageKey = "table.status.lazyLoading";
+    studyBaseDeck = [];
+    studyDeck = [];
+    studyIndex = 0;
+    resetStudyAnswerState();
+    resetStudyStats();
+    renderStudyCard();
+    try {
+      const result = await queryStudyApi(getStudyApiPayload({ useCurrent, limit }));
+      if (requestId !== studyDeckRequestCounter) return;
+      const rows = normalizeStudyRowsFromApi(result.rows);
+      const cards = buildStudyCardsFromRows(rows, {
+        limit,
+        direction: getStudyDirection()
+      });
+      setStudyDeckFromCards(cards, limit);
+      const scopeEl = document.getElementById("studyScope");
+      if (scopeEl) {
+        scopeEl.textContent = t("study.scope", {
+          rows: Number(result.rowCount) || rows.length,
+          cards: Number(result.possibleCards) || cards.length
+        });
+      }
+    } catch (err) {
+      if (requestId !== studyDeckRequestCounter) return;
+      console.warn("Study API deck failed.", err);
+      studyEmptyMessageKey = "table.status.error";
+      renderStudyCard();
+    }
+    return;
+  }
+
+  const rows = getStudyRows();
+  const cards = buildStudyCardsFromRows(rows, {
+    limit,
+    direction: getStudyDirection()
+  });
+  setStudyDeckFromCards(cards, limit);
 }
 
 function resetStudyDeck() {
@@ -8764,6 +10036,7 @@ const MODE_CODE_IN = { e: "exact", s: "starts", a: "any", d: "ends" };
 
 const sourceToSlug = new Map();
 const slugToSource = new Map();
+const apiSourceSlugs = new Map();
 let hashRouteApplied = false;
 let suppressHashUpdate = false;
 let hashChangeListenerAttached = false;
@@ -8798,7 +10071,7 @@ function buildSourceSlugMaps() {
   slugToSource.clear();
   const collisions = new Set();
   FUENTE_OPTIONS.forEach(name => {
-    registerSourceSlug(name, slugifySourceName(name), collisions);
+    registerSourceSlug(name, apiSourceSlugs.get(name) || slugifySourceName(name), collisions);
   });
   if (collisions.size && typeof console !== "undefined") {
     console.warn("Source-slug collisions detected (share URLs may route to first source only):",

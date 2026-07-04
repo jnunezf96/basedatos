@@ -2,6 +2,8 @@ __pycache__/
 *.pyc
 .DS_Store
 data/data.jsonl.bak*.gz
+data/search.sqlite*
+data/lazy/
 resources/dictionaries/
 .claude/
 tools/

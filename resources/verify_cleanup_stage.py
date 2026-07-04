@@ -5,8 +5,9 @@ Default mode is read-only: it validates the gzip, compiles key scripts, parses
 the bootstrap, runs the sentence-source audit and Spanish spellcheck, scans any
 target residue expressions, and prints the current cache tags.
 
-Use --rebuild-bootstrap and --bump-cache explicitly when a data-writing stage
-has already been reviewed and needs the browser payload updated.
+Use --rebuild-bootstrap, --rebuild-lazy-assets and --bump-cache explicitly when
+a data-writing stage has already been reviewed and needs the browser payload
+updated.
 """
 
 from __future__ import annotations
@@ -26,6 +27,7 @@ DATA_PATH = Path("data/data.jsonl.gz")
 BOOTSTRAP_PATH = Path("data/bootstrap.js")
 INDEX_PATH = Path("index.html")
 SW_PATH = Path("sw.js")
+LAZY_ASSET_SCRIPT = Path("resources/build_lazy_data_assets.py")
 DISPLAY_FIELDS = ["Traducción", "Traducción (es)", "Comentario", "Comentario (es)", "Comentario_wimmer_plus_html"]
 DEFAULT_COMPILE_SCRIPTS = [
     Path("resources/audit_sentence_sources.py"),
@@ -117,6 +119,10 @@ def run_command(cmd: list[str]) -> str:
     return (result.stdout + result.stderr).strip()
 
 
+def rebuild_lazy_assets(script: Path) -> str:
+    return run_command([sys.executable, str(script)])
+
+
 def parse_target(raw: str) -> tuple[str | None, re.Pattern[str]]:
     if "::" in raw:
         source, pattern = raw.split("::", 1)
@@ -164,6 +170,7 @@ def main() -> int:
     parser.add_argument("--script", action="append", type=Path, help="Additional Python script to compile. Repeatable.")
     parser.add_argument("--target", action="append", default=[], help="Residue scan, optionally Source::regex. Repeatable.")
     parser.add_argument("--rebuild-bootstrap", action="store_true", help="Rewrite data/bootstrap.js from data/data.jsonl.gz.")
+    parser.add_argument("--rebuild-lazy-assets", action="store_true", help="Rewrite data/lazy search indexes and row chunks.")
     parser.add_argument("--bump-cache", action="store_true", help="Increment index.html bootstrap tag and sw.js cache version.")
     parser.add_argument("--skip-audit", action="store_true")
     parser.add_argument("--skip-spellcheck", action="store_true")
@@ -185,6 +192,12 @@ def main() -> int:
             print(f"rebuilt {args.bootstrap}")
         except Exception as exc:  # noqa: BLE001
             failures.append(f"bootstrap rebuild failed: {exc}")
+
+    if args.rebuild_lazy_assets and stats.total_rows:
+        try:
+            print(rebuild_lazy_assets(LAZY_ASSET_SCRIPT))
+        except Exception as exc:  # noqa: BLE001
+            failures.append(f"lazy asset rebuild failed: {exc}")
 
     try:
         bootstrap_total, bootstrap_rows = parse_bootstrap(args.bootstrap)
