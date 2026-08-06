@@ -6357,6 +6357,41 @@ function getImageExportCellText(cell) {
   return (clone.innerText || clone.textContent || "").replace(/\s+/g, " ").trim();
 }
 
+function wrapImageExportText(ctx, text, maxWidth) {
+  const value = String(text || "").trim();
+  if (!value) return [""];
+  const words = value.split(/\s+/).flatMap(word => {
+    if (ctx.measureText(word).width <= maxWidth) return [word];
+    const chunks = [];
+    let chunk = "";
+    Array.from(word).forEach(char => {
+      const candidate = chunk + char;
+      if (chunk && ctx.measureText(candidate).width > maxWidth) {
+        chunks.push(chunk);
+        chunk = char;
+      } else {
+        chunk = candidate;
+      }
+    });
+    if (chunk) chunks.push(chunk);
+    return chunks;
+  });
+  const lines = [];
+  let line = "";
+
+  words.forEach(word => {
+    const candidate = line ? `${line} ${word}` : word;
+    if (!line || ctx.measureText(candidate).width <= maxWidth) {
+      line = candidate;
+      return;
+    }
+    lines.push(line);
+    line = word;
+  });
+  if (line) lines.push(line);
+  return lines;
+}
+
 function markRuntimeEvent(name, value = "1") {
   try {
     document.documentElement.dataset[name] = String(value);
@@ -6424,57 +6459,112 @@ function exportTableAsImage(format = "jpeg") {
   const columns = getExportColumns();
   const table = getBodyTable();
   if (!table) return;
+  const comentarioColumn = columns.find(field => field.key === "Comentario") || null;
+  const mainColumns = columns.filter(field => field.key !== "Comentario");
   const visibleKeys = new Set(columns.map(field => field.key));
-  const rows = [columns.map(getExportColumnLabel)];
+  const records = [];
   Array.from(table.tBodies[0]?.rows || []).forEach(tr => {
     if (
       tr.classList.contains("mobile-row-detail-row") ||
       tr.classList.contains("comentario-detail-row")
     ) return;
-    const cells = Array.from(tr.cells)
-      .filter(td => visibleKeys.has(td.dataset.field))
-      .map(getImageExportCellText);
-    if (cells.length) rows.push(cells);
+    const cellTextByField = new Map(
+      Array.from(tr.cells)
+        .filter(td => visibleKeys.has(td.dataset.field))
+        .map(td => [td.dataset.field, getImageExportCellText(td)])
+    );
+    if (!cellTextByField.size) return;
+    records.push({
+      cells: mainColumns.map(field => cellTextByField.get(field.key) || ""),
+      comentario: comentarioColumn ? cellTextByField.get("Comentario") || "" : null
+    });
   });
-  if (rows.length <= 1) {
+  if (!records.length) {
     alert(t("table.export.empty"));
     return;
   }
-  const colCount = Math.max(...rows.map(r => r.length));
+  const mainRows = [mainColumns.map(getExportColumnLabel), ...records.map(record => record.cells)];
+  const colCount = mainColumns.length;
   const colWidths = new Array(colCount).fill(80);
-  rows.forEach(r => {
+  mainRows.forEach(r => {
     r.forEach((cell, i) => {
       const w = Math.max(colWidths[i], cell.length * 7 + 20);
       colWidths[i] = w;
     });
   });
   const rowHeight = 26;
+  const commentLineHeight = 18;
   const padding = 10;
-  const width = colWidths.reduce((a, b) => a + b, 0) + padding * 2;
-  const height = rows.length * rowHeight + padding * 2;
+  const contentWidth = Math.max(640, colWidths.reduce((a, b) => a + b, 0));
+  const width = contentWidth + padding * 2;
   const canvas = document.createElement("canvas");
   canvas.width = width;
-  canvas.height = height;
   const ctx = canvas.getContext("2d");
+  ctx.font = "13px Arial, sans-serif";
+  const comentarioLabel = comentarioColumn ? getExportColumnLabel(comentarioColumn) : "";
+  const commentLines = records.map(record => {
+    if (!comentarioColumn) return [];
+    return wrapImageExportText(ctx, `${comentarioLabel}: ${record.comentario}`, contentWidth - 16);
+  });
+  const headerHeight = mainColumns.length ? rowHeight : 0;
+  const recordsHeight = records.reduce((total, record, index) => {
+    const commentHeight = comentarioColumn
+      ? Math.max(rowHeight, commentLines[index].length * commentLineHeight + 10)
+      : 0;
+    return total + (mainColumns.length ? rowHeight : 0) + commentHeight;
+  }, 0);
+  const height = headerHeight + recordsHeight + padding * 2;
+  canvas.height = height;
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, width, height);
   ctx.font = "13px Arial, sans-serif";
   ctx.textBaseline = "middle";
-  let y = padding + rowHeight / 2;
-  rows.forEach((row, rowIdx) => {
+  let y = padding;
+
+  if (mainColumns.length) {
     let x = padding;
-    const isHeader = rowIdx === 0;
-    row.forEach((cell, colIdx) => {
+    mainColumns.map(getExportColumnLabel).forEach((cell, colIdx) => {
       const w = colWidths[colIdx];
-      ctx.fillStyle = isHeader ? "#e4e8ff" : rowIdx % 2 === 0 ? "#fbfcff" : "#ffffff";
-      ctx.fillRect(x, y - rowHeight / 2, w, rowHeight);
+      ctx.fillStyle = "#e4e8ff";
+      ctx.fillRect(x, y, w, rowHeight);
       ctx.strokeStyle = "#d5daf8";
-      ctx.strokeRect(x, y - rowHeight / 2, w, rowHeight);
+      ctx.strokeRect(x, y, w, rowHeight);
       ctx.fillStyle = "#1a2468";
-      ctx.fillText(cell, x + 8, y, w - 16);
+      ctx.fillText(cell, x + 8, y + rowHeight / 2, w - 16);
       x += w;
     });
     y += rowHeight;
+  }
+
+  records.forEach((record, recordIdx) => {
+    if (mainColumns.length) {
+      let x = padding;
+      record.cells.forEach((cell, colIdx) => {
+        const w = colWidths[colIdx];
+        ctx.fillStyle = recordIdx % 2 === 0 ? "#ffffff" : "#fbfcff";
+        ctx.fillRect(x, y, w, rowHeight);
+        ctx.strokeStyle = "#d5daf8";
+        ctx.strokeRect(x, y, w, rowHeight);
+        ctx.fillStyle = "#1a2468";
+        ctx.fillText(cell, x + 8, y + rowHeight / 2, w - 16);
+        x += w;
+      });
+      y += rowHeight;
+    }
+
+    if (comentarioColumn) {
+      const lines = commentLines[recordIdx];
+      const commentHeight = Math.max(rowHeight, lines.length * commentLineHeight + 10);
+      ctx.fillStyle = recordIdx % 2 === 0 ? "#f5f7ff" : "#eef1ff";
+      ctx.fillRect(padding, y, contentWidth, commentHeight);
+      ctx.strokeStyle = "#d5daf8";
+      ctx.strokeRect(padding, y, contentWidth, commentHeight);
+      ctx.fillStyle = "#1a2468";
+      lines.forEach((line, lineIdx) => {
+        ctx.fillText(line, padding + 8, y + 8 + commentLineHeight * lineIdx + commentLineHeight / 2);
+      });
+      y += commentHeight;
+    }
   });
   const isPng = format === "png";
   const mime = isPng ? "image/png" : "image/jpeg";
