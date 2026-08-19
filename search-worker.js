@@ -10,6 +10,9 @@ const LAZY_DATA_MANIFEST_PATH = "data/lazy/manifest.json";
 const FIELDS_WITH_LAZY_INDEX = new Set(["Editado", "Original", "Traducción", "Comentario"]);
 const LAYERED_SEARCH_FIELDS = new Set(["Traducción", "Comentario", "Traducción (es)", "Comentario (es)"]);
 const SEARCH_LAYER_MODES = new Set(["normalized", "source", "both"]);
+const SOURCE_DISPLAY_ALIASES = new Map([
+  ["V94 Diccionario Global SNP", "V94 SNP"]
+]);
 const LAZY_ASSET_DB_NAME = "nahuatl-lazy-assets-v1";
 const LAZY_ASSET_STORE = "assets";
 const NGRAM_FULL_VERIFY_ROW_LIMIT = 2500;
@@ -56,6 +59,11 @@ let emptyBrowseSeed = 0;
 let prioritySortCache = new WeakMap();
 
 const alphaNumCollator = new Intl.Collator("es", { numeric: true, sensitivity: "base" });
+
+function canonicalFuenteName(value) {
+  const text = String(value ?? "").trim();
+  return SOURCE_DISPLAY_ALIASES.get(text) || text;
+}
 
 function getDataAssetUrl(dataPath) {
   const separator = dataPath.includes("?") ? "&" : "?";
@@ -210,6 +218,7 @@ function computeBrowseOrderKey(value) {
 }
 
 function prepareLazyMetaRow(row, idx) {
+  if (row.Fuente != null) row.Fuente = canonicalFuenteName(row.Fuente);
   row._rid = row.record_id || idx;
   row._prio = parsePriority(row.prio);
   row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
@@ -782,6 +791,7 @@ async function loadLazyRowChunk(chunkId) {
       .then(rows => {
         rows.forEach((row, idx) => {
           normalizeRowFieldKeys(row);
+          if (row.Fuente != null) row.Fuente = canonicalFuenteName(row.Fuente);
           row._rid = row.record_id || idx;
           row._prio = parsePriority(row.prio);
           row._browseOrder = computeBrowseOrderKey(row.record_id || idx);
