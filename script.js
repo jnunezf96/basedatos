@@ -6483,24 +6483,33 @@ function exportTableAsImage(format = "jpeg") {
     alert(t("table.export.empty"));
     return;
   }
-  const mainRows = [mainColumns.map(getExportColumnLabel), ...records.map(record => record.cells)];
-  const colCount = mainColumns.length;
-  const colWidths = new Array(colCount).fill(80);
-  mainRows.forEach(r => {
-    r.forEach((cell, i) => {
-      const w = Math.max(colWidths[i], cell.length * 7 + 20);
-      colWidths[i] = w;
-    });
-  });
   const rowHeight = 26;
-  const commentLineHeight = 18;
+  const textLineHeight = 18;
   const padding = 10;
-  const contentWidth = Math.max(640, colWidths.reduce((a, b) => a + b, 0));
-  const width = contentWidth + padding * 2;
   const canvas = document.createElement("canvas");
-  canvas.width = width;
   const ctx = canvas.getContext("2d");
   ctx.font = "13px Arial, sans-serif";
+  const maxColumnWidths = {
+    Editado: 180,
+    Original: 180,
+    "Traducción": 520,
+    Fuente: 180
+  };
+  const colWidths = mainColumns.map((field, colIdx) => {
+    const values = [getExportColumnLabel(field), ...records.map(record => record.cells[colIdx])];
+    const measuredWidth = Math.max(...values.map(value => ctx.measureText(value || "").width)) + 16;
+    return Math.min(maxColumnWidths[field.key] || 260, Math.max(80, Math.ceil(measuredWidth)));
+  });
+  const mainContentWidth = colWidths.reduce((a, b) => a + b, 0);
+  const contentWidth = comentarioColumn ? Math.max(640, mainContentWidth) : mainContentWidth;
+  const width = contentWidth + padding * 2;
+  const cellLines = records.map(record => record.cells.map((cell, colIdx) =>
+    wrapImageExportText(ctx, cell, colWidths[colIdx] - 16)
+  ));
+  const mainRowHeights = cellLines.map(row => Math.max(
+    rowHeight,
+    ...row.map(lines => lines.length * textLineHeight + 8)
+  ));
   const comentarioLabel = comentarioColumn ? getExportColumnLabel(comentarioColumn) : "";
   const commentLines = records.map(record => {
     if (!comentarioColumn) return [];
@@ -6509,11 +6518,12 @@ function exportTableAsImage(format = "jpeg") {
   const headerHeight = mainColumns.length ? rowHeight : 0;
   const recordsHeight = records.reduce((total, record, index) => {
     const commentHeight = comentarioColumn
-      ? Math.max(rowHeight, commentLines[index].length * commentLineHeight + 10)
+      ? Math.max(rowHeight, commentLines[index].length * textLineHeight + 10)
       : 0;
-    return total + (mainColumns.length ? rowHeight : 0) + commentHeight;
+    return total + (mainColumns.length ? mainRowHeights[index] : 0) + commentHeight;
   }, 0);
   const height = headerHeight + recordsHeight + padding * 2;
+  canvas.width = width;
   canvas.height = height;
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, width, height);
@@ -6539,29 +6549,32 @@ function exportTableAsImage(format = "jpeg") {
   records.forEach((record, recordIdx) => {
     if (mainColumns.length) {
       let x = padding;
-      record.cells.forEach((cell, colIdx) => {
+      const mainRowHeight = mainRowHeights[recordIdx];
+      cellLines[recordIdx].forEach((lines, colIdx) => {
         const w = colWidths[colIdx];
         ctx.fillStyle = recordIdx % 2 === 0 ? "#ffffff" : "#fbfcff";
-        ctx.fillRect(x, y, w, rowHeight);
+        ctx.fillRect(x, y, w, mainRowHeight);
         ctx.strokeStyle = "#d5daf8";
-        ctx.strokeRect(x, y, w, rowHeight);
+        ctx.strokeRect(x, y, w, mainRowHeight);
         ctx.fillStyle = "#1a2468";
-        ctx.fillText(cell, x + 8, y + rowHeight / 2, w - 16);
+        lines.forEach((line, lineIdx) => {
+          ctx.fillText(line, x + 8, y + 4 + textLineHeight * lineIdx + textLineHeight / 2, w - 16);
+        });
         x += w;
       });
-      y += rowHeight;
+      y += mainRowHeight;
     }
 
     if (comentarioColumn) {
       const lines = commentLines[recordIdx];
-      const commentHeight = Math.max(rowHeight, lines.length * commentLineHeight + 10);
+      const commentHeight = Math.max(rowHeight, lines.length * textLineHeight + 10);
       ctx.fillStyle = recordIdx % 2 === 0 ? "#f5f7ff" : "#eef1ff";
       ctx.fillRect(padding, y, contentWidth, commentHeight);
       ctx.strokeStyle = "#d5daf8";
       ctx.strokeRect(padding, y, contentWidth, commentHeight);
       ctx.fillStyle = "#1a2468";
       lines.forEach((line, lineIdx) => {
-        ctx.fillText(line, padding + 8, y + 8 + commentLineHeight * lineIdx + commentLineHeight / 2);
+        ctx.fillText(line, padding + 8, y + 5 + textLineHeight * lineIdx + textLineHeight / 2);
       });
       y += commentHeight;
     }
@@ -6569,6 +6582,8 @@ function exportTableAsImage(format = "jpeg") {
   const isPng = format === "png";
   const mime = isPng ? "image/png" : "image/jpeg";
   const filename = isPng ? t("table.export.png.filename") : t("table.export.filename");
+  markRuntimeEvent("lastExportWidth", width);
+  markRuntimeEvent("lastExportHeight", height);
   if (isPng) {
     canvas.toBlob(b => {
       if (!b) return;
