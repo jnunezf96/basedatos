@@ -6486,6 +6486,7 @@ function exportTableAsImage(format = "jpeg") {
   const rowHeight = 26;
   const textLineHeight = 18;
   const padding = 10;
+  const exportScale = 2;
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
   ctx.font = "13px Arial, sans-serif";
@@ -6523,8 +6524,11 @@ function exportTableAsImage(format = "jpeg") {
     return total + (mainColumns.length ? mainRowHeights[index] : 0) + commentHeight;
   }, 0);
   const height = headerHeight + recordsHeight + padding * 2;
-  canvas.width = width;
-  canvas.height = height;
+  canvas.width = Math.ceil(width * exportScale);
+  canvas.height = Math.ceil(height * exportScale);
+  ctx.scale(exportScale, exportScale);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, width, height);
   ctx.font = "13px Arial, sans-serif";
@@ -6584,6 +6588,8 @@ function exportTableAsImage(format = "jpeg") {
   const filename = isPng ? t("table.export.png.filename") : t("table.export.filename");
   markRuntimeEvent("lastExportWidth", width);
   markRuntimeEvent("lastExportHeight", height);
+  markRuntimeEvent("lastExportPixelWidth", canvas.width);
+  markRuntimeEvent("lastExportPixelHeight", canvas.height);
   if (isPng) {
     canvas.toBlob(b => {
       if (!b) return;
