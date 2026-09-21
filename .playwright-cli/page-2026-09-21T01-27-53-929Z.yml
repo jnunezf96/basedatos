@@ -1,0 +1,41 @@
+- iframe [ref=f1e2]:
+  - generic "Single-row results layout" [ref=f2e2]:
+    - generic [ref=f2e3]:
+      - generic [ref=f2e4]: 1–100 / 1,566
+      - combobox "Control layer" [ref=f2e5]:
+        - option "Paginación" [selected]
+        - option "Vista"
+        - option "Presentación"
+      - generic [ref=f2e6]:
+        - combobox "Records per page" [ref=f2e7]:
+          - option "100 / pág." [selected]
+          - option "50 / pág."
+          - option "25 / pág."
+        - button "Previous page" [disabled] [ref=f2e8]: ‹
+        - textbox "Page" [ref=f2e9]: "1"
+        - generic [ref=f2e10]: / 16
+        - button "Next page" [ref=f2e11]: ›
+      - button "Export options" [ref=f2e12]: Exportar
+    - table [ref=f2e13]:
+      - rowgroup [ref=f2e14]:
+        - row [ref=f2e15]:
+          - columnheader "Original" [ref=f2e16]
+          - columnheader "Editado" [ref=f2e17]
+          - columnheader "Traducción" [ref=f2e18]
+          - columnheader "Fuente" [ref=f2e19]
+      - rowgroup [ref=f2e20]:
+        - row [ref=f2e21]:
+          - cell "tani" [ref=f2e22]
+          - cell "tlani" [ref=f2e23]
+          - cell "abajo" [ref=f2e24]
+          - cell "1984 Tzinacapan" [ref=f2e25]
+        - row [ref=f2e26]:
+          - cell "yolcatl" [ref=f2e27]
+          - cell "yolcatl" [ref=f2e28]
+          - cell "animal" [ref=f2e29]
+          - cell "17?? Bnf_362" [ref=f2e30]
+        - row [ref=f2e31]:
+          - cell "nántli" [ref=f2e32]
+          - cell "nantli" [ref=f2e33]
+          - cell "padre y madre" [ref=f2e34]
+          - cell "153? Trilingüe" [ref=f2e35]

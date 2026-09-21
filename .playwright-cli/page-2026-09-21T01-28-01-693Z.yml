@@ -1,0 +1,722 @@
+- main [ref=e2]:
+  - heading "Base de datos náhuatl" [level=1] [ref=e3]
+  - group [ref=e4]:
+    - generic "Acerca de esta base y sus fuentes" [ref=e5] [cursor=pointer]
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - button "1" [pressed] [ref=e9] [cursor=pointer]
+        - button "Nueva búsqueda" [ref=e11] [cursor=pointer]: +
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - button "Compartir" [ref=e14] [cursor=pointer]
+          - button "English" [ref=e16] [cursor=pointer]
+        - tablist "Paneles" [ref=e18]:
+          - tab "Filtros" [selected] [ref=e19] [cursor=pointer]
+          - tab "Patrones" [ref=e21] [cursor=pointer]
+          - tab "Pares" [ref=e23] [cursor=pointer]
+          - tab "Tarjetas" [ref=e25] [cursor=pointer]
+    - tabpanel "Filtros" [ref=e27]:
+      - generic [ref=e28]:
+        - heading "Filtro" [level=2] [ref=e30]
+        - paragraph [ref=e31]: Usa los filtros para encontrar palabras por escritura, traducción o fuente; los resultados aparecen en la tabla de abajo.
+        - generic [ref=e32]:
+          - generic [ref=e33]: Columna
+          - generic [ref=e34]:
+            - button "Editado" [pressed] [ref=e35] [cursor=pointer]
+            - button "Original" [ref=e37] [cursor=pointer]
+            - button "Traducción" [ref=e39] [cursor=pointer]
+            - button "Fuente" [ref=e41] [cursor=pointer]
+            - button "Comentario" [ref=e43] [cursor=pointer]
+        - generic [ref=e45]:
+          - generic [ref=e46]: Alcance
+          - group "Alcance" [ref=e47]:
+            - button "Palabra/Frase. Usa Palabra si escribes una palabra y Frase si escribes varias en orden." [pressed] [ref=e48] [cursor=pointer]:
+              - generic [ref=e49]: Palabra/Frase
+            - button "Casilla. Compara con toda la casilla; sirve cuando el campo completo debe coincidir." [ref=e50] [cursor=pointer]:
+              - generic [ref=e51]: Casilla
+          - generic [ref=e52]: Usa Palabra si escribes una palabra y Frase si escribes varias en orden.
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]: Incluye
+            - generic [ref=e56]: Excluye
+          - generic [ref=e57]:
+            - generic [ref=e58]: Exacto
+            - generic [ref=e59]:
+              - textbox "editado. palabra/frase. es exactamente..." [ref=e60]:
+                - /placeholder: es exactamente...
+              - button "Mover este texto a otra casilla" [ref=e61]
+            - generic [ref=e64]:
+              - textbox "editado. palabra/frase. no es exactamente..." [ref=e65]:
+                - /placeholder: no es exactamente...
+              - button "Mover este texto a otra casilla" [ref=e66]
+          - generic [ref=e69]:
+            - generic [ref=e70]: Empieza
+            - generic [ref=e71]:
+              - textbox "editado. palabra/frase. empieza con..." [ref=e72]:
+                - /placeholder: empieza con...
+              - button "Mover este texto a otra casilla" [ref=e73]
+            - generic [ref=e76]:
+              - textbox "editado. palabra/frase. no empieza con..." [ref=e77]:
+                - /placeholder: no empieza con...
+              - button "Mover este texto a otra casilla" [ref=e78]
+          - generic [ref=e81]:
+            - generic [ref=e82]: Contiene
+            - generic [ref=e83]:
+              - textbox "editado. palabra/frase. contiene..." [ref=e84]:
+                - /placeholder: contiene...
+              - button "Mover este texto a otra casilla" [ref=e85]
+            - generic [ref=e88]:
+              - textbox "editado. palabra/frase. no contiene..." [ref=e89]:
+                - /placeholder: no contiene...
+              - button "Mover este texto a otra casilla" [ref=e90]
+          - generic [ref=e93]:
+            - generic [ref=e94]: Termina
+            - generic [ref=e95]:
+              - textbox "editado. palabra/frase. termina con..." [ref=e96]:
+                - /placeholder: termina con...
+              - button "Mover este texto a otra casilla" [ref=e97]
+            - generic [ref=e100]:
+              - textbox "editado. palabra/frase. no termina con..." [ref=e101]:
+                - /placeholder: no termina con...
+              - button "Mover este texto a otra casilla" [ref=e102]
+        - generic [ref=e105]:
+          - generic [ref=e106]:
+            - generic [ref=e107]:
+              - generic [ref=e108]: "Buscar capa:"
+              - 'group "Buscar en capa de traducción/comentario: Ambas / Revisada / Transcrita" [ref=e109]':
+                - button "Ambas" [pressed] [ref=e110] [cursor=pointer]
+                - button "Revisada" [ref=e112] [cursor=pointer]
+                - button "Transcrita" [ref=e114] [cursor=pointer]
+            - generic [ref=e116]:
+              - generic [ref=e117]: "Acento:"
+              - group "Sensibilidad de acento" [ref=e118]:
+                - button "Acento libre" [ref=e119] [cursor=pointer]:
+                  - generic [ref=e120]: Libre
+                - button "Acento exacto" [ref=e121] [cursor=pointer]:
+                  - generic [ref=e122]: Exacto
+            - generic [ref=e123]:
+              - generic [ref=e124]: "Combinar:"
+              - group "Combinar" [ref=e125]:
+                - button "Y" [ref=e126] [cursor=pointer]
+                - button "O" [ref=e128] [cursor=pointer]
+          - generic [ref=e130]:
+            - button "Añadir" [ref=e131] [cursor=pointer]
+            - button "Vaciar" [ref=e133] [cursor=pointer]
+  - generic [ref=e135]:
+    - generic [ref=e138]:
+      - generic [ref=e139]: Cargando índice ligero…
+      - generic [ref=e140]:
+        - generic [ref=e141]: Controles de resultados
+        - combobox "Controles de resultados" [ref=e142]:
+          - option "Paginación" [selected]
+          - option "Vista"
+          - option "Presentación"
+      - generic [ref=e143]:
+        - group "Paginación" [ref=e144]:
+          - generic [ref=e145]:
+            - generic [ref=e146]:
+              - generic [ref=e147]: "Registros por página:"
+              - combobox "Registros por página:" [ref=e148]:
+                - option "25"
+                - option "50"
+                - option "100" [selected]
+                - option "200"
+            - generic [ref=e149]:
+              - button "Primera página" [disabled] [ref=e150]
+              - button "Página anterior" [disabled] [ref=e154]
+              - generic [ref=e157]:
+                - textbox "Página actual" [ref=e158]: "1"
+                - generic [ref=e159]: de 1 pág.
+              - button "Página siguiente" [disabled] [ref=e160]
+              - button "Última página" [disabled] [ref=e163]
+        - text: ":"
+      - button "Exportar" [ref=e169] [cursor=pointer]
+    - table [ref=e172]:
+      - caption [ref=e173]: Resultados de la base de datos náhuatl
+      - rowgroup [ref=e180]:
+        - row [ref=e181]:
+          - columnheader "Editado Ordenar por Editado" [ref=e182]:
+            - generic [ref=e183]:
+              - generic [ref=e184]: Editado
+              - button "Ordenar por Editado" [ref=e186] [cursor=pointer]
+          - columnheader "Original Ordenar por Original" [ref=e189]:
+            - generic [ref=e190]:
+              - generic [ref=e191]: Original
+              - button "Ordenar por Original" [ref=e193] [cursor=pointer]
+          - columnheader "Traducción Ordenar por Traducción" [ref=e196]:
+            - generic [ref=e197]:
+              - generic [ref=e198]: Traducción
+              - button "Ordenar por Traducción" [ref=e200] [cursor=pointer]
+          - columnheader "Fuente Ordenar por Fuente" [ref=e203]:
+            - generic [ref=e204]:
+              - generic [ref=e205]: Fuente
+              - button "Ordenar por Fuente" [ref=e207] [cursor=pointer]
+          - columnheader "Comentario Expandir/Colapsar comentarios" [ref=e210]:
+            - generic [ref=e211]:
+              - generic [ref=e212]: Comentario
+              - button "Expandir/Colapsar comentarios" [ref=e214] [cursor=pointer]: +
+      - rowgroup [ref=e215]:
+        - row [ref=e216]:
+          - cell "tlacanahua" [ref=e217]
+          - cell "nitla, canaua" [ref=e218]
+          - cell "v.t. tla-., batir metal" [ref=e219]
+          - cell "1571 Molina 1" [ref=e222]
+          - cell [ref=e223]
+        - row [ref=e224] [cursor=pointer]:
+          - cell "tlateliczalli" [ref=e225]
+          - cell "tlateliczalli" [ref=e226]
+          - cell "abusado por patadas" [ref=e227]
+          - cell "2021 Wimmer" [ref=e230]
+          - cell [ref=e231]:
+            - button "Abrir comentario" [ref=e232]: +
+        - row [ref=e233]:
+          - cell "tlatelli" [ref=e234]
+          - cell "tlatelli" [ref=e235]
+          - cell "altozano o reventón, cuesta pequeña" [ref=e236]
+          - cell "1571 Molina 1" [ref=e239]
+          - cell [ref=e240]
+        - row [ref=e241] [cursor=pointer]:
+          - cell "tlateliczani" [ref=e242]
+          - cell "tlateliczani" [ref=e243]
+          - cell "que aplasta algo con el pie" [ref=e244]
+          - cell "2021 Wimmer" [ref=e247]
+          - cell [ref=e248]:
+            - button "Abrir comentario" [ref=e249]: +
+        - row [ref=e250]:
+          - cell "tlatelli" [ref=e251]
+          - cell "tlatelli" [ref=e252]
+          - cell "tierra amontonada" [ref=e253]
+          - cell "1571 Molina 1" [ref=e256]
+          - cell [ref=e257]
+        - row [ref=e258]:
+          - cell "canahuac" [ref=e259]
+          - cell "canauac" [ref=e260]
+          - cell "delgada cosa así" [ref=e261]
+          - cell "1571 Molina 1" [ref=e264]
+          - cell [ref=e265]
+        - row [ref=e266] [cursor=pointer]:
+          - cell "canaczolli" [ref=e267]
+          - cell "canaczolli" [ref=e268]
+          - cell "viejo y delgado" [ref=e269]
+          - cell "2021 Wimmer" [ref=e272]
+          - cell [ref=e273]:
+            - button "Abrir comentario" [ref=e274]: +
+        - row [ref=e275] [cursor=pointer]:
+          - cell "tlatelchihualoni" [ref=e276]
+          - cell "tlatelchihualoni" [ref=e277]
+          - cell "quien merece ser despreciado" [ref=e278]
+          - cell "2021 Wimmer" [ref=e281]
+          - cell [ref=e282]:
+            - button "Abrir comentario" [ref=e283]: +
+        - row [ref=e284]:
+          - cell "canahuac" [ref=e285]
+          - cell "kanauak" [ref=e286]
+          - cell "delgado" [ref=e287]
+          - cell "1984 Tzinacapan" [ref=e290]
+          - cell [ref=e291]
+        - row [ref=e292] [cursor=pointer]:
+          - cell "aahuictlaza" [ref=e293]
+          - cell "aahhuictlaza" [ref=e294]
+          - cell "v.t. te-., alejar, rechazar a alguien" [ref=e295]
+          - cell "2021 Wimmer" [ref=e298]
+          - cell [ref=e299]:
+            - button "Abrir comentario" [ref=e300]: +
+        - row [ref=e301] [cursor=pointer]:
+          - cell "tlatelchiuhtli" [ref=e302]
+          - cell "tlatelchiuhtli" [ref=e303]
+          - cell "desdeñado, despreciado, culpado" [ref=e304]
+          - cell "2021 Wimmer" [ref=e307]
+          - cell [ref=e308]:
+            - button "Abrir comentario" [ref=e309]: +
+        - row [ref=e310] [cursor=pointer]:
+          - cell "canahua" [ref=e311]
+          - cell "canahua" [ref=e312]
+          - cell "v.t. tla-., adelgazar una cosa; batir metal. / v.refl. en sentido pasivo, adelgazarse o ser enrollado sobre una piedra. / v.t. te-., dar forma a una persona al crearla" [ref=e313]
+          - cell "2021 Wimmer" [ref=e316]
+          - cell [ref=e317]:
+            - button "Abrir comentario" [ref=e318]: +
+        - row [ref=e319] [cursor=pointer]:
+          - cell "tlatelchihuani" [ref=e320]
+          - cell "tlatelchihuani" [ref=e321]
+          - cell "quien se burla, quien desprecia" [ref=e322]
+          - cell "2021 Wimmer" [ref=e325]
+          - cell [ref=e326]:
+            - button "Abrir comentario" [ref=e327]: +
+        - row [ref=e328] [cursor=pointer]:
+          - cell "tlatelchiuhqui" [ref=e329]
+          - cell "tlatelchiuhqui" [ref=e330]
+          - cell "el que desdeña, desprecia una cosa" [ref=e331]
+          - cell "2021 Wimmer" [ref=e334]
+          - cell [ref=e335]:
+            - button "Abrir comentario" [ref=e336]: +
+        - row [ref=e337]:
+          - cell "tlatelolcas" [ref=e338]
+          - cell "tlatelulcas" [ref=e339]
+          - cell "cf. tlatelolcatl" [ref=e340]
+          - cell "1598 Tezozomoc" [ref=e343]
+          - cell [ref=e344]
+        - row [ref=e345] [cursor=pointer]:
+          - cell "tlatelolcatl" [ref=e346]
+          - cell "tlatelulcas" [ref=e347]
+          - cell "antropónimo locativo" [ref=e348]
+          - cell "1598 Tezozomoc" [ref=e351]
+          - cell [ref=e352]:
+            - button "Abrir comentario" [ref=e353]: +
+        - row [ref=e354]:
+          - cell "tlatelolcanos" [ref=e355]
+          - cell "tlatelulcanos" [ref=e356]
+          - cell "cf. tlatelolcatl" [ref=e357]
+          - cell "1598 Tezozomoc" [ref=e360]
+          - cell [ref=e361]
+        - row [ref=e362] [cursor=pointer]:
+          - cell "tlatelolco" [ref=e363]
+          - cell "tlalulco" [ref=e364]
+          - cell "topónimo" [ref=e365]
+          - cell "1598 Tezozomoc" [ref=e368]
+          - cell [ref=e369]:
+            - button "Abrir comentario" [ref=e370]: +
+        - row [ref=e371] [cursor=pointer]:
+          - cell "canahuac" [ref=e372]
+          - cell "canauac" [ref=e373]
+          - cell "delgado" [ref=e374]
+          - cell "153? Trilingüe" [ref=e377]
+          - cell [ref=e378]:
+            - button "Abrir comentario" [ref=e379]: +
+        - row [ref=e380]:
+          - cell "tlatemachiani" [ref=e381]
+          - cell "tlatemachiani" [ref=e382]
+          - cell "menesteroso y necesitado, que estriba en el socorro de otros" [ref=e383]
+          - cell "1571 Molina 2" [ref=e386]
+          - cell [ref=e387]
+        - row [ref=e388]:
+          - cell "tlatelli" [ref=e389]
+          - cell "tlatelli" [ref=e390]
+          - cell "altozano, o montón de tierra grande" [ref=e391]
+          - cell "1571 Molina 2" [ref=e394]
+          - cell [ref=e395]
+        - row [ref=e396] [cursor=pointer]:
+          - cell "tlatelcuepaliztli" [ref=e397]
+          - cell "tlatelcuepalíztli" [ref=e398]
+          - cell "contradicción" [ref=e399]
+          - cell "153? Trilingüe" [ref=e402]
+          - cell [ref=e403]:
+            - button "Abrir comentario" [ref=e404]: +
+        - row [ref=e405]:
+          - cell "tlateliczalli" [ref=e406]
+          - cell "tlatelicçalli" [ref=e407]
+          - cell "acoceado" [ref=e408]
+          - cell "1571 Molina 2" [ref=e411]
+          - cell [ref=e412]
+        - row [ref=e413] [cursor=pointer]:
+          - cell "tlatelli" [ref=e414]
+          - cell "tlatélli" [ref=e415]
+          - cell "cuesta arriba cosa" [ref=e416]
+          - cell "153? Trilingüe" [ref=e419]
+          - cell [ref=e420]:
+            - button "Abrir comentario" [ref=e421]: +
+        - row [ref=e422]:
+          - cell "tlatelquetztli" [ref=e423]
+          - cell "tlatelquetztli" [ref=e424]
+          - cell "cosa detenida. s. que la hicieron parar y la detuvieron" [ref=e425]
+          - cell "1571 Molina 2" [ref=e428]
+          - cell [ref=e429]
+        - row [ref=e430] [cursor=pointer]:
+          - cell "canahuac" [ref=e431]
+          - cell "canáuac" [ref=e432]
+          - cell "sabana de lienzo" [ref=e433]
+          - cell "153? Trilingüe" [ref=e436]
+          - cell [ref=e437]:
+            - button "Abrir comentario" [ref=e438]: +
+        - row [ref=e439] [cursor=pointer]:
+          - cell "tlacanahua" [ref=e440]
+          - cell "canaua, nitla" [ref=e441]
+          - cell "v.t. tla-., adelgazar tablas, o piedras anchas o la loza cuando la hacen. etc." [ref=e442]
+          - cell "1571 Molina 2" [ref=e445]
+          - cell [ref=e446]:
+            - button "Abrir comentario" [ref=e447]: +
+        - row [ref=e448] [cursor=pointer]:
+          - cell "canahuac" [ref=e449]
+          - cell "canáuac" [ref=e450]
+          - cell "tobajas" [ref=e451]
+          - cell "153? Trilingüe" [ref=e454]
+          - cell [ref=e455]:
+            - button "Abrir comentario" [ref=e456]: +
+        - row [ref=e457] [cursor=pointer]:
+          - cell "tetlatelchihuilia" [ref=e458]
+          - cell "tlatelchiuilia, nite" [ref=e459]
+          - cell "v.t. tē-., gozarse del desastre y mal que sucedió a otro" [ref=e460]
+          - cell "1571 Molina 2" [ref=e463]
+          - cell [ref=e464]:
+            - button "Abrir comentario" [ref=e465]: +
+        - row [ref=e466] [cursor=pointer]:
+          - cell "catlatzachualiztli" [ref=e467]
+          - cell "--]catlatzaqualíztli" [ref=e468]
+          - cell "pena del tanto por tanto" [ref=e469]
+          - cell "153? Trilingüe" [ref=e472]
+          - cell [ref=e473]:
+            - button "Abrir comentario" [ref=e474]: +
+        - row [ref=e475]:
+          - cell "tlatelchiuhtli" [ref=e476]
+          - cell "tlatelchiuhtli" [ref=e477]
+          - cell "menospreciado y reprochado de esta manera" [ref=e478]
+          - cell "1571 Molina 2" [ref=e481]
+          - cell [ref=e482]
+        - row [ref=e483] [cursor=pointer]:
+          - cell "tlatelchihualli" [ref=e484]
+          - cell "tlatelchioálli" [ref=e485]
+          - cell "maldicha cosa así" [ref=e486]
+          - cell "153? Trilingüe" [ref=e489]
+          - cell [ref=e490]:
+            - button "Abrir comentario" [ref=e491]: +
+        - row [ref=e492] [cursor=pointer]:
+          - cell "tlatelchiuhqui" [ref=e493]
+          - cell "tlatelchiuhqui" [ref=e494]
+          - cell "menospreciador de esta manera, y sacudido" [ref=e495]
+          - cell "1571 Molina 2" [ref=e498]
+          - cell [ref=e499]:
+            - button "Abrir comentario" [ref=e500]: +
+        - row [ref=e501] [cursor=pointer]:
+          - cell "tlatelchiuhca" [ref=e502]
+          - cell "tlatelchiuhca" [ref=e503]
+          - cell "menospreciando" [ref=e504]
+          - cell "153? Trilingüe" [ref=e507]
+          - cell [ref=e508]:
+            - button "Abrir comentario" [ref=e509]: +
+        - row [ref=e510]:
+          - cell "canahuac" [ref=e511]
+          - cell "canahuac" [ref=e512]
+          - cell "delgado, sutil" [ref=e513]
+          - cell "1780 Clavijero" [ref=e516]
+          - cell [ref=e517]
+        - row [ref=e518]:
+          - cell "tetlatelchihuilia" [ref=e519]
+          - cell "nite, tlatelchiuilia" [ref=e520]
+          - cell "v.t. tē-., escarnecer del que le acaeció algún desastre" [ref=e521]
+          - cell "1571 Molina 1" [ref=e524]
+          - cell [ref=e525]
+        - row [ref=e526]:
+          - cell "tlatelchiuhtli" [ref=e527]
+          - cell "tlatelchiuh_tli" [ref=e528]
+          - cell "escarnecido de esta manera" [ref=e529]
+          - cell "1571 Molina 1" [ref=e532]
+          - cell [ref=e533]
+        - row [ref=e534]:
+          - cell "amo no" [ref=e535]
+          - cell "amo no" [ref=e536]
+          - cell "ni; conjunction; por no" [ref=e537]
+          - cell "1571 Molina 1" [ref=e540]
+          - cell [ref=e541]
+        - row [ref=e542]:
+          - cell "amo no" [ref=e543]
+          - cell "amo no" [ref=e544]
+          - cell "tampoco; adverbio" [ref=e545]
+          - cell "1571 Molina 1" [ref=e548]
+          - cell [ref=e549]
+        - row [ref=e550]:
+          - cell "achto ompehualiztli" [ref=e551]
+          - cell "achto ompeualiztli" [ref=e552]
+          - cell "adelantamiento así" [ref=e553]
+          - cell "1571 Molina 1" [ref=e556]
+          - cell [ref=e557]
+        - row [ref=e558]:
+          - cell "tlatelchihuani" [ref=e559]
+          - cell "tlatelchiuani" [ref=e560]
+          - cell "maldecidor así" [ref=e561]
+          - cell "1571 Molina 1" [ref=e564]
+          - cell [ref=e565]
+        - row [ref=e566]:
+          - cell "tetlatelchihuilia" [ref=e567]
+          - cell "nite, tlatelchiui-lia" [ref=e568]
+          - cell "v.t. tē-., burlar y mofar del afligido" [ref=e569]
+          - cell "1571 Molina 1" [ref=e572]
+          - cell [ref=e573]
+        - row [ref=e574]:
+          - cell "tetlatelchihuilia" [ref=e575]
+          - cell "nite, tlatelchiuilia" [ref=e576]
+          - cell "v.t. tē-., maldecir o murmurar" [ref=e577]
+          - cell "1571 Molina 1" [ref=e580]
+          - cell [ref=e581]
+        - row [ref=e582]:
+          - cell "tetlatelchihuilia" [ref=e583]
+          - cell "nite, tlatelchiuilia" [ref=e584]
+          - cell "v.t. tē-., mofar escarneciendo" [ref=e585]
+          - cell "1571 Molina 1" [ref=e588]
+          - cell [ref=e589]
+        - row [ref=e590]:
+          - cell "tlateliczaliztli" [ref=e591]
+          - cell "tateliczalizti" [ref=e592]
+          - cell "patada, o huella" [ref=e593]
+          - cell "1765 Cortés y Zedeño" [ref=e596]
+          - cell [ref=e597]
+        - row [ref=e598]:
+          - cell "tlatelicza" [ref=e599]
+          - cell "tatelicza" [ref=e600]
+          - cell "ruido de pies pateando" [ref=e601]
+          - cell "1765 Cortés y Zedeño" [ref=e604]
+          - cell [ref=e605]
+        - row [ref=e606]:
+          - cell "itoa" [ref=e607]
+          - cell "ictoa" [ref=e608]
+          - cell "rebelar" [ref=e609]
+          - cell "1765 Cortés y Zedeño" [ref=e612]
+          - cell [ref=e613]
+        - row [ref=e614] [cursor=pointer]:
+          - cell "canahuac" [ref=e615]
+          - cell "canahuac" [ref=e616]
+          - cell "delgado" [ref=e617]
+          - cell "2021 Wimmer" [ref=e620]
+          - cell [ref=e621]:
+            - button "Abrir comentario" [ref=e622]: +
+        - row [ref=e623] [cursor=pointer]:
+          - cell "tlatelolohyotl" [ref=e624]
+          - cell "tlatelolohyotl" [ref=e625]
+          - cell "adorno, bolas de plumas" [ref=e626]
+          - cell "2021 Wimmer" [ref=e629]
+          - cell [ref=e630]:
+            - button "Abrir comentario" [ref=e631]: +
+        - row [ref=e632] [cursor=pointer]:
+          - cell "tlatelolli" [ref=e633]
+          - cell "tlatelolli" [ref=e634]
+          - cell "algo hecho en forma de montículo, un montículo artificial" [ref=e635]
+          - cell "2021 Wimmer" [ref=e638]
+          - cell [ref=e639]:
+            - button "Abrir comentario" [ref=e640]: +
+        - row [ref=e641] [cursor=pointer]:
+          - cell "tlatemachiani" [ref=e642]
+          - cell "tlatemachiani" [ref=e643]
+          - cell "indigente, necesitado. que necesita la ayuda de los demás" [ref=e644]
+          - cell "2021 Wimmer" [ref=e647]
+          - cell [ref=e648]:
+            - button "Abrir comentario" [ref=e649]: +
+        - row [ref=e650] [cursor=pointer]:
+          - cell "tlatelquetztli" [ref=e651]
+          - cell "tlatelquetztli" [ref=e652]
+          - cell "restringido. arrestado, desviado" [ref=e653]
+          - cell "2021 Wimmer" [ref=e656]
+          - cell [ref=e657]:
+            - button "Abrir comentario" [ref=e658]: +
+        - row [ref=e659] [cursor=pointer]:
+          - cell "tlatelli" [ref=e660]
+          - cell "tlatelli" [ref=e661]
+          - cell "montículo o gran montón de tierra" [ref=e662]
+          - cell "2021 Wimmer" [ref=e665]
+          - cell [ref=e666]:
+            - button "Abrir comentario" [ref=e667]: +
+        - row [ref=e668] [cursor=pointer]:
+          - cell "tlateliczaya" [ref=e669]
+          - cell "tlateliczaya" [ref=e670]
+          - cell "aquello con lo que pateamos" [ref=e671]
+          - cell "2021 Wimmer" [ref=e674]
+          - cell [ref=e675]:
+            - button "Abrir comentario" [ref=e676]: +
+        - row [ref=e677] [cursor=pointer]:
+          - cell "tlatelolco" [ref=e678]
+          - cell "tlatelolco" [ref=e679]
+          - cell "topónimo" [ref=e680]
+          - cell "2021 Wimmer" [ref=e683]
+          - cell [ref=e684]:
+            - button "Abrir comentario" [ref=e685]: +
+        - row [ref=e686] [cursor=pointer]:
+          - cell "tlatelolcatl" [ref=e687]
+          - cell "tlatelolcatl" [ref=e688]
+          - cell "residente de tlatelolco" [ref=e689]
+          - cell "2021 Wimmer" [ref=e692]
+          - cell [ref=e693]:
+            - button "Abrir comentario" [ref=e694]: +
+        - row [ref=e695]:
+          - cell "tlatelchiuhtli" [ref=e696]
+          - cell "tlatelchiuhtli" [ref=e697]
+          - cell "menospreciado" [ref=e698]
+          - cell "1780 ? Bnf_361" [ref=e701]
+          - cell [ref=e702]
+        - row [ref=e703]:
+          - cell "tlatelli" [ref=e704]
+          - cell "tlatelli" [ref=e705]
+          - cell "altozano o reventón, cuesta pequeña" [ref=e706]
+          - cell "1780 ? Bnf_361" [ref=e709]
+          - cell [ref=e710]
+        - row [ref=e711]:
+          - cell "tlatelchiuhtli" [ref=e712]
+          - cell "tlatelchiuhtli" [ref=e713]
+          - cell "abominada cosa de denostar y mal decir" [ref=e714]
+          - cell "1780 ? Bnf_361" [ref=e717]
+          - cell [ref=e718]
+        - row [ref=e719] [cursor=pointer]:
+          - cell "canahua" [ref=e720]
+          - cell "quicanâhua" [ref=e721]
+          - cell "adelgazar (tabla, tela)" [ref=e722]
+          - cell "2002 Mecayapan" [ref=e725]
+          - cell [ref=e726]:
+            - button "Abrir comentario" [ref=e727]: +
+        - row [ref=e728]:
+          - cell "tlacanahua" [ref=e729]
+          - cell "canaua, nitla." [ref=e730]
+          - cell "v.t. tla-., batir metal" [ref=e731]
+          - cell "1780 ? Bnf_361" [ref=e734]
+          - cell [ref=e735]
+        - row [ref=e736] [cursor=pointer]:
+          - cell "tlatelchiuhtli" [ref=e737]
+          - cell "tlatelchiuhtli" [ref=e738]
+          - cell "escarnecido que le ha acaecido algún desastre" [ref=e739]
+          - cell "1780 ? Bnf_361" [ref=e742]
+          - cell [ref=e743]:
+            - button "Abrir comentario" [ref=e744]: +
+        - row [ref=e745]:
+          - cell "tlatelli" [ref=e746]
+          - cell "tlatelli" [ref=e747]
+          - cell "tierra amontonada" [ref=e748]
+          - cell "1780 ? Bnf_361" [ref=e751]
+          - cell [ref=e752]
+        - row [ref=e753]:
+          - cell "tetlatelchihuilia" [ref=e754]
+          - cell "tlatelchiuilia, nite" [ref=e755]
+          - cell "v.t. tē-., maldecir o murmurar" [ref=e756]
+          - cell "1780 ? Bnf_361" [ref=e759]
+          - cell [ref=e760]
+        - row [ref=e761] [cursor=pointer]:
+          - cell "tetlatelchihuilia" [ref=e762]
+          - cell "tlatelchiuili[a], nite" [ref=e763]
+          - cell "v.t. tē-., burlar y mofar del afligido" [ref=e764]
+          - cell "1780 ? Bnf_361" [ref=e767]
+          - cell [ref=e768]:
+            - button "Abrir comentario" [ref=e769]: +
+        - row [ref=e770] [cursor=pointer]:
+          - cell "tlatelchiuhtli" [ref=e771]
+          - cell "tlatelchiuht[l]i" [ref=e772]
+          - cell "injuriado" [ref=e773]
+          - cell "1780 ? Bnf_361" [ref=e776]
+          - cell [ref=e777]:
+            - button "Abrir comentario" [ref=e778]: +
+        - row [ref=e779] [cursor=pointer]:
+          - cell "tlatelquetztli" [ref=e780]
+          - cell "tlatelqu[e]tztli" [ref=e781]
+          - cell "parado" [ref=e782]
+          - cell "1780 ? Bnf_361" [ref=e785]
+          - cell [ref=e786]:
+            - button "Abrir comentario" [ref=e787]: +
+        - row [ref=e788] [cursor=pointer]:
+          - cell "tetlatelchihuilia" [ref=e789]
+          - cell "tlatelchiuilia, nite" [ref=e790]
+          - cell "v.t. tē-., mofar escarneciendo" [ref=e791]
+          - cell "1780 ? Bnf_361" [ref=e794]
+          - cell [ref=e795]:
+            - button "Abrir comentario" [ref=e796]: +
+        - row [ref=e797]:
+          - cell "tlatemachiani" [ref=e798]
+          - cell "tlatemachiani" [ref=e799]
+          - cell "menesteroso" [ref=e800]
+          - cell "1780 ? Bnf_361" [ref=e803]
+          - cell [ref=e804]
+        - row [ref=e805] [cursor=pointer]:
+          - cell "achto ompehualiztli" [ref=e806]
+          - cell "achto ompehualiztli" [ref=e807]
+          - cell "adelantamiento en el camino" [ref=e808]
+          - cell "1780 ? Bnf_361" [ref=e811]
+          - cell [ref=e812]:
+            - button "Abrir comentario" [ref=e813]: +
+        - row [ref=e814]:
+          - cell "tlatelchihuani" [ref=e815]
+          - cell "tlatelchiuani" [ref=e816]
+          - cell "maldecidor de algo" [ref=e817]
+          - cell "1780 ? Bnf_361" [ref=e820]
+          - cell [ref=e821]
+        - row [ref=e822]:
+          - cell "tlatelchihuani" [ref=e823]
+          - cell "tlatelchiuani" [ref=e824]
+          - cell "abominar, o denostar, y maldecir" [ref=e825]
+          - cell "1780 ? Bnf_361" [ref=e828]
+          - cell [ref=e829]
+        - row [ref=e830] [cursor=pointer]:
+          - cell "tlatelolco" [ref=e831]
+          - cell "tlatelolco" [ref=e832]
+          - cell "en el mogote" [ref=e833]
+          - cell "1580 Sahagún/Máynez" [ref=e836]
+          - cell [ref=e837]:
+            - button "Abrir comentario" [ref=e838]: +
+        - row [ref=e839] [cursor=pointer]:
+          - cell "tlatelchihualoni" [ref=e840]
+          - cell "tlatelchihualoni" [ref=e841]
+          - cell "cosa digna de ser escarnecida" [ref=e842]
+          - cell "1565 Sahagún Escolios" [ref=e845]
+          - cell [ref=e846]:
+            - button "Abrir comentario" [ref=e847]: +
+        - row [ref=e848] [cursor=pointer]:
+          - cell "tlatelchihualo" [ref=e849]
+          - cell "tlatelchihualo" [ref=e850]
+          - cell "ser escarnecido o infamado" [ref=e851]
+          - cell "1565 Sahagún Escolios" [ref=e854]
+          - cell [ref=e855]:
+            - button "Abrir comentario" [ref=e856]: +
+        - row [ref=e857]:
+          - cell "tlatelchihuilia" [ref=e858]
+          - cell "tlatelchihuilia" [ref=e859]
+          - cell "maldecir" [ref=e860]
+          - cell "17?? Bnf_362" [ref=e863]
+          - cell [ref=e864]
+        - row [ref=e865]:
+          - cell "tlatelchiuhqui" [ref=e866]
+          - cell "tlatelchiuhqui" [ref=e867]
+          - cell "injuriado" [ref=e868]
+          - cell "17?? Bnf_362" [ref=e871]
+          - cell [ref=e872]
+        - row [ref=e873]:
+          - cell "tlacanahua" [ref=e874]
+          - cell "nitlacanaua" [ref=e875]
+          - cell "adelgazar algo" [ref=e876]
+          - cell "1547 Olmos_V ?" [ref=e879]
+          - cell [ref=e880]
+        - row [ref=e881]:
+          - cell "tlacanahua" [ref=e882]
+          - cell "nitlacanahua" [ref=e883]
+          - cell "adelgazar algo" [ref=e884]
+          - cell "1547 Olmos_V ?" [ref=e887]
+          - cell [ref=e888]
+        - row [ref=e889]:
+          - cell "canahuac" [ref=e890]
+          - cell "canahuac" [ref=e891]
+          - cell "cosa delgada" [ref=e892]
+          - cell "1692 Guerra" [ref=e895]
+          - cell [ref=e896]
+        - row [ref=e897]:
+          - cell "tlatemachiani" [ref=e898]
+          - cell "tlatemachiani" [ref=e899]
+          - cell "menesteroso" [ref=e900]
+          - cell "1571 Molina 1" [ref=e903]
+          - cell [ref=e904]
+        - row [ref=e905]:
+          - cell "tlatelquetztli" [ref=e906]
+          - cell "tlatelquetztli" [ref=e907]
+          - cell "parado así" [ref=e908]
+          - cell "1571 Molina 1" [ref=e911]
+          - cell [ref=e912]
+        - row [ref=e913]:
+          - cell "tlateliczalli" [ref=e914]
+          - cell "tlatelicçalli" [ref=e915]
+          - cell "acoceado" [ref=e916]
+          - cell "1571 Molina 1" [ref=e919]
+          - cell [ref=e920]
+        - row [ref=e921]:
+          - cell "tlatelchiuhtli" [ref=e922]
+          - cell "tlatelchiuhtli" [ref=e923]
+          - cell "menospreciado" [ref=e924]
+          - cell "1571 Molina 1" [ref=e927]
+          - cell [ref=e928]
+        - row [ref=e929]:
+          - cell "tlatelchiuhtli" [ref=e930]
+          - cell "tlatelchiuhtli" [ref=e931]
+          - cell "abominada cosa" [ref=e932]
+          - cell "1571 Molina 1" [ref=e935]
+          - cell [ref=e936]
+        - row [ref=e937]:
+          - cell "tlatelchiuhtli" [ref=e938]
+          - cell "tlatelchiuhtli" [ref=e939]
+          - cell "injuriado" [ref=e940]
+          - cell "1571 Molina 1" [ref=e943]
+          - cell [ref=e944]
+        - row [ref=e945]:
+          - cell "tlacanahua" [ref=e946]
+          - cell "nitla, canaua" [ref=e947]
+          - cell "v.t. tla-., adelgazar tablas o piedras" [ref=e948]
+          - cell "1571 Molina 1" [ref=e951]
+          - cell [ref=e952]

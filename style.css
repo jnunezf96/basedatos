@@ -5941,7 +5941,7 @@ tr.lemma-group-row .lemma-group-summary-cell {
   .table-toolbar .results-controls {
     --toolbar-control-height: 32px;
     --toolbar-group-height: 36px;
-    grid-template-columns: minmax(0, 1fr) 116px 36px;
+    grid-template-columns: minmax(0, 1fr) 116px 88px;
     gap: 4px 8px;
   }
   .results-controls .result-info { grid-column: 1; grid-row: 1; }
@@ -5950,13 +5950,10 @@ tr.lemma-group-row .lemma-group-summary-cell {
   .results-active-slot { grid-column: 1 / -1; grid-row: 2; }
   .results-dimension-panel { min-height: 40px; }
   .table-toolbar .results-controls #exportMenuBtn {
-    width: 36px;
-    min-width: 36px;
-    padding: 0;
+    width: 88px;
+    min-width: 88px;
+    padding-inline: 8px;
   }
-  .results-controls #exportMenuBtn .btn-label { display: none !important; }
-  .results-controls #exportMenuBtn::after { display: none; }
-  .results-controls #exportMenuBtn .mobile-icon { display: block; width: 16px; height: 16px; }
   .results-controls .page-size select { width: 60px; }
   .table-toolbar .results-controls .pager .arrow-btn {
     min-width: 28px;
