@@ -20,7 +20,7 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=publish-ready-165" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-166" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -740,9 +740,10 @@
       <div id="activeFiltersBar" class="active-filters-bar active-filters-bar--empty" role="status" aria-live="polite" aria-label="Filtros aplicados" data-i18n-aria-label="chips.applied"></div>
       <div class="sticky-band">
         <div class="table-toolbar">
+          <div class="toolbar-controls results-controls">
+            <div class="results-heading">
           <div id="tableStatus" class="result-info" data-i18n="table.status.loading">Cargando datos…</div>
-          <div class="toolbar-controls">
-            <div class="view-group">
+<div class="view-group">
               <div class="view-toggle" role="group" aria-label="Vista">
                 <button type="button" class="view-btn active mobile-icon-btn mobile-label-on" data-view="rows" data-i18n-aria-label="view.rows" data-i18n-title="view.rows">
                   <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-rows"></use></svg>
@@ -754,25 +755,7 @@
                 </button>
               </div>
             </div>
-            <div class="toolbar-sep"></div>
-            <div class="orthography-layer-group">
-              <span class="orthography-layer-label" data-i18n="orth.layer.label">Mostrar capa</span>
-              <div class="orthography-layer-toggle" role="group" aria-label="Mostrar capa de traducción/comentario: Revisada / Transcrita" data-i18n-aria-label="orth.layer.title">
-                <button type="button" class="orthography-layer-btn active" data-orth-layer="normalized" aria-pressed="true" data-i18n="orth.layer.normalized" data-i18n-title="orth.layer.normalized">Revisada</button>
-                <button type="button" class="orthography-layer-btn" data-orth-layer="source" aria-pressed="false" data-i18n="orth.layer.source" data-i18n-title="orth.layer.source">Transcrita</button>
-              </div>
-            </div>
-            <div class="toolbar-sep"></div>
-            <div class="column-group">
-              <div class="column-menu-wrap">
-                <button type="button" class="arrow-btn column-menu-btn mobile-icon-btn mobile-label-on" id="columnMenuBtn" title="Columnas" data-i18n-aria-label="table.columns" data-i18n-title="table.columns">
-                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-columns"></use></svg>
-                  <span class="btn-label mobile-icon-label" data-i18n="table.columns">Cols</span>
-                </button>
-              </div>
-            </div>
-            <div class="toolbar-sep"></div>
-            <div class="export-group">
+<div class="export-group">
               <div class="export-menu-wrap">
                 <button type="button" class="arrow-btn export-btn mobile-icon-btn mobile-label-on" id="exportMenuBtn" title="Exportar" data-i18n-aria-label="table.export.label" data-i18n-title="table.export.label">
                   <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-export"></use></svg>
@@ -780,8 +763,25 @@
                 </button>
               </div>
             </div>
-            <div class="toolbar-sep"></div>
-            <div class="sort-group">
+            </div>
+            <button type="button" id="resultsSettingsToggle" class="results-settings-toggle" aria-expanded="false" aria-controls="resultsDisplaySettings"><span data-i18n="table.display.settings">Opciones de visualización</span><span aria-hidden="true">⌄</span></button>
+            <div id="resultsDisplaySettings" class="results-display">
+<div class="orthography-layer-group">
+              <span class="orthography-layer-label" data-i18n="orth.layer.label">Mostrar capa</span>
+              <div class="orthography-layer-toggle" role="group" aria-label="Mostrar capa de traducción/comentario: Revisada / Transcrita" data-i18n-aria-label="orth.layer.title">
+                <button type="button" class="orthography-layer-btn active" data-orth-layer="normalized" aria-pressed="true" data-i18n="orth.layer.normalized" data-i18n-title="orth.layer.normalized">Revisada</button>
+                <button type="button" class="orthography-layer-btn" data-orth-layer="source" aria-pressed="false" data-i18n="orth.layer.source" data-i18n-title="orth.layer.source">Transcrita</button>
+              </div>
+            </div>
+<div class="column-group">
+              <div class="column-menu-wrap">
+                <button type="button" class="arrow-btn column-menu-btn mobile-icon-btn mobile-label-on" id="columnMenuBtn" title="Columnas" data-i18n-aria-label="table.columns" data-i18n-title="table.columns">
+                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-columns"></use></svg>
+                  <span class="btn-label mobile-icon-label" data-i18n="table.columns">Cols</span>
+                </button>
+              </div>
+            </div>
+<div class="sort-group">
               <div class="sort-scope">
                 <label for="sortScopeSelect" data-i18n="table.sort.label">Orden:</label>
                 <select id="sortScopeSelect">
@@ -790,10 +790,10 @@
                 </select>
               </div>
             </div>
-            <div class="toolbar-sep"></div>
-            <div class="page-group">
+            </div>
+<div class="page-group results-pagination">
               <div class="page-size">
-                <label for="pageSizeSelect" data-i18n="table.pagesize.label">Filas:</label>
+                <label for="pageSizeSelect" data-i18n="table.pagesize.label">Registros por página:</label>
                 <select id="pageSizeSelect">
                   <option value="25">25</option>
                   <option value="50">50</option>
@@ -913,6 +913,6 @@
   <script src="filters.js?v=publish-ready-106"></script>
   <script src="data/bootstrap.js?v=publish-ready-439"></script>
   <script src="study-core.js?v=publish-ready-187"></script>
-  <script src="script.js?v=publish-ready-187"></script>
+  <script src="script.js?v=publish-ready-188"></script>
 </body>
 </html>

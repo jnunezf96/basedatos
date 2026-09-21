@@ -543,8 +543,9 @@ const I18N = {
     "list.expandAll": "Expandir/Colapsar registros",
     "lemma.expandAll": "Expandir/Colapsar lemas",
     "comentario.expandAll": "Expandir/Colapsar comentarios",
-    "table.pagesize.label": "Filas:",
-    "table.pagesize.lemmasLabel": "Lemas:",
+    "table.display.settings": "Opciones de visualización",
+    "table.pagesize.label": "Registros por página:",
+    "table.pagesize.lemmasLabel": "Lemas por página:",
     "table.columns": "Cols",
     "columns.title": "Columnas",
     "columns.reset": "Restablecer",
@@ -1073,8 +1074,9 @@ const I18N = {
     "list.expandAll": "Expand/Collapse records",
     "lemma.expandAll": "Expand/Collapse lemmas",
     "comentario.expandAll": "Expand/Collapse comments",
-    "table.pagesize.label": "Rows:",
-    "table.pagesize.lemmasLabel": "Lemmas:",
+    "table.display.settings": "Display settings",
+    "table.pagesize.label": "Records per page:",
+    "table.pagesize.lemmasLabel": "Lemmas per page:",
     "table.columns": "Cols",
     "columns.title": "Columns",
     "columns.reset": "Reset",
@@ -1567,6 +1569,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupLemmaToggleAll();
   setupExportButtons();
   setupHorizontalScrollAreas();
+  setupResultsDisplaySettings();
   await hydrateSourcesFromApi();
   buildSourceSlugMaps();
   renderFuenteList();
@@ -3853,6 +3856,33 @@ function setupSwipeTabs() {
     buttons[next].click();
     vibe(8);
   });
+}
+
+function setupResultsDisplaySettings() {
+  const button = document.getElementById("resultsSettingsToggle");
+  const panel = document.getElementById("resultsDisplaySettings");
+  if (!button || !panel) return;
+  const mobile = window.matchMedia("(max-width: 640px), (orientation: landscape) and (max-width: 980px) and (max-height: 520px)");
+  const setExpanded = expanded => {
+    const columnMenu = document.getElementById("columnMenuDropdown");
+    if (!expanded) {
+      if (panel.contains(document.activeElement) || columnMenu?.contains(document.activeElement)) {
+        button.focus({ preventScroll: true });
+      }
+      columnMenu?.classList.remove("open");
+      document.getElementById("columnMenuBtn")?.setAttribute("aria-expanded", "false");
+    }
+    button.setAttribute("aria-expanded", String(expanded));
+  };
+  button.addEventListener("click", () => setExpanded(button.getAttribute("aria-expanded") !== "true"));
+  const syncViewport = () => {
+    const moveFocusIntoSettings = !mobile.matches && document.activeElement === button;
+    setExpanded(!mobile.matches);
+    if (moveFocusIntoSettings) panel.querySelector("button, select")?.focus({ preventScroll: true });
+  };
+  if (mobile.addEventListener) mobile.addEventListener("change", syncViewport);
+  else mobile.addListener(syncViewport);
+  syncViewport();
 }
 
 function setupHorizontalScrollAreas() {
