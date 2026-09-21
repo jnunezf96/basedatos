@@ -3865,26 +3865,15 @@ function setupSwipeTabs() {
 }
 
 function setupResultsDimensions() {
-  const tabs = [...document.querySelectorAll("[data-results-dimension]")];
-  const activate = (tab, focus = false) => {
-    tabs.forEach(button => {
-      const active = button === tab;
-      button.setAttribute("aria-selected", String(active));
-      button.tabIndex = active ? 0 : -1;
-      document.getElementById(button.getAttribute("aria-controls")).hidden = !active;
-    });
+  const select = document.getElementById("resultsDimensionSelect");
+  if (!select) return;
+  select.value = "pagination";
+  select.addEventListener("change", () => {
+    for (const dimension of ["pagination", "view", "display"]) {
+      document.getElementById(`resultsPanel${dimension}`).hidden = dimension !== select.value;
+    }
     document.getElementById("columnMenuDropdown")?.classList.remove("open");
     document.getElementById("columnMenuBtn")?.setAttribute("aria-expanded", "false");
-    if (focus) tab.focus();
-  };
-  tabs.forEach((tab, index) => {
-    tab.addEventListener("click", () => activate(tab));
-    tab.addEventListener("keydown", event => {
-      const next = event.key === "ArrowRight" ? (index + 1) % tabs.length
-        : event.key === "ArrowLeft" ? (index + tabs.length - 1) % tabs.length
-        : event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : -1;
-      if (next >= 0) { event.preventDefault(); activate(tabs[next], true); }
-    });
   });
 }
 
