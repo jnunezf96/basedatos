@@ -543,7 +543,10 @@ const I18N = {
     "list.expandAll": "Expandir/Colapsar registros",
     "lemma.expandAll": "Expandir/Colapsar lemas",
     "comentario.expandAll": "Expandir/Colapsar comentarios",
-    "table.display.settings": "Opciones de visualización",
+    "table.controls": "Controles de resultados",
+    "table.dimension.pagination": "Paginación",
+    "table.dimension.view": "Vista",
+    "table.dimension.display": "Presentación",
     "table.pagesize.label": "Registros por página:",
     "table.pagesize.lemmasLabel": "Lemas por página:",
     "table.columns": "Cols",
@@ -1074,7 +1077,10 @@ const I18N = {
     "list.expandAll": "Expand/Collapse records",
     "lemma.expandAll": "Expand/Collapse lemmas",
     "comentario.expandAll": "Expand/Collapse comments",
-    "table.display.settings": "Display settings",
+    "table.controls": "Result controls",
+    "table.dimension.pagination": "Pagination",
+    "table.dimension.view": "View",
+    "table.dimension.display": "Display",
     "table.pagesize.label": "Records per page:",
     "table.pagesize.lemmasLabel": "Lemmas per page:",
     "table.columns": "Cols",
@@ -1569,7 +1575,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupLemmaToggleAll();
   setupExportButtons();
   setupHorizontalScrollAreas();
-  setupResultsDisplaySettings();
+  setupResultsDimensions();
   await hydrateSourcesFromApi();
   buildSourceSlugMaps();
   renderFuenteList();
@@ -3858,31 +3864,28 @@ function setupSwipeTabs() {
   });
 }
 
-function setupResultsDisplaySettings() {
-  const button = document.getElementById("resultsSettingsToggle");
-  const panel = document.getElementById("resultsDisplaySettings");
-  if (!button || !panel) return;
-  const mobile = window.matchMedia("(max-width: 640px), (orientation: landscape) and (max-width: 980px) and (max-height: 520px)");
-  const setExpanded = expanded => {
-    const columnMenu = document.getElementById("columnMenuDropdown");
-    if (!expanded) {
-      if (panel.contains(document.activeElement) || columnMenu?.contains(document.activeElement)) {
-        button.focus({ preventScroll: true });
-      }
-      columnMenu?.classList.remove("open");
-      document.getElementById("columnMenuBtn")?.setAttribute("aria-expanded", "false");
-    }
-    button.setAttribute("aria-expanded", String(expanded));
+function setupResultsDimensions() {
+  const tabs = [...document.querySelectorAll("[data-results-dimension]")];
+  const activate = (tab, focus = false) => {
+    tabs.forEach(button => {
+      const active = button === tab;
+      button.setAttribute("aria-selected", String(active));
+      button.tabIndex = active ? 0 : -1;
+      document.getElementById(button.getAttribute("aria-controls")).hidden = !active;
+    });
+    document.getElementById("columnMenuDropdown")?.classList.remove("open");
+    document.getElementById("columnMenuBtn")?.setAttribute("aria-expanded", "false");
+    if (focus) tab.focus();
   };
-  button.addEventListener("click", () => setExpanded(button.getAttribute("aria-expanded") !== "true"));
-  const syncViewport = () => {
-    const moveFocusIntoSettings = !mobile.matches && document.activeElement === button;
-    setExpanded(!mobile.matches);
-    if (moveFocusIntoSettings) panel.querySelector("button, select")?.focus({ preventScroll: true });
-  };
-  if (mobile.addEventListener) mobile.addEventListener("change", syncViewport);
-  else mobile.addListener(syncViewport);
-  syncViewport();
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => activate(tab));
+    tab.addEventListener("keydown", event => {
+      const next = event.key === "ArrowRight" ? (index + 1) % tabs.length
+        : event.key === "ArrowLeft" ? (index + tabs.length - 1) % tabs.length
+        : event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : -1;
+      if (next >= 0) { event.preventDefault(); activate(tabs[next], true); }
+    });
+  });
 }
 
 function setupHorizontalScrollAreas() {

@@ -20,7 +20,7 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=publish-ready-166" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-167" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -740,58 +740,16 @@
       <div id="activeFiltersBar" class="active-filters-bar active-filters-bar--empty" role="status" aria-live="polite" aria-label="Filtros aplicados" data-i18n-aria-label="chips.applied"></div>
       <div class="sticky-band">
         <div class="table-toolbar">
-          <div class="toolbar-controls results-controls">
-            <div class="results-heading">
-          <div id="tableStatus" class="result-info" data-i18n="table.status.loading">Cargando datos…</div>
-<div class="view-group">
-              <div class="view-toggle" role="group" aria-label="Vista">
-                <button type="button" class="view-btn active mobile-icon-btn mobile-label-on" data-view="rows" data-i18n-aria-label="view.rows" data-i18n-title="view.rows">
-                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-rows"></use></svg>
-                  <span class="btn-label mobile-icon-label" data-i18n="view.rows">Filas</span>
-                </button>
-                <button type="button" class="view-btn mobile-icon-btn mobile-label-on" data-view="lemmas" data-i18n-aria-label="view.lemmas" data-i18n-title="view.lemmas">
-                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-lemmas"></use></svg>
-                  <span class="btn-label mobile-icon-label" data-i18n="view.lemmas">Lemas</span>
-                </button>
-              </div>
-            </div>
-<div class="export-group">
+<div class="toolbar-controls results-controls">
+<div class="results-heading"><div id="tableStatus" class="result-info" data-i18n="table.status.loading">Cargando datos…</div><div class="results-dimensions" role="tablist" aria-label="Controles de resultados" data-i18n-aria-label="table.controls"><button type="button" role="tab" id="resultsTabpagination" aria-controls="resultsPanelpagination" aria-selected="true" tabindex="0" data-results-dimension="pagination" data-i18n="table.dimension.pagination">Paginación</button><button type="button" role="tab" id="resultsTabview" aria-controls="resultsPanelview" aria-selected="false" tabindex="-1" data-results-dimension="view" data-i18n="table.dimension.view">Vista</button><button type="button" role="tab" id="resultsTabdisplay" aria-controls="resultsPaneldisplay" aria-selected="false" tabindex="-1" data-results-dimension="display" data-i18n="table.dimension.display">Presentación</button></div><div class="export-group">
               <div class="export-menu-wrap">
                 <button type="button" class="arrow-btn export-btn mobile-icon-btn mobile-label-on" id="exportMenuBtn" title="Exportar" data-i18n-aria-label="table.export.label" data-i18n-title="table.export.label">
                   <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-export"></use></svg>
                   <span class="btn-label mobile-icon-label" data-i18n="table.export.label">Exportar</span>
                 </button>
               </div>
-            </div>
-            </div>
-            <button type="button" id="resultsSettingsToggle" class="results-settings-toggle" aria-expanded="false" aria-controls="resultsDisplaySettings"><span data-i18n="table.display.settings">Opciones de visualización</span><span aria-hidden="true">⌄</span></button>
-            <div id="resultsDisplaySettings" class="results-display">
-<div class="orthography-layer-group">
-              <span class="orthography-layer-label" data-i18n="orth.layer.label">Mostrar capa</span>
-              <div class="orthography-layer-toggle" role="group" aria-label="Mostrar capa de traducción/comentario: Revisada / Transcrita" data-i18n-aria-label="orth.layer.title">
-                <button type="button" class="orthography-layer-btn active" data-orth-layer="normalized" aria-pressed="true" data-i18n="orth.layer.normalized" data-i18n-title="orth.layer.normalized">Revisada</button>
-                <button type="button" class="orthography-layer-btn" data-orth-layer="source" aria-pressed="false" data-i18n="orth.layer.source" data-i18n-title="orth.layer.source">Transcrita</button>
-              </div>
-            </div>
-<div class="column-group">
-              <div class="column-menu-wrap">
-                <button type="button" class="arrow-btn column-menu-btn mobile-icon-btn mobile-label-on" id="columnMenuBtn" title="Columnas" data-i18n-aria-label="table.columns" data-i18n-title="table.columns">
-                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-columns"></use></svg>
-                  <span class="btn-label mobile-icon-label" data-i18n="table.columns">Cols</span>
-                </button>
-              </div>
-            </div>
-<div class="sort-group">
-              <div class="sort-scope">
-                <label for="sortScopeSelect" data-i18n="table.sort.label">Orden:</label>
-                <select id="sortScopeSelect">
-                  <option value="all" data-i18n="table.sort.all">Todos</option>
-                  <option value="page" data-i18n="table.sort.page">Página</option>
-                </select>
-              </div>
-            </div>
-            </div>
-<div class="page-group results-pagination">
+            </div></div>
+<div id="resultsPanelpagination" class="results-dimension-panel" role="tabpanel" aria-labelledby="resultsTabpagination"><div class="page-group results-pagination">
               <div class="page-size">
                 <label for="pageSizeSelect" data-i18n="table.pagesize.label">Registros por página:</label>
                 <select id="pageSizeSelect">
@@ -811,8 +769,40 @@
                 <button type="button" class="arrow-btn" id="pageNext" title="Página siguiente" data-i18n-aria-label="page.next" aria-label="Página siguiente"><svg width="7" height="11" viewBox="0 0 7 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2,1 6,5.5 2,10"/></svg></button>
                 <button type="button" class="arrow-btn page-skip" id="pageLast" title="Última página" data-i18n-aria-label="page.last" aria-label="Última página"><svg class="page-skip-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4,4 8,8 4,12"/><polyline points="8,4 12,8 8,12"/></svg></button>
               </div>
-            </div>
-          </div>
+            </div></div><div id="resultsPanelview" class="results-dimension-panel" role="tabpanel" aria-labelledby="resultsTabview" hidden><div class="view-group">
+              <div class="view-toggle" role="group" aria-label="Vista">
+                <button type="button" class="view-btn active mobile-icon-btn mobile-label-on" data-view="rows" data-i18n-aria-label="view.rows" data-i18n-title="view.rows">
+                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-rows"></use></svg>
+                  <span class="btn-label mobile-icon-label" data-i18n="view.rows">Filas</span>
+                </button>
+                <button type="button" class="view-btn mobile-icon-btn mobile-label-on" data-view="lemmas" data-i18n-aria-label="view.lemmas" data-i18n-title="view.lemmas">
+                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-lemmas"></use></svg>
+                  <span class="btn-label mobile-icon-label" data-i18n="view.lemmas">Lemas</span>
+                </button>
+              </div>
+            </div><div class="orthography-layer-group">
+              <span class="orthography-layer-label" data-i18n="orth.layer.label">Mostrar capa</span>
+              <div class="orthography-layer-toggle" role="group" aria-label="Mostrar capa de traducción/comentario: Revisada / Transcrita" data-i18n-aria-label="orth.layer.title">
+                <button type="button" class="orthography-layer-btn active" data-orth-layer="normalized" aria-pressed="true" data-i18n="orth.layer.normalized" data-i18n-title="orth.layer.normalized">Revisada</button>
+                <button type="button" class="orthography-layer-btn" data-orth-layer="source" aria-pressed="false" data-i18n="orth.layer.source" data-i18n-title="orth.layer.source">Transcrita</button>
+              </div>
+            </div></div><div id="resultsPaneldisplay" class="results-dimension-panel" role="tabpanel" aria-labelledby="resultsTabdisplay" hidden><div class="column-group">
+              <div class="column-menu-wrap">
+                <button type="button" class="arrow-btn column-menu-btn mobile-icon-btn mobile-label-on" id="columnMenuBtn" title="Columnas" data-i18n-aria-label="table.columns" data-i18n-title="table.columns">
+                  <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-columns"></use></svg>
+                  <span class="btn-label mobile-icon-label" data-i18n="table.columns">Cols</span>
+                </button>
+              </div>
+            </div><div class="sort-group">
+              <div class="sort-scope">
+                <label for="sortScopeSelect" data-i18n="table.sort.label">Orden:</label>
+                <select id="sortScopeSelect">
+                  <option value="all" data-i18n="table.sort.all">Todos</option>
+                  <option value="page" data-i18n="table.sort.page">Página</option>
+                </select>
+              </div>
+            </div></div>
+</div>
           <div id="exportMenuDropdown" class="export-menu-dropdown" role="group" aria-label="Exportar">
             <div class="export-menu-head">
               <span data-i18n="table.export.label">Exportar</span>
@@ -913,6 +903,6 @@
   <script src="filters.js?v=publish-ready-106"></script>
   <script src="data/bootstrap.js?v=publish-ready-439"></script>
   <script src="study-core.js?v=publish-ready-187"></script>
-  <script src="script.js?v=publish-ready-188"></script>
+  <script src="script.js?v=publish-ready-189"></script>
 </body>
 </html>
