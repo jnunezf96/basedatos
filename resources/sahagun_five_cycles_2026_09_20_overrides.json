@@ -1,0 +1,249 @@
+{
+  "1565-sahagun-escolios:000318": {
+    "target_number": 50,
+    "target_raw": "50",
+    "definition": "estar esperando. pret. oninochixcacatca. oninochixcaonoca.",
+    "witness_line": "<i>Yn iquac ye vecauhtica (49) onoque, <b>mochixcaonoque</b> (50) teteu, niman ye yc peua yn tlachichiliui (51) noviyänpa (52) tlayaualo (53) yn tlauizcalli (54), yn tlatlauillotl (55):</i>. P_161v",
+    "glosses": [
+      [
+        49,
+        "distancia de tp?o."
+      ],
+      [
+        50,
+        "estar esperando. pt. oninochixcacatca. oninochixcaonoca."
+      ],
+      [
+        51,
+        "pararse colorado. pt. otlachichiliuh."
+      ],
+      [
+        52,
+        "por todas ptes."
+      ],
+      [
+        53,
+        "ponerse en rededor o rodear. pt. otlayaualo."
+      ],
+      [
+        54,
+        "el alua del dia. caso. notlauizcal."
+      ],
+      [
+        55,
+        "claridad. caso. notlatlavillouh."
+      ]
+    ],
+    "citation": {
+      "folio_end": null,
+      "folio_start": "161v",
+      "manuscript": "P",
+      "raw": "P_161v",
+      "type": "folio"
+    },
+    "reason": "Correct numbered-cycle selection using the unique preserved P_161v local witness and matching contiguous glossary block; lexical fields unchanged.",
+    "alignment_marker": "source_cycle_exact_2026_09_20",
+    "raw_witness": "Yn iquac ye vecauhtica (49) onoque, mochixcaonoque (50) teteu, niman ye yc peua yn tlachichiliui (51) noviyänpa (52) tlayaualo (53) yn tlauizcalli (54), yn tlatlauillotl (55):",
+    "raw_gloss_block": "49: distancia de tp?o.<br />50: estar esperando. pt. oninochixcacatca. oninochixcaonoca.<br />51: pararse colorado. pt. otlachichiliuh.<br />52: por todas ptes.<br />53: ponerse en rededor o rodear. pt. otlayaualo.<br />54: el alua del dia. caso. notlauizcal.<br />55: claridad. caso. notlatlavillouh.<br />",
+    "raw_occurrence": "mochixcaonoque",
+    "raw_form": "mochixcaonoque",
+    "raw_gloss": "estar esperando. pt. oninochixcacatca. oninochixcaonoca.",
+    "expected_identity": {
+      "Original": "chixcaca, nino",
+      "Editado": "mochixcaca",
+      "Traducción": "estar esperando"
+    }
+  },
+  "1565-sahagun-escolios:000321": {
+    "target_number": 47,
+    "target_raw": "47",
+    "definition": "sentarse a esperar. pret. onicchixtimotlali. onicchixtimotecac.",
+    "witness_line": "<i>Auh yn ye iuhqui yn omextin önmomamayauhque (47) tleco, yn iquac ye otlatlaque. Nimän yc <b>quichixtimotecaque</b> yn teteu yn campa (48) yeh q'çaquiuh nanauatzin yn achto onvetz tleco ynic tonaz ynic tlathui.</i>. P_161v",
+    "glosses": [
+      [
+        47,
+        "sentarse a esperar. pt. onicchixtimotlali. onicchixtimotecac."
+      ],
+      [
+        48,
+        "de donde o de que pte."
+      ]
+    ],
+    "citation": {
+      "folio_end": null,
+      "folio_start": "161v",
+      "manuscript": "P",
+      "raw": "P_161v",
+      "type": "folio"
+    },
+    "reason": "Correct numbered-cycle selection using the unique preserved P_161v local witness and matching contiguous glossary block; lexical fields unchanged.",
+    "alignment_marker": "source_cycle_exact_2026_09_20",
+    "raw_witness": "Auh yn ye iuhqui yn omextin önmomamayauhque (47) tleco, yn iquac ye otlatlaque. Nimän yc quichixtimotecaque yn teteu yn campa (48) yeh q'çaquiuh nanauatzin yn achto onvetz tleco ynic tonaz ynic tlathui.",
+    "raw_gloss_block": "47: sentarse a esperar. pt. onicchixtimotlali. onicchixtimotecac.<br />48: de donde o de que pte. <br />",
+    "raw_occurrence": "quichixtimotecaque",
+    "raw_form": "quichixtimotecaque",
+    "raw_gloss": "sentarse a esperar. pt. onicchixtimotlali. onicchixtimotecac.",
+    "expected_identity": {
+      "Original": "chixtimotlalia, nic",
+      "Editado": "chixtimotlalia",
+      "Traducción": "sentarse a esperar"
+    }
+  },
+  "1565-sahagun-escolios:000411": {
+    "target_number": 3,
+    "target_raw": "3+",
+    "definition": "hincharse los párpados de los ojos",
+    "witness_line": "<i>Jc cënca chocaya, vel jxpopoçavac (2), <b>yxquatolpopoçauac</b> (3):</i>. P_161v",
+    "glosses": [
+      [
+        2,
+        "hincharse los ojos. p. onixpopoçauac."
+      ],
+      [
+        3,
+        "hincharse los parpados de los ojos. p. onixquatolpopoçauac. oniquatoleeuac. onixeeuac."
+      ]
+    ],
+    "citation": {
+      "folio_end": null,
+      "folio_start": "161v",
+      "manuscript": "P",
+      "raw": "P_161v",
+      "type": "folio"
+    },
+    "reason": "Correct numbered-cycle selection using the unique preserved P_161v local witness and matching contiguous glossary block; lexical fields unchanged.",
+    "alignment_marker": "source_cycle_exact_2026_09_20",
+    "raw_witness": "Jc cënca chocaya, vel jxpopoçavac (2), yxquatolpopoçauac (3):",
+    "raw_gloss_block": "2: hincharse los ojos. p. onixpopoçauac.<br />3: hincharse los parpados de los ojos. p. onixquatolpopoçauac. oniquatoleeuac. onixeeuac.<br />",
+    "raw_occurrence": "yxquatolpopoçauac",
+    "raw_form": "yxquatolpopoçauac",
+    "raw_gloss": "hincharse los parpados de los ojos. p. onixquatolpopoçauac. oniquatoleeuac. onixeeuac.",
+    "expected_identity": {
+      "Original": "cuatoleehuac, ni",
+      "Editado": "cuatolehehuac",
+      "Traducción": "hincharse los párpados de los ojos"
+    }
+  },
+  "1565-sahagun-escolios:000490": {
+    "target_number": 14,
+    "target_raw": "14+",
+    "definition": "hacer violencia a su corazón",
+    "witness_line": "<i>Auh ÿn nanavatzin çan (13) cen ÿn valmotlapalo, quivalcentlami (14), <b>quivalläncua</b> yn iyollo, valixtetënmotzolo (15):</i>. P_161v",
+    "glosses": [
+      [
+        13,
+        "de vna vez"
+      ],
+      [
+        14,
+        "hazer violencia a su coraçon. pt. onicualcentlami. onicuallanqua yn noyollo"
+      ],
+      [
+        15,
+        "hazer algo a cierra ojos por hazerlo sin temor. pt. onixtetêmotzolo. oninixteteppic."
+      ]
+    ],
+    "citation": {
+      "folio_end": null,
+      "folio_start": "161v",
+      "manuscript": "P",
+      "raw": "P_161v",
+      "type": "folio"
+    },
+    "reason": "Correct numbered-cycle selection using the unique preserved P_161v local witness and matching contiguous glossary block; lexical fields unchanged.",
+    "alignment_marker": "source_cycle_exact_2026_09_20",
+    "raw_witness": "Auh ÿn nanavatzin çan (13) cen ÿn valmotlapalo, quivalcentlami (14), quivalläncua yn iyollo, valixtetënmotzolo (15):",
+    "raw_gloss_block": "13: de vna vez<br />14: hazer violencia a su coraçon. pt. onicualcentlami. onicuallanqua yn noyollo<br />15: hazer algo a cierra ojos por hazerlo sin temor. pt. onixtetêmotzolo. oninixteteppic.<br />",
+    "raw_occurrence": "quivalläncua",
+    "raw_form": "quivalläncua",
+    "raw_gloss": "hazer violencia a su coraçon. pt. onicualcentlami. onicuallanqua yn noyollo",
+    "expected_identity": {
+      "Original": "huallancua, nic in iyollo",
+      "Editado": "huallancua",
+      "Traducción": "hacer violencia a su corazón"
+    }
+  },
+  "1565-sahagun-escolios:000501": {
+    "target_number": 100,
+    "target_raw": "100",
+    "definition": "recular o volver atrás. pret. onivaltzinquiz. onivaltziniloth",
+    "witness_line": "<i>Auh yn itech oaçito totonillotl (94) yn amo (95) yxnamiquiztli, yn amo yecoliztli, amo yhiyouiliztli ynic cenca vel oxoxotlac (96) tlecuilli, ovel vahualantimotlali (97), ovel motlatlali yn tletl: yc çän ommixmauhtito (98), önmotilquetzato (99), valtzinquiz (100), <b>valtziniloth</b>: ye no ceppa yauh tlayehecoz (1), yxquich (2) caana, yc (3) momotla, quimomaca yn tletl: auh ça (4) avelmotlapalo (5), in ye no ytech onaci totonqui, çan valtzinq'ça valtzincholoa (6), amo (7) ontlayecoa: ul?</i>. P_161v",
+    "glosses": [
+      [
+        94,
+        "calor. caso. nototonillo. nototoca"
+      ],
+      [
+        95,
+        "cosa no sufrible. cosa intolerable."
+      ],
+      [
+        96,
+        "encenderse mucho el fuego. pt. oxoxotlac."
+      ],
+      [
+        97,
+        "estar hecho gran fuego, vn gran monton de brasas. pt. ovahualantimotlali. omotlâtlali."
+      ],
+      [
+        98,
+        "espantarse en ver el fuego. pt. oninixmauhti."
+      ],
+      [
+        99,
+        "pararse en la carrera o en el camino. pt. oninotilquetz."
+      ],
+      [
+        100,
+        "recular o boluer atras. pt. onivaltzinquiz. onivaltziniloth"
+      ],
+      [
+        1,
+        "prouar a hazer algo. pt. onitlayeheco."
+      ],
+      [
+        2,
+        "esforçarse pa hazer algo. o poner todas las fuerças pa hazer algo. pt. yxquich onicahan"
+      ],
+      [
+        3,
+        "arrojarse con impeto pa hazer algo. o darse todo a van cosa. pt. yc oninomotlac. onicnomacac."
+      ],
+      [
+        4,
+        "en ninguna manera"
+      ],
+      [
+        5,
+        "osar o ateuerse. pt. oninotlapalo."
+      ],
+      [
+        6,
+        "saltar atras. pt. onivaltzincholo. onitzincholo."
+      ],
+      [
+        7,
+        "no puede sufrir la pena o trabajo. pt. amo onôtlayeco. a. onoconyeco."
+      ]
+    ],
+    "citation": {
+      "folio_end": null,
+      "folio_start": "161v",
+      "manuscript": "P",
+      "raw": "P_161v",
+      "type": "folio"
+    },
+    "reason": "Correct numbered-cycle selection using the unique preserved P_161v local witness and matching contiguous glossary block; lexical fields unchanged.",
+    "alignment_marker": "source_cycle_exact_2026_09_20",
+    "raw_witness": "Auh yn itech oaçito totonillotl (94) yn amo (95) yxnamiquiztli, yn amo yecoliztli, amo yhiyouiliztli ynic cenca vel oxoxotlac (96) tlecuilli, ovel vahualantimotlali (97), ovel motlatlali yn tletl: yc çän ommixmauhtito (98), önmotilquetzato (99), valtzinquiz (100), valtziniloth: ye no ceppa yauh tlayehecoz (1), yxquich (2) caana, yc (3) momotla, quimomaca yn tletl: auh ça (4) avelmotlapalo (5), in ye no ytech onaci totonqui, çan valtzinq'ça valtzincholoa (6), amo (7) ontlayecoa: ul?",
+    "raw_gloss_block": "94: calor. caso. nototonillo. nototoca<br />95: cosa no sufrible. cosa intolerable.<br />96: encenderse mucho el fuego. pt. oxoxotlac.<br />97: estar hecho gran fuego, vn gran monton de brasas. pt. ovahualantimotlali. omotlâtlali.<br />98: espantarse en ver el fuego. pt. oninixmauhti.<br />99: pararse en la carrera o en el camino. pt. oninotilquetz.<br />100: recular o boluer atras. pt. onivaltzinquiz. onivaltziniloth<br /><br />1: prouar a hazer algo. pt. onitlayeheco.<br />2: esforçarse pa hazer algo. o poner todas las fuerças pa hazer algo. pt. yxquich onicahan<br />3: arrojarse con impeto pa hazer algo. o darse todo a van cosa. pt. yc oninomotlac. onicnomacac.<br />4: en ninguna manera<br />5: osar o ateuerse. pt. oninotlapalo.<br />6: saltar atras. pt. onivaltzincholo. onitzincholo.<br />7: no puede sufrir la pena o trabajo. pt. amo onôtlayeco. a. onoconyeco.<br />",
+    "raw_occurrence": "valtziniloth: ye no ceppa",
+    "raw_form": "valtziniloth",
+    "raw_gloss": "recular o boluer atras. pt. onivaltzinquiz. onivaltziniloth",
+    "expected_identity": {
+      "Original": "hualtzinilotia, ni",
+      "Editado": "hualtzinilotia",
+      "Traducción": "recular o volver atrás"
+    }
+  }
+}

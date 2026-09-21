@@ -19,8 +19,9 @@ import py_compile
 import re
 import subprocess
 import sys
-from dataclasses import dataclass
 from pathlib import Path
+
+from build_bootstrap import DataStats, read_data_stats, rebuild_bootstrap, parse_bootstrap, validate_bootstrap
 
 
 DATA_PATH = Path("data/data.jsonl.gz")
@@ -34,44 +35,6 @@ DEFAULT_COMPILE_SCRIPTS = [
     Path("resources/spanish_spellcheck_candidates.py"),
     Path("resources/source_cleanup_cedilla_research.py"),
 ]
-
-
-@dataclass(frozen=True)
-class DataStats:
-    total_rows: int
-    bootstrap_rows: list[dict]
-
-
-def read_data_stats(data_path: Path, bootstrap_limit: int = 100) -> DataStats:
-    rows: list[dict] = []
-    total = 0
-    with gzip.open(data_path, "rt", encoding="utf-8") as handle:
-        for line in handle:
-            if not line.strip():
-                continue
-            total += 1
-            if len(rows) < bootstrap_limit:
-                rows.append(json.loads(line))
-    return DataStats(total_rows=total, bootstrap_rows=rows)
-
-
-def rebuild_bootstrap(path: Path, stats: DataStats) -> None:
-    payload = {"totalRows": stats.total_rows, "rows": stats.bootstrap_rows}
-    path.write_text(
-        "window.NAHUATL_BOOTSTRAP = "
-        + json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
-        + ";\n",
-        encoding="utf-8",
-    )
-
-
-def parse_bootstrap(path: Path) -> tuple[int, int]:
-    text = path.read_text(encoding="utf-8")
-    match = re.match(r"window\.NAHUATL_BOOTSTRAP = (.*);\n?$", text)
-    if not match:
-        raise ValueError(f"{path} does not match expected bootstrap wrapper")
-    obj = json.loads(match.group(1))
-    return int(obj["totalRows"]), len(obj["rows"])
 
 
 def bump_index_tag(path: Path) -> int:
@@ -202,8 +165,8 @@ def main() -> int:
     try:
         bootstrap_total, bootstrap_rows = parse_bootstrap(args.bootstrap)
         print(f"bootstrap parse ok totalRows={bootstrap_total} rows={bootstrap_rows}")
-        if stats.total_rows and bootstrap_total != stats.total_rows:
-            failures.append(f"bootstrap totalRows mismatch: {bootstrap_total} != {stats.total_rows}")
+        validate_bootstrap(args.bootstrap, stats)
+        print("bootstrap exact corpus content ok")
     except Exception as exc:  # noqa: BLE001
         failures.append(f"bootstrap parse failed: {exc}")
 

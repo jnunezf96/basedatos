@@ -47,6 +47,55 @@ node resources/benchmark_static_share_url.mjs \
 The benchmark checks correctness, full-data avoidance, full-index avoidance,
 candidate hydration, heap, and lazy transfer.
 
+## Static Pair comparisons
+
+Pair comparisons use a separate worker to scan the entire requested scope,
+independently of the displayed table page. The worker loads metadata and only
+the thin field indexes needed for matching and comparison. When a display index
+differs from the original column text, it also loads the chosen column's raw
+override projection if a matching source needs it. It does not hydrate full row
+chunks or load the full database into the page. Clear, changed inputs, and a new
+comparison cancel the previous worker; failures do not display partial results.
+
+The normal lazy-asset build includes these derived projections. To add or refresh
+only the projections for an existing matching lazy dataset:
+
+```bash
+python3 resources/build_lazy_data_assets.py --pair-projections-only
+```
+
+This incremental command validates the corpus against existing metadata before
+publishing the projections and manifest. It does not rebuild other lazy assets.
+
+## Static Study cards
+
+Study preparation uses a separate worker over the complete selected-source scope;
+the current-filters checkbox adds the current text filters. It loads thin lemma,
+display-translation, and required filter indexes, with a sparse source-display
+override only when needed. It does not load full row chunks into the page. Theme
+matching and direction-specific card eligibility share the page's Study logic.
+Cards sample eligible distinct lemmas uniformly and aggregate their matching
+entries. Reset cancels a pending build; changed scope cancels stale work.
+
+The normal lazy build includes the source-display projection. For an existing
+matching lazy dataset, refresh just that projection with:
+
+```bash
+python3 resources/build_lazy_data_assets.py --study-projections-only
+```
+
+The incremental command validates existing metadata and preserves other assets.
+
+## CSV and image exports
+
+CSV exports all matching records using the selected columns and display layer at
+export start. Static export uses an isolated search worker and reads required row
+chunks sequentially, preserving complete record text without filling the page's
+data cache. A whole-corpus export can require all chunks. Progress and Cancel are
+available; failed or cancelled preparation downloads no partial file. Global sort
+applies to CSV; page-only sorting does not reorder the complete export. JPG and
+PNG export the currently displayed page.
+
 ## Local backend diagnostic
 
 Build the local SQLite search database:
@@ -160,3 +209,21 @@ search in the browser, and check the server/browser network activity:
 - Expected for CSV export: `POST /api/export`.
 - Not expected in backend mode: `data/data.jsonl.gz`, `data/lazy/*`, or
   `search-worker.js`.
+
+## Static bootstrap consistency
+
+`data/data.jsonl.gz` is the checked-in corpus consumed by the static and SQLite
+builders. `data/bootstrap.js` must contain its first 100 complete records in the
+same order and its total record count. Refresh or check it without running
+linguistic cleanup stages:
+
+```bash
+python3 resources/build_bootstrap.py
+python3 resources/build_bootstrap.py --check
+```
+
+The writer validates the corpus before atomically replacing the bootstrap. Pages
+builds and checks this payload before assembly; the cleanup-stage verifier also
+checks exact content, including raw and QA fields. Bootstrap regeneration changes
+no corpus values. The 2026-09-20 repair is recorded in
+`resources/bootstrap_consistency_2026_09_20.json`.

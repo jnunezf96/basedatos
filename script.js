@@ -313,6 +313,13 @@ const I18N = {
     "pairs.useFilters": "Usar filtros actuales",
     "pairs.wordOnly": "Solo palabras",
     "pairs.summary": "Pares encontrados: {{pairs}} · Filas analizadas: {{rows}}",
+    "pairs.loadingIndexes": "Preparando datos para comparar… {{done}} / {{total}}",
+    "pairs.scanning": "Comparando filas… {{done}} / {{total}}",
+    "pairs.error": "No se pudo completar la comparación. No se muestran resultados parciales. Revisa la conexión y vuelve a buscar pares.",
+    "study.loading": "Preparando tarjetas…",
+    "study.preparing": "Preparando datos de tarjetas… {{done}} / {{total}}",
+    "study.scanning": "Revisando entradas para las tarjetas… {{done}} / {{total}}",
+    "study.loadError": "No se pudieron preparar las tarjetas completas. Revisa la conexión e inténtalo de nuevo.",
     "pairs.noResults": "No se encontraron pares.",
     "pairs.header.stem": "Base",
     "pairs.header.a": "Forma en -a",
@@ -415,6 +422,14 @@ const I18N = {
     "browse.pagesize.label": "Filas",
     "browse.page": "Pág. {{page}} de {{total}}",
     "site.tagline": "Usa los filtros para encontrar palabras por escritura, traducción o fuente; los resultados aparecen en la tabla de abajo.",
+    "about.title": "Acerca de esta base y sus fuentes",
+    "about.purpose": "Consulta entradas de náhuatl por escritura, traducción o fuente y compara los resultados.",
+    "about.start": "Para empezar, elige una columna, escribe una condición y pulsa Añadir. Selecciona las fuentes que quieres consultar y usa Compartir para guardar el enlace de la búsqueda.",
+    "about.original": "Escritura original registrada en la entrada.",
+    "about.edition": "Texto estandarizado de la entrada, presentado junto a la escritura original.",
+    "about.source": "Identifica la fuente de cada entrada. La lista de fuentes permite decidir cuáles incluir en la búsqueda.",
+    "about.sources": "Explorar fuentes",
+    "about.repository": "Código del proyecto",
     "table.header.paleografia": "Original",
     "table.header.grafia": "Editado",
     "table.header.traduccion": "Traducción",
@@ -443,12 +458,17 @@ const I18N = {
     "table.export.filename": "tabla.jpg",
     "table.export.png.filename": "tabla.png",
     "table.export.label": "Exportar",
-    "table.export.jpeg": "Imagen (JPG)",
-    "table.export.png": "Imagen (PNG)",
-    "table.export.csv": "Hoja de cálculo (CSV)",
+    "table.export.jpeg": "Página actual (JPG)",
+    "table.export.png": "Página actual (PNG)",
+    "table.export.csv": "Todos los resultados (CSV)",
     "table.export.csv.filename": "nahuatl.csv",
     "table.export.empty": "No hay resultados para exportar.",
     "table.export.started": "Exportación iniciada",
+    "table.export.preparing": "Preparando CSV con la selección al iniciar…",
+    "table.export.progress": "Preparando CSV con la selección al iniciar: {{done}} de {{total}} registros.",
+    "table.export.cancel": "Cancelar exportación",
+    "table.export.cancelled": "Exportación cancelada. No se descargó ningún archivo.",
+    "table.export.error": "No se pudo completar la exportación. No se descargó ningún archivo.",
     "field.paleografia": "Original",
     "field.grafia": "Editado",
     "field.traduccion": "Traducción",
@@ -468,6 +488,7 @@ const I18N = {
     "share.manual.close": "Cerrar",
     "share.manual.input": "URL para compartir",
     "share.manual.ready": "Enlace listo para copiar",
+    "share.invalidSource": "No se aplicó el enlace: contiene una fuente desconocida. La búsqueda actual no ha cambiado.",
     "copy.cell": "Texto copiado",
     "page.first": "Primera página",
     "page.prev": "Página anterior",
@@ -493,6 +514,7 @@ const I18N = {
     "chips.moveToAnd": "Mover a Y",
     "chips.moveToOr": "Mover a O",
     "chips.removeFilter": "Quitar filtro",
+    "chips.editFilter": "Editar filtro",
     "chips.selectFilter": "Seleccionar filtro",
     "chips.applied": "Filtros aplicados",
     "chips.scope.whole.code": "C",
@@ -822,6 +844,13 @@ const I18N = {
     "pairs.useFilters": "Use current filters",
     "pairs.wordOnly": "Word only",
     "pairs.summary": "Pairs found: {{pairs}} · Rows scanned: {{rows}}",
+    "pairs.loadingIndexes": "Preparing comparison data… {{done}} / {{total}}",
+    "pairs.scanning": "Comparing rows… {{done}} / {{total}}",
+    "pairs.error": "The comparison could not finish. No partial results are shown. Check your connection and find pairs again.",
+    "study.loading": "Preparing cards…",
+    "study.preparing": "Preparing card data… {{done}} / {{total}}",
+    "study.scanning": "Checking entries for cards… {{done}} / {{total}}",
+    "study.loadError": "The complete card set could not be prepared. Check your connection and try again.",
     "pairs.noResults": "No pairs found.",
     "pairs.header.stem": "Stem",
     "pairs.header.a": "-a form",
@@ -924,6 +953,14 @@ const I18N = {
     "browse.pagesize.label": "Rows",
     "browse.page": "Page {{page}} of {{total}}",
     "site.tagline": "Use the filters to find words by spelling, translation, or source; results appear in the table below.",
+    "about.title": "About this database and its sources",
+    "about.purpose": "Look up Nahuatl entries by spelling, translation, or source and compare the results.",
+    "about.start": "To begin, choose a column, enter a condition, and press Add. Select the sources you want to consult, then use Share to save the search link.",
+    "about.original": "Original spelling recorded in the entry.",
+    "about.edition": "Standardized text of the entry, presented alongside the original spelling.",
+    "about.source": "Identifies the source of each entry. Use the source list to choose which sources to include in your search.",
+    "about.sources": "Explore sources",
+    "about.repository": "Project code",
     "table.header.paleografia": "Original",
     "table.header.grafia": "Edition",
     "table.header.traduccion": "Translation",
@@ -952,12 +989,17 @@ const I18N = {
     "table.export.filename": "table.jpg",
     "table.export.png.filename": "table.png",
     "table.export.label": "Export",
-    "table.export.jpeg": "Image (JPG)",
-    "table.export.png": "Image (PNG)",
-    "table.export.csv": "Spreadsheet (CSV)",
+    "table.export.jpeg": "Current page (JPG)",
+    "table.export.png": "Current page (PNG)",
+    "table.export.csv": "All matching records (CSV)",
     "table.export.csv.filename": "nahuatl.csv",
     "table.export.empty": "Nothing to export.",
     "table.export.started": "Export started",
+    "table.export.preparing": "Preparing CSV from the selection at start…",
+    "table.export.progress": "Preparing CSV from the selection at start: {{done}} of {{total}} records.",
+    "table.export.cancel": "Cancel export",
+    "table.export.cancelled": "Export cancelled. No file was downloaded.",
+    "table.export.error": "Export could not be completed. No file was downloaded.",
     "field.paleografia": "Original",
     "field.grafia": "Edition",
     "field.traduccion": "Translation",
@@ -977,6 +1019,7 @@ const I18N = {
     "share.manual.close": "Close",
     "share.manual.input": "Share URL",
     "share.manual.ready": "Link ready to copy",
+    "share.invalidSource": "The link was not applied: it contains an unknown source. Your current search has not changed.",
     "copy.cell": "Text copied",
     "page.first": "First page",
     "page.prev": "Previous page",
@@ -1002,6 +1045,7 @@ const I18N = {
     "chips.moveToAnd": "Move to AND",
     "chips.moveToOr": "Move to OR",
     "chips.removeFilter": "Remove filter",
+    "chips.editFilter": "Edit filter",
     "chips.selectFilter": "Select filter",
     "chips.applied": "Applied filters",
     "chips.scope.whole.code": "C",
@@ -1456,6 +1500,7 @@ let studyFullscreenFallback = false;
 let studyScopeDirty = true;
 let studyScopeRequestCounter = 0;
 let studyDeckRequestCounter = 0;
+let studyPendingBuildSignature = null;
 let lastRankingSummary = null;
 let tableViewMode = "rows"; // "rows" | "lemmas"
 let lastLemmaItems = [];
@@ -1483,6 +1528,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   syncFieldPillOrder();
   setupLanguageToggle();
   setupFilterHelpToggle();
+  setupAboutHelp();
   setupAccentToggle();
   setupLogicToggle();
   setupChipsBarDelegation();
@@ -1559,6 +1605,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const initialState = parseHashRoute(location.hash);
     hashRouteApplied = true;
     ensureHashChangeListener();
+    if (initialState?.error) showShareRouteError(initialState.error);
     if (initialState && usedBootstrap) {
       applyParsedState(initialState);
     } else {
@@ -2250,13 +2297,14 @@ function getExportApiPayload() {
   };
 }
 
-async function queryExportApi(payload) {
+async function queryExportApi(payload, signal) {
   const endpoint = getExportApiEndpoint();
   if (!endpoint) throw new Error("Export API endpoint is not configured.");
   const response = await fetch(endpoint, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(payload),
+    signal,
   });
   if (!response.ok) {
     throw new Error(`Export API failed with ${response.status}`);
@@ -2265,6 +2313,7 @@ async function queryExportApi(payload) {
 }
 
 function queueSearchApiQuery(querySignature, requestSignature, options = {}) {
+  if (selectedFuentes.size === 0) return;
   if (searchApiQueryPromise) {
     if (searchApiPendingRequestSignature === requestSignature) return;
     searchApiQueryPromise.finally(() => {
@@ -2298,6 +2347,10 @@ function queueSearchApiQuery(querySignature, requestSignature, options = {}) {
       if (getSearchApiRequestSignature(querySignature) !== requestSignature) {
         return;
       }
+      if (selectedFuentes.size === 0) {
+        applyFilters(false, { ...options, keepOffset: true });
+        return;
+      }
       console.warn("Search API failed.", err);
       renderSearchApiUnavailableState({ ...options, keepOffset: true });
     });
@@ -2309,7 +2362,7 @@ function applySearchApiResult(result, options = {}) {
   }
   const total = Number(result.total) || 0;
   if (displayOffset >= total && total > 0) {
-    displayOffset = Math.max(0, total - maxDisplayRows);
+    displayOffset = Math.max(0, Math.ceil(total / maxDisplayRows) - 1) * maxDisplayRows;
     searchApiResult = null;
     const querySignature = getLazyQuerySignature();
     queueSearchApiQuery(querySignature, getSearchApiRequestSignature(querySignature), options);
@@ -2480,6 +2533,7 @@ function queryLazySearchWorker(payload) {
 }
 
 function queueLazyWorkerQuery(querySignature, requestSignature, options = {}) {
+  if (selectedFuentes.size === 0) return;
   if (lazyWorkerQueryPromise) {
     if (lazyWorkerPendingRequestSignature === requestSignature) return;
     lazyWorkerQueryPromise.finally(() => {
@@ -2535,7 +2589,7 @@ function applyLazyWorkerResult(result, options = {}) {
   }
   const total = Number(result.total) || 0;
   if (displayOffset >= total && total > 0) {
-    displayOffset = Math.max(0, total - maxDisplayRows);
+    displayOffset = Math.max(0, Math.ceil(total / maxDisplayRows) - 1) * maxDisplayRows;
     lazyWorkerResult = null;
     const querySignature = getLazyQuerySignature();
     queueLazyWorkerQuery(querySignature, getLazyPageRequestSignature(querySignature), options);
@@ -2664,7 +2718,7 @@ async function hydrateLazyRowsForPage(rows, totalCount, options = {}) {
 }
 
 async function loadCompressedJsonlRows(url, options = {}) {
-  const response = await fetch(url);
+  const response = await fetch(url, { signal: options.signal });
   if (!response.ok) {
     throw new Error(`Data request failed with ${response.status}`);
   }
@@ -2959,6 +3013,7 @@ function applyTranslations() {
 }
 
 function refreshLanguageDependentUI() {
+  clearIdleCsvExportStatus();
   const y = getTableScrollTop();
   updateAccentLabels();
   renderColumnControls();
@@ -3001,6 +3056,18 @@ function setupFilterHelpToggle() {
     const expanded = btn.getAttribute("aria-expanded") === "true";
     btn.setAttribute("aria-expanded", expanded ? "false" : "true");
     help.classList.toggle("site-tagline--open", !expanded);
+  });
+}
+
+function setupAboutHelp() {
+  document.getElementById("aboutSourcesBtn")?.addEventListener("click", () => {
+    document.getElementById("aboutHelp").open = false;
+    showScreen("filters");
+    document.getElementById("tab-filtersPanel")?.click();
+    const sources = document.getElementById("fuenteList");
+    sources?.closest(".filter-card")?.classList.add("about-sources-revealed");
+    sources?.focus({ preventScroll: true });
+    sources?.scrollIntoView({ block: "center" });
   });
 }
 
@@ -3154,7 +3221,7 @@ function setSelectedChipLogic(nextLogic) {
   activeFilters.forEach(filter => {
     if (!ids.has(filter.owner)) return;
     filter.logic = logic;
-    if (normalizeScope(filter.scope) === "word" && logic === "AND") {
+    if (normalizeScope(filter.scope) === "word" && logic === "AND" && filter.type !== "reversePreset" && filter.type !== "reverse") {
       filter.wordGroupId = filter.owner;
     } else {
       delete filter.wordGroupId;
@@ -3312,7 +3379,7 @@ function renderActiveFilterChips() {
       `<input type="checkbox" class="chip-select" ${selected ? "checked" : ""} ` +
       `aria-label="${escapeHtml(t("chips.selectFilter"))}: ${escapeHtml(fieldLabel)}">` +
       `</label>` +
-      `<span class="chip-label"><span class="chip-field">${escapeHtml(fieldLabel)}</span> ${parts}</span>` +
+      `<button type="button" class="chip-label chip-edit" aria-label="${escapeHtml(t("chips.editFilter"))}: ${escapeHtml(fieldLabel)} — ${escapeHtml(filters.map(f => String(f.value)).join(", "))}"><span class="chip-field">${escapeHtml(fieldLabel)}</span> ${parts}</button>` +
       `<button type="button" class="chip-remove" aria-label="${escapeHtml(t("chips.removeFilter"))}">×</button>`;
 
     return chip;
@@ -3850,8 +3917,10 @@ function setupHorizontalScrollAreas() {
 }
 
 function syncFuenteMode(card) {
+  card.classList.remove("about-sources-revealed");
   const active = card.querySelector(".field-btn.active");
-  card.classList.toggle("fuente-mode", active?.dataset.field === "Fuente");
+  const editingSourceText = editingGroupId && activeFilters.some(f => f.owner === editingGroupId && f.field === "Fuente" && f.type !== "fuenteSet");
+  card.classList.toggle("fuente-mode", active?.dataset.field === "Fuente" && !editingSourceText);
 }
 
 function updateFilterPlaceholders(card) {
@@ -3859,13 +3928,16 @@ function updateFilterPlaceholders(card) {
   const campo = (fieldBtn?.dataset.placeholderLabel || fieldBtn?.textContent.trim() || "").toLowerCase();
   const scopeBtn = card.querySelector(".scope-btn.active");
   const casilla = (scopeBtn?.dataset.placeholderLabel || scopeBtn?.textContent.trim() || "").toLowerCase();
+  card.querySelectorAll(".field-btn, .scope-btn").forEach(btn => {
+    btn.setAttribute("aria-pressed", String(btn.classList.contains("active")));
+  });
   card.querySelectorAll(".filter-input[data-mode]").forEach(input => {
     const mode = input.dataset.mode;
     const negate = input.dataset.negate === "true";
     const key = `placeholder.${mode}.${negate ? "excl" : "incl"}`;
     const label = t(key).replace("{campo}", campo).replace("{casilla}", casilla);
     input.placeholder = label;
-    input.setAttribute("aria-label", label);
+    input.setAttribute("aria-label", [campo, casilla, label].filter(Boolean).join(". "));
   });
   updateScopeIntent(card, scopeBtn?.dataset.scope);
 }
@@ -4241,7 +4313,8 @@ function commitFilterCard() {
   const field = card.querySelector(".field-btn.active")?.dataset.field;
   const scopeChoice = normalizeScopeChoice(card.querySelector(".scope-btn.active")?.dataset.scope || AUTO_SCOPE);
   if (!field) return;
-  if (field === "Fuente") return;
+  const originalFilters = editingGroupId ? activeFilters.filter(f => f.owner === editingGroupId) : [];
+  if (field === "Fuente" && !originalFilters.some(f => f.field === "Fuente" && f.type !== "fuenteSet")) return;
 
   const inputs = [];
   card.querySelectorAll(".filter-input").forEach(input => {
@@ -4259,13 +4332,26 @@ function commitFilterCard() {
   activeFilters = activeFilters.filter(f => f.owner !== groupId && f.owner !== "f1");
 
   inputs.forEach(({ raw, mode, negate }) => {
-    const resolvedScope = resolveInputScope(scopeChoice, raw);
+    const original = originalFilters.find(f => f.field === field && f.mode === mode && !!f.negate === negate)
+      || (originalFilters.length === 1 && originalFilters[0].field === field ? originalFilters[0] : null);
+    const originalScopeChoice = getGroupScopeChoice(groupId, originalFilters);
+    const preserveExplicitScope = original && !original.scopeChoice
+      && (original.reversePreset || original.type === "reversePreset" || original.type === "reverse")
+      && scopeChoice === originalScopeChoice;
+    const resolvedScope = preserveExplicitScope ? original.scope : resolveInputScope(scopeChoice, raw);
     // Word-scope AND filters share a wordGroupId so same-group word conditions
     // are tested against the same word. Phrase filters remain phrase-scoped.
-    const wordGroupId = (resolvedScope === "word" && logic === "AND") ? groupId : null;
+    const wordGroupId = (resolvedScope === "word" && logic === "AND" && (!original || (!original.reversePreset && original.type !== "reversePreset" && original.type !== "reverse"))) ? groupId : null;
     const extras = wordGroupId
       ? { owner: groupId, wordGroupId, scopeChoice }
       : { owner: groupId, scopeChoice };
+    // The card edits value/mode/logic; retain semantics it cannot represent.
+    if (original) {
+      for (const key of ["type", "fields", "strictCompare", "reversePreset"]) {
+        if (original[key] !== undefined) extras[key] = original[key];
+      }
+      if (preserveExplicitScope) delete extras.scopeChoice;
+    }
     appendFilter(field, mode, raw, logic, negate, resolvedScope, extras);
   });
 
@@ -4282,6 +4368,7 @@ function commitFilterCard() {
 
   // Reset edit state and card
   editingGroupId = null;
+  syncFuenteMode(card);
   const addBtn = card.querySelector(".add-btn");
   if (addBtn) setButtonState(addBtn, "action.add", "icon-plus");
   card.querySelectorAll(".filter-input").forEach(i => (i.value = ""));
@@ -4308,6 +4395,7 @@ function cancelEdit() {
   editingGroupId = null;
   const card = document.querySelector(".filter-card[data-owner='f1']");
   if (card) {
+    syncFuenteMode(card);
     const addBtn = card.querySelector(".add-btn");
     if (addBtn) setButtonState(addBtn, "action.add", "icon-plus");
     setFilterGridSide(card, "include");
@@ -4322,6 +4410,8 @@ function loadGroupForEditing(groupId) {
   const filters = activeFilters.filter(f => f.owner === groupId);
   if (!filters.length) return;
 
+  editingGroupId = groupId;
+  document.getElementById("tab-filtersPanel")?.click();
   const field = filters[0].field;
   const scope = getGroupScopeChoice(groupId, filters);
   const logic = filters[0].logic || "AND";
@@ -4570,6 +4660,29 @@ function heapSiftDownWorstFirst(heap, idx, comparator) {
 }
 
 function applyFilters(initial = false, options = {}) {
+  clearIdleCsvExportStatus();
+  invalidatePairFinderIfChanged();
+  // An empty selection is distinct from all sources, including while an older
+  // worker/API request or lazy hydration is still completing.
+  if (selectedFuentes.size === 0) {
+    lazyHydrationToken++;
+    pendingFullDataRefresh = false;
+    displayOffset = 0;
+    pageScrollByOffset.clear();
+    lastFilteredRows = [];
+    lastRenderRows = [];
+    lastRenderTotal = 0;
+    lastLemmaItems = [];
+    lastLemmaItemsArePage = false;
+    lastLemmaRowTotal = 0;
+    lastLemmaPageOffsets = [0];
+    lastRankingSummary = null;
+    renderActiveFilterChips();
+    renderTable([], 0);
+    requestStudyScopeUpdate();
+    updateUrlHash();
+    return;
+  }
   const useSearchApiRows = shouldUseSearchApiPath();
   if (!dataRows.length && !lazyMetaRows && !useSearchApiRows) return;
   if (!options.keepOffset) {
@@ -4658,7 +4771,7 @@ function applyFilters(initial = false, options = {}) {
   });
   const total = matches.length;
   if (displayOffset >= total) {
-    displayOffset = Math.max(0, total - maxDisplayRows);
+    displayOffset = Math.max(0, Math.ceil(total / maxDisplayRows) - 1) * maxDisplayRows;
   }
   let paged;
   if (sortKeys.length) {
@@ -4841,7 +4954,7 @@ function addMobileRowToggle(td, row) {
   // Inline the rest of the preview fields under the primary so each row
   // is self-describing without tapping +.
   const previewFields = getMobilePreviewFields();
-  previewFields.slice(1).forEach(key => {
+  previewFields.forEach(key => {
     if (key === td.dataset.field) return;
     const raw = getDisplayValue(row, key);
     const safe = raw == null ? "" : String(raw);
@@ -5191,8 +5304,14 @@ function hasActiveLazyResults() {
     (searchApiResult?.querySignature === signature && searchApiResult?.requestSignature === getSearchApiRequestSignature(signature));
 }
 
+function isBootstrapPreviewActive() {
+  // No selected sources is a complete empty result, never a partial preview.
+  // Keep the bootstrap metadata intact so selecting sources again can resume it.
+  return selectedFuentes.size > 0 && dataRowsBootstrapped && !dataRowsComplete && !hasActiveLazyResults();
+}
+
 function getStatusTotal(total) {
-  return !hasActiveLazyResults() && dataRowsBootstrapped && !dataRowsComplete && bootstrapTotalRows > total
+  return isBootstrapPreviewActive() && bootstrapTotalRows > total
     ? bootstrapTotalRows
     : total;
 }
@@ -5206,8 +5325,7 @@ function updateTableStatus(displayed, total) {
   }
   const start = previewTotal === 0 ? 0 : Math.min(displayOffset + 1, previewTotal);
   const end = Math.min(displayOffset + displayed, previewTotal);
-  const detail = dataRowsBootstrapped && !dataRowsComplete
-    && !hasActiveLazyResults()
+  const detail = isBootstrapPreviewActive()
     ? t(fullDataLoadPromise || pendingFullDataRefresh
       ? "table.status.detail.loadingFull"
       : "table.status.detail.preview")
@@ -6021,7 +6139,7 @@ function setupPaginationControls() {
           maxOffset = lastLemmaPageOffsets[lastLemmaPageOffsets.length - 1] || 0;
         } else {
           const total = lastRenderTotal;
-          maxOffset = Math.max(0, total - maxDisplayRows);
+          maxOffset = Math.max(0, Math.ceil(total / maxDisplayRows) - 1) * maxDisplayRows;
         }
         if (displayOffset === maxOffset) return false;
         displayOffset = maxOffset;
@@ -6336,11 +6454,6 @@ function setupExportButtons() {
 
 // ── Export helpers (CSV) ─────────────────────────────────────────────────
 
-function getExportRows() {
-  const rows = Array.isArray(lastFilteredRows) ? lastFilteredRows.slice() : [];
-  return rows;
-}
-
 function getExportColumns() {
   const columns = TABLE_FIELDS.filter(field => !hiddenColumns.has(field.key));
   return columns.length ? columns : TABLE_FIELDS.slice();
@@ -6423,36 +6536,150 @@ function csvEscape(value) {
   return s;
 }
 
-async function exportAsCsv() {
-  if (shouldUseExportApi()) {
-    try {
-      const csvText = await queryExportApi(getExportApiPayload());
-      const csvRows = csvText.replace(/^\uFEFF/, "").split(/\r\n|\n/).filter(Boolean);
-      if (csvRows.length <= 1) {
-        alert(t("table.export.empty"));
-        return;
-      }
-      downloadBlob(csvText, t("table.export.csv.filename"), "text/csv;charset=utf-8");
-    } catch (err) {
-      console.warn("Export API failed.", err);
-      alert(t("table.status.error"));
-    }
-    return;
-  }
+let activeCsvExport = null;
 
-  const rows = getExportRows();
-  if (!rows.length) {
-    alert(t("table.export.empty"));
-    return;
+function clearIdleCsvExportStatus() {
+  if (!activeCsvExport) document.getElementById("csvExportStatus")?.remove();
+}
+
+function setCsvExportStatus(message, pending = false) {
+  let box = document.getElementById("csvExportStatus");
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "csvExportStatus";
+    box.className = "csv-export-status";
+    const text = document.createElement("span");
+    text.setAttribute("role", "status");
+    text.setAttribute("aria-live", "polite");
+    box.appendChild(text);
+    const cancel = document.createElement("button");
+    cancel.type = "button";
+    cancel.className = "btn ghost";
+    cancel.addEventListener("click", () => activeCsvExport?.controller.abort());
+    box.appendChild(cancel);
+    document.getElementById("exportMenuDropdown").after(box);
   }
-  const columns = getExportColumns();
-  const lines = [columns.map(getExportColumnLabel).map(csvEscape).join(",")];
-  rows.forEach(row => {
-    const cells = columns.map(field => csvEscape(getDisplayValue(row, field.key)));
-    lines.push(cells.join(","));
+  box.firstElementChild.textContent = message;
+  box.lastElementChild.textContent = t("table.export.cancel");
+  box.lastElementChild.hidden = !pending;
+  document.querySelector('[data-export="csv"]').disabled = pending;
+}
+
+function queryCsvExportRows(snapshot, signal) {
+  return new Promise((resolve, reject) => {
+    if (typeof Worker === "undefined") { reject(new Error("Export worker unavailable")); return; }
+    const worker = new Worker(versionedAssetUrl("search-worker.js"));
+    let settled = false;
+    const finish = (error, result) => {
+      if (settled) return;
+      settled = true;
+      worker.terminate();
+      signal.removeEventListener("abort", abort);
+      if (error) reject(error); else resolve(result);
+    };
+    const abort = () => finish(new DOMException("Export cancelled", "AbortError"));
+    signal.addEventListener("abort", abort, { once: true });
+    if (signal.aborted) { abort(); return; }
+    worker.onerror = event => finish(new Error(event.message || "Export worker failed"));
+    worker.onmessage = ({ data }) => data.type === "result"
+      ? finish(null, data.result) : finish(new Error(data.error || "Export worker failed"));
+    try { worker.postMessage({ type: "query", id: 1, payload: {
+      activeFilters: snapshot.filters, exportSources: snapshot.sources,
+      searchLayerMode: snapshot.api.layer, oldSpanishMode: snapshot.api.oldSpanish,
+      accentSensitiveMode: snapshot.api.accentSensitive, assetVersion: snapshot.assetVersion,
+      emptyBrowseSeed: snapshot.api.browseSeed, randomizeBrowse: snapshot.api.randomizeBrowse,
+      offset: 0, pageSize: Number.MAX_SAFE_INTEGER,
+    } }); } catch (error) { finish(error); }
   });
-  const BOM = "\uFEFF";
-  downloadBlob(BOM + lines.join("\r\n") + "\r\n", t("table.export.csv.filename"), "text/csv;charset=utf-8");
+}
+
+async function buildStaticCsv(snapshot, signal) {
+  const result = await queryCsvExportRows(snapshot, signal);
+  signal.throwIfAborted();
+  if (!Array.isArray(result.rows) || result.rows.length !== result.total) throw new Error("Incomplete export scope");
+  if (!result.total) return null;
+  const selected = new Map();
+  result.rows.forEach((row, index) => {
+    if (!row.record_id || !row._lazyChunk || selected.has(row.record_id)) throw new Error("Invalid export scope");
+    selected.set(row.record_id, { index, chunk: row._lazyChunk });
+  });
+  const response = await fetch(getDataAssetUrl(LAZY_DATA_MANIFEST_PATH), { signal });
+  if (!response.ok) throw new Error("Export manifest unavailable");
+  const manifest = await response.json();
+  const paths = new Map((manifest.rowChunks || []).map(chunk => [chunk.id, chunk.path]));
+  const chunks = [...new Set(result.rows.map(row => row._lazyChunk))];
+  const records = new Array(result.total);
+  let done = 0;
+  for (const chunk of chunks) {
+    signal.throwIfAborted();
+    const path = paths.get(chunk);
+    if (!path) throw new Error("Missing export chunk");
+    const rows = await loadCompressedJsonlRows(getLazyDataUrl(path), { signal });
+    for (const row of rows) {
+      const target = selected.get(row.record_id);
+      if (!target) continue;
+      if (target.chunk !== chunk || records[target.index]) throw new Error("Duplicate export record");
+      normalizeRowFieldKeys(row);
+      if (row.Fuente != null) row.Fuente = canonicalFuenteName(row.Fuente);
+      if (!snapshot.sources.includes(row.Fuente)) throw new Error("Unexpected export source");
+      const display = field => snapshot.api.displayLayer === "source"
+        ? getSourceDisplayValue(row, field) : getNormalizedDisplayValue(row, field);
+      const sort = snapshot.sortKeys.map(({ field }) => buildSortKey(String(
+        field === "Fuente" ? getFuenteSortKey(display(field)) : display(field))));
+      records[target.index] = { id: row.record_id, sort,
+        line: snapshot.columns.map(field => csvEscape(display(field))).join(",") };
+      done++;
+    }
+    signal.throwIfAborted();
+    setCsvExportStatus(t("table.export.progress", { done, total: result.total }), true);
+    await new Promise(resolve => setTimeout(resolve, 0));
+  }
+  if (done !== result.total || records.some(record => !record)) throw new Error("Incomplete export records");
+  if (snapshot.api.sortScope === "all" && snapshot.sortKeys.length) {
+    records.sort((a, b) => {
+      for (let i = 0; i < snapshot.sortKeys.length; i++) {
+        const cmp = alphaNumCollator.compare(a.sort[i], b.sort[i]);
+        if (cmp) return snapshot.sortKeys[i].dir === "asc" ? cmp : -cmp;
+      }
+      return alphaNumCollator.compare(a.id, b.id);
+    });
+  }
+  signal.throwIfAborted();
+  return "\uFEFF" + [snapshot.labels.map(csvEscape).join(","), ...records.map(record => record.line)].join("\r\n") + "\r\n";
+}
+
+async function exportAsCsv() {
+  if (activeCsvExport) return;
+  if (!selectedFuentes.size) { setCsvExportStatus(t("table.export.empty")); return; }
+  const api = getExportApiPayload();
+  const snapshot = {
+    api, columns: api.columns.slice(), labels: api.labels.slice(),
+    filters: structuredClone(activeFilters), sources: [...selectedFuentes],
+    sortKeys: sortKeys.map(key => ({ ...key })), assetVersion: getDataAssetVersion(),
+    filename: t("table.export.csv.filename"), endpoint: getExportApiEndpoint(),
+  };
+  const job = { controller: new AbortController(), timedOut: false };
+  activeCsvExport = job;
+  const timer = setTimeout(() => { job.timedOut = true; job.controller.abort(); }, 180000);
+  setCsvExportStatus(t("table.export.preparing"), true);
+  try {
+    const csv = snapshot.endpoint
+      ? await queryExportApi(snapshot.api, job.controller.signal)
+      : await buildStaticCsv(snapshot, job.controller.signal);
+    job.controller.signal.throwIfAborted();
+    if (!csv || !csv.replace(/^\uFEFF/, "").trim().includes("\n")) {
+      setCsvExportStatus(t("table.export.empty"));
+      return;
+    }
+    downloadBlob(csv, snapshot.filename, "text/csv;charset=utf-8");
+    setCsvExportStatus(t("table.export.started"));
+  } catch (error) {
+    setCsvExportStatus(t(error.name === "AbortError" && !job.timedOut ? "table.export.cancelled" : "table.export.error"));
+    if (error.name !== "AbortError") console.warn("CSV export failed.", error);
+  } finally {
+    clearTimeout(timer);
+    if (activeCsvExport === job) activeCsvExport = null;
+  }
 }
 
 function exportTableAsImage(format = "jpeg") {
@@ -7649,19 +7876,7 @@ function applyFuenteFilters(options = {}) {
   }
   const totalOptions = FUENTE_OPTIONS.length;
   const selectedCount = selectedFuentes.size;
-  // Si no hay selección, se filtra todo afuera (sin coincidencias).
-  if (selectedCount === 0) {
-    lastFilteredRows = [];
-    lastRenderRows = [];
-    lastRenderTotal = 0;
-    lastLemmaItems = [];
-    lastLemmaItemsArePage = false;
-    lastLemmaRowTotal = 0;
-    renderTable([], 0);
-    requestStudyScopeUpdate();
-    updateUrlHash();
-    return;
-  }
+  // Keep even an empty set as an explicit constraint for auxiliary consumers.
   if (selectedCount === totalOptions) {
     applyFilters(false, options);
     return;
@@ -8447,6 +8662,73 @@ function updateTableStatusForLemmas(total) {
   setTableStatusMessage(t("view.lemmas.summary", { lemmas: total, rows: rowsTotal }));
 }
 
+let pairActiveJob = null;
+let pairRequestVersion = 0;
+let pairRequestSignature = null;
+
+function cancelStaticPairJob() {
+  if (pairActiveJob) pairActiveJob.cancel();
+}
+
+function queryStaticPairs(payload, onProgress) {
+  return new Promise((resolve, reject) => {
+    if (typeof Worker === "undefined") {
+      reject(new Error("Pair comparisons require Web Workers."));
+      return;
+    }
+    const worker = new Worker(versionedAssetUrl("pair-worker.js"));
+    let timer;
+    let settled = false;
+    const finish = (error, result) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      worker.terminate();
+      if (pairActiveJob === job) pairActiveJob = null;
+      if (error) reject(error); else resolve(result);
+    };
+    const job = { cancel: () => finish(new Error("Pair comparison cancelled.")) };
+    pairActiveJob = job;
+    timer = setTimeout(() => finish(new Error("Pair comparison timed out.")), 180000);
+    worker.onmessage = ({ data }) => {
+      if (data.type === "progress") onProgress(data.progress);
+      else if (data.type === "result") finish(null, data.result);
+      else finish(new Error(data.error || "Pair worker failed."));
+    };
+    worker.onerror = event => finish(new Error(event.message || "Pair worker failed."));
+    try {
+      worker.postMessage({ type: "pairs", payload });
+    } catch (error) {
+      finish(error);
+    }
+  });
+}
+
+function getPairFinderRequestSignature() {
+  const useFilters = document.getElementById("pairUseFilters")?.checked ?? true;
+  return JSON.stringify({
+    useFilters,
+    selectedSources: useFilters ? [...selectedFuentes].sort() : null,
+    payload: getPairFinderApiPayload({
+      useFilters,
+      wordOnly: document.getElementById("pairWordOnly")?.checked ?? true,
+      suffixConfig: getPairSuffixConfigFromInputs(),
+      column: document.getElementById("pairColumn")?.value || "Editado",
+    }),
+  });
+}
+
+function invalidatePairFinderIfChanged() {
+  if (pairRequestSignature === null || pairRequestSignature === getPairFinderRequestSignature()) return;
+  pairRequestVersion++;
+  cancelStaticPairJob();
+  pairRequestSignature = null;
+  lastPairResults = null;
+  lastPairMeta = null;
+  const results = document.getElementById("pairResults");
+  if (results) results.textContent = "";
+}
+
 function setupPairFinder() {
   const select = document.getElementById("pairColumn");
   if (select) {
@@ -8473,12 +8755,19 @@ function setupPairFinder() {
   const clearBtn = document.getElementById("pairClearBtn");
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
+      pairRequestVersion++;
+      cancelStaticPairJob();
+      pairRequestSignature = null;
       lastPairResults = null;
       lastPairMeta = null;
       const resultsEl = document.getElementById("pairResults");
       if (resultsEl) resultsEl.innerHTML = "";
     });
   }
+  document.querySelectorAll("#pairsPanel input, #pairColumn").forEach(control => {
+    control.addEventListener("input", invalidatePairFinderIfChanged);
+    control.addEventListener("change", invalidatePairFinderIfChanged);
+  });
 }
 
 function refreshPairFinderUI() {
@@ -8487,20 +8776,6 @@ function refreshPairFinderUI() {
   }
 }
 
-function getPairFinderRows(useFilters) {
-  if (!useFilters) return dataRows.slice();
-  if (!activeFilters.length) return dataRows.slice();
-  return dataRows.filter(row => evaluateTextFilters(row));
-}
-
-function extractPairTokens(value, wordOnly) {
-  const raw = stripHtmlTags(String(value ?? ""));
-  if (!raw.trim()) return [];
-  const cleaned = collapseWhitespace(stripPunctuationCharacters(raw));
-  if (!cleaned) return [];
-  if (!wordOnly) return [cleaned];
-  return cleaned.split(/\s+/).filter(Boolean);
-}
 
 function formatPairForms(formMap) {
   const items = Array.from(formMap.entries()).sort((a, b) => b[1] - a[1]);
@@ -8584,6 +8859,19 @@ async function runPairFinder() {
   const wordOnly = document.getElementById("pairWordOnly")?.checked ?? true;
   const suffixConfig = getPairSuffixConfigFromInputs();
   const column = select.value;
+  const requestVersion = ++pairRequestVersion;
+  cancelStaticPairJob();
+  lastPairResults = null;
+  lastPairMeta = null;
+  const requestSignature = getPairFinderRequestSignature();
+  pairRequestSignature = requestSignature;
+  const isCurrentRequest = () => requestVersion === pairRequestVersion &&
+    requestSignature === getPairFinderRequestSignature();
+
+  if (useFilters && selectedFuentes.size === 0) {
+    renderPairResults([], getPairMetaFromSuffixConfig(suffixConfig, 0));
+    return;
+  }
 
   if (shouldUsePairFinderApi(useFilters)) {
     resultsEl.textContent = t("table.status.lazyLoading");
@@ -8594,64 +8882,43 @@ async function runPairFinder() {
         suffixConfig,
         column,
       }));
+      if (!isCurrentRequest()) return;
       const pairs = Array.isArray(result.pairs) ? result.pairs.map(normalizePairResultFromApi) : [];
       renderPairResults(pairs, getPairMetaFromSuffixConfig(suffixConfig, Number(result.rows) || 0));
     } catch (err) {
+      if (!isCurrentRequest()) return;
       console.warn("Pair finder API failed.", err);
       resultsEl.textContent = t("table.status.error");
     }
     return;
   }
 
-  const rows = getPairFinderRows(useFilters);
-
-  const pairMap = new Map();
-  const suffixes = [
-    { key: "first", suffix: suffixConfig.first.norm },
-    { key: "second", suffix: suffixConfig.second.norm },
-    { key: "third", suffix: suffixConfig.third.norm },
-    { key: "fourth", suffix: suffixConfig.fourth.norm }
-  ].filter(item => item.suffix);
-  const suffixesSorted = suffixes.slice().sort((a, b) => b.suffix.length - a.suffix.length);
-  rows.forEach(row => {
-    const value = row[column];
-    if (value == null || value === "") return;
-    const tokens = extractPairTokens(value, wordOnly);
-    tokens.forEach(token => {
-      const cleanedToken = String(token).trim();
-      if (!cleanedToken) return;
-      const normalized = normalizeString(cleanedToken);
-      if (!normalized) return;
-      const match = suffixesSorted.find(item => normalized.endsWith(item.suffix));
-      if (!match) return;
-      const stem = normalized.slice(0, -match.suffix.length);
-      if (!stem) return;
-      let entry = pairMap.get(stem);
-      if (!entry) {
-        entry = { first: new Map(), second: new Map(), third: new Map(), fourth: new Map() };
-        pairMap.set(stem, entry);
-      }
-      const bucket = entry[match.key];
-      if (!bucket) return;
-      bucket.set(cleanedToken, (bucket.get(cleanedToken) || 0) + 1);
+  resultsEl.textContent = t("pairs.loadingIndexes", { done: 0, total: 1 });
+  try {
+    const result = await queryStaticPairs({
+      assetVersion: getDataAssetVersion(),
+      useFilters,
+      activeFilters: useFilters ? activeFilters : [],
+      selectedSources: useFilters ? [...selectedFuentes] : [],
+      searchLayerMode,
+      oldSpanishMode,
+      accentSensitiveMode,
+      column,
+      wordOnly,
+      suffixConfig,
+    }, progress => {
+      if (!isCurrentRequest()) return;
+      const key = progress.phase === "scan" ? "pairs.scanning" : "pairs.loadingIndexes";
+      resultsEl.textContent = t(key, { done: progress.done, total: progress.total });
     });
-  });
-
-  const pairs = [];
-  pairMap.forEach((entry, stem) => {
-    if (entry.first.size && entry.second.size) {
-      pairs.push({
-        stem,
-        first: entry.first,
-        second: entry.second,
-        third: entry.third,
-        fourth: entry.fourth
-      });
-    }
-  });
-
-  pairs.sort((a, b) => alphaNumCollator.compare(a.stem, b.stem));
-  renderPairResults(pairs, getPairMetaFromSuffixConfig(suffixConfig, rows.length));
+    if (!isCurrentRequest()) return;
+    const pairs = result.pairs.map(normalizePairResultFromApi);
+    renderPairResults(pairs, { ...getPairMetaFromSuffixConfig(suffixConfig, result.rows), cache: result.cache });
+  } catch (error) {
+    if (!isCurrentRequest()) return;
+    console.warn("Static Pair search failed.", error);
+    resultsEl.textContent = t("pairs.error");
+  }
 }
 
 function renderPairResults(pairs, meta) {
@@ -8739,25 +9006,6 @@ function decodeStudyEntities(value) {
   studyEntityDecoder.innerHTML = String(value ?? "");
   return studyEntityDecoder.value;
 }
-
-function cleanStudyText(value) {
-  return collapseWhitespace(decodeStudyEntities(stripHtmlTags(String(value ?? ""))))
-    .replace(/\s+([,.;:!?])/g, "$1")
-    .trim();
-}
-
-function getStudyTranslation(row) {
-  return cleanStudyText(getDisplayValue(row, "Traducción"));
-}
-
-const STUDY_LEAK_PLACEHOLDER = "[...]";
-const STUDY_PROMPT_NOISE_WORDS = new Set([
-  "a", "al", "b", "c", "cf", "cfr", "de", "del", "du", "el", "en", "eventual",
-  "eventuel", "forma", "forme", "la", "le", "les", "los", "plur", "plural",
-  "metafora", "metaforico", "metaphore", "metaphor", "posible", "possible",
-  "parentesco", "parente", "posee", "poseida", "possedee", "see", "sobre",
-  "sur", "un", "una", "une", "v", "ver", "voir"
-]);
 
 const STUDY_THEME_PRESETS = [
   ["aging", "Aging (People, Things)", ["anciano", "anciana", "viejo", "vieja", "vejez", "edad", "antepasado", "abuelo", "abuela", "nacer", "nacimiento", "parir", "mayor", "menor", "primogénito", "antiguo", "huehue"]],
@@ -8948,256 +9196,6 @@ const STUDY_THEME_LABELS_ES = {
   wood: "Madera",
   writing: "Escritura, alfabetización"
 };
-const studyThemeRowMetaCache = new WeakMap();
-const studyCardInfoCache = new WeakMap();
-const STUDY_THEME_FUNCTION_TERMS = new Set([
-  "a", "al", "ante", "bajo", "cabe", "con", "contra", "de", "del", "desde",
-  "durante", "e", "el", "en", "entre", "hacia", "hasta", "la", "las", "lo",
-  "los", "mediante", "ni", "o", "para", "por", "que", "segun", "sin", "so",
-  "sobre", "tras", "u", "un", "una", "unas", "unos", "versus", "via", "y",
-  "abajo", "arriba", "dentro", "debajo", "encima", "fuera", "junto",
-  "adelante", "atras", "cerca", "lejos", "ahi", "alli", "aqui", "alla",
-  "aca", "donde", "cuando", "como", "cual", "quien",
-  "ipan", "icpac", "itic", "itech", "ixpan", "nahuac", "nepantla", "pan",
-  "tloc", "tlampa"
-]);
-
-function getStudyLeakKey(value) {
-  return normalizeString(cleanStudyText(value))
-    .replace(/[\u00b7'’ʼ`´-]/g, "")
-    .replace(/[^\p{L}\p{N}]+/gu, "");
-}
-
-function addStudyLeakForm(forms, key) {
-  if (key.length >= 4) forms.add(key);
-}
-
-function addStudyLeakDerivedForms(forms, key) {
-  if (key.endsWith("hua") && key.length > 5) addStudyLeakForm(forms, `${key.slice(0, -3)}uh`);
-  if (key.endsWith("ia") && key.length > 4) addStudyLeakForm(forms, `${key.slice(0, -1)}h`);
-  if (key.endsWith("oa") && key.length > 4) addStudyLeakForm(forms, `${key.slice(0, -1)}h`);
-}
-
-function addStudyLeakBaseForms(forms, key) {
-  [
-    "liztica", "cayotl", "liztli", "yotl", "tli", "lli", "tin", "meh",
-    "huan", "tl", "li", "in", "yo"
-  ].forEach(suffix => {
-    if (!key.endsWith(suffix) || key.length <= suffix.length + 3) return;
-    const base = key.slice(0, -suffix.length);
-    addStudyLeakForm(forms, base);
-    addStudyLeakDerivedForms(forms, base);
-  });
-}
-
-function getStudyLeakForms(lemma) {
-  const forms = new Set();
-  const cleaned = cleanStudyText(lemma);
-  const full = getStudyLeakKey(cleaned);
-  addStudyLeakForm(forms, full);
-  addStudyLeakDerivedForms(forms, full);
-  addStudyLeakBaseForms(forms, full);
-  cleaned.split(/[^\p{L}\p{N}\u00b7'’ʼ`´-]+/u).forEach(part => {
-    const key = getStudyLeakKey(part);
-    addStudyLeakForm(forms, key);
-    addStudyLeakDerivedForms(forms, key);
-    addStudyLeakBaseForms(forms, key);
-  });
-  return forms;
-}
-
-function getCommonPrefixLength(a, b) {
-  const max = Math.min(a.length, b.length);
-  let i = 0;
-  while (i < max && a[i] === b[i]) i += 1;
-  return i;
-}
-
-function getStudyComparableLeakKeys(key) {
-  const keys = new Set([key]);
-  const hless = key.replace(/h/g, "");
-  if (hless.length >= 4) keys.add(hless);
-  const quAsC = key.replace(/qu/g, "c");
-  if (quAsC.length >= 4) keys.add(quAsC);
-  const quAsCHless = quAsC.replace(/h/g, "");
-  if (quAsCHless.length >= 4) keys.add(quAsCHless);
-  return keys;
-}
-
-function isStudyLeakyKeyPair(key, form, options = {}) {
-  const allowContains = options.allowContains !== false;
-    if (key === form) return true;
-    if (allowContains && form.length >= 5 && key.length >= 5 && (key.includes(form) || form.includes(key))) return true;
-    const min = Math.min(key.length, form.length);
-    const prefixLength = getCommonPrefixLength(key, form);
-    if (min >= 5 && Math.abs(key.length - form.length) <= 2 && prefixLength >= 5) return true;
-    const finalPair = `${key[key.length - 1] || ""}${form[form.length - 1] || ""}`;
-    if (min >= 5 && key.length === form.length && prefixLength >= min - 1 && (finalPair === "ah" || finalPair === "ha")) {
-      return true;
-    }
-  return false;
-}
-
-function isStudyLeakyKey(key, forms) {
-  if (key.length < 4) return false;
-  const keyVariants = getStudyComparableLeakKeys(key);
-  for (const form of forms) {
-    const formVariants = getStudyComparableLeakKeys(form);
-    for (const keyVariant of keyVariants) {
-      for (const formVariant of formVariants) {
-        if (isStudyLeakyKeyPair(keyVariant, formVariant)) return true;
-      }
-    }
-  }
-  return false;
-}
-
-function isStudyLeakyCombinedKey(key, forms) {
-  if (key.length < 4) return false;
-  const keyVariants = getStudyComparableLeakKeys(key);
-  for (const form of forms) {
-    const formVariants = getStudyComparableLeakKeys(form);
-    for (const keyVariant of keyVariants) {
-      for (const formVariant of formVariants) {
-        if (isStudyLeakyKeyPair(keyVariant, formVariant, { allowContains: false })) return true;
-      }
-    }
-  }
-  return false;
-}
-
-function getStudyMaskableTokens(text) {
-  const tokens = [];
-  const pattern = /[\p{L}\p{M}\u00b7'’ʼ`´-]+/gu;
-  let match;
-  while ((match = pattern.exec(text))) {
-    tokens.push({
-      start: match.index,
-      end: match.index + match[0].length,
-      key: getStudyLeakKey(match[0])
-    });
-  }
-  return tokens;
-}
-
-function maskStudyTranslationLeaks(translation, lemma) {
-  const forms = getStudyLeakForms(lemma);
-  const text = cleanStudyText(translation);
-  if (!forms.size || !text) return text;
-  const tokens = getStudyMaskableTokens(text);
-  const masked = tokens.map(token => isStudyLeakyKey(token.key, forms));
-  for (let i = 0; i < tokens.length; i += 1) {
-    let combined = tokens[i].key;
-    for (let j = i + 1; j < Math.min(tokens.length, i + 4); j += 1) {
-      combined += tokens[j].key;
-      if (isStudyLeakyCombinedKey(combined, forms)) {
-        for (let k = i; k <= j; k += 1) masked[k] = true;
-      }
-    }
-  }
-  let out = "";
-  let cursor = 0;
-  tokens.forEach((token, index) => {
-    out += text.slice(cursor, token.start);
-    out += masked[index] ? STUDY_LEAK_PLACEHOLDER : text.slice(token.start, token.end);
-    cursor = token.end;
-  });
-  return out + text.slice(cursor);
-}
-
-function isStudyPromptMetaSegment(segment) {
-  const normalized = normalizeString(cleanStudyText(segment)).trim();
-  if (!normalized) return true;
-  if (/^(?:Cf\.?|Cfr\.?|cf\.?|cfr\.?|Ver|Voir|See)\b/.test(cleanStudyText(segment))) return true;
-  if (/^(?:[bc]|variante|variant)\.?\s*~/i.test(cleanStudyText(segment))) return true;
-  return [
-    /^(?:(?:solo|solamente|unicamente)\s+)?(?:la\s+forma|(?:a|en|con)\s+(?:la\s+)?forma)\s+poseida\b/,
-    /^(?:seulement\s+)?(?:la\s+forme|(?:a|en|avec)\s+(?:la\s+)?forme)\s+possedee\b/,
-    /^forme possedee\b/,
-    /^en composicion con\b/,
-    /^en composition avec\b/,
-    /^metaf(?:ora|orico|oricamente)?[.,;:]*$/,
-    /^metaph(?:ore|orique|oriquement)?[.,;:]*$/
-  ].some(pattern => pattern.test(normalized));
-}
-
-function cleanStudyPromptTranslation(translation) {
-  const text = cleanStudyText(translation);
-  if (!text) return "";
-  const segments = text.split(/\s*\/\s*/).map(part => part.trim()).filter(Boolean);
-  if (!segments.length) return "";
-  const kept = segments.filter(segment => !isStudyPromptMetaSegment(segment));
-  return kept.join(" / ");
-}
-
-function stripStudyPromptCitation(text) {
-  return cleanStudyText(text)
-    .replace(/\s*(?:;\s*)?(?:Sah|Sa)\s*\d+\s*,\s*\d+(?:\s*=\s*.+?)?\.?\s*$/i, "")
-    .trim();
-}
-
-function normalizeStudyPromptMarker(text) {
-  return cleanStudyText(text)
-    .replace(/\b(met[aá]fora|m[eé]taphor(?:e)?|metaphor)\s*(?:\.,?|[.,:])\s*/gi, "$1: ")
-    .replace(/\b(metaf[oó]rico|metaf[oó]ricamente)\s*(?:\.,?|[.,:])\s*/gi, "$1: ")
-    .replace(/\b(parentesco|parent[eé])\s*(?:\.,?|[.,:])\s*/gi, "$1: ")
-    .replace(/\b(?:plural|plur)\s*(?:\.,?|[.,:])\s*/gi, "plural: ");
-}
-
-function removeStudyPromptLeakPlaceholders(text) {
-  return cleanStudyText(text)
-    .replace(/\s*\[\.\.\.\]\s*/g, " ")
-    .replace(/\s+([,.;:!?])/g, "$1")
-    .replace(/([,;:])\s*(?:[,;:]\s*)+/g, "$1 ")
-    .replace(/([.;:])\s*,\s*/g, "$1 ")
-    .replace(/,\s*([.;:!?])/g, "$1")
-    .replace(/\s+/g, " ")
-    .replace(/,\s*$/, "")
-    .trim();
-}
-
-function cleanMaskedStudyPromptSegment(segment) {
-  const withoutCitation = stripStudyPromptCitation(segment);
-  if (isStudyPromptMetaSegment(withoutCitation)) return "";
-  if (!withoutCitation.includes(STUDY_LEAK_PLACEHOLDER)) {
-    return normalizeStudyPromptMarker(withoutCitation);
-  }
-  let unmasked = removeStudyPromptLeakPlaceholders(withoutCitation);
-  if (/^(?:plural|plur)\b/i.test(normalizeString(unmasked))) {
-    unmasked = unmasked.replace(/\bhonor\.\s*/gi, "");
-  }
-  const cleaned = normalizeStudyPromptMarker(unmasked);
-  return isStudyPromptUsable(cleaned) ? cleaned : "";
-}
-
-function cleanMaskedStudyPrompt(text) {
-  const segments = cleanStudyText(text).split(/\s*\/\s*/).map(part => part.trim()).filter(Boolean);
-  return segments
-    .map(cleanMaskedStudyPromptSegment)
-    .filter(Boolean)
-    .join(" / ");
-}
-
-function isStudyPromptUsable(text) {
-  if (/^(?:Cf\.?|Cfr\.?|cf\.?|cfr\.?|Ver|Voir|See)\b/.test(cleanStudyText(text))) return false;
-  const normalized = normalizeString(cleanStudyText(text).split(STUDY_LEAK_PLACEHOLDER).join(" "))
-    .replace(/[^\p{L}\p{N}\s]+/gu, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  if (!normalized) return false;
-  return normalized.split(/\s+/).some(word => word.length >= 4 && !STUDY_PROMPT_NOISE_WORDS.has(word));
-}
-
-function getStudyCardTranslation(row, lemma, direction) {
-  const translation = getStudyTranslation(row);
-  if (!translation) return "";
-  if (direction !== "spanishToNahuatl") return translation;
-  const promptTranslation = cleanStudyPromptTranslation(translation);
-  if (!promptTranslation) return "";
-  const masked = cleanMaskedStudyPrompt(maskStudyTranslationLeaks(promptTranslation, lemma));
-  return isStudyPromptUsable(masked) ? masked : "";
-}
-
 function getStudyLimit() {
   const rawValue = String(document.getElementById("studyLimit")?.value || "100").trim();
   const value = parseInt(rawValue.replace(/[^\d]/g, ""), 10);
@@ -9233,7 +9231,7 @@ function setupStudyLimitCombo() {
       openMenu();
       const firstOption = menu.querySelector("[data-study-limit-value]");
       if (firstOption) firstOption.focus();
-    } else if (event.key === "Escape") {
+    } else if (event.key === "Escape" || event.key === "Tab") {
       closeMenu();
     }
   });
@@ -9331,264 +9329,125 @@ function syncStudyViewButtons() {
   });
 }
 
-function getStudyRows() {
-  const useCurrent = document.getElementById("studyUseFilters")?.checked ?? false;
-  const baseRows = useCurrent
-    ? (Array.isArray(lastFilteredRows) ? lastFilteredRows.slice() : [])
-    : dataRows.filter(row => selectedFuentes.has(row.Fuente));
-  const theme = getStudyThemePreset();
-  if (!theme) return baseRows;
-  return getStudyRowsForThemeByLemma(baseRows, theme);
-}
-
 function normalizeStudyRowsFromApi(rows) {
   return Array.isArray(rows) ? rows.map((row, idx) => prepareDataRow(row, idx)) : [];
-}
-
-function getStudyThemeTextIndex(value) {
-  const text = normalizeString(cleanStudyText(value));
-  return {
-    text,
-    tokens: new Set(text.split(/[^\p{L}\p{N}]+/u).filter(Boolean))
-  };
-}
-
-function isStudyThemeTermAllowed(term) {
-  if (!term) return false;
-  if (STUDY_THEME_FUNCTION_TERMS.has(term)) return false;
-  return term.length > 1 || /\s/.test(term);
-}
-
-function getStudyThemeTerms(theme) {
-  if (!theme._normalizedTerms) {
-    theme._normalizedTerms = theme.terms
-      .map(term => normalizeString(cleanStudyText(term)).trim())
-      .filter(Boolean)
-      .filter(isStudyThemeTermAllowed)
-      .map(term => ({
-        term,
-        exact: !term.includes(" ") && term.length <= 4
-      }));
-  }
-  return theme._normalizedTerms;
-}
-
-function studyThemeTermMatchesIndex(termSpec, index) {
-  return termSpec.exact ? index.tokens.has(termSpec.term) : index.text.includes(termSpec.term);
-}
-
-function studyThemeMatchesIndex(theme, index) {
-  return getStudyThemeTerms(theme).some(term => studyThemeTermMatchesIndex(term, index));
-}
-
-function getStudyRowThemeMeta(row) {
-  const lemmaValue = getDisplayValue(row, "Editado");
-  const translationValue = getDisplayValue(row, "Traducción");
-  const cached = studyThemeRowMetaCache.get(row);
-  if (cached && cached.lemmaValue === lemmaValue && cached.translationValue === translationValue) {
-    return cached;
-  }
-  const meta = {
-    lemmaValue,
-    translationValue,
-    lemmaKey: normalizeString(cleanStudyText(lemmaValue)),
-    translation: cleanStudyText(translationValue)
-  };
-  studyThemeRowMetaCache.set(row, meta);
-  return meta;
-}
-
-function groupStudyRowsByLemma(rows) {
-  const groups = new Map();
-  rows.forEach(row => {
-    const meta = getStudyRowThemeMeta(row);
-    const key = meta.lemmaKey;
-    if (!key) return;
-    let group = groups.get(key);
-    if (!group) {
-      group = { key, rows: [], translationText: "" };
-      groups.set(key, group);
-    }
-    group.rows.push(row);
-    if (meta.translation) group.translationText += ` ${meta.translation}`;
-  });
-  return [...groups.values()];
-}
-
-function getStudyRowsForThemeByLemma(rows, theme) {
-  const selectedRows = [];
-  groupStudyRowsByLemma(rows).forEach(group => {
-    const index = getStudyThemeTextIndex(group.translationText);
-    if (studyThemeMatchesIndex(theme, index)) selectedRows.push(...group.rows);
-  });
-  return selectedRows;
-}
-
-function addStudyTranslation(entry, translation) {
-  const normalized = normalizeString(translation);
-  if (!normalized) return;
-  const existing = entry.translationStats.get(normalized);
-  if (existing) existing.count += 1;
-  else entry.translationStats.set(normalized, { display: translation, count: 1, normalized, length: translation.length });
-}
-
-function getStudyCardInfo(row, direction, cache) {
-  const targetCache = cache || studyCardInfoCache;
-  const lemmaValue = getDisplayValue(row, "Editado");
-  const translationValue = getDisplayValue(row, "Traducción");
-  const cached = targetCache.get(row);
-  const cachedMatches = cached
-    && cached.lemmaValue === lemmaValue
-    && cached.translationValue === translationValue;
-  if (cachedMatches && cached.byDirection.has(direction)) {
-    return cached.byDirection.get(direction);
-  }
-  const lemma = cleanStudyText(lemmaValue);
-  const key = normalizeString(lemma);
-  const translation = lemma ? getStudyCardTranslation(row, lemma, direction) : "";
-  const info = lemma && key && translation ? { lemma, key, translation } : null;
-  const bucket = cachedMatches ? cached : { lemmaValue, translationValue, byDirection: new Map() };
-  bucket.byDirection.set(direction, info);
-  targetCache.set(row, bucket);
-  return info;
-}
-
-function greatestCommonDivisor(a, b) {
-  let x = Math.abs(a);
-  let y = Math.abs(b);
-  while (y) {
-    const next = x % y;
-    x = y;
-    y = next;
-  }
-  return x || 1;
-}
-
-function getStudyScanStep(count) {
-  if (count <= 1) return 1;
-  let step = Math.floor(Math.random() * (count - 1)) + 1;
-  while (greatestCommonDivisor(step, count) !== 1) {
-    step = (step % (count - 1)) + 1;
-  }
-  return step;
-}
-
-function selectStudyDeckLemmaKeys(rows, direction, limit, cache) {
-  const selected = new Set();
-  if (!rows.length || !limit) return selected;
-  const offset = Math.floor(Math.random() * rows.length);
-  const step = getStudyScanStep(rows.length);
-  for (let visited = 0; visited < rows.length && selected.size < limit; visited += 1) {
-    const row = rows[(offset + (visited * step)) % rows.length];
-    const info = getStudyCardInfo(row, direction, cache);
-    if (info) selected.add(info.key);
-  }
-  return selected;
-}
-
-function buildStudyCardsFromRows(rows, options = {}) {
-  const direction = options.direction || "nahuatlToSpanish";
-  const limit = Number.isFinite(options.limit) && options.limit > 0 ? Math.floor(options.limit) : 0;
-  const selectedKeys = limit ? selectStudyDeckLemmaKeys(rows, direction, limit, studyCardInfoCache) : null;
-  const byLemma = new Map();
-
-  rows.forEach(row => {
-    const lemma = cleanStudyText(getDisplayValue(row, "Editado"));
-    const key = normalizeString(lemma);
-    if (!lemma || !key) return;
-    if (selectedKeys && !selectedKeys.has(key)) return;
-    const info = getStudyCardInfo(row, direction, studyCardInfoCache);
-    if (!info) return;
-    const { translation } = info;
-    let entry = byLemma.get(key);
-    if (!entry) {
-      entry = {
-        lemma,
-        rows: 0,
-        sources: new Set(),
-        translationStats: new Map()
-      };
-      byLemma.set(key, entry);
-    }
-    entry.rows += 1;
-    if (row.Fuente) entry.sources.add(row.Fuente);
-    addStudyTranslation(entry, translation);
-  });
-
-  return [...byLemma.values()]
-    .map(entry => {
-      const translations = [...entry.translationStats.values()]
-        .sort((a, b) => {
-          const qualityA = getStudyTranslationLengthBucket(a.length);
-          const qualityB = getStudyTranslationLengthBucket(b.length);
-          if (qualityA !== qualityB) return qualityA - qualityB;
-          if (b.count !== a.count) return b.count - a.count;
-          if (a.length !== b.length) return a.length - b.length;
-          return alphaNumCollator.compare(a.normalized, b.normalized);
-        })
-        .slice(0, 3)
-        .map(item => item.display);
-      if (!translations.length) return null;
-      const translation = translations.join("; ");
-      const nahuatlToSpanish = direction !== "spanishToNahuatl";
-      return {
-        lemma: entry.lemma,
-        translation,
-        front: nahuatlToSpanish ? entry.lemma : translation,
-        back: nahuatlToSpanish ? translation : entry.lemma,
-        frontLabelKey: nahuatlToSpanish ? "study.front.edition" : "study.front.translation",
-        backLabelKey: nahuatlToSpanish ? "study.front.translation" : "study.front.edition",
-        sourceCount: entry.sources.size,
-        rowCount: entry.rows
-      };
-    })
-    .filter(Boolean);
-}
-
-function getStudyTranslationLengthBucket(length) {
-  if (length <= 180) return 0;
-  if (length <= 280) return 1;
-  return 2;
-}
-
-function countStudyPossibleCardsFromRows(rows, options = {}) {
-  const direction = options.direction || getStudyDirection();
-  const seen = new Set();
-  rows.forEach(row => {
-    const info = getStudyCardInfo(row, direction, studyCardInfoCache);
-    if (info) seen.add(info.key);
-  });
-  return seen.size;
-}
-
-function shuffleStudyCards(cards) {
-  for (let i = cards.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [cards[i], cards[j]] = [cards[j], cards[i]];
-  }
-  return cards;
-}
-
-function getStudyPossibleCardCount() {
-  const rows = getStudyRows();
-  return countStudyPossibleCardsFromRows(rows, { direction: getStudyDirection() });
 }
 
 function isStudyPanelActive() {
   return document.getElementById("studyPanel")?.classList.contains("active") ?? false;
 }
 
+const staticStudyJobs = { scope: null, deck: null };
+let lastStaticStudyMeta = null;
+let staticStudyScopeCache = null;
+
+function getStaticStudyScopeSignature() {
+  const { limit, sampleLimit, maxRows, rowsPerGroup, ...scope } = JSON.parse(getStudyRequestSignature());
+  return JSON.stringify(scope);
+}
+
+function cancelStaticStudyJob(kind) {
+  staticStudyJobs[kind]?.cancel();
+}
+
+function getStaticStudyPayload(scopeOnly) {
+  const useCurrent = document.getElementById("studyUseFilters")?.checked ?? false;
+  return {
+    assetVersion: getDataAssetVersion(), useCurrent, scopeOnly,
+    activeFilters: useCurrent ? activeFilters : [], selectedSources: [...selectedFuentes],
+    searchLayerMode, oldSpanishMode, accentSensitiveMode, displayLayer: orthographyLayerMode,
+    direction: getStudyDirection(), themeTerms: getStudyThemeApiTerms(), limit: getStudyLimit(),
+  };
+}
+
+function queryStaticStudy(kind, payload, onProgress) {
+  cancelStaticStudyJob(kind);
+  return new Promise((resolve, reject) => {
+    if (typeof Worker === "undefined") {
+      reject(new Error("Study preparation requires Web Workers."));
+      return;
+    }
+    const worker = new Worker(versionedAssetUrl("study-worker.js"));
+    let timer;
+    let settled = false;
+    const finish = (error, result) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      worker.terminate();
+      if (staticStudyJobs[kind] === job) staticStudyJobs[kind] = null;
+      if (error) reject(error); else resolve(result);
+    };
+    const job = { cancel: () => finish(new Error("Study preparation cancelled.")) };
+    staticStudyJobs[kind] = job;
+    timer = setTimeout(() => finish(new Error("Study preparation timed out.")), 180000);
+    worker.onmessage = ({ data }) => {
+      if (settled) return;
+      if (data.type === "decodeEntities") {
+        try {
+          worker.postMessage({ type: "decodedEntities", entries: [...buildStudyEntityMap(data.texts)] });
+        } catch (error) { finish(error); }
+      } else if (data.type === "progress") onProgress(data.progress);
+      else if (data.type === "result") finish(null, data.result);
+      else finish(new Error(data.error || "Study worker failed."));
+    };
+    worker.onerror = event => finish(new Error(event.message || "Study worker failed."));
+    try { worker.postMessage({ type: "study", payload }); } catch (error) { finish(error); }
+  });
+}
+
+// Discover references exposed by subsequent clean calls using complete contexts.
+// The worker still substitutes once per call, preserving nested entity semantics.
+function buildStudyEntityMap(texts) {
+  const entries = new Map();
+  const seen = new Set();
+  const pending = [...texts];
+  for (let index = 0; index < pending.length; index++) {
+    const text = stripHtmlTags(String(pending[index]));
+    if (seen.has(text)) continue;
+    seen.add(text);
+    for (const token of text.match(STUDY_ENTITY_PATTERN) || []) {
+      if (!entries.has(token)) entries.set(token, decodeStudyEntities(token));
+    }
+    const decoded = stripHtmlTags(decodeStudyEntities(text));
+    if (decoded !== text && !seen.has(decoded)) pending.push(decoded);
+  }
+  return entries;
+}
+
+function getStudyRequestSignature() {
+  const useCurrent = document.getElementById("studyUseFilters")?.checked ?? false;
+  const { seed, ...payload } = getStudyApiPayload({ useCurrent, limit: getStudyLimit() });
+  return JSON.stringify({ ...payload, useCurrent, displayLayer: orthographyLayerMode, fuentes: [...selectedFuentes].sort() });
+}
+
+function finishStudyBuildRequest(requestId, signature) {
+  if (requestId !== studyDeckRequestCounter) return false;
+  studyPendingBuildSignature = null;
+  if (signature === getStudyRequestSignature()) return true;
+  studyEmptyMessageKey = studyDeck.length ? "study.empty" : "study.noCards";
+  renderStudyCard();
+  return false;
+}
+
 async function updateStudyScope(options = {}) {
   const el = document.getElementById("studyScope");
   if (!el) return;
+  const requestId = ++studyScopeRequestCounter;
+  cancelStaticStudyJob("scope");
   if (options instanceof Event) options = {};
   if (!options.force && !isStudyPanelActive()) {
     studyScopeDirty = true;
     return;
   }
   const useCurrent = document.getElementById("studyUseFilters")?.checked ?? false;
+  if (selectedFuentes.size === 0) {
+    studyScopeDirty = false;
+    el.textContent = t("study.scope", { rows: 0, cards: 0 });
+    return;
+  }
   if (shouldUseStudyApi(useCurrent)) {
-    const requestId = ++studyScopeRequestCounter;
+    const signature = getStudyRequestSignature();
     studyScopeDirty = false;
     el.textContent = t("table.status.lazyLoading");
     try {
@@ -9597,26 +9456,55 @@ async function updateStudyScope(options = {}) {
         limit: getStudyLimit(),
         scopeOnly: true,
       }));
-      if (requestId !== studyScopeRequestCounter) return;
+      if (requestId !== studyScopeRequestCounter || signature !== getStudyRequestSignature()) return;
       el.textContent = t("study.scope", {
         rows: Number(result.rowCount) || 0,
         cards: Number(result.possibleCards) || 0
       });
     } catch (err) {
-      if (requestId !== studyScopeRequestCounter) return;
+      if (requestId !== studyScopeRequestCounter || signature !== getStudyRequestSignature()) return;
       console.warn("Study API scope failed.", err);
       el.textContent = t("table.status.error");
     }
     return;
   }
 
-  const rows = getStudyRows();
-  const cards = rows.length ? countStudyPossibleCardsFromRows(rows, { direction: getStudyDirection() }) : 0;
+  const signature = getStudyRequestSignature();
   studyScopeDirty = false;
-  el.textContent = t("study.scope", { rows: rows.length, cards });
+  const scopeSignature = getStaticStudyScopeSignature();
+  if (staticStudyScopeCache?.signature === scopeSignature) {
+    el.textContent = t("study.scope", { rows: staticStudyScopeCache.rows, cards: staticStudyScopeCache.cards });
+    return;
+  }
+  if (studyPendingBuildSignature === signature) return;
+  el.textContent = t("study.loading");
+  try {
+    const result = await queryStaticStudy("scope", getStaticStudyPayload(true), progress => {
+      if (requestId === studyScopeRequestCounter && signature === getStudyRequestSignature()) {
+        el.textContent = t(progress.phase === "scan" ? "study.scanning" : "study.preparing", progress);
+      }
+    });
+    if (requestId !== studyScopeRequestCounter || signature !== getStudyRequestSignature()) return;
+    lastStaticStudyMeta = result.cache;
+    staticStudyScopeCache = { signature: scopeSignature, rows: result.rowCount, cards: result.possibleCards };
+    el.textContent = t("study.scope", { rows: result.rowCount, cards: result.possibleCards });
+  } catch (error) {
+    if (requestId !== studyScopeRequestCounter || signature !== getStudyRequestSignature()) return;
+    console.warn("Static Study scope failed.", error);
+    el.textContent = t("study.loadError");
+  }
 }
 
 function requestStudyScopeUpdate() {
+  studyScopeRequestCounter++;
+  cancelStaticStudyJob("scope");
+  if (studyPendingBuildSignature && studyPendingBuildSignature !== getStudyRequestSignature()) {
+    studyDeckRequestCounter++;
+    cancelStaticStudyJob("deck");
+    studyPendingBuildSignature = null;
+    studyEmptyMessageKey = studyDeck.length ? "study.empty" : "study.noCards";
+    renderStudyCard();
+  }
   studyScopeDirty = true;
   if (isStudyPanelActive()) updateStudyScope({ force: true });
 }
@@ -9670,10 +9558,21 @@ function setStudyDeckFromCards(cards, limit) {
 }
 
 async function buildStudyDeck() {
+  const requestId = ++studyDeckRequestCounter;
+  studyScopeRequestCounter++;
+  cancelStaticStudyJob("scope");
+  cancelStaticStudyJob("deck");
+  studyPendingBuildSignature = null;
   const useCurrent = document.getElementById("studyUseFilters")?.checked ?? false;
   const limit = getStudyLimit();
+  if (selectedFuentes.size === 0) {
+    setStudyDeckFromCards([], limit);
+    updateStudyScope({ force: true });
+    return;
+  }
   if (shouldUseStudyApi(useCurrent)) {
-    const requestId = ++studyDeckRequestCounter;
+    const signature = getStudyRequestSignature();
+    studyPendingBuildSignature = signature;
     studyEmptyMessageKey = "table.status.lazyLoading";
     studyBaseDeck = [];
     studyDeck = [];
@@ -9683,7 +9582,7 @@ async function buildStudyDeck() {
     renderStudyCard();
     try {
       const result = await queryStudyApi(getStudyApiPayload({ useCurrent, limit }));
-      if (requestId !== studyDeckRequestCounter) return;
+      if (!finishStudyBuildRequest(requestId, signature)) return;
       const rows = normalizeStudyRowsFromApi(result.rows);
       const cards = buildStudyCardsFromRows(rows, {
         limit,
@@ -9698,7 +9597,7 @@ async function buildStudyDeck() {
         });
       }
     } catch (err) {
-      if (requestId !== studyDeckRequestCounter) return;
+      if (!finishStudyBuildRequest(requestId, signature)) return;
       console.warn("Study API deck failed.", err);
       studyEmptyMessageKey = "table.status.error";
       renderStudyCard();
@@ -9706,20 +9605,49 @@ async function buildStudyDeck() {
     return;
   }
 
-  const rows = getStudyRows();
-  const cards = buildStudyCardsFromRows(rows, {
-    limit,
-    direction: getStudyDirection()
-  });
-  setStudyDeckFromCards(cards, limit);
+  const signature = getStudyRequestSignature();
+  studyPendingBuildSignature = signature;
+  studyEmptyMessageKey = "study.loading";
+  studyBaseDeck = [];
+  studyDeck = [];
+  studyIndex = 0;
+  resetStudyAnswerState();
+  resetStudyStats();
+  renderStudyCard();
+  const scopeEl = document.getElementById("studyScope");
+  try {
+    const result = await queryStaticStudy("deck", getStaticStudyPayload(false), progress => {
+      if (requestId === studyDeckRequestCounter && signature === getStudyRequestSignature() && scopeEl) {
+        scopeEl.textContent = t(progress.phase === "scan" ? "study.scanning" : "study.preparing", progress);
+      }
+    });
+    if (!finishStudyBuildRequest(requestId, signature)) return;
+    lastStaticStudyMeta = result.cache;
+    staticStudyScopeCache = { signature: getStaticStudyScopeSignature(), rows: result.rowCount, cards: result.possibleCards };
+    setStudyDeckFromCards(result.cards, limit);
+    if (scopeEl) scopeEl.textContent = t("study.scope", { rows: result.rowCount, cards: result.possibleCards });
+  } catch (error) {
+    if (!finishStudyBuildRequest(requestId, signature)) return;
+    console.warn("Static Study deck failed.", error);
+    studyEmptyMessageKey = "study.loadError";
+    if (scopeEl) scopeEl.textContent = t("study.loadError");
+    renderStudyCard();
+  }
 }
 
 function resetStudyDeck() {
+  studyDeckRequestCounter++;
+  cancelStaticStudyJob("deck");
+  if (studyPendingBuildSignature) {
+    studyPendingBuildSignature = null;
+    studyEmptyMessageKey = "study.empty";
+  }
   studyDeck = studyBaseDeck.slice();
   studyIndex = 0;
   resetStudyAnswerState();
   resetStudyStats();
   renderStudyCard();
+  if (!getSearchApiEndpoint()) updateStudyScope({ force: true });
 }
 
 function getCurrentStudyCard() {
@@ -9910,7 +9838,7 @@ function renderStudyCard() {
     buildBtn.classList.toggle("primary", !hasBuiltDeck);
     buildBtn.classList.toggle("ghost", hasBuiltDeck);
   }
-  if (resetBtn) resetBtn.disabled = !studyDeck.length;
+  if (resetBtn) resetBtn.disabled = !studyDeck.length && !studyPendingBuildSignature;
   gradeBtns.forEach(btn => {
     btn.hidden = !isExamMode;
     btn.disabled = !current || !studyAnswerVisible;
@@ -10332,7 +10260,8 @@ function parseHashRoute(hash) {
       let slug;
       try { slug = decodeURIComponent(parts[2]); } catch { return null; }
       const name = slugToSource.get(slug);
-      if (name) fuentes = [name];
+      if (!name) return { error: "share.invalidSource" };
+      fuentes = [name];
     }
     return {
       groups: [{
@@ -10351,7 +10280,7 @@ function parseHashRoute(hash) {
     let slug;
     try { slug = decodeURIComponent(parts[1]); } catch { return null; }
     const name = slugToSource.get(slug);
-    if (!name) return null;
+    if (!name) return { error: "share.invalidSource" };
     return { groups: [], fuentes: [name], oldSpanish: false, accent: false, layer: "both" };
   }
   return null;
@@ -10376,7 +10305,8 @@ function parseQueryHash(qs) {
   }
   if (params.has("f")) {
     const slugs = (params.get("f") || "").split(",").filter(Boolean);
-    state.fuentes = slugs.map(s => slugToSource.get(s)).filter(Boolean);
+    if (slugs.some(slug => !slugToSource.has(slug))) return { error: "share.invalidSource" };
+    state.fuentes = slugs.map(s => slugToSource.get(s));
   }
   state.oldSpanish = params.get("o") === "1";
   state.accent = params.get("a") === "s";
@@ -10418,11 +10348,40 @@ function parseInputSpec(spec, defaultScope = "whole") {
   return { mode, negate, value, scope };
 }
 
+function showShareRouteError(key) {
+  let notice = document.getElementById("shareRouteError");
+  if (!notice) {
+    notice = document.createElement("div");
+    notice.id = "shareRouteError";
+    notice.className = "share-route-error";
+    notice.setAttribute("role", "alert");
+    const message = document.createElement("span");
+    const dismiss = document.createElement("button");
+    dismiss.type = "button";
+    dismiss.className = "btn ghost";
+    dismiss.dataset.i18n = "share.manual.close";
+    setTranslatedText(dismiss, "share.manual.close");
+    dismiss.addEventListener("click", () => notice.remove());
+    notice.append(message, dismiss);
+    (document.querySelector(".app-shell") || document.body).prepend(notice);
+  }
+  const message = notice.querySelector("span");
+  message.dataset.i18n = key;
+  setTranslatedText(message, key);
+}
+
 function applyParsedState(state) {
   if (!state) return false;
+  if (state.error) {
+    showShareRouteError(state.error);
+    return false;
+  }
+  document.getElementById("shareRouteError")?.remove();
   suppressHashUpdate = true;
   try {
-    if (editingGroupId) editingGroupId = null;
+    cancelEdit();
+    const card = document.querySelector(".filter-card[data-owner='f1']");
+    if (card) card.querySelectorAll(".filter-input").forEach(input => (input.value = ""));
     activeFilters = [];
     selectedChipGroupIds.clear();
     groupOrder = [];
@@ -10594,6 +10553,7 @@ function ensureManualShareDialog() {
   const close = () => {
     overlay.hidden = true;
     document.body.classList.remove("share-manual-open");
+    if (manualShareDialog.returnFocus?.isConnected) manualShareDialog.returnFocus.focus();
   };
 
   const selectInput = () => {
@@ -10620,7 +10580,18 @@ function ensureManualShareDialog() {
     }
   });
   document.addEventListener("keydown", e => {
-    if (!overlay.hidden && e.key === "Escape") close();
+    if (overlay.hidden) return;
+    if (e.key === "Escape") {
+      e.preventDefault();
+      close();
+    } else if (e.key === "Tab") {
+      const controls = [closeBtn, input, copyBtn];
+      const index = controls.indexOf(document.activeElement);
+      if (index < 0 || (e.shiftKey && index === 0) || (!e.shiftKey && index === controls.length - 1)) {
+        e.preventDefault();
+        controls[e.shiftKey ? controls.length - 1 : 0].focus();
+      }
+    }
   });
 
   manualShareDialog = { overlay, title, closeBtn, input, copyBtn, open: selectInput };
@@ -10629,6 +10600,7 @@ function ensureManualShareDialog() {
 
 function openManualShareDialog(url) {
   const dialog = ensureManualShareDialog();
+  if (dialog.overlay.hidden) dialog.returnFocus = document.activeElement;
   dialog.title.textContent = t("share.manual.title");
   dialog.closeBtn.setAttribute("aria-label", t("share.manual.close"));
   dialog.closeBtn.title = t("share.manual.close");

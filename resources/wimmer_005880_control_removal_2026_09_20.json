@@ -1,0 +1,41 @@
+{
+  "date": "2026-09-20",
+  "authority": "Explicit user instruction to delete U+0012 from Wimmer005880 current and preserved raw commentary",
+  "record_id": "2021-wimmer:005880",
+  "lemma": "xippopohua",
+  "fields": [
+    "Comentario",
+    "Comentario_raw_wimmer_nahuatl_diacritics_public"
+  ],
+  "operation": "Delete exactly one U+0012 in each specified field; no replacement text",
+  "characters_deleted": 2,
+  "before_contexts": [
+    "popohua\\u0012, morph.incorp.",
+    "popôhua\\u0012, morph.incorp."
+  ],
+  "after_contexts": [
+    "popohua, morph.incorp.",
+    "popôhua, morph.incorp."
+  ],
+  "original_preservation": "Complete byte-exact compressed corpus before-image and target JSON saved before edit; original corpus also available at recorded Git commit",
+  "backup_directory": "/tmp/wimmer-u0012-before-20260920",
+  "original_corpus_git_commit": "4c6e3e1ab2b43d820dc882de2a7e594c5636033f",
+  "before_corpus_sha256": "03a0daf3d5ea1cf39bc464514d1ca667eb9a2df010d71c86d8216a4626804787",
+  "after_corpus_sha256": "0dbdfa71026a1f47db1d30c2a972fbf86fe883469f222643c66802c684949b8a",
+  "derived_assets_changed": [
+    "manifest.json",
+    "rows/rows-0120.jsonl.gz",
+    "indexes/comentario-source.jsonl.gz"
+  ],
+  "derived_assets_added": [
+    "pair-raw/comentario-3bac0374b309e9b9.jsonl.gz"
+  ],
+  "bootstrap": "Unchanged: target index30024 is beyond first100; exact checker passed",
+  "postings": "All ngram, shorttoken and wordedge sets equal before/after across all indexed fields/layers; assets unchanged",
+  "sqlite": "Target matched before-corpus exactly; consistent backup preserved, then one transaction updated target row and dependent external-content FTS index. Unrelated rows including known Molina snapshot discrepancy untouched.",
+  "cache_tags": {
+    "data": "publish-ready-435",
+    "service_worker": "v546"
+  },
+  "corpus_scope": "All other records, fields, accents, identifiers and ordering preserved"
+}

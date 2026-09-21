@@ -1,0 +1,55 @@
+{
+  "selection": "First ten ascending record IDs from repeated-reference inventory intersected with current review_needed and active invalidated_span, excluding already repaired000774. Eligible intersection19; only10 reviewed.",
+  "records": [
+    {
+      "record_id": "1565-sahagun-escolios:000130",
+      "outcome": "current cycle aligned; unchanged",
+      "note": ""
+    },
+    {
+      "record_id": "1565-sahagun-escolios:000158",
+      "outcome": "current cycle aligned; unchanged",
+      "note": ""
+    },
+    {
+      "record_id": "1565-sahagun-escolios:000162",
+      "outcome": "current cycle aligned; unchanged",
+      "note": ""
+    },
+    {
+      "record_id": "1565-sahagun-escolios:000318",
+      "outcome": "confirmed cycle mismatch repaired",
+      "note": ""
+    },
+    {
+      "record_id": "1565-sahagun-escolios:000321",
+      "outcome": "confirmed cycle mismatch repaired",
+      "note": ""
+    },
+    {
+      "record_id": "1565-sahagun-escolios:000411",
+      "outcome": "confirmed cycle mismatch repaired",
+      "note": ""
+    },
+    {
+      "record_id": "1565-sahagun-escolios:000490",
+      "outcome": "confirmed cycle mismatch repaired",
+      "note": ""
+    },
+    {
+      "record_id": "1565-sahagun-escolios:000491",
+      "outcome": "current cycle aligned; unchanged",
+      "note": "queen versus raw q?en expansion remains uncertain; no edit"
+    },
+    {
+      "record_id": "1565-sahagun-escolios:000501",
+      "outcome": "confirmed cycle mismatch repaired",
+      "note": ""
+    },
+    {
+      "record_id": "1565-sahagun-escolios:000537",
+      "outcome": "current cycle aligned; unchanged",
+      "note": ""
+    }
+  ]
+}

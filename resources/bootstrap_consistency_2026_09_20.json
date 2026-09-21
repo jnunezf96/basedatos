@@ -1,0 +1,305 @@
+{
+  "date": "2026-09-20",
+  "kind": "derived bootstrap consistency repair",
+  "authority": "data/data.jsonl.gz; existing first100 complete rows contract in resources/verify_cleanup_stage.py",
+  "corpus_modified": false,
+  "corpus_sha256": "03a0daf3d5ea1cf39bc464514d1ca667eb9a2df010d71c86d8216a4626804787",
+  "before_bootstrap_sha256": "a5207a078b2e4701f893019467540da01b2dab5c5d5db7d5331db758a8d0d9b2",
+  "after_bootstrap_sha256": "6758c79f3d1749ac73278ddd768f16933aad124cd18bbf810108a52f26aa9ae0",
+  "original_bootstrap_git_commit": "4c6e3e1ab2b43d820dc882de2a7e594c5636033f",
+  "backup_directory": "/tmp/bootstrap-consistency-before-20260920",
+  "total_rows": 275734,
+  "bootstrap_rows": 100,
+  "ids_and_order_preserved": true,
+  "changed_records": [
+    {
+      "record_id": "2021-wimmer:000001",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)",
+        "Traducción",
+        "Traducción (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON",
+        "Traduccion_es_raw_wimmer_nahuatl_diacritics_public",
+        "Traduccion_raw_wimmer_nahuatl_diacritics_public"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000002",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000003",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000004",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "153-trilingue:000002",
+      "changed_fields": [
+        "Comentario"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_normalizado_version",
+        "Comentario_public_raw_vvv_middle_ou",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000005",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "1571-molina-2:000002",
+      "changed_fields": [
+        "Comentario"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_normalizado_version",
+        "Comentario_public_raw_vvv_middle_ou",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000006",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000007",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)",
+        "Traducción",
+        "Traducción (es)",
+        "Comentario_normalizado_version",
+        "Comentario_display_issues",
+        "Sentence_Source_JSON"
+      ],
+      "restored_fields": [
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Traduccion_es_raw_wimmer_nahuatl_diacritics_public",
+        "Traduccion_raw_wimmer_nahuatl_diacritics_public"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000012",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "2002-mecayapan:000001",
+      "changed_fields": [
+        "Comentario",
+        "Comentario_normalizado_version",
+        "Comentario_display_issues",
+        "Sentence_Source_JSON"
+      ],
+      "restored_fields": [
+        "Comentario_raw_2002_mecayapan_circumflex_public"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000013",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "1580-sahagun-maynez:000001",
+      "changed_fields": [
+        "Comentario",
+        "Comentario_normalizado_version",
+        "Comentario_display_issues",
+        "Sentence_Source_JSON"
+      ],
+      "restored_fields": [
+        "Comentario_public_raw_j_vowel_i",
+        "Comentario_public_raw_maynez_qu_cu",
+        "Comentario_public_raw_vvv_middle_ou"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000014",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000015",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000017",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "153-trilingue:000006",
+      "changed_fields": [
+        "Comentario"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_normalizado_version",
+        "Comentario_public_raw_vvv_middle_ou",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "153-trilingue:000007",
+      "changed_fields": [
+        "Comentario"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_normalizado_version",
+        "Comentario_public_raw_vvv_middle_ou",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "153-trilingue:000008",
+      "changed_fields": [
+        "Comentario"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_normalizado_version",
+        "Comentario_public_raw_vvv_middle_ou",
+        "Sentence_Source_JSON"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:000018",
+      "changed_fields": [
+        "Comentario",
+        "Comentario (es)"
+      ],
+      "restored_fields": [
+        "Comentario_display_issues",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public",
+        "Comentario_normalizado_version",
+        "Comentario_raw_wimmer_nahuatl_diacritics_public",
+        "Sentence_Source_JSON"
+      ]
+    }
+  ],
+  "validation": [
+    "Exact100 full records and total equal corpus",
+    "Malformed corpus record beyond100 rejects before replacing output",
+    "Samecount changedfield detected",
+    "Deterministic output",
+    "Publicationfailure preserves oldoutput",
+    "Existing cleanup verifier imports shared builder; optional linguistic audits not run"
+  ],
+  "excluded": [
+    "Corpus spelling/source decisions",
+    "SQLite freshness",
+    "Backend Wimmer source-display fallback"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "scope": "Nine Spanish-only Wimmer terminal markup records",
+  "authorization": "User authorized syntax-only repair; no prose restoration",
+  "before_sha256": "35b4e5a90fe95b2191d4ccbcd7edfdf7f452965a99506dff4f702ad2ec8a692a",
+  "after_sha256": "8ece7dc485ed0107f4dbf12a6df53321a6a6be222ffd31db7554dfe642fea6e7",
+  "backup": "/tmp/wimmer-spanish-nine-before-20260920",
+  "original_records": "resources/wimmer_spanish_nine_2026_09_20_originals.jsonl.gz",
+  "operations": {
+    "append_b>": 4,
+    "remove_terminal_</": 8
+  },
+  "rows": 9,
+  "fields": 12,
+  "scope_report": "resources/wimmer_spanish_nine_2026_09_20_scope.json",
+  "derived": {
+    "row_chunks": 9,
+    "indexes": {
+      "Comentario::normalized": 9,
+      "Comentario::source": 1
+    },
+    "posting_token_sets_unchanged": true,
+    "sqlite_rows": 9,
+    "updated_payloads": [
+      "data/lazy/rows/rows-0091.jsonl.gz",
+      "data/lazy/rows/rows-0193.jsonl.gz",
+      "data/lazy/rows/rows-0319.jsonl.gz",
+      "data/lazy/rows/rows-0642.jsonl.gz",
+      "data/lazy/rows/rows-0849.jsonl.gz",
+      "data/lazy/rows/rows-0865.jsonl.gz",
+      "data/lazy/rows/rows-0880.jsonl.gz",
+      "data/lazy/rows/rows-0887.jsonl.gz",
+      "data/lazy/rows/rows-0893.jsonl.gz",
+      "data/lazy/indexes/comentario-normalized.jsonl.gz",
+      "data/lazy/indexes/comentario-source.jsonl.gz"
+    ]
+  },
+  "limits": "Sparse or suspect Spanish prose is unchanged. No complete Spanish counterpart was found for restoration. Original importer unidentified; scoped check prevents only reviewed terminal syntax recurrence."
+}

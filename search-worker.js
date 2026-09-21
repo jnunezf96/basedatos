@@ -1001,6 +1001,12 @@ async function runQuery(payload) {
     matches = scanRows.filter(row => evaluateTextFilters(row));
   }
 
+  // Export is a separate worker request with an explicit source snapshot.
+  if (Array.isArray(payload.exportSources)) {
+    const sources = new Set(payload.exportSources);
+    matches = matches.filter(row => sources.has(row.Fuente));
+  }
+
   const offset = Math.max(0, Number(payload.offset) || 0);
   const pageSize = Math.max(1, Number(payload.pageSize) || 100);
   const rankingContext = buildRankingContext(matches);
@@ -1015,7 +1021,11 @@ async function runQuery(payload) {
     offset,
     pageSize,
     total: matches.length,
-    rows: pageRows,
+    rows: payload.exportSources ? pageRows.map(row => {
+      const meta = lazyMetaById.get(row.record_id);
+      if (!meta?._lazyChunk) throw new Error("Missing export record metadata");
+      return { record_id: meta.record_id, _lazyChunk: meta._lazyChunk, Fuente: meta.Fuente };
+    }) : pageRows,
     ranking: rankingContext.dominantLemmaFilter ? {
       exact: rankingContext.exactCount,
       phrase: rankingContext.phraseCount,

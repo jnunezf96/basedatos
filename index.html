@@ -324,6 +324,26 @@
     <h1 class="sr-only" data-i18n="title">Base de datos náhuatl</h1>
     <div id="filtersTopAnchor" class="scroll-anchor" aria-hidden="true"></div>
 
+    <details class="about-help" id="aboutHelp">
+      <summary data-i18n="about.title">Acerca de esta base y sus fuentes</summary>
+      <div class="about-help-content">
+        <p data-i18n="about.purpose">Consulta entradas de náhuatl por escritura, traducción o fuente y compara los resultados.</p>
+        <p data-i18n="about.start">Para empezar, elige una columna, escribe una condición y pulsa Añadir. Selecciona las fuentes que quieres consultar y usa Compartir para guardar el enlace de la búsqueda.</p>
+        <dl>
+          <dt data-i18n="field.paleografia">Original</dt>
+          <dd data-i18n="about.original">Escritura original registrada en la entrada.</dd>
+          <dt data-i18n="field.grafia">Editado</dt>
+          <dd data-i18n="about.edition">Texto estandarizado de la entrada, presentado junto a la escritura original.</dd>
+          <dt data-i18n="field.fuente">Fuente</dt>
+          <dd data-i18n="about.source">Identifica la fuente de cada entrada. La lista de fuentes permite decidir cuáles incluir en la búsqueda.</dd>
+        </dl>
+        <div class="about-help-actions">
+          <button type="button" class="btn action" id="aboutSourcesBtn" data-i18n="about.sources">Explorar fuentes</button>
+          <a href="https://github.com/jnunezf96/basedatos" data-i18n="about.repository">Código del proyecto</a>
+        </div>
+      </div>
+    </details>
+
     <div class="panel-shell">
       <div class="panel-tab-row">
         <div class="session-bar" id="sessionBar"></div>
@@ -487,7 +507,7 @@
             </div>
             <span class="fuente-count" id="fuenteCount" aria-live="polite">0</span>
           </div>
-          <div id="fuenteList" class="fuente-list" role="group" aria-label="Fuentes"></div>
+          <div id="fuenteList" class="fuente-list" role="group" aria-label="Fuentes" data-i18n-aria-label="sources.title" tabindex="-1"></div>
         </div>
         </div>
       </section>
@@ -798,9 +818,9 @@
               <span data-i18n="table.export.label">Exportar</span>
             </div>
             <div class="export-menu-list">
-              <button type="button" class="export-menu-item" data-export="jpeg" data-i18n="table.export.jpeg"><svg class="mobile-icon menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-image"></use></svg><span class="btn-label">Imagen (JPG)</span></button>
-              <button type="button" class="export-menu-item" data-export="png" data-i18n="table.export.png"><svg class="mobile-icon menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-image"></use></svg><span class="btn-label">Imagen (PNG)</span></button>
-              <button type="button" class="export-menu-item" data-export="csv" data-i18n="table.export.csv"><svg class="mobile-icon menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-table"></use></svg><span class="btn-label">Hoja de cálculo (CSV)</span></button>
+              <button type="button" class="export-menu-item" data-export="jpeg" data-i18n="table.export.jpeg"><svg class="mobile-icon menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-image"></use></svg><span class="btn-label">Página actual (JPG)</span></button>
+              <button type="button" class="export-menu-item" data-export="png" data-i18n="table.export.png"><svg class="mobile-icon menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-image"></use></svg><span class="btn-label">Página actual (PNG)</span></button>
+              <button type="button" class="export-menu-item" data-export="csv" data-i18n="table.export.csv"><svg class="mobile-icon menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-table"></use></svg><span class="btn-label">Todos los resultados (CSV)</span></button>
             </div>
           </div>
           <div id="columnMenuDropdown" class="column-menu-dropdown" role="group" aria-label="Columnas">
@@ -891,7 +911,8 @@
 
   <script src="data.js?v=publish-ready-112"></script>
   <script src="filters.js?v=publish-ready-106"></script>
-  <script src="data/bootstrap.js?v=publish-ready-433"></script>
-  <script src="script.js?v=publish-ready-184"></script>
+  <script src="data/bootstrap.js?v=publish-ready-439"></script>
+  <script src="study-core.js?v=publish-ready-187"></script>
+  <script src="script.js?v=publish-ready-187"></script>
 </body>
 </html>

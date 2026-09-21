@@ -26,9 +26,28 @@ jobs:
 
       - name: Validate scripts
         run: |
-          python3 -m py_compile resources/build_lazy_data_assets.py
+          python3 -m py_compile resources/build_lazy_data_assets.py resources/build_bootstrap.py
           node --check search-worker.js
+          node --check pair-worker.js
+          node --check study-core.js
+          node --check study-worker.js
           node --check resources/benchmark_static_share_url.mjs
+
+      - name: Check reviewed source alignment
+        run: |
+          python3 resources/repair_sahagun_internal_coherence_exact_overrides.py --record-id 1565-sahagun-escolios:000774 --check --proposals /tmp/sahagun-alignment-check.tsv --summary /tmp/sahagun-alignment-check.json
+
+      - name: Check reviewed Escolios numbering cycles
+        run: python3 resources/repair_sahagun_internal_coherence_exact_overrides.py --check --record-id 1565-sahagun-escolios:000318 --record-id 1565-sahagun-escolios:000321 --record-id 1565-sahagun-escolios:000411 --record-id 1565-sahagun-escolios:000490 --record-id 1565-sahagun-escolios:000501 --proposals /tmp/sahagun-five-check.tsv --summary /tmp/sahagun-five-check.json
+      - name: Check reviewed Wimmer terminal markup
+        run: python3 resources/repair_wimmer_terminal_html.py --check --report /tmp/wimmer-terminal-check.json
+
+      - name: Check reviewed Wimmer Spanish terminal markup
+        run: python3 resources/repair_wimmer_terminal_html.py --scope-report resources/wimmer_spanish_nine_2026_09_20_scope.json --check
+      - name: Build and verify static bootstrap
+        run: |
+          python3 resources/build_bootstrap.py
+          python3 resources/build_bootstrap.py --check
 
       - name: Build static lazy assets
         run: python3 resources/build_lazy_data_assets.py
@@ -36,7 +55,7 @@ jobs:
       - name: Assemble static site
         run: |
           mkdir -p _site/data
-          cp index.html style.css data.js filters.js script.js search-worker.js sw.js manifest.json icon.svg _site/
+          cp index.html style.css data.js filters.js script.js search-worker.js pair-worker.js study-core.js study-worker.js sw.js manifest.json icon.svg _site/
           cp data/bootstrap.js data/data.jsonl.gz _site/data/
           cp -R data/lazy _site/data/lazy
 

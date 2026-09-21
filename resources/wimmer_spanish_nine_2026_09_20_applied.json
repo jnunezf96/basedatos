@@ -1,0 +1,64 @@
+{
+  "rows": 9,
+  "fields": 12,
+  "ambiguous": [],
+  "changes": [
+    {
+      "record_id": "2021-wimmer:004268",
+      "fields": [
+        "Comentario (es)",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:009407",
+      "fields": [
+        "Comentario (es)",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:016642",
+      "fields": [
+        "Comentario (es)"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:028973",
+      "fields": [
+        "Comentario (es)"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:037166",
+      "fields": [
+        "Comentario (es)",
+        "Comentario_es_raw_wimmer_nahuatl_diacritics_public"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:037797",
+      "fields": [
+        "Comentario (es)"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:038622",
+      "fields": [
+        "Comentario (es)"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:038906",
+      "fields": [
+        "Comentario (es)"
+      ]
+    },
+    {
+      "record_id": "2021-wimmer:039201",
+      "fields": [
+        "Comentario (es)"
+      ]
+    }
+  ]
+}

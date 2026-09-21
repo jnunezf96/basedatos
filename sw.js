@@ -1,6 +1,6 @@
 // Service worker for Base de datos náhuatl.
 // Bump CACHE_VERSION whenever shipped HTML/CSS/JS changes.
-const CACHE_VERSION = "v541";
+const CACHE_VERSION = "v550";
 const CACHE_NAME = `nahuatl-db-${CACHE_VERSION}`;
 
 // Large static search assets are intentionally not precached or runtime-cached.
@@ -13,6 +13,7 @@ const CORE_ASSETS = [
   "./script.js",
   "./data.js",
   "./filters.js",
+  "./study-core.js",
   "./manifest.json",
   "./icon.svg",
 ];
@@ -71,6 +72,7 @@ function networkFirst(request) {
 function isLargeSearchFallbackAsset(url) {
   const path = url.pathname.replace(/^\/+/, "");
   return path === "data/data.jsonl.gz"
+    || /(?:^|\/)(?:pair|study)-worker\.js$/.test(path)
     || path === "search-worker.js"
     || path.startsWith("data/lazy/");
 }

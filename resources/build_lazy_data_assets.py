@@ -9,10 +9,15 @@ full database for ordinary searches.
 from __future__ import annotations
 
 import gzip
+import argparse
+import hashlib
 import json
+import os
 import re
 import shutil
+import tempfile
 import unicodedata
+from itertools import zip_longest
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -171,6 +176,119 @@ def layer_value(row: dict[str, Any], field: str, layer: str) -> str:
     if layer == "source":
         return source_display_value(row, field)
     return normalized_display_value(row, field)
+
+
+def publish_manifest(manifest: dict[str, Any]) -> None:
+    """Publish only after every referenced asset is complete."""
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=OUT_DIR,
+                                     prefix=".manifest-", delete=False) as handle:
+        temporary = Path(handle.name)
+        try:
+            handle.write(compact_json(manifest) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        except BaseException:
+            temporary.unlink(missing_ok=True)
+            raise
+    try:
+        os.replace(temporary, MANIFEST_PATH)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def build_display_projections(manifest: dict[str, Any], *, study: bool = False) -> dict[str, Any]:
+    """Add sparse Pair raw or Study source-display projections.
+
+    Search indexes contain display values, which can differ from Pair raw
+    fields or Study source-display fallback. Validate the existing metadata against the source before any
+    writes; publish immutable assets first and the manifest atomically last.
+    """
+    fields = ("Traducción",) if study else FIELDS
+    directory = "study-source" if study else "pair-raw"
+    if manifest.get("version") != "lazy-v1":
+        raise ValueError("Unsupported lazy manifest version for display projections")
+    if type(manifest.get("totalRows")) is not int or manifest["totalRows"] < 0:
+        raise ValueError("Invalid lazy manifest row count for display projections")
+    if not isinstance(manifest.get("meta"), str) or not manifest["meta"]:
+        raise ValueError("Missing lazy metadata path for display projections")
+    with DATA_PATH.open("rb") as handle:
+        source_digest = hashlib.file_digest(handle, "sha256").hexdigest()
+    projections: dict[str, list[dict[str, str]]] = {field: [] for field in fields}
+    sources: dict[str, set[str]] = {field: set() for field in fields}
+    meta_path = ROOT / "data" / manifest["meta"]
+    total = 0
+    with gzip.open(meta_path, "rt", encoding="utf-8") as handle:
+        metadata = (json.loads(line) for line in handle if line.strip())
+        for total, (row, meta) in enumerate(zip_longest(read_rows(), metadata), start=1):
+            if row is None or meta is None:
+                raise ValueError("Display projection source and metadata row counts differ")
+            row_id = str(row.get("record_id") or f"row:{total:06d}")
+            if row_id != meta.get("record_id") or row.get("Fuente", "") != meta.get("Fuente", ""):
+                raise ValueError(f"Display projection source identity differs at row {total}")
+            for field in fields:
+                value = row.get(field)
+                raw = "" if value is None else str(value)
+                # Study source display falls back to the original field, unlike
+                # the search source layer which falls back to normalized display.
+                if study:
+                    raw = source_raw_value(row, field) or raw
+                indexed = layer_value(row, field, "source") if study else normalized_display_value(row, field)
+                if raw != indexed:
+                    projections[field].append({"record_id": row_id, "value": raw})
+                    sources[field].add(str(row.get("Fuente", "")))
+    if total != manifest.get("totalRows"):
+        raise ValueError("Display projection source count differs from manifest")
+    with DATA_PATH.open("rb") as handle:
+        if hashlib.file_digest(handle, "sha256").hexdigest() != source_digest:
+            raise ValueError("Display projection source changed while reading")
+
+    entries = {field: {"count": 0, "sources": []} for field in fields}
+    projection_dir = OUT_DIR / directory
+    projection_dir.mkdir(parents=True, exist_ok=True)
+    for field, rows in projections.items():
+        if not rows:
+            continue
+        slug = {"Editado": "editado", "Original": "original", "Traducción": "traduccion", "Comentario": "comentario"}[field]
+        with tempfile.NamedTemporaryFile(dir=projection_dir, prefix=".projection-", delete=False) as handle:
+            temporary = Path(handle.name)
+            try:
+                with gzip.GzipFile(filename="", fileobj=handle, mode="wb", compresslevel=9, mtime=0) as compressed:
+                    for row in rows:
+                        compressed.write((compact_json(row) + "\n").encode("utf-8"))
+                handle.flush()
+                os.fsync(handle.fileno())
+            except BaseException:
+                temporary.unlink(missing_ok=True)
+                raise
+        try:
+            with temporary.open("rb") as handle:
+                digest = hashlib.file_digest(handle, "sha256").hexdigest()
+            name = f"{slug}-{digest[:16]}.jsonl.gz"
+            target = projection_dir / name
+            if target.exists():
+                if target.read_bytes() != temporary.read_bytes():
+                    raise ValueError("Display projection content digest collision")
+            else:
+                os.replace(temporary, target)
+            entries[field] = {"path": f"lazy/{directory}/{name}", "count": len(rows),
+                              "sources": sorted(sources[field]), "sha256": digest}
+        finally:
+            temporary.unlink(missing_ok=True)
+    updated = ({**manifest, "studyDisplayProjectionVersion": 1,
+                "studySourceDisplayOverrides": entries, "studyProjectionSourceSha256": source_digest}
+               if study else
+               {**manifest, "pairProjectionVersion": 1, "pairRawOverrides": entries,
+                "pairProjectionSourceSha256": source_digest})
+    publish_manifest(updated)
+    return updated
+
+
+def build_pair_projections(manifest: dict[str, Any]) -> dict[str, Any]:
+    return build_display_projections(manifest)
+
+
+def build_study_projections(manifest: dict[str, Any]) -> dict[str, Any]:
+    return build_display_projections(manifest, study=True)
 
 
 def remove_old_assets() -> None:
@@ -360,11 +478,25 @@ def build_assets() -> dict[str, Any]:
                     "shards": shard_manifest,
                 }
 
-    MANIFEST_PATH.write_text(compact_json(manifest) + "\n", encoding="utf-8")
-    return manifest
+    return build_study_projections(build_pair_projections(manifest))
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    projection_mode = parser.add_mutually_exclusive_group()
+    projection_mode.add_argument("--study-projections-only", action="store_true",
+                                 help="Add Study source-display projections without rebuilding other lazy assets")
+    projection_mode.add_argument("--pair-projections-only", action="store_true",
+                        help="Validate and add raw Pair projections without rebuilding other lazy assets")
+    args = parser.parse_args()
+    if args.study_projections_only:
+        manifest = build_study_projections(json.loads(MANIFEST_PATH.read_text(encoding="utf-8")))
+        print(f"wrote Study source-display projections for {manifest['totalRows']} rows")
+        return
+    if args.pair_projections_only:
+        manifest = build_pair_projections(json.loads(MANIFEST_PATH.read_text(encoding="utf-8")))
+        print(f"wrote {sum(entry['count'] > 0 for entry in manifest['pairRawOverrides'].values())} Pair projections for {manifest['totalRows']} rows")
+        return
     manifest = build_assets()
     print(
         f"wrote {manifest['totalRows']} rows, "

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import copy
 import gzip
 import hashlib
 import json
@@ -77,6 +78,22 @@ def p160v_cluster_witness(target: str) -> str:
 
 
 OVERRIDES = {
+    "1565-sahagun-escolios:000774": {
+        "target_number": 65,
+        "target_raw": "65",
+        "definition": "pensar. pret. oninoma. oninomat.",
+        "witness_line": "<i>Cequintin (64) <b>momatque</b> (65), ca mictlänpa (66) ÿn quiçaquiuh yc vmpa ytztimomanque (67)</i>. P_161v",
+        "glosses": [(64, "algunos"), (65, "pensar. pt. oninoma. oninomat"),
+                    (66, "hazia el norte"), (67, "ponerse a mirar. p?. onitztimoquetz")],
+        "citation": {"folio_end": None, "folio_start": "161v", "manuscript": "P", "raw": "P_161v", "type": "folio"},
+        "reason": "The preserved P_161v packet restarts numbering: the later momatque (65) and pensar gloss match this row; the earlier tlalpilli (65) belongs to cosa atada, not pensar.",
+        "raw_witness": "Cequintin (64) momatque (65), ca mictlänpa (66) ÿn quiçaquiuh yc vmpa ytztimomanque (67)",
+        "raw_gloss_block": "64: algunos.<br />65: pensar. pt. oninoma. oninomat.<br />66: hazia el norte.<br />67: ponerse a mirar. p?. onitztimoquetz.",
+        "raw_occurrence": "momatque (65)",
+        "raw_form": "momatque",
+        "raw_gloss": "65: pensar. pt. oninoma. oninomat.",
+        "alignment_marker": "source_anchored_duplicate_number_2026_09_20",
+    },
     "1565-sahagun-escolios:000181": {
         "target_number": 24,
         "target_raw": "24",
@@ -554,6 +571,8 @@ OVERRIDES = {
     },
 }
 
+OVERRIDES.update(json.loads(Path(__file__).with_name("sahagun_five_cycles_2026_09_20_overrides.json").read_text(encoding="utf-8")))
+
 STALE_TARGET_CLEARS = {
     "1565-sahagun-escolios:000572": "no preserved raw packet and no public target apparatus remain for ilhuia",
     "1565-sahagun-escolios:000843": "no preserved raw packet and no public target apparatus remain for mochi",
@@ -591,8 +610,55 @@ def build_commentary(row: dict, override: dict) -> str:
     )
 
 
+def validate_exact_evidence(row: dict, override: dict) -> None:
+    if not override.get("raw_witness"):
+        return
+    raw = row.get(RAW_FIELD, "")
+    for key in ("raw_witness", "raw_gloss_block", "raw_occurrence"):
+        if raw.count(override[key]) != 1:
+            raise ValueError(f"{row.get('record_id')}: preserved {key} is missing or ambiguous")
+    identity = override.get("expected_identity", {"Original": "mati, nino", "Editado": "momati", "Traducción": "pensar"})
+    if any(row.get(key) != value for key, value in identity.items()):
+        raise ValueError("The reviewed lexical identity has changed; explicit source review required")
+
+
+def apply_source_alignment(row: dict, override: dict) -> None:
+    marker = override.get("alignment_marker")
+    if not marker:
+        return
+    metadata = row["Sahagun_Escolios_JSON"]
+    alignment = metadata["target_alignment_v34_1"]
+    raw = row[RAW_FIELD]
+    occurrence = override["raw_occurrence"]
+    start = raw.index(occurrence)
+    alignment["occurrence"] = {"form_raw": override["raw_form"], "segment_raw": occurrence,
+                               "source_field": RAW_FIELD, "start": start, "end": start + len(occurrence)}
+    gloss = override["raw_gloss"]
+    start = raw.index(gloss)
+    alignment["spanish_span"] = {"text": gloss, "source": RAW_FIELD, "start": start,
+                                 "end": start + len(gloss), "method": "exact_numbered_gloss",
+                                 "confidence": "source_anchored", "partial": False}
+    alignment.pop("invalidated_span", None)
+    alignment["repair_policy"] = marker
+    alignment["review_needed"] = False
+    metadata["display"]["issues"] = [issue for issue in metadata["display"].get("issues", [])
+        if issue not in {"witness_lacks_target_form_removed_no_safe_replacement", "no_target_bearing_witness_displayed"}]
+    metadata["display"]["issues"] = append_issue(metadata["display"]["issues"], marker)
+    metadata["display"]["display_method"] = marker
+    metadata["witness"]["v28_display_method"] = marker
+
+
 def apply_override(row: dict, override: dict) -> None:
+    validate_exact_evidence(row, override)
     previous_commentary = str(row.get("Comentario", ""))
+    if override.get("alignment_marker"):
+        metadata = row.setdefault("Sahagun_Escolios_JSON", {})
+        metadata.setdefault("qa_source_alignment_2026_09_20", {
+            "reason": override["reason"], "raw_field": RAW_FIELD, "raw_preserved": True,
+            "raw_sha256": hashlib.sha256(row[RAW_FIELD].encode("utf-8")).hexdigest(),
+            "previous_alignment": copy.deepcopy(metadata.get("target_alignment_v34_1", {})),
+            "previous_display": copy.deepcopy(metadata.get("display", {})),
+        })
     commentary = build_commentary(row, override)
     for field in COMMENTARY_FIELDS:
         row[field] = commentary
@@ -636,6 +702,8 @@ def apply_override(row: dict, override: dict) -> None:
         "raw_preserved": True,
         "previous_commentary_sha1": hashlib.sha1(previous_commentary.encode("utf-8")).hexdigest(),
     }
+
+    apply_source_alignment(row, override)
 
 
 def current_target_number(row: dict) -> object:
@@ -692,11 +760,17 @@ def write_tsv(path: Path, rows: list[dict[str, str]], fields: list[str]) -> None
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data", type=Path, default=DATA_PATH)
-    parser.add_argument("--apply", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--apply", action="store_true")
+    mode.add_argument("--check", action="store_true", help="Fail when a selected repair is not reflected in the corpus")
+    parser.add_argument("--record-id", action="append", help="Limit to explicit reviewed records; repeatable")
     parser.add_argument("--proposals", type=Path, default=PROPOSALS_PATH)
     parser.add_argument("--summary", type=Path, default=SUMMARY_PATH)
     args = parser.parse_args()
 
+    if args.record_id and any(rid not in OVERRIDES and rid not in STALE_TARGET_CLEARS for rid in args.record_id):
+        parser.error("--record-id must name an existing reviewed override")
+    seen_ids: set[str] = set()
     rows = load_rows(args.data)
     proposals: list[dict[str, str]] = []
     counts: Counter[str] = Counter()
@@ -705,12 +779,16 @@ def main() -> int:
         if row.get("Fuente") != SOURCE:
             continue
         record_id = row.get("record_id", "")
+        if args.record_id and record_id not in args.record_id:
+            continue
+        seen_ids.add(record_id)
         override = OVERRIDES.get(record_id)
         stale_clear_reason = STALE_TARGET_CLEARS.get(record_id)
         if not override and not stale_clear_reason:
             continue
         current_number = current_target_number(row)
         if override:
+            validate_exact_evidence(row, override)
             counts["override_rows"] += 1
             new_commentary = build_commentary(row, override)
             needs_change = (
@@ -718,6 +796,14 @@ def main() -> int:
                 or current_number != override["target_number"]
                 or (bool(override.get("translation")) and row.get("Traducción") != override["translation"])
             )
+            if override.get("alignment_marker"):
+                expected = copy.deepcopy(row)
+                apply_override(expected, override)
+                actual_meta = row.get("Sahagun_Escolios_JSON", {})
+                expected_meta = expected["Sahagun_Escolios_JSON"]
+                needs_change = needs_change or any(actual_meta.get(key) != expected_meta.get(key)
+                    for key in ("target_alignment_v34_1", "display", "witness"))
+                needs_change = needs_change or "qa_source_alignment_2026_09_20" not in actual_meta
             new_target_number = str(override["target_number"])
             definition = override["definition"]
             witness_line = override["witness_line"]
@@ -751,6 +837,8 @@ def main() -> int:
                 clear_stale_target(row, reason)
             counts["applied_rows"] += 1
 
+    if args.record_id and set(args.record_id) - seen_ids:
+        raise ValueError("Requested reviewed record is missing from its expected source")
     write_tsv(
         args.proposals,
         proposals,
@@ -761,7 +849,7 @@ def main() -> int:
     args.summary.write_text(json.dumps(counts, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"summary {dict(counts)}")
     print(f"proposals {args.proposals}")
-    return 0
+    return 1 if args.check and proposals else 0
 
 
 if __name__ == "__main__":
