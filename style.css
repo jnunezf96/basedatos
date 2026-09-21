@@ -380,7 +380,9 @@ div.table-toolbar {
 
 .toolbar-controls {
   display: flex;
-  align-items: stretch;
+  /* Reserve the native horizontal scrollbar lane from the first paint. */
+  height: calc(var(--toolbar-group-height) + 24px);
+  align-items: flex-start;
   flex: 0 0 auto;
   gap: 6px;
   justify-content: flex-start;
@@ -416,7 +418,8 @@ div.table-toolbar {
   height: var(--toolbar-control-height);
   background: #d9e0f7;
   flex-shrink: 0;
-  align-self: center;
+  align-self: flex-start;
+  margin-top: calc((var(--toolbar-group-height) - var(--toolbar-control-height)) / 2);
 }
 
 .table-toolbar .toolbar-controls .view-toggle,
@@ -5204,6 +5207,7 @@ tr.lemma-group-row .lemma-group-summary-cell {
 
   .toolbar-controls {
     display: flex;
+    height: auto;
     align-items: center;
     justify-content: flex-start;
     flex-wrap: nowrap;
