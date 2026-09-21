@@ -5894,6 +5894,7 @@ tr.lemma-group-row .lemma-group-summary-cell {
 .results-dimension-panel {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   flex-wrap: wrap;
   gap: 4px 10px;
   min-height: 32px;
@@ -5903,7 +5904,7 @@ tr.lemma-group-row .lemma-group-summary-cell {
 .results-controls .results-pagination {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-wrap: wrap;
   gap: 4px 8px;
   width: 100%;
@@ -5972,4 +5973,30 @@ tr.lemma-group-row .lemma-group-summary-cell {
 }
 @media (max-width: 360px) {
   .results-dimension-panel { min-height: 76px; }
+}
+
+/* Export choices stay directly below the trigger, without expanding the toolbar. */
+#exportMenuDropdown {
+  position: fixed;
+  z-index: 1000;
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(20, 42, 80, .16);
+}
+#exportMenuDropdown .export-menu-head { display: none; }
+#exportMenuDropdown .export-menu-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+  padding: 0;
+}
+#exportMenuDropdown .export-menu-item {
+  width: 100%;
+  min-height: 36px;
+  justify-content: flex-start;
+  text-align: left;
+  white-space: normal;
 }

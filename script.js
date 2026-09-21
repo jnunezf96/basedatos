@@ -6432,46 +6432,57 @@ function setupExportButtons() {
   const btn = document.getElementById("exportMenuBtn");
   const dropdown = document.getElementById("exportMenuDropdown");
   if (!btn || !dropdown) return;
+  // Escape clipping by the results viewport while remaining anchored to its button.
+  document.body.appendChild(dropdown);
   btn.setAttribute("aria-expanded", "false");
-
-  btn.addEventListener("click", e => {
-    e.stopPropagation();
-    const columnDropdown = document.getElementById("columnMenuDropdown");
-    const columnBtn = document.getElementById("columnMenuBtn");
-    columnDropdown?.classList.remove("open");
-    columnBtn?.setAttribute("aria-expanded", "false");
-    const open = dropdown.classList.toggle("open");
-    btn.setAttribute("aria-expanded", open ? "true" : "false");
-  });
-
-  dropdown.addEventListener("click", e => {
-    e.stopPropagation();
-  });
-
-  document.addEventListener("click", e => {
-    if (!dropdown.contains(e.target) && e.target !== btn) {
-      dropdown.classList.remove("open");
-      btn.setAttribute("aria-expanded", "false");
-    }
-  });
-
-  dropdown.addEventListener("click", e => {
-    const item = e.target.closest(".export-menu-item");
-    if (!item) return;
+  btn.setAttribute("aria-controls", dropdown.id);
+  const close = (restoreFocus = false) => {
     dropdown.classList.remove("open");
     btn.setAttribute("aria-expanded", "false");
-    const kind = item.dataset.export;
-    if (kind === "jpeg") exportTableAsImage("jpeg");
-    else if (kind === "png") exportTableAsImage("png");
-    else if (kind === "csv") exportAsCsv();
+    if (restoreFocus) btn.focus({ preventScroll: true });
+  };
+  const position = () => {
+    if (!dropdown.classList.contains("open")) return;
+    const rect = btn.getBoundingClientRect();
+    const width = Math.min(256, window.innerWidth - 16);
+    dropdown.style.width = `${width}px`;
+    dropdown.style.left = `${Math.max(8, Math.min(rect.right - width, window.innerWidth - width - 8))}px`;
+    dropdown.style.top = `${rect.bottom + 4}px`;
+    dropdown.style.maxHeight = `${Math.max(40, window.innerHeight - rect.bottom - 12)}px`;
+  };
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    if (dropdown.classList.contains("open")) { close(); return; }
+    document.getElementById("columnMenuDropdown")?.classList.remove("open");
+    document.getElementById("columnMenuBtn")?.setAttribute("aria-expanded", "false");
+    dropdown.classList.add("open");
+    btn.setAttribute("aria-expanded", "true");
+    position();
+    dropdown.querySelector("button:not(:disabled)")?.focus({ preventScroll: true });
   });
-
+  dropdown.addEventListener("click", e => {
+    e.stopPropagation();
+    const item = e.target.closest(".export-menu-item");
+    if (!item) return;
+    close(true);
+    if (item.dataset.export === "jpeg") exportTableAsImage("jpeg");
+    else if (item.dataset.export === "png") exportTableAsImage("png");
+    else if (item.dataset.export === "csv") exportAsCsv();
+  });
+  document.addEventListener("click", e => {
+    if (!dropdown.contains(e.target) && !btn.contains(e.target)) close();
+  });
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape") {
-      dropdown.classList.remove("open");
-      btn.setAttribute("aria-expanded", "false");
+    if (e.key === "Escape" && dropdown.classList.contains("open")) {
+      e.preventDefault();
+      close(true);
     }
   });
+  dropdown.addEventListener("focusout", e => {
+    if (e.relatedTarget && !dropdown.contains(e.relatedTarget) && !btn.contains(e.relatedTarget)) close();
+  });
+  window.addEventListener("resize", position);
+  window.addEventListener("scroll", position, true);
 }
 
 // ── Export helpers (CSV) ─────────────────────────────────────────────────
@@ -6579,7 +6590,7 @@ function setCsvExportStatus(message, pending = false) {
     cancel.className = "btn ghost";
     cancel.addEventListener("click", () => activeCsvExport?.controller.abort());
     box.appendChild(cancel);
-    document.getElementById("exportMenuDropdown").after(box);
+    document.querySelector(".table-toolbar").appendChild(box);
   }
   box.firstElementChild.textContent = message;
   box.lastElementChild.textContent = t("table.export.cancel");
