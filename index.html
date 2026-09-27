@@ -20,7 +20,7 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <title data-i18n="title">Base de datos náhuatl</title>
-  <link rel="stylesheet" href="style.css?v=publish-ready-170" />
+  <link rel="stylesheet" href="style.css?v=publish-ready-173" />
 </head>
 <body>
   <svg class="icon-sprite" aria-hidden="true" focusable="false">
@@ -324,8 +324,8 @@
     <h1 class="sr-only" data-i18n="title">Base de datos náhuatl</h1>
     <div id="filtersTopAnchor" class="scroll-anchor" aria-hidden="true"></div>
 
-    <details class="about-help" id="aboutHelp">
-      <summary data-i18n="about.title">Acerca de esta base y sus fuentes</summary>
+    <dialog class="about-help" id="aboutHelp" aria-labelledby="aboutTitle">
+      <div class="about-help-head"><h2 id="aboutTitle" data-i18n="about.title">Acerca de esta base y sus fuentes</h2><button type="button" class="btn ghost" id="aboutCloseBtn" data-i18n-aria-label="action.close" aria-label="Cerrar">×</button></div>
       <div class="about-help-content">
         <p data-i18n="about.purpose">Consulta entradas de náhuatl por escritura, traducción o fuente y compara los resultados.</p>
         <p data-i18n="about.start">Para empezar, elige una columna, escribe una condición y pulsa Añadir. Selecciona las fuentes que quieres consultar y usa Compartir para guardar el enlace de la búsqueda.</p>
@@ -342,13 +342,17 @@
           <a href="https://github.com/jnunezf96/basedatos" data-i18n="about.repository">Código del proyecto</a>
         </div>
       </div>
-    </details>
+    </dialog>
 
     <div class="panel-shell">
       <div class="panel-tab-row">
         <div class="session-bar" id="sessionBar"></div>
         <div class="panel-controls">
           <div class="top-bar">
+            <button type="button" class="btn action mobile-icon-btn" id="aboutBtn" aria-haspopup="dialog" aria-controls="aboutHelp" data-i18n-aria-label="about.short" data-i18n-title="about.short">
+              <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-question"></use></svg>
+              <span class="btn-label mobile-icon-label" data-i18n="about.short">Acerca de</span>
+            </button>
             <button type="button" class="btn action share-btn mobile-icon-btn" id="shareBtn" data-i18n-aria-label="action.share" data-i18n-title="action.share" aria-label="Compartir enlace" title="Compartir">
               <svg class="mobile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-share"></use></svg>
               <span class="btn-label mobile-icon-label" data-i18n="action.share">Compartir</span>
@@ -742,7 +746,7 @@
         <div class="table-toolbar">
 <div class="toolbar-controls results-controls">
 <div id="tableStatus" class="result-info" data-i18n="table.status.loading">Cargando datos…</div>
-<div class="results-dimension-picker"><label class="sr-only" for="resultsDimensionSelect" data-i18n="table.controls">Controles de resultados</label><select id="resultsDimensionSelect" aria-controls="resultsActiveControls"><option value="pagination" data-i18n="table.dimension.pagination">Paginación</option><option value="view" data-i18n="table.dimension.view">Vista</option><option value="display" data-i18n="table.dimension.display">Presentación</option></select></div>
+<div class="results-dimension-picker"><label class="sr-only" for="resultsDimensionSelect" data-i18n="table.controls">Controles de resultados</label><select id="resultsDimensionSelect" aria-controls="resultsActiveControls"><option value="pagination" data-i18n="table.dimension.pagination">Paginación</option><option value="view" data-i18n="table.dimension.view">Vista</option><option value="display" data-i18n="table.dimension.display">Presentación</option><option value="sort" data-i18n="table.dimension.sort">Ordenar</option></select></div>
 <div id="resultsActiveControls" class="results-active-slot"><div id="resultsPanelpagination" class="results-dimension-panel" role="group" aria-label="pagination" data-i18n-aria-label="table.dimension.pagination"><div class="page-group results-pagination">
               <div class="page-size">
                 <label for="pageSizeSelect" data-i18n="table.pagesize.label">Registros por página:</label>
@@ -787,7 +791,10 @@
                   <span class="btn-label mobile-icon-label" data-i18n="table.columns">Columnas</span>
                 </button>
               </div>
-            </div><div class="sort-group">
+            </div></div><div id="resultsPanelsort" class="results-dimension-panel" role="group" data-i18n-aria-label="table.dimension.sort" hidden><div class="sort-group">
+<label class="sr-only" for="sortFieldSelect" data-i18n="sort.by">Ordenar por</label>
+<select id="sortFieldSelect"><option value="" data-i18n="sort.none">Sin ordenar</option><option value="Editado" data-i18n="field.grafia">Editado</option><option value="Original" data-i18n="field.paleografia">Original</option><option value="Traducción" data-i18n="field.traduccion">Traducción</option><option value="Fuente" data-i18n="field.fuente">Fuente</option><option value="Comentario" data-i18n="field.comentario">Comentario</option></select>
+<button type="button" class="arrow-btn" id="sortDirectionBtn" disabled></button>
               <div class="sort-scope">
                 <label for="sortScopeSelect" data-i18n="table.sort.label">Orden:</label>
                 <select id="sortScopeSelect">
@@ -834,6 +841,7 @@
               <th data-field="Editado">
                 <div class="header-bar">
                   <span data-i18n="table.header.grafia">Editado</span>
+                  <span class="mobile-record-heading" data-i18n="table.header.entry">Entrada</span>
                   <div class="header-actions">
                     <button type="button" class="arrow-btn sort-btn" data-sort-field="Editado" aria-label="Ordenar por editado" title="Ordenar por editado"><svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-sort"></use></svg></button>
                     <button type="button" class="arrow-btn table-toggle-all table-control-mobile-only" id="tableExpandAllMobile" data-i18n-title="list.expandAll" data-i18n-aria-label="list.expandAll" title="Expandir/Colapsar registros" aria-label="Expandir/Colapsar registros" hidden>+</button>
@@ -843,6 +851,7 @@
               <th data-field="Original">
                 <div class="header-bar">
                   <span data-i18n="table.header.paleografia">Original</span>
+                  <span class="mobile-record-heading" data-i18n="table.header.entry">Entrada</span>
                   <div class="header-actions">
                     <button type="button" class="arrow-btn sort-btn" data-sort-field="Original" aria-label="Ordenar por original" title="Ordenar por original"><svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-sort"></use></svg></button>
                   </div>
@@ -851,6 +860,7 @@
               <th data-field="Traducción">
                 <div class="header-bar">
                   <span data-i18n="table.header.traduccion">Traducción</span>
+                  <span class="mobile-record-heading" data-i18n="table.header.entry">Entrada</span>
                   <div class="header-actions">
                     <button type="button" class="arrow-btn sort-btn" data-sort-field="Traducción" aria-label="Ordenar por traducción" title="Ordenar por traducción"><svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-sort"></use></svg></button>
                   </div>
@@ -859,6 +869,7 @@
               <th data-field="Fuente">
                 <div class="header-bar">
                   <span data-i18n="table.header.fuente">Fuente</span>
+                  <span class="mobile-record-heading" data-i18n="table.header.entry">Entrada</span>
                   <div class="header-actions">
                     <button type="button" class="arrow-btn sort-btn" data-sort-field="Fuente" aria-label="Ordenar por fuente" title="Ordenar por fuente"><svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-sort"></use></svg></button>
                   </div>
@@ -867,6 +878,7 @@
               <th data-field="Comentario">
                 <div class="header-bar">
                   <span data-i18n="table.header.comentario">Comentario</span>
+                  <span class="mobile-record-heading" data-i18n="table.header.entry">Entrada</span>
                   <div class="header-actions">
                     <button type="button" class="arrow-btn sort-btn" data-sort-field="Comentario" aria-label="Ordenar por comentario" title="Ordenar por comentario"><svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#icon-sort"></use></svg></button>
                     <button type="button" class="arrow-btn comentario-toggle-all table-control-desktop-only" id="comentarioExpandAll" data-i18n-title="comentario.expandAll" data-i18n-aria-label="comentario.expandAll" title="Expandir/Colapsar comentarios" aria-label="Expandir/Colapsar comentarios">+</button>
@@ -904,6 +916,6 @@
   <script src="filters.js?v=publish-ready-106"></script>
   <script src="data/bootstrap.js?v=publish-ready-439"></script>
   <script src="study-core.js?v=publish-ready-187"></script>
-  <script src="script.js?v=publish-ready-192"></script>
+  <script src="script.js?v=publish-ready-195"></script>
 </body>
 </html>

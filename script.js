@@ -422,6 +422,10 @@ const I18N = {
     "browse.pagesize.label": "Filas",
     "browse.page": "Pág. {{page}} de {{total}}",
     "site.tagline": "Usa los filtros para encontrar palabras por escritura, traducción o fuente; los resultados aparecen en la tabla de abajo.",
+    "about.short": "Acerca de",
+    "action.close": "Cerrar",
+    "table.dimension.sort": "Ordenar",
+    "sort.none": "Sin ordenar",
     "about.title": "Acerca de esta base y sus fuentes",
     "about.purpose": "Consulta entradas de náhuatl por escritura, traducción o fuente y compara los resultados.",
     "about.start": "Para empezar, elige una columna, escribe una condición y pulsa Añadir. Selecciona las fuentes que quieres consultar y usa Compartir para guardar el enlace de la búsqueda.",
@@ -431,6 +435,7 @@ const I18N = {
     "about.sources": "Explorar fuentes",
     "about.repository": "Código del proyecto",
     "table.header.paleografia": "Original",
+    "table.header.entry": "Entrada",
     "table.header.grafia": "Editado",
     "table.header.traduccion": "Traducción",
     "table.header.fuente": "Fuente",
@@ -957,6 +962,10 @@ const I18N = {
     "browse.pagesize.label": "Rows",
     "browse.page": "Page {{page}} of {{total}}",
     "site.tagline": "Use the filters to find words by spelling, translation, or source; results appear in the table below.",
+    "about.short": "About",
+    "action.close": "Close",
+    "table.dimension.sort": "Sort",
+    "sort.none": "Unsorted",
     "about.title": "About this database and its sources",
     "about.purpose": "Look up Nahuatl entries by spelling, translation, or source and compare the results.",
     "about.start": "To begin, choose a column, enter a condition, and press Add. Select the sources you want to consult, then use Share to save the search link.",
@@ -966,6 +975,7 @@ const I18N = {
     "about.sources": "Explore sources",
     "about.repository": "Project code",
     "table.header.paleografia": "Original",
+    "table.header.entry": "Entry",
     "table.header.grafia": "Edition",
     "table.header.traduccion": "Translation",
     "table.header.fuente": "Source",
@@ -2836,6 +2846,8 @@ function syncMobileViewportMetrics() {
     const isMobile = !window.matchMedia || window.matchMedia("(max-width: 640px)").matches;
     if (!isMobile) {
       root.style.removeProperty("--mobile-viewport-height");
+      root.style.removeProperty("--mobile-visible-height");
+      root.style.removeProperty("--mobile-viewport-top");
       root.style.removeProperty("--mobile-nav-height");
       delete root.dataset.mobileVisual;
       delete root.dataset.mobileKeyboard;
@@ -2848,6 +2860,8 @@ function syncMobileViewportMetrics() {
     const vv = window.visualViewport;
     const viewportHeight = vv && Number.isFinite(vv.height) ? vv.height : window.innerHeight;
     const viewportWidth = vv && Number.isFinite(vv.width) ? vv.width : window.innerWidth;
+    root.style.setProperty("--mobile-visible-height", `${Math.round(viewportHeight)}px`);
+    root.style.setProperty("--mobile-viewport-top", `${Math.round(vv?.offsetTop || 0)}px`);
     const layoutHeight = Math.max(
       window.innerHeight || 0,
       document.documentElement.clientHeight || 0,
@@ -3069,8 +3083,15 @@ function setupFilterHelpToggle() {
 }
 
 function setupAboutHelp() {
+  const dialog = document.getElementById("aboutHelp");
+  document.getElementById("aboutBtn")?.addEventListener("click", () => dialog.showModal());
+  document.getElementById("aboutCloseBtn")?.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", event => {
+    const rect = dialog.getBoundingClientRect();
+    if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
+  });
   document.getElementById("aboutSourcesBtn")?.addEventListener("click", () => {
-    document.getElementById("aboutHelp").open = false;
+    dialog.close();
     showScreen("filters");
     document.getElementById("tab-filtersPanel")?.click();
     const sources = document.getElementById("fuenteList");
@@ -3869,7 +3890,7 @@ function setupResultsDimensions() {
   if (!select) return;
   select.value = "pagination";
   select.addEventListener("change", () => {
-    for (const dimension of ["pagination", "view", "display"]) {
+    for (const dimension of ["pagination", "view", "display", "sort"]) {
       document.getElementById(`resultsPanel${dimension}`).hidden = dimension !== select.value;
     }
     document.getElementById("columnMenuDropdown")?.classList.remove("open");
@@ -6236,6 +6257,19 @@ function updatePaginationControls(total) {
 }
 
 function setupSortControls() {
+  document.getElementById("sortFieldSelect")?.addEventListener("change", event => {
+    const field = event.target.value;
+    const dir = sortKeys[0]?.dir || "asc";
+    sortKeys = field ? [{ field, dir }] : [];
+    applyFilters(false, getTableRestoreOptions(event.target));
+    updateSortIndicators();
+  });
+  document.getElementById("sortDirectionBtn")?.addEventListener("click", () => {
+    if (!sortKeys.length) return;
+    sortKeys = [{ field: sortKeys[0].field, dir: sortKeys[0].dir === "asc" ? "desc" : "asc" }];
+    applyFilters(false, getTableRestoreOptions());
+    updateSortIndicators();
+  });
   const buttons = document.querySelectorAll("#dataTable .sort-btn");
   buttons.forEach(btn => {
     btn.addEventListener("click", e => {
@@ -6372,6 +6406,16 @@ function compareRecordId(a, b) {
 }
 
 function updateSortIndicators() {
+  const select = document.getElementById("sortFieldSelect");
+  const direction = document.getElementById("sortDirectionBtn");
+  if (select) select.value = sortKeys[0]?.field || "";
+  if (direction) {
+    const descending = sortKeys[0]?.dir === "desc";
+    direction.disabled = !sortKeys.length;
+    direction.innerHTML = spriteIconMarkup(descending ? "icon-sort-down" : "icon-sort-up", "sort-icon");
+    direction.setAttribute("aria-label", t(descending ? "sort.desc" : "sort.asc"));
+    direction.title = t(descending ? "sort.desc" : "sort.asc");
+  }
   const buttons = document.querySelectorAll("#dataTable .sort-btn");
   const inLemmasView = tableViewMode === "lemmas";
   buttons.forEach(btn => {
@@ -10769,7 +10813,9 @@ function setupKeyboardAvoidance() {
     if (panelScroller) {
       const scrollerRect = panelScroller.getBoundingClientRect();
       const topLimit = Math.max(top + 12, scrollerRect.top + 12);
-      const bottomLimit = Math.min(bottom - 12, scrollerRect.bottom - 12);
+      const actionBar = el.closest("#filtersPanel")?.querySelector(".filter-actions-btns");
+      const actionTop = actionBar?.getBoundingClientRect().top ?? bottom;
+      const bottomLimit = Math.min(bottom - 12, scrollerRect.bottom - 12, actionTop - 12);
       if (rect.bottom > bottomLimit) {
         panelScroller.scrollBy({ top: rect.bottom - bottomLimit, behavior });
       } else if (rect.top < topLimit) {
